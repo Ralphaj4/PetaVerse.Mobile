@@ -9,6 +9,198 @@
   "skip": "تخطي",
   "next": "التالي",
   "getStarted": "ابدأ الآن",
+  "continueButton": "متابعة",
+  "onboardingTitle1a": "مرحباً بك في",
+  "onboardingTitle1b": "بيتافيرس",
+  "onboardingDesc1": "رفيقك الشامل لكل ما يحتاجه حيوانك الأليف — صحة ورعاية والمزيد.",
+  "onboardingTitle2a": "تتبع الصحة و",
+  "onboardingTitle2b": "التذكيرات",
+  "onboardingDesc2": "لا تفوّت أي تطعيم أو زيارة بيطرية أو دواء مع التذكيرات الذكية.",
+  "onboardingTitle3a": "تواصل مع",
+  "onboardingTitle3b": "المجتمع",
+  "onboardingDesc3": "شارك اللحظات، واعثر على الحيوانات المفقودة، واكتشف الخدمات القريبة منك.",
+  "loginTitle1": "مرحباً",
+  "loginTitle2": "بعودتك!",
+  "loginSubtitle": "سجّل الدخول لمواصلة الاعتناء بأصدقائك الأليفين.",
+  "mobileNumber": "رقم الهاتف المحمول",
+  "password": "كلمة المرور",
+  "logIn": "تسجيل الدخول",
+  "noAccountPrompt": "ليس لديك حساب؟",
+  "joinTheFamily": "انضم إلى العائلة",
+  "registerTitle1": "انضم إلى",
+  "registerTitle2": "العائلة",
+  "registerSubtitle": "أنشئ حساباً وامنح حيواناتك الأليفة الرعاية التي تستحقها.",
+  "firstName": "الاسم الأول",
+  "lastName": "اسم العائلة",
+  "emailOptional": "البريد الإلكتروني (اختياري)",
+  "invalidEmail": "أدخل عنوان بريد إلكتروني صالح",
+  "signUp": "إنشاء حساب",
+  "haveAccountPrompt": "لديك حساب بالفعل؟",
+  "logInLink": "تسجيل الدخول",
+  "otpTitle1": "تحقق من",
+  "otpTitle2": "رقمك",
+  "otpSubtitle": "أدخل الرمز المكوّن من 4 أرقام المرسل إلى {phone}",
+  "@otpSubtitle": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "verify": "تحقق",
+  "resendCode": "إعادة إرسال الرمز",
+  "resendIn": "إعادة الإرسال خلال {seconds} ث",
+  "@resendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "goodMorning": "صباح الخير، {name} 👋",
+  "@goodMorning": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodAfternoon": "مساء الخير، {name} 👋",
+  "@goodAfternoon": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodEvening": "مساء الخير، {name} 👋",
+  "@goodEvening": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "petDoingGreat": "{petName} بحالة رائعة اليوم! 🐾",
+  "@petDoingGreat": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "healthScore": "مؤشر الصحة",
+  "healthExcellent": "ممتاز",
+  "nextVisit": "الزيارة القادمة",
+  "statHealth": "الصحة",
+  "statNutrition": "التغذية",
+  "statActivity": "النشاط",
+  "statVaccines": "اللقاحات",
+  "statGreat": "رائعة",
+  "statGood": "جيدة",
+  "stepsCount": "{steps} خطوة",
+  "@stepsCount": {
+    "placeholders": {
+      "steps": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "upToDate": "محدّثة",
+  "upcoming": "القادمة",
+  "quickActions": "إجراءات",
+  "bookAppointment": "حجز موعد",
+  "addRecord": "إضافة سجل",
+  "lostAndFound": "الحيوانات المفقودة",
+  "lostAndFoundDashboard": "لوحة الحيوانات المفقودة",
+  "lostAndFoundSubtitle": "{count} تنبيه في دائرة 5 أميال",
+  "@lostAndFoundSubtitle": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "liveMapView": "خريطة مباشرة",
+  "recentAlerts": "التنبيهات الأخيرة",
+  "filterAll": "الكل",
+  "filterLost": "مفقود",
+  "filterFound": "موجود",
+  "badgeLost": "مفقود",
+  "badgeFound": "موجود",
+  "timeAgo": "منذ {n}س",
+  "@timeAgo": {
+    "placeholders": {
+      "n": { "type": "int" }
+    }
+  },
+  "contactOwner": "تواصل مع المالك",
+  "viewDetails": "عرض التفاصيل",
+  "reportLostPet": "الإبلاغ عن حيوان مفقود",
+  "howToHelp": "كيف تساعد؟",
+  "howToHelpBody": "انضم إلى فريق المتطوعين وابقَ على اطلاع بالحيوانات المفقودة في محيطك.",
+  "becomeVolunteer": "كن متطوعاً",
+  "activeVolunteers": "{count} متطوع نشط",
+  "@activeVolunteers": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "medicationsReminders": "الأدوية والتذكيرات",
+  "healthTracker": "متتبع الصحة",
+  "notifications": "الإشعارات",
+  "premiumMember": "عضو مميّز",
+  "petProfiles": "ملفات الحيوانات",
+  "addPet": "إضافة حيوان",
+  "petActive": "نشط",
+  "petAgeYears": "{years, plural, =1{سنة} =2{سنتان} few{{years} سنوات} other{{years} سنة}}",
+  "@petAgeYears": {
+    "placeholders": {
+      "years": {
+        "type": "int"
+      }
+    }
+  },
+  "accountSettings": "إعدادات الحساب",
+  "personalInformation": "المعلومات الشخصية",
+  "securityPrivacy": "الأمان والخصوصية",
+  "paymentMethods": "طرق الدفع",
+  "notificationsSupport": "الإشعارات والدعم",
+  "helpCenter": "مركز المساعدة",
+  "privacyPolicy": "سياسة الخصوصية",
+  "toggleOn": "مفعّل",
+  "toggleOff": "معطّل",
+  "logOut": "تسجيل الخروج",
+  "logOutConfirmTitle": "تسجيل الخروج؟",
+  "logOutConfirmMessage": "ستحتاج إلى تسجيل الدخول مرة أخرى للوصول إلى حيواناتك وتذكيراتك.",
+  "logOutConfirm": "نعم، تسجيل الخروج",
+  "appVersion": "الإصدار {version} (بناء {build})",
+  "@appVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "build": {
+        "type": "String"
+      }
+    }
+  },
+  "aiAssistantTitle": "مساعد PawBot",
+  "aiAskHint": "اسأل PawBot أي شيء…",
+  "aiQuickFaqs": "الأسئلة الشائعة",
+  "aiQuickBreedInfo": "معلومات السلالة",
+  "aiQuickSymptomChecker": "فحص الأعراض",
+  "aiHealthVaultTitle": "خزينة الصحة",
+  "aiHealthVaultSubtitle": "احفظ سجلات التطعيم والتاريخ الطبي لـ {petName}.",
+  "@aiHealthVaultSubtitle": {
+    "placeholders": {
+      "petName": { "type": "String" }
+    }
+  },
+  "fieldRequired": "هذا الحقل مطلوب",
+  "passwordTooShort": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
+  "confirmPassword": "تأكيد كلمة المرور",
+  "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
+  "invalidPhone": "أدخل رقم هاتف محمول صالح",
   "retry": "إعادة المحاولة",
   "seeAll": "عرض الكل",
   "save": "حفظ",

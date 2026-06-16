@@ -1,7 +1,12 @@
 /// All backend endpoint paths, centralized.
 abstract final class ApiEndpoints {
   // Auth
+  static const String register = '/auth/register';
+  static const String resendOtp = '/auth/resend-otp';
+  static const String verifyPhone = '/auth/verify-phone';
+  static const String login = '/auth/login';
   static const String refreshToken = '/auth/refresh';
+  static const String revokeToken = '/auth/revoke';
 
   // Pets
   static const String pets = '/pets';

@@ -6,13 +6,25 @@ abstract final class AppColors {
   static const Color primary = Color(0xFFFBAB4C); // RGB(251,171,76)
   static const Color secondary = Color(0xFF01B4C2); // RGB(1,180,194)
 
+  /// Lighter brand orange, used as the start of the hero gradient.
+  static const Color primaryLight = Color(0xFFFFC97E);
+
   // Brand tints (soft pastel surfaces used by hero cards and chips)
   static const Color primarySoft = Color(0xFFFEEFDB);
   static const Color secondarySoft = Color(0xFFE0F7F9);
 
+  /// Very subtle warm cream, used as the top of ambient gradients.
+  static const Color backgroundWarm = Color(0xFFFFF6EC);
+
   // Darker shades for pressed states and emphasis
   static const Color primaryDark = Color(0xFFE08F2B);
   static const Color secondaryDark = Color(0xFF018E99);
+
+  // Accent palette (dashboard stat cards and quick actions)
+  static const Color accentPurple = Color(0xFF8B5CF6);
+  static const Color accentPurpleSoft = Color(0xFFF3EEFD);
+  static const Color accentCoral = Color(0xFFF26D5F);
+  static const Color accentCoralSoft = Color(0xFFFDEDEB);
 
   // Neutrals
   static const Color textPrimary = Color(0xFF1F2430);

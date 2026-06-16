@@ -9,6 +9,198 @@
   "skip": "Skip",
   "next": "Next",
   "getStarted": "Get Started",
+  "continueButton": "Continue",
+  "onboardingTitle1a": "Welcome to",
+  "onboardingTitle1b": "PetaVerse",
+  "onboardingDesc1": "Your all-in-one companion for everything your pet needs: health, care, and more.",
+  "onboardingTitle2a": "Track Health &",
+  "onboardingTitle2b": "Reminders",
+  "onboardingDesc2": "Never miss a vaccination, vet visit, or medication with smart reminders.",
+  "onboardingTitle3a": "Connect with the",
+  "onboardingTitle3b": "Community",
+  "onboardingDesc3": "Share moments, find lost pets, and discover local services nearby.",
+  "loginTitle1": "Welcome",
+  "loginTitle2": "Back!",
+  "loginSubtitle": "Log in to continue caring for your furry friends.",
+  "mobileNumber": "Mobile Number",
+  "password": "Password",
+  "logIn": "Log In",
+  "noAccountPrompt": "Don't have an account?",
+  "joinTheFamily": "Join the family",
+  "registerTitle1": "Join the",
+  "registerTitle2": "Family",
+  "registerSubtitle": "Create an account and give your pets the care they deserve.",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "emailOptional": "Email (optional)",
+  "invalidEmail": "Enter a valid email address",
+  "signUp": "Sign Up",
+  "haveAccountPrompt": "Already have an account?",
+  "logInLink": "Log in",
+  "otpTitle1": "Verify Your",
+  "otpTitle2": "Number",
+  "otpSubtitle": "Enter the 4-digit code we sent to {phone}",
+  "@otpSubtitle": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "verify": "Verify",
+  "resendCode": "Resend code",
+  "resendIn": "Resend in {seconds}s",
+  "@resendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "goodMorning": "Good Morning, {name} 👋",
+  "@goodMorning": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodAfternoon": "Good Afternoon, {name} 👋",
+  "@goodAfternoon": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodEvening": "Good Evening, {name} 👋",
+  "@goodEvening": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "petDoingGreat": "{petName} is doing great today! 🐾",
+  "@petDoingGreat": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "healthScore": "Health Score",
+  "healthExcellent": "Excellent",
+  "nextVisit": "Next Visit",
+  "statHealth": "Health",
+  "statNutrition": "Nutrition",
+  "statActivity": "Activity",
+  "statVaccines": "Vaccines",
+  "statGreat": "Great",
+  "statGood": "Good",
+  "stepsCount": "{steps} steps",
+  "@stepsCount": {
+    "placeholders": {
+      "steps": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "upToDate": "Up to date",
+  "upcoming": "Upcoming",
+  "quickActions": "Actions",
+  "bookAppointment": "Book Appointment",
+  "addRecord": "Add Record",
+  "lostAndFound": "Lost & Found",
+  "lostAndFoundDashboard": "Lost & Found Dashboard",
+  "lostAndFoundSubtitle": "{count} active alerts within 5 miles",
+  "@lostAndFoundSubtitle": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "liveMapView": "Live Map View",
+  "recentAlerts": "Recent Alerts",
+  "filterAll": "All",
+  "filterLost": "Lost",
+  "filterFound": "Found",
+  "badgeLost": "LOST",
+  "badgeFound": "FOUND",
+  "timeAgo": "{n}h ago",
+  "@timeAgo": {
+    "placeholders": {
+      "n": { "type": "int" }
+    }
+  },
+  "contactOwner": "Contact Owner",
+  "viewDetails": "View Details",
+  "reportLostPet": "Report Lost Pet",
+  "howToHelp": "How to Help More",
+  "howToHelpBody": "Join our Volunteer Search Team to get notified when a lost pet is reported near you.",
+  "becomeVolunteer": "Become a Volunteer",
+  "activeVolunteers": "{count} Active Volunteers",
+  "@activeVolunteers": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "medicationsReminders": "Medications & Reminders",
+  "healthTracker": "Health Tracker",
+  "notifications": "Notifications",
+  "premiumMember": "Premium Member",
+  "petProfiles": "Pet Profiles",
+  "addPet": "Add Pet",
+  "petActive": "ACTIVE",
+  "petAgeYears": "{years, plural, =1{{years}y} other{{years}y}}",
+  "@petAgeYears": {
+    "placeholders": {
+      "years": {
+        "type": "int"
+      }
+    }
+  },
+  "accountSettings": "Account Settings",
+  "personalInformation": "Personal Information",
+  "securityPrivacy": "Security & Privacy",
+  "paymentMethods": "Payment Methods",
+  "notificationsSupport": "Notifications & Support",
+  "helpCenter": "Help Center",
+  "privacyPolicy": "Privacy Policy",
+  "toggleOn": "On",
+  "toggleOff": "Off",
+  "logOut": "Log Out",
+  "logOutConfirmTitle": "Log out?",
+  "logOutConfirmMessage": "You'll need to sign in again to access your pets and reminders.",
+  "logOutConfirm": "Yes, log out",
+  "appVersion": "Version {version} (Build {build})",
+  "@appVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "build": {
+        "type": "String"
+      }
+    }
+  },
+  "aiAssistantTitle": "PawBot Assistant",
+  "aiAskHint": "Ask PawBot anything…",
+  "aiQuickFaqs": "FAQs",
+  "aiQuickBreedInfo": "BreedInfo",
+  "aiQuickSymptomChecker": "Symptom Checker",
+  "aiHealthVaultTitle": "Pet Health Vault",
+  "aiHealthVaultSubtitle": "Store vaccination records and medical history for {petName}.",
+  "@aiHealthVaultSubtitle": {
+    "placeholders": {
+      "petName": { "type": "String" }
+    }
+  },
+  "fieldRequired": "This field is required",
+  "passwordTooShort": "Password must be at least 8 characters",
+  "confirmPassword": "Confirm Password",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "invalidPhone": "Enter a valid mobile number",
   "retry": "Retry",
   "seeAll": "See all",
   "save": "Save",

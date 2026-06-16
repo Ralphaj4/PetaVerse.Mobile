@@ -154,6 +154,636 @@ abstract class AppLocalizations {
   /// **'Get Started'**
   String get getStarted;
 
+  /// No description provided for @continueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueButton;
+
+  /// No description provided for @onboardingTitle1a.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to'**
+  String get onboardingTitle1a;
+
+  /// No description provided for @onboardingTitle1b.
+  ///
+  /// In en, this message translates to:
+  /// **'PetaVerse'**
+  String get onboardingTitle1b;
+
+  /// No description provided for @onboardingDesc1.
+  ///
+  /// In en, this message translates to:
+  /// **'Your all-in-one companion for everything your pet needs: health, care, and more.'**
+  String get onboardingDesc1;
+
+  /// No description provided for @onboardingTitle2a.
+  ///
+  /// In en, this message translates to:
+  /// **'Track Health &'**
+  String get onboardingTitle2a;
+
+  /// No description provided for @onboardingTitle2b.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders'**
+  String get onboardingTitle2b;
+
+  /// No description provided for @onboardingDesc2.
+  ///
+  /// In en, this message translates to:
+  /// **'Never miss a vaccination, vet visit, or medication with smart reminders.'**
+  String get onboardingDesc2;
+
+  /// No description provided for @onboardingTitle3a.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect with the'**
+  String get onboardingTitle3a;
+
+  /// No description provided for @onboardingTitle3b.
+  ///
+  /// In en, this message translates to:
+  /// **'Community'**
+  String get onboardingTitle3b;
+
+  /// No description provided for @onboardingDesc3.
+  ///
+  /// In en, this message translates to:
+  /// **'Share moments, find lost pets, and discover local services nearby.'**
+  String get onboardingDesc3;
+
+  /// No description provided for @loginTitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome'**
+  String get loginTitle1;
+
+  /// No description provided for @loginTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Back!'**
+  String get loginTitle2;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to continue caring for your furry friends.'**
+  String get loginSubtitle;
+
+  /// No description provided for @mobileNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile Number'**
+  String get mobileNumber;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @logIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Log In'**
+  String get logIn;
+
+  /// No description provided for @noAccountPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get noAccountPrompt;
+
+  /// No description provided for @joinTheFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the family'**
+  String get joinTheFamily;
+
+  /// No description provided for @registerTitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the'**
+  String get registerTitle1;
+
+  /// No description provided for @registerTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get registerTitle2;
+
+  /// No description provided for @registerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account and give your pets the care they deserve.'**
+  String get registerSubtitle;
+
+  /// No description provided for @firstName.
+  ///
+  /// In en, this message translates to:
+  /// **'First Name'**
+  String get firstName;
+
+  /// No description provided for @lastName.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Name'**
+  String get lastName;
+
+  /// No description provided for @emailOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Email (optional)'**
+  String get emailOptional;
+
+  /// No description provided for @invalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get invalidEmail;
+
+  /// No description provided for @signUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get signUp;
+
+  /// No description provided for @haveAccountPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get haveAccountPrompt;
+
+  /// No description provided for @logInLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in'**
+  String get logInLink;
+
+  /// No description provided for @otpTitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Your'**
+  String get otpTitle1;
+
+  /// No description provided for @otpTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Number'**
+  String get otpTitle2;
+
+  /// No description provided for @otpSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 4-digit code we sent to {phone}'**
+  String otpSubtitle(String phone);
+
+  /// No description provided for @verify.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify'**
+  String get verify;
+
+  /// No description provided for @resendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend code'**
+  String get resendCode;
+
+  /// No description provided for @resendIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend in {seconds}s'**
+  String resendIn(int seconds);
+
+  /// No description provided for @goodMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'Good Morning, {name} 👋'**
+  String goodMorning(String name);
+
+  /// No description provided for @goodAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Good Afternoon, {name} 👋'**
+  String goodAfternoon(String name);
+
+  /// No description provided for @goodEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Good Evening, {name} 👋'**
+  String goodEvening(String name);
+
+  /// No description provided for @petDoingGreat.
+  ///
+  /// In en, this message translates to:
+  /// **'{petName} is doing great today! 🐾'**
+  String petDoingGreat(String petName);
+
+  /// No description provided for @healthScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Score'**
+  String get healthScore;
+
+  /// No description provided for @healthExcellent.
+  ///
+  /// In en, this message translates to:
+  /// **'Excellent'**
+  String get healthExcellent;
+
+  /// No description provided for @nextVisit.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Visit'**
+  String get nextVisit;
+
+  /// No description provided for @statHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Health'**
+  String get statHealth;
+
+  /// No description provided for @statNutrition.
+  ///
+  /// In en, this message translates to:
+  /// **'Nutrition'**
+  String get statNutrition;
+
+  /// No description provided for @statActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get statActivity;
+
+  /// No description provided for @statVaccines.
+  ///
+  /// In en, this message translates to:
+  /// **'Vaccines'**
+  String get statVaccines;
+
+  /// No description provided for @statGreat.
+  ///
+  /// In en, this message translates to:
+  /// **'Great'**
+  String get statGreat;
+
+  /// No description provided for @statGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get statGood;
+
+  /// No description provided for @stepsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{steps} steps'**
+  String stepsCount(int steps);
+
+  /// No description provided for @upToDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to date'**
+  String get upToDate;
+
+  /// No description provided for @upcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get upcoming;
+
+  /// No description provided for @quickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get quickActions;
+
+  /// No description provided for @bookAppointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Book Appointment'**
+  String get bookAppointment;
+
+  /// No description provided for @addRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Record'**
+  String get addRecord;
+
+  /// No description provided for @lostAndFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Lost & Found'**
+  String get lostAndFound;
+
+  /// No description provided for @lostAndFoundDashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Lost & Found Dashboard'**
+  String get lostAndFoundDashboard;
+
+  /// No description provided for @lostAndFoundSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} active alerts within 5 miles'**
+  String lostAndFoundSubtitle(int count);
+
+  /// No description provided for @liveMapView.
+  ///
+  /// In en, this message translates to:
+  /// **'Live Map View'**
+  String get liveMapView;
+
+  /// No description provided for @recentAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Alerts'**
+  String get recentAlerts;
+
+  /// No description provided for @filterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get filterAll;
+
+  /// No description provided for @filterLost.
+  ///
+  /// In en, this message translates to:
+  /// **'Lost'**
+  String get filterLost;
+
+  /// No description provided for @filterFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Found'**
+  String get filterFound;
+
+  /// No description provided for @badgeLost.
+  ///
+  /// In en, this message translates to:
+  /// **'LOST'**
+  String get badgeLost;
+
+  /// No description provided for @badgeFound.
+  ///
+  /// In en, this message translates to:
+  /// **'FOUND'**
+  String get badgeFound;
+
+  /// No description provided for @timeAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{n}h ago'**
+  String timeAgo(int n);
+
+  /// No description provided for @contactOwner.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Owner'**
+  String get contactOwner;
+
+  /// No description provided for @viewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get viewDetails;
+
+  /// No description provided for @reportLostPet.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Lost Pet'**
+  String get reportLostPet;
+
+  /// No description provided for @howToHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'How to Help More'**
+  String get howToHelp;
+
+  /// No description provided for @howToHelpBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Join our Volunteer Search Team to get notified when a lost pet is reported near you.'**
+  String get howToHelpBody;
+
+  /// No description provided for @becomeVolunteer.
+  ///
+  /// In en, this message translates to:
+  /// **'Become a Volunteer'**
+  String get becomeVolunteer;
+
+  /// No description provided for @activeVolunteers.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Active Volunteers'**
+  String activeVolunteers(int count);
+
+  /// No description provided for @medicationsReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Medications & Reminders'**
+  String get medicationsReminders;
+
+  /// No description provided for @healthTracker.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Tracker'**
+  String get healthTracker;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @premiumMember.
+  ///
+  /// In en, this message translates to:
+  /// **'Premium Member'**
+  String get premiumMember;
+
+  /// No description provided for @petProfiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Pet Profiles'**
+  String get petProfiles;
+
+  /// No description provided for @addPet.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Pet'**
+  String get addPet;
+
+  /// No description provided for @petActive.
+  ///
+  /// In en, this message translates to:
+  /// **'ACTIVE'**
+  String get petActive;
+
+  /// No description provided for @petAgeYears.
+  ///
+  /// In en, this message translates to:
+  /// **'{years, plural, =1{{years}y} other{{years}y}}'**
+  String petAgeYears(int years);
+
+  /// No description provided for @accountSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Settings'**
+  String get accountSettings;
+
+  /// No description provided for @personalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Information'**
+  String get personalInformation;
+
+  /// No description provided for @securityPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Security & Privacy'**
+  String get securityPrivacy;
+
+  /// No description provided for @paymentMethods.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Methods'**
+  String get paymentMethods;
+
+  /// No description provided for @notificationsSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications & Support'**
+  String get notificationsSupport;
+
+  /// No description provided for @helpCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Help Center'**
+  String get helpCenter;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @toggleOn.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get toggleOn;
+
+  /// No description provided for @toggleOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get toggleOff;
+
+  /// No description provided for @logOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Out'**
+  String get logOut;
+
+  /// No description provided for @logOutConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log out?'**
+  String get logOutConfirmTitle;
+
+  /// No description provided for @logOutConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll need to sign in again to access your pets and reminders.'**
+  String get logOutConfirmMessage;
+
+  /// No description provided for @logOutConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, log out'**
+  String get logOutConfirm;
+
+  /// No description provided for @appVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version} (Build {build})'**
+  String appVersion(String version, String build);
+
+  /// No description provided for @aiAssistantTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'PawBot Assistant'**
+  String get aiAssistantTitle;
+
+  /// No description provided for @aiAskHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask PawBot anything…'**
+  String get aiAskHint;
+
+  /// No description provided for @aiQuickFaqs.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQs'**
+  String get aiQuickFaqs;
+
+  /// No description provided for @aiQuickBreedInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'BreedInfo'**
+  String get aiQuickBreedInfo;
+
+  /// No description provided for @aiQuickSymptomChecker.
+  ///
+  /// In en, this message translates to:
+  /// **'Symptom Checker'**
+  String get aiQuickSymptomChecker;
+
+  /// No description provided for @aiHealthVaultTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pet Health Vault'**
+  String get aiHealthVaultTitle;
+
+  /// No description provided for @aiHealthVaultSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Store vaccination records and medical history for {petName}.'**
+  String aiHealthVaultSubtitle(String petName);
+
+  /// No description provided for @fieldRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get fieldRequired;
+
+  /// No description provided for @passwordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 8 characters'**
+  String get passwordTooShort;
+
+  /// No description provided for @confirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPassword;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// No description provided for @invalidPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid mobile number'**
+  String get invalidPhone;
+
   /// No description provided for @retry.
   ///
   /// In en, this message translates to:

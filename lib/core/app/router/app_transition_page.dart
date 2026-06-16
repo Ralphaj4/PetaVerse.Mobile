@@ -36,6 +36,31 @@ class AppTransitionPage<T> extends CustomTransitionPage<T> {
   }
 }
 
+/// A plain fade, used when a Hero animation should carry the motion
+/// (e.g. the shared full-screen map expanding from an inline preview).
+/// A slide would fight the Hero, so the page itself only cross-fades.
+class AppFadeTransitionPage<T> extends CustomTransitionPage<T> {
+  const AppFadeTransitionPage({
+    required super.child,
+    super.key,
+    super.name,
+    super.arguments,
+  }) : super(
+          transitionDuration: const Duration(milliseconds: 400),
+          reverseTransitionDuration: const Duration(milliseconds: 350),
+          transitionsBuilder: _buildTransition,
+        );
+
+  static Widget _buildTransition(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    return FadeTransition(opacity: animation, child: child);
+  }
+}
+
 /// Exception to the app-wide transition, used only by the center paw
 /// button: the screen glides up from behind the bottom navigation bar.
 class AppSlideUpTransitionPage<T> extends CustomTransitionPage<T> {

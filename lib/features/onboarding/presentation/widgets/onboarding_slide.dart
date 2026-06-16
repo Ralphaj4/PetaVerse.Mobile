@@ -1,3 +1,4 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -8,15 +9,27 @@ import '../../../../core/theme/app_text_styles.dart';
 class OnboardingSlideData {
   const OnboardingSlideData({
     required this.lottieAsset,
-    required this.title,
+    required this.titleTop,
+    required this.titleAccent,
     required this.description,
-    required this.accent,
+    this.blobColor = AppColors.primarySoft,
+    required this.showBlob
   });
 
   final String lottieAsset;
-  final String title;
+
+  /// First headline line, rendered in the dark text color.
+  final String titleTop;
+
+  /// Second headline line, rendered in the primary accent color.
+  final String titleAccent;
+
   final String description;
-  final Color accent;
+
+  /// Soft tint of the organic shape behind the illustration.
+  final Color blobColor;
+
+  final bool showBlob;
 }
 
 class OnboardingSlide extends StatelessWidget {
@@ -26,32 +39,88 @@ class OnboardingSlide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
+    final width = MediaQuery.sizeOf(context).width;
+    final artSize = width * 0.78;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Lottie.asset(
-            data.lottieAsset,
-            width: size.width * 0.72,
-            height: size.width * 0.72,
-            fit: BoxFit.contain,
+          const Spacer(),
+
+          // ── illustration on an organic blob ─────────────────────────────
+          Center(
+            child: SizedBox(
+              width: artSize,
+              height: artSize,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  if (data.showBlob)
+                    Container(
+                      width: artSize * 0.92,
+                      height: artSize * 0.82,
+                      decoration: BoxDecoration(
+                        color: data.blobColor,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(150),
+                          topRight: Radius.circular(130),
+                          bottomLeft: Radius.circular(120),
+                          bottomRight: Radius.circular(160),
+                        ),
+                      ),
+                    ),
+                  Lottie.asset(
+                    data.lottieAsset,
+                    width: artSize,
+                    height: artSize,
+                    fit: BoxFit.contain,
+                  ),
+                ],
+              ),
+            ),
           ),
-          const SizedBox(height: AppSpacing.xl),
-          Text(
-            data.title,
-            style: AppTextStyles.headlineLarge.copyWith(color: data.accent),
-            textAlign: TextAlign.center,
+
+          const Spacer(),
+
+          // ── sparkle accent + two-tone headline ──────────────────────────
+          const Icon(
+            FluentIcons.sparkle_20_filled,
+            color: AppColors.primary,
+            size: 20,
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: AppSpacing.xs),
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: '${data.titleTop}\n',
+                  style: AppTextStyles.displayLarge.copyWith(
+                    fontSize: 36,
+                    height: 1.15,
+                  ),
+                ),
+                TextSpan(
+                  text: data.titleAccent,
+                  style: AppTextStyles.displayLarge.copyWith(
+                    fontSize: 36,
+                    height: 1.15,
+                    color: AppColors.primary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: AppSpacing.lg),
           Text(
             data.description,
             style: AppTextStyles.bodyLarge.copyWith(
               color: AppColors.textSecondary,
+              height: 1.5,
             ),
-            textAlign: TextAlign.center,
           ),
+          const SizedBox(height: AppSpacing.lg),
         ],
       ),
     );

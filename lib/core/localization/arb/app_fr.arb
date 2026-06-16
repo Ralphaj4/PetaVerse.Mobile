@@ -9,6 +9,198 @@
   "skip": "Passer",
   "next": "Suivant",
   "getStarted": "Commencer",
+  "continueButton": "Continuer",
+  "onboardingTitle1a": "Bienvenue sur",
+  "onboardingTitle1b": "PetaVerse",
+  "onboardingDesc1": "Votre compagnon tout-en-un pour tous les besoins de votre animal — santé, soins et plus.",
+  "onboardingTitle2a": "Suivi santé &",
+  "onboardingTitle2b": "Rappels",
+  "onboardingDesc2": "Ne manquez jamais un vaccin, une visite vétérinaire ou un médicament grâce aux rappels intelligents.",
+  "onboardingTitle3a": "Rejoignez la",
+  "onboardingTitle3b": "Communauté",
+  "onboardingDesc3": "Partagez des moments, retrouvez les animaux perdus et découvrez les services locaux.",
+  "loginTitle1": "Bon retour",
+  "loginTitle2": "parmi nous !",
+  "loginSubtitle": "Connectez-vous pour continuer à prendre soin de vos compagnons.",
+  "mobileNumber": "Numéro de mobile",
+  "password": "Mot de passe",
+  "logIn": "Se connecter",
+  "noAccountPrompt": "Pas encore de compte ?",
+  "joinTheFamily": "Rejoignez la famille",
+  "registerTitle1": "Rejoignez la",
+  "registerTitle2": "Famille",
+  "registerSubtitle": "Créez un compte et offrez à vos animaux les soins qu'ils méritent.",
+  "firstName": "Prénom",
+  "lastName": "Nom",
+  "emailOptional": "E-mail (facultatif)",
+  "invalidEmail": "Saisissez une adresse e-mail valide",
+  "signUp": "S'inscrire",
+  "haveAccountPrompt": "Vous avez déjà un compte ?",
+  "logInLink": "Se connecter",
+  "otpTitle1": "Vérifiez votre",
+  "otpTitle2": "Numéro",
+  "otpSubtitle": "Saisissez le code à 4 chiffres envoyé au {phone}",
+  "@otpSubtitle": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "verify": "Vérifier",
+  "resendCode": "Renvoyer le code",
+  "resendIn": "Renvoyer dans {seconds}s",
+  "@resendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "goodMorning": "Bonjour, {name} 👋",
+  "@goodMorning": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodAfternoon": "Bon après-midi, {name} 👋",
+  "@goodAfternoon": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodEvening": "Bonsoir, {name} 👋",
+  "@goodEvening": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "petDoingGreat": "{petName} va très bien aujourd'hui ! 🐾",
+  "@petDoingGreat": {
+    "placeholders": {
+      "petName": {
+        "type": "String"
+      }
+    }
+  },
+  "healthScore": "Score Santé",
+  "healthExcellent": "Excellent",
+  "nextVisit": "Prochaine Visite",
+  "statHealth": "Santé",
+  "statNutrition": "Nutrition",
+  "statActivity": "Activité",
+  "statVaccines": "Vaccins",
+  "statGreat": "Super",
+  "statGood": "Bien",
+  "stepsCount": "{steps} pas",
+  "@stepsCount": {
+    "placeholders": {
+      "steps": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "upToDate": "À jour",
+  "upcoming": "À venir",
+  "quickActions": "Actions",
+  "bookAppointment": "Prendre Rendez-vous",
+  "addRecord": "Ajouter un Dossier",
+  "lostAndFound": "Animaux Perdus",
+  "lostAndFoundDashboard": "Tableau de Bord Animaux Perdus",
+  "lostAndFoundSubtitle": "{count} alertes actives dans un rayon de 5 miles",
+  "@lostAndFoundSubtitle": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "liveMapView": "Carte en Direct",
+  "recentAlerts": "Alertes Récentes",
+  "filterAll": "Tout",
+  "filterLost": "Perdus",
+  "filterFound": "Trouvés",
+  "badgeLost": "PERDU",
+  "badgeFound": "TROUVÉ",
+  "timeAgo": "il y a {n}h",
+  "@timeAgo": {
+    "placeholders": {
+      "n": { "type": "int" }
+    }
+  },
+  "contactOwner": "Contacter le Propriétaire",
+  "viewDetails": "Voir les Détails",
+  "reportLostPet": "Signaler un Animal Perdu",
+  "howToHelp": "Comment Aider",
+  "howToHelpBody": "Rejoignez notre équipe de bénévoles pour être alerté quand un animal est signalé près de chez vous.",
+  "becomeVolunteer": "Devenir Bénévole",
+  "activeVolunteers": "{count} Bénévoles Actifs",
+  "@activeVolunteers": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "medicationsReminders": "Médicaments & Rappels",
+  "healthTracker": "Suivi Santé",
+  "notifications": "Notifications",
+  "premiumMember": "Membre Premium",
+  "petProfiles": "Profils des Animaux",
+  "addPet": "Ajouter",
+  "petActive": "ACTIF",
+  "petAgeYears": "{years, plural, =1{{years} an} other{{years} ans}}",
+  "@petAgeYears": {
+    "placeholders": {
+      "years": {
+        "type": "int"
+      }
+    }
+  },
+  "accountSettings": "Paramètres du Compte",
+  "personalInformation": "Informations Personnelles",
+  "securityPrivacy": "Sécurité & Confidentialité",
+  "paymentMethods": "Moyens de Paiement",
+  "notificationsSupport": "Notifications & Assistance",
+  "helpCenter": "Centre d'Aide",
+  "privacyPolicy": "Politique de Confidentialité",
+  "toggleOn": "Activé",
+  "toggleOff": "Désactivé",
+  "logOut": "Se Déconnecter",
+  "logOutConfirmTitle": "Se déconnecter ?",
+  "logOutConfirmMessage": "Vous devrez vous reconnecter pour accéder à vos animaux et rappels.",
+  "logOutConfirm": "Oui, déconnexion",
+  "appVersion": "Version {version} (Build {build})",
+  "@appVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "build": {
+        "type": "String"
+      }
+    }
+  },
+  "aiAssistantTitle": "Assistant PawBot",
+  "aiAskHint": "Demandez à PawBot…",
+  "aiQuickFaqs": "FAQ",
+  "aiQuickBreedInfo": "Races",
+  "aiQuickSymptomChecker": "Vérif. Symptômes",
+  "aiHealthVaultTitle": "Coffre Santé",
+  "aiHealthVaultSubtitle": "Stockez les vaccinations et l'historique médical de {petName}.",
+  "@aiHealthVaultSubtitle": {
+    "placeholders": {
+      "petName": { "type": "String" }
+    }
+  },
+  "fieldRequired": "Ce champ est requis",
+  "passwordTooShort": "Le mot de passe doit contenir au moins 8 caractères",
+  "confirmPassword": "Confirmer le mot de passe",
+  "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+  "invalidPhone": "Saisissez un numéro de mobile valide",
   "retry": "Réessayer",
   "seeAll": "Tout voir",
   "save": "Enregistrer",

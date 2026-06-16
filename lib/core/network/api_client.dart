@@ -85,8 +85,13 @@ class ApiClient {
       case DioExceptionType.badResponse:
         final status = e.response?.statusCode ?? 0;
         final body = e.response?.data;
+        // The backend returns RFC 7807 ProblemDetails: the human-readable
+        // text is in `detail` (legacy `message` kept as a fallback).
         final message = body is Map<String, dynamic>
-            ? (body['message'] as String? ?? 'Request failed')
+            ? (body['detail'] as String? ??
+                body['message'] as String? ??
+                body['title'] as String? ??
+                'Request failed')
             : 'Request failed with status $status';
         if (status == 401) return UnauthorizedException(message);
         if (status == 403) return ForbiddenException(message);

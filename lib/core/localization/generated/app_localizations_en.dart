@@ -36,6 +36,364 @@ class AppLocalizationsEn extends AppLocalizations {
   String get getStarted => 'Get Started';
 
   @override
+  String get continueButton => 'Continue';
+
+  @override
+  String get onboardingTitle1a => 'Welcome to';
+
+  @override
+  String get onboardingTitle1b => 'PetaVerse';
+
+  @override
+  String get onboardingDesc1 =>
+      'Your all-in-one companion for everything your pet needs: health, care, and more.';
+
+  @override
+  String get onboardingTitle2a => 'Track Health &';
+
+  @override
+  String get onboardingTitle2b => 'Reminders';
+
+  @override
+  String get onboardingDesc2 =>
+      'Never miss a vaccination, vet visit, or medication with smart reminders.';
+
+  @override
+  String get onboardingTitle3a => 'Connect with the';
+
+  @override
+  String get onboardingTitle3b => 'Community';
+
+  @override
+  String get onboardingDesc3 =>
+      'Share moments, find lost pets, and discover local services nearby.';
+
+  @override
+  String get loginTitle1 => 'Welcome';
+
+  @override
+  String get loginTitle2 => 'Back!';
+
+  @override
+  String get loginSubtitle =>
+      'Log in to continue caring for your furry friends.';
+
+  @override
+  String get mobileNumber => 'Mobile Number';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get logIn => 'Log In';
+
+  @override
+  String get noAccountPrompt => 'Don\'t have an account?';
+
+  @override
+  String get joinTheFamily => 'Join the family';
+
+  @override
+  String get registerTitle1 => 'Join the';
+
+  @override
+  String get registerTitle2 => 'Family';
+
+  @override
+  String get registerSubtitle =>
+      'Create an account and give your pets the care they deserve.';
+
+  @override
+  String get firstName => 'First Name';
+
+  @override
+  String get lastName => 'Last Name';
+
+  @override
+  String get emailOptional => 'Email (optional)';
+
+  @override
+  String get invalidEmail => 'Enter a valid email address';
+
+  @override
+  String get signUp => 'Sign Up';
+
+  @override
+  String get haveAccountPrompt => 'Already have an account?';
+
+  @override
+  String get logInLink => 'Log in';
+
+  @override
+  String get otpTitle1 => 'Verify Your';
+
+  @override
+  String get otpTitle2 => 'Number';
+
+  @override
+  String otpSubtitle(String phone) {
+    return 'Enter the 4-digit code we sent to $phone';
+  }
+
+  @override
+  String get verify => 'Verify';
+
+  @override
+  String get resendCode => 'Resend code';
+
+  @override
+  String resendIn(int seconds) {
+    return 'Resend in ${seconds}s';
+  }
+
+  @override
+  String goodMorning(String name) {
+    return 'Good Morning, $name 👋';
+  }
+
+  @override
+  String goodAfternoon(String name) {
+    return 'Good Afternoon, $name 👋';
+  }
+
+  @override
+  String goodEvening(String name) {
+    return 'Good Evening, $name 👋';
+  }
+
+  @override
+  String petDoingGreat(String petName) {
+    return '$petName is doing great today! 🐾';
+  }
+
+  @override
+  String get healthScore => 'Health Score';
+
+  @override
+  String get healthExcellent => 'Excellent';
+
+  @override
+  String get nextVisit => 'Next Visit';
+
+  @override
+  String get statHealth => 'Health';
+
+  @override
+  String get statNutrition => 'Nutrition';
+
+  @override
+  String get statActivity => 'Activity';
+
+  @override
+  String get statVaccines => 'Vaccines';
+
+  @override
+  String get statGreat => 'Great';
+
+  @override
+  String get statGood => 'Good';
+
+  @override
+  String stepsCount(int steps) {
+    final intl.NumberFormat stepsNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String stepsString = stepsNumberFormat.format(steps);
+
+    return '$stepsString steps';
+  }
+
+  @override
+  String get upToDate => 'Up to date';
+
+  @override
+  String get upcoming => 'Upcoming';
+
+  @override
+  String get quickActions => 'Actions';
+
+  @override
+  String get bookAppointment => 'Book Appointment';
+
+  @override
+  String get addRecord => 'Add Record';
+
+  @override
+  String get lostAndFound => 'Lost & Found';
+
+  @override
+  String get lostAndFoundDashboard => 'Lost & Found Dashboard';
+
+  @override
+  String lostAndFoundSubtitle(int count) {
+    return '$count active alerts within 5 miles';
+  }
+
+  @override
+  String get liveMapView => 'Live Map View';
+
+  @override
+  String get recentAlerts => 'Recent Alerts';
+
+  @override
+  String get filterAll => 'All';
+
+  @override
+  String get filterLost => 'Lost';
+
+  @override
+  String get filterFound => 'Found';
+
+  @override
+  String get badgeLost => 'LOST';
+
+  @override
+  String get badgeFound => 'FOUND';
+
+  @override
+  String timeAgo(int n) {
+    return '${n}h ago';
+  }
+
+  @override
+  String get contactOwner => 'Contact Owner';
+
+  @override
+  String get viewDetails => 'View Details';
+
+  @override
+  String get reportLostPet => 'Report Lost Pet';
+
+  @override
+  String get howToHelp => 'How to Help More';
+
+  @override
+  String get howToHelpBody =>
+      'Join our Volunteer Search Team to get notified when a lost pet is reported near you.';
+
+  @override
+  String get becomeVolunteer => 'Become a Volunteer';
+
+  @override
+  String activeVolunteers(int count) {
+    return '$count Active Volunteers';
+  }
+
+  @override
+  String get medicationsReminders => 'Medications & Reminders';
+
+  @override
+  String get healthTracker => 'Health Tracker';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get premiumMember => 'Premium Member';
+
+  @override
+  String get petProfiles => 'Pet Profiles';
+
+  @override
+  String get addPet => 'Add Pet';
+
+  @override
+  String get petActive => 'ACTIVE';
+
+  @override
+  String petAgeYears(int years) {
+    String _temp0 = intl.Intl.pluralLogic(
+      years,
+      locale: localeName,
+      other: '${years}y',
+      one: '${years}y',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get accountSettings => 'Account Settings';
+
+  @override
+  String get personalInformation => 'Personal Information';
+
+  @override
+  String get securityPrivacy => 'Security & Privacy';
+
+  @override
+  String get paymentMethods => 'Payment Methods';
+
+  @override
+  String get notificationsSupport => 'Notifications & Support';
+
+  @override
+  String get helpCenter => 'Help Center';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get toggleOn => 'On';
+
+  @override
+  String get toggleOff => 'Off';
+
+  @override
+  String get logOut => 'Log Out';
+
+  @override
+  String get logOutConfirmTitle => 'Log out?';
+
+  @override
+  String get logOutConfirmMessage =>
+      'You\'ll need to sign in again to access your pets and reminders.';
+
+  @override
+  String get logOutConfirm => 'Yes, log out';
+
+  @override
+  String appVersion(String version, String build) {
+    return 'Version $version (Build $build)';
+  }
+
+  @override
+  String get aiAssistantTitle => 'PawBot Assistant';
+
+  @override
+  String get aiAskHint => 'Ask PawBot anything…';
+
+  @override
+  String get aiQuickFaqs => 'FAQs';
+
+  @override
+  String get aiQuickBreedInfo => 'BreedInfo';
+
+  @override
+  String get aiQuickSymptomChecker => 'Symptom Checker';
+
+  @override
+  String get aiHealthVaultTitle => 'Pet Health Vault';
+
+  @override
+  String aiHealthVaultSubtitle(String petName) {
+    return 'Store vaccination records and medical history for $petName.';
+  }
+
+  @override
+  String get fieldRequired => 'This field is required';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 8 characters';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get invalidPhone => 'Enter a valid mobile number';
+
+  @override
   String get retry => 'Retry';
 
   @override
