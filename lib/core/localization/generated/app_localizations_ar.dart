@@ -352,6 +352,59 @@ class AppLocalizationsAr extends AppLocalizations {
   String get logOutConfirm => 'نعم، تسجيل الخروج';
 
   @override
+  String get forgotPassword => 'نسيت كلمة المرور؟';
+
+  @override
+  String get forgotPasswordTitle1 => 'إعادة تعيين';
+
+  @override
+  String get forgotPasswordTitle2 => 'كلمة المرور';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'أدخل رقم هاتفك المحمول وسنرسل لك رمزاً لإعادة تعيين كلمة المرور.';
+
+  @override
+  String get sendCode => 'إرسال الرمز';
+
+  @override
+  String get resetPasswordTitle1 => 'كلمة مرور';
+
+  @override
+  String get resetPasswordTitle2 => 'جديدة';
+
+  @override
+  String resetPasswordSubtitle(String phone) {
+    return 'أدخل الرمز المرسل إلى $phone واختر كلمة مرور جديدة.';
+  }
+
+  @override
+  String get newPassword => 'كلمة المرور الجديدة';
+
+  @override
+  String get resetPasswordAction => 'إعادة تعيين';
+
+  @override
+  String get passwordResetSuccess =>
+      'تمت إعادة تعيين كلمة المرور. سجّل الدخول بكلمة المرور الجديدة.';
+
+  @override
+  String get security => 'الأمان';
+
+  @override
+  String get changePassword => 'تغيير كلمة المرور';
+
+  @override
+  String get changePasswordSubtitle =>
+      'أدخل كلمة المرور الحالية واختر كلمة مرور جديدة.';
+
+  @override
+  String get currentPassword => 'كلمة المرور الحالية';
+
+  @override
+  String get passwordChangedSuccess => 'تم تغيير كلمة المرور.';
+
+  @override
   String appVersion(String version, String build) {
     return 'الإصدار $version (بناء $build)';
   }
@@ -441,4 +494,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get errorUnknown => 'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get errorNotFound => 'لم نتمكن من العثور على حساب بهذه المعلومات.';
+
+  @override
+  String get errorPhoneNotRegistered => 'لا يوجد حساب مسجّل بهذا الرقم.';
 }

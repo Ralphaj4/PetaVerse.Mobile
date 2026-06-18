@@ -173,6 +173,27 @@
   "logOutConfirmTitle": "Log out?",
   "logOutConfirmMessage": "You'll need to sign in again to access your pets and reminders.",
   "logOutConfirm": "Yes, log out",
+  "forgotPassword": "Forgot password?",
+  "forgotPasswordTitle1": "Reset",
+  "forgotPasswordTitle2": "Password",
+  "forgotPasswordSubtitle": "Enter your mobile number and we'll send you a code to reset your password.",
+  "sendCode": "Send Code",
+  "resetPasswordTitle1": "New",
+  "resetPasswordTitle2": "Password",
+  "resetPasswordSubtitle": "Enter the code we sent to {phone} and choose a new password.",
+  "@resetPasswordSubtitle": {
+    "placeholders": {
+      "phone": { "type": "String" }
+    }
+  },
+  "newPassword": "New Password",
+  "resetPasswordAction": "Reset Password",
+  "passwordResetSuccess": "Password reset. Please log in with your new password.",
+  "security": "Security",
+  "changePassword": "Change Password",
+  "changePasswordSubtitle": "Enter your current password and choose a new one.",
+  "currentPassword": "Current Password",
+  "passwordChangedSuccess": "Your password has been changed.",
   "appVersion": "Version {version} (Build {build})",
   "@appVersion": {
     "placeholders": {
@@ -215,5 +236,7 @@
   "errorValidation": "Some information is invalid. Please review and try again.",
   "errorServer": "Our servers are having trouble. Please try again later.",
   "errorCache": "Could not load saved data.",
-  "errorUnknown": "An unexpected error occurred. Please try again."
+  "errorUnknown": "An unexpected error occurred. Please try again.",
+  "errorNotFound": "We couldn't find an account with that information.",
+  "errorPhoneNotRegistered": "No account is registered with this mobile number."
 }

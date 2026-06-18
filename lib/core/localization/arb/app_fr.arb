@@ -173,6 +173,27 @@
   "logOutConfirmTitle": "Se déconnecter ?",
   "logOutConfirmMessage": "Vous devrez vous reconnecter pour accéder à vos animaux et rappels.",
   "logOutConfirm": "Oui, déconnexion",
+  "forgotPassword": "Mot de passe oublié ?",
+  "forgotPasswordTitle1": "Réinitialiser le",
+  "forgotPasswordTitle2": "mot de passe",
+  "forgotPasswordSubtitle": "Saisissez votre numéro de mobile et nous vous enverrons un code pour réinitialiser votre mot de passe.",
+  "sendCode": "Envoyer le code",
+  "resetPasswordTitle1": "Nouveau",
+  "resetPasswordTitle2": "mot de passe",
+  "resetPasswordSubtitle": "Saisissez le code envoyé au {phone} et choisissez un nouveau mot de passe.",
+  "@resetPasswordSubtitle": {
+    "placeholders": {
+      "phone": { "type": "String" }
+    }
+  },
+  "newPassword": "Nouveau mot de passe",
+  "resetPasswordAction": "Réinitialiser",
+  "passwordResetSuccess": "Mot de passe réinitialisé. Connectez-vous avec votre nouveau mot de passe.",
+  "security": "Sécurité",
+  "changePassword": "Changer le mot de passe",
+  "changePasswordSubtitle": "Saisissez votre mot de passe actuel et choisissez-en un nouveau.",
+  "currentPassword": "Mot de passe actuel",
+  "passwordChangedSuccess": "Votre mot de passe a été changé.",
   "appVersion": "Version {version} (Build {build})",
   "@appVersion": {
     "placeholders": {
@@ -215,5 +236,7 @@
   "errorValidation": "Certaines informations sont invalides. Veuillez vérifier et réessayer.",
   "errorServer": "Nos serveurs rencontrent un problème. Veuillez réessayer plus tard.",
   "errorCache": "Impossible de charger les données enregistrées.",
-  "errorUnknown": "Une erreur inattendue est survenue. Veuillez réessayer."
+  "errorUnknown": "Une erreur inattendue est survenue. Veuillez réessayer.",
+  "errorNotFound": "Nous n'avons trouvé aucun compte avec ces informations.",
+  "errorPhoneNotRegistered": "Aucun compte n'est enregistré avec ce numéro de mobile."
 }

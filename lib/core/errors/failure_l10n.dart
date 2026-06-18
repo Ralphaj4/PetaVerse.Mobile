@@ -11,6 +11,7 @@ extension FailureL10n on Failure {
   String localizedMessage(AppLocalizations l10n) => switch (this) {
         NetworkFailure() => l10n.errorNetwork,
         ForbiddenFailure() => l10n.errorForbidden,
+        NotFoundFailure(:final message) => _detail(message) ?? l10n.errorNotFound,
         ServerFailure() => l10n.errorServer,
         CacheFailure() => l10n.errorCache,
         UnauthorizedFailure(:final message) =>

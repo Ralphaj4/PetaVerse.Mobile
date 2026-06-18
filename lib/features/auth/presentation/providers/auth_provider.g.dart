@@ -48,7 +48,7 @@ final class AuthNotifierProvider
   AuthNotifier create() => AuthNotifier();
 }
 
-String _$authNotifierHash() => r'a62973cc770b09d3e5d8ff679f82e1d199dc7f3a';
+String _$authNotifierHash() => r'09e24a31215a7283462cd683b641fe91eb611865';
 
 /// Drives the auth submission state for the login / register / OTP flows.
 ///

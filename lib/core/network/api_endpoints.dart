@@ -7,6 +7,9 @@ abstract final class ApiEndpoints {
   static const String login = '/auth/login';
   static const String refreshToken = '/auth/refresh';
   static const String revokeToken = '/auth/revoke';
+  static const String forgotPassword = '/auth/forgot-password';
+  static const String resetPassword = '/auth/reset-password';
+  static const String changePassword = '/auth/change-password';
 
   // Pets
   static const String pets = '/pets';

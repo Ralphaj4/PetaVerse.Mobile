@@ -351,6 +351,59 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logOutConfirm => 'Yes, log out';
 
   @override
+  String get forgotPassword => 'Forgot password?';
+
+  @override
+  String get forgotPasswordTitle1 => 'Reset';
+
+  @override
+  String get forgotPasswordTitle2 => 'Password';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Enter your mobile number and we\'ll send you a code to reset your password.';
+
+  @override
+  String get sendCode => 'Send Code';
+
+  @override
+  String get resetPasswordTitle1 => 'New';
+
+  @override
+  String get resetPasswordTitle2 => 'Password';
+
+  @override
+  String resetPasswordSubtitle(String phone) {
+    return 'Enter the code we sent to $phone and choose a new password.';
+  }
+
+  @override
+  String get newPassword => 'New Password';
+
+  @override
+  String get resetPasswordAction => 'Reset Password';
+
+  @override
+  String get passwordResetSuccess =>
+      'Password reset. Please log in with your new password.';
+
+  @override
+  String get security => 'Security';
+
+  @override
+  String get changePassword => 'Change Password';
+
+  @override
+  String get changePasswordSubtitle =>
+      'Enter your current password and choose a new one.';
+
+  @override
+  String get currentPassword => 'Current Password';
+
+  @override
+  String get passwordChangedSuccess => 'Your password has been changed.';
+
+  @override
   String appVersion(String version, String build) {
     return 'Version $version (Build $build)';
   }
@@ -441,4 +494,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorUnknown => 'An unexpected error occurred. Please try again.';
+
+  @override
+  String get errorNotFound =>
+      'We couldn\'t find an account with that information.';
+
+  @override
+  String get errorPhoneNotRegistered =>
+      'No account is registered with this mobile number.';
 }

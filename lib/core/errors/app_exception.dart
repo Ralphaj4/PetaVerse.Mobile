@@ -21,6 +21,10 @@ final class ForbiddenException extends AppException {
   const ForbiddenException(super.message);
 }
 
+final class NotFoundException extends AppException {
+  const NotFoundException(super.message);
+}
+
 final class ValidationException extends AppException {
   const ValidationException(super.message, {this.fieldErrors = const {}});
 

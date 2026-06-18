@@ -68,4 +68,40 @@ class AuthRemoteDataSource {
       data: {'refreshToken': refreshToken},
     );
   }
+
+  /// Starts a password reset: backend sends an OTP to the mobile number.
+  Future<OtpDispatchDto> forgotPassword(String mobileNumber) async {
+    final json = await _client.post<Map<String, dynamic>>(
+      ApiEndpoints.forgotPassword,
+      data: {'mobileNumber': mobileNumber},
+    );
+    return OtpDispatchDto.fromJson(json);
+  }
+
+  /// Completes a password reset with the OTP and a new password.
+  Future<void> resetPassword({
+    required String mobileNumber,
+    required String otp,
+    required String newPassword,
+  }) async {
+    await _client.post<Map<String, dynamic>>(
+      ApiEndpoints.resetPassword,
+      data: {
+        'mobileNumber': mobileNumber,
+        'otp': otp,
+        'newPassword': newPassword,
+      },
+    );
+  }
+
+  /// Changes the password of the authenticated user (JWT, no OTP).
+  Future<void> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    await _client.post<Map<String, dynamic>>(
+      ApiEndpoints.changePassword,
+      data: {'oldPassword': oldPassword, 'newPassword': newPassword},
+    );
+  }
 }

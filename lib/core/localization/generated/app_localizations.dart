@@ -706,6 +706,102 @@ abstract class AppLocalizations {
   /// **'Yes, log out'**
   String get logOutConfirm;
 
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get forgotPassword;
+
+  /// No description provided for @forgotPasswordTitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get forgotPasswordTitle1;
+
+  /// No description provided for @forgotPasswordTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get forgotPasswordTitle2;
+
+  /// No description provided for @forgotPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your mobile number and we\'ll send you a code to reset your password.'**
+  String get forgotPasswordSubtitle;
+
+  /// No description provided for @sendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Code'**
+  String get sendCode;
+
+  /// No description provided for @resetPasswordTitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get resetPasswordTitle1;
+
+  /// No description provided for @resetPasswordTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get resetPasswordTitle2;
+
+  /// No description provided for @resetPasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the code we sent to {phone} and choose a new password.'**
+  String resetPasswordSubtitle(String phone);
+
+  /// No description provided for @newPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get newPassword;
+
+  /// No description provided for @resetPasswordAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPasswordAction;
+
+  /// No description provided for @passwordResetSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Password reset. Please log in with your new password.'**
+  String get passwordResetSuccess;
+
+  /// No description provided for @security.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get security;
+
+  /// No description provided for @changePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePassword;
+
+  /// No description provided for @changePasswordSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your current password and choose a new one.'**
+  String get changePasswordSubtitle;
+
+  /// No description provided for @currentPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Password'**
+  String get currentPassword;
+
+  /// No description provided for @passwordChangedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your password has been changed.'**
+  String get passwordChangedSuccess;
+
   /// No description provided for @appVersion.
   ///
   /// In en, this message translates to:
@@ -873,6 +969,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An unexpected error occurred. Please try again.'**
   String get errorUnknown;
+
+  /// No description provided for @errorNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t find an account with that information.'**
+  String get errorNotFound;
+
+  /// No description provided for @errorPhoneNotRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'No account is registered with this mobile number.'**
+  String get errorPhoneNotRegistered;
 }
 
 class _AppLocalizationsDelegate

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../features/auth/presentation/pages/change_password_page.dart';
+import '../../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../../features/auth/presentation/pages/login_page.dart';
 import '../../../features/auth/presentation/pages/otp_verification_page.dart';
 import '../../../features/auth/presentation/pages/register_page.dart';
@@ -29,6 +31,8 @@ abstract final class AppRoutes {
   static const String login = '/login';
   static const String register = '/register';
   static const String otp = '/otp';
+  static const String forgotPassword = '/forgot-password';
+  static const String changePassword = '/change-password';
   static const String home = '/home';
   static const String community = '/community';
   static const String care = '/care';
@@ -53,7 +57,12 @@ GoRouter appRouter(Ref ref) {
     ..listen(sessionProvider, (_, _) => refresh.value++);
 
   // Routes reachable while signed out (the auth flow itself).
-  const authRoutes = {AppRoutes.login, AppRoutes.register, AppRoutes.otp};
+  const authRoutes = {
+    AppRoutes.login,
+    AppRoutes.register,
+    AppRoutes.otp,
+    AppRoutes.forgotPassword,
+  };
 
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
@@ -147,6 +156,24 @@ GoRouter appRouter(Ref ref) {
             ),
           );
         },
+      ),
+      GoRoute(
+        path: AppRoutes.forgotPassword,
+        name: 'forgotPassword',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+              key: state.pageKey,
+              child: const ForgotPasswordPage(),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.changePassword,
+        name: 'changePassword',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+              key: state.pageKey,
+              child: const ChangePasswordPage(),
+            ),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>

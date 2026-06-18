@@ -12,7 +12,8 @@ abstract final class AppConstants {
   static const String apiBaseUrl = String.fromEnvironment(
     'API_BASE_URL',
     // defaultValue: 'http://192.168.200.176:5075/api',
-    defaultValue: 'http://10.0.2.2:5075/api',
+    defaultValue: 'http://petaverse.runasp.net/api',
+    // defaultValue: 'http://10.0.2.2:5075/api',
   );
 
   /// Page size for all paginated lists (infinite scroll, 20 at a time).

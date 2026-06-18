@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/errors/failure.dart';
+import '../../core/errors/failure_l10n.dart';
 import '../../core/extensions/context_extensions.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_spacing.dart';
@@ -22,15 +23,8 @@ class ErrorStateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final message = switch (failure) {
-      NetworkFailure() => l10n.errorNetwork,
-      UnauthorizedFailure() => l10n.errorUnauthorized,
-      ForbiddenFailure() => l10n.errorForbidden,
-      ValidationFailure() => l10n.errorValidation,
-      ServerFailure() => l10n.errorServer,
-      CacheFailure() => l10n.errorCache,
-      UnknownFailure() || null => l10n.errorUnknown,
-    };
+    // Delegate to the shared mapper so failure→message stays in one place.
+    final message = (failure ?? const UnknownFailure()).localizedMessage(l10n);
 
     return Center(
       child: Padding(

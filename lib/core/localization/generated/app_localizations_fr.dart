@@ -351,6 +351,59 @@ class AppLocalizationsFr extends AppLocalizations {
   String get logOutConfirm => 'Oui, déconnexion';
 
   @override
+  String get forgotPassword => 'Mot de passe oublié ?';
+
+  @override
+  String get forgotPasswordTitle1 => 'Réinitialiser le';
+
+  @override
+  String get forgotPasswordTitle2 => 'mot de passe';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Saisissez votre numéro de mobile et nous vous enverrons un code pour réinitialiser votre mot de passe.';
+
+  @override
+  String get sendCode => 'Envoyer le code';
+
+  @override
+  String get resetPasswordTitle1 => 'Nouveau';
+
+  @override
+  String get resetPasswordTitle2 => 'mot de passe';
+
+  @override
+  String resetPasswordSubtitle(String phone) {
+    return 'Saisissez le code envoyé au $phone et choisissez un nouveau mot de passe.';
+  }
+
+  @override
+  String get newPassword => 'Nouveau mot de passe';
+
+  @override
+  String get resetPasswordAction => 'Réinitialiser';
+
+  @override
+  String get passwordResetSuccess =>
+      'Mot de passe réinitialisé. Connectez-vous avec votre nouveau mot de passe.';
+
+  @override
+  String get security => 'Sécurité';
+
+  @override
+  String get changePassword => 'Changer le mot de passe';
+
+  @override
+  String get changePasswordSubtitle =>
+      'Saisissez votre mot de passe actuel et choisissez-en un nouveau.';
+
+  @override
+  String get currentPassword => 'Mot de passe actuel';
+
+  @override
+  String get passwordChangedSuccess => 'Votre mot de passe a été changé.';
+
+  @override
   String appVersion(String version, String build) {
     return 'Version $version (Build $build)';
   }
@@ -443,4 +496,12 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get errorUnknown =>
       'Une erreur inattendue est survenue. Veuillez réessayer.';
+
+  @override
+  String get errorNotFound =>
+      'Nous n\'avons trouvé aucun compte avec ces informations.';
+
+  @override
+  String get errorPhoneNotRegistered =>
+      'Aucun compte n\'est enregistré avec ce numéro de mobile.';
 }

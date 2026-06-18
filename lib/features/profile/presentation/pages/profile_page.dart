@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/app/router/app_router.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -78,6 +80,17 @@ class ProfilePage extends ConsumerWidget {
                 iconColor: AppColors.primary,
                 label: l10n.paymentMethods,
                 onTap: () {},
+              ),
+              const SizedBox(height: AppSpacing.xl),
+
+              // ── Security ─────────────────────────────────────────────
+              _GroupTitle(title: l10n.security),
+              const SizedBox(height: AppSpacing.md),
+              SettingsTile(
+                icon: FluentIcons.lock_closed_24_regular,
+                iconColor: AppColors.accentPurple,
+                label: l10n.changePassword,
+                onTap: () => context.push(AppRoutes.changePassword),
               ),
               const SizedBox(height: AppSpacing.xl),
 

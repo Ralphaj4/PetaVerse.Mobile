@@ -88,6 +88,32 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Result<String?>> forgotPassword({required String mobileNumber}) =>
+      _guardOtp(() => _remote.forgotPassword(mobileNumber));
+
+  @override
+  Future<Result<void>> resetPassword({
+    required String mobileNumber,
+    required String otp,
+    required String newPassword,
+  }) =>
+      _guardVoid(() => _remote.resetPassword(
+            mobileNumber: mobileNumber,
+            otp: otp,
+            newPassword: newPassword,
+          ));
+
+  @override
+  Future<Result<void>> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) =>
+      _guardVoid(() => _remote.changePassword(
+            oldPassword: oldPassword,
+            newPassword: newPassword,
+          ));
+
+  @override
   Future<Result<void>> logout() async {
     // Best-effort server revoke; local tokens are cleared regardless.
     try {
@@ -110,14 +136,24 @@ class AuthRepositoryImpl implements AuthRepository {
 
   // ── Helpers ──────────────────────────────────────────────────────────
 
-  /// Runs an OTP-dispatch action (register / resend), returning the dev
-  /// OTP echoed by the Development backend (null in production).
+  /// Runs an OTP-dispatch action (register / resend / forgot-password),
+  /// returning the dev OTP echoed by the Development backend (null in prod).
   Future<Result<String?>> _guardOtp(
     Future<OtpDispatchDto> Function() action,
   ) async {
     try {
       final dto = await action();
       return Result.success(dto.devOtp);
+    } on AppException catch (e) {
+      return Result.failure(_mapFailure(e));
+    }
+  }
+
+  /// Runs a void action, mapping exceptions to failures.
+  Future<Result<void>> _guardVoid(Future<void> Function() action) async {
+    try {
+      await action();
+      return const Result.success(null);
     } on AppException catch (e) {
       return Result.failure(_mapFailure(e));
     }
@@ -151,6 +187,7 @@ class AuthRepositoryImpl implements AuthRepository {
         NetworkException() => NetworkFailure(message: e.message),
         UnauthorizedException() => UnauthorizedFailure(message: e.message),
         ForbiddenException() => ForbiddenFailure(message: e.message),
+        NotFoundException() => NotFoundFailure(message: e.message),
         ValidationException() => ValidationFailure(
             message: e.message,
             fieldErrors: e.fieldErrors,

@@ -55,6 +55,42 @@ class AuthNotifier extends _$AuthNotifier {
         () => ref.read(authRepositoryProvider).resendOtp(mobileNumber: phone),
       );
 
+  /// Starts a password reset (sends OTP). Returns success + dev OTP.
+  Future<({bool ok, String? devOtp})> forgotPassword({
+    required String phone,
+  }) =>
+      _runOtp(
+        () => ref
+            .read(authRepositoryProvider)
+            .forgotPassword(mobileNumber: phone),
+      );
+
+  /// Completes a password reset with the OTP and a new password.
+  Future<bool> resetPassword({
+    required String phone,
+    required String code,
+    required String newPassword,
+  }) =>
+      _runVoid(
+        () => ref.read(authRepositoryProvider).resetPassword(
+              mobileNumber: phone,
+              otp: code,
+              newPassword: newPassword,
+            ),
+      );
+
+  /// Changes the authenticated user's password (JWT, no OTP).
+  Future<bool> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) =>
+      _runVoid(
+        () => ref.read(authRepositoryProvider).changePassword(
+              oldPassword: oldPassword,
+              newPassword: newPassword,
+            ),
+      );
+
   Future<bool> verifyOtp({
     required String phone,
     required String code,
@@ -99,8 +135,8 @@ class AuthNotifier extends _$AuthNotifier {
 
   // ── Helpers ──────────────────────────────────────────────────────────
 
-  /// Runs an OTP-dispatch call (register / resend), reflecting the outcome
-  /// in the AsyncValue and returning success + the dev OTP.
+  /// Runs an OTP-dispatch call (register / resend / forgot-password),
+  /// reflecting the outcome in the AsyncValue and returning success + OTP.
   Future<({bool ok, String? devOtp})> _runOtp(
     Future<Result<String?>> Function() action,
   ) async {
@@ -114,6 +150,22 @@ class AuthNotifier extends _$AuthNotifier {
       failure: (f) {
         state = AsyncError(f, StackTrace.current);
         return (ok: false, devOtp: null);
+      },
+    );
+  }
+
+  /// Runs a void call (reset / change password), returning success.
+  Future<bool> _runVoid(Future<Result<void>> Function() action) async {
+    state = const AsyncLoading();
+    final result = await action();
+    return result.when(
+      success: (_) {
+        state = const AsyncData(null);
+        return true;
+      },
+      failure: (f) {
+        state = AsyncError(f, StackTrace.current);
+        return false;
       },
     );
   }

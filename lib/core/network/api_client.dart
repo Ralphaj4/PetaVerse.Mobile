@@ -95,6 +95,7 @@ class ApiClient {
             : 'Request failed with status $status';
         if (status == 401) return UnauthorizedException(message);
         if (status == 403) return ForbiddenException(message);
+        if (status == 404) return NotFoundException(message);
         if (status == 400 || status == 422) {
           return ValidationException(
             message,

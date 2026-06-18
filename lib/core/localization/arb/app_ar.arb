@@ -173,6 +173,27 @@
   "logOutConfirmTitle": "تسجيل الخروج؟",
   "logOutConfirmMessage": "ستحتاج إلى تسجيل الدخول مرة أخرى للوصول إلى حيواناتك وتذكيراتك.",
   "logOutConfirm": "نعم، تسجيل الخروج",
+  "forgotPassword": "نسيت كلمة المرور؟",
+  "forgotPasswordTitle1": "إعادة تعيين",
+  "forgotPasswordTitle2": "كلمة المرور",
+  "forgotPasswordSubtitle": "أدخل رقم هاتفك المحمول وسنرسل لك رمزاً لإعادة تعيين كلمة المرور.",
+  "sendCode": "إرسال الرمز",
+  "resetPasswordTitle1": "كلمة مرور",
+  "resetPasswordTitle2": "جديدة",
+  "resetPasswordSubtitle": "أدخل الرمز المرسل إلى {phone} واختر كلمة مرور جديدة.",
+  "@resetPasswordSubtitle": {
+    "placeholders": {
+      "phone": { "type": "String" }
+    }
+  },
+  "newPassword": "كلمة المرور الجديدة",
+  "resetPasswordAction": "إعادة تعيين",
+  "passwordResetSuccess": "تمت إعادة تعيين كلمة المرور. سجّل الدخول بكلمة المرور الجديدة.",
+  "security": "الأمان",
+  "changePassword": "تغيير كلمة المرور",
+  "changePasswordSubtitle": "أدخل كلمة المرور الحالية واختر كلمة مرور جديدة.",
+  "currentPassword": "كلمة المرور الحالية",
+  "passwordChangedSuccess": "تم تغيير كلمة المرور.",
   "appVersion": "الإصدار {version} (بناء {build})",
   "@appVersion": {
     "placeholders": {
@@ -215,5 +236,7 @@
   "errorValidation": "بعض المعلومات غير صالحة. يرجى المراجعة والمحاولة مرة أخرى.",
   "errorServer": "تواجه خوادمنا مشكلة. يرجى المحاولة لاحقاً.",
   "errorCache": "تعذر تحميل البيانات المحفوظة.",
-  "errorUnknown": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
+  "errorUnknown": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.",
+  "errorNotFound": "لم نتمكن من العثور على حساب بهذه المعلومات.",
+  "errorPhoneNotRegistered": "لا يوجد حساب مسجّل بهذا الرقم."
 }
