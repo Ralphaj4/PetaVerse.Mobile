@@ -502,4 +502,209 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorPhoneNotRegistered =>
       'No account is registered with this mobile number.';
+
+  @override
+  String get petOnboardingTitleTop => 'Add your';
+
+  @override
+  String get petOnboardingTitleAccent => 'first pet';
+
+  @override
+  String get petOnboardingSubtitle =>
+      'Tell us about your companion so we can tailor health, reminders, and care to them.';
+
+  @override
+  String get petOnboardingAction => 'Add a Pet';
+
+  @override
+  String get petOnboardingLoading => 'Checking your pets…';
+
+  @override
+  String get selectPetTitle => 'Select a Pet';
+
+  @override
+  String get selectPetSubtitle => 'Who are we caring for today?';
+
+  @override
+  String get createPetTitle => 'Add a Pet';
+
+  @override
+  String get createPetSubtitle => 'Tell us about your new furry friend';
+
+  @override
+  String get createPetName => 'Pet Name';
+
+  @override
+  String get createPetSpecies => 'Animal Type';
+
+  @override
+  String get createPetBreed => 'Breed';
+
+  @override
+  String get createPetSelectSpeciesFirst => 'Select an animal type first';
+
+  @override
+  String get createPetDateOfBirth => 'Date of Birth';
+
+  @override
+  String get createPetGender => 'Gender';
+
+  @override
+  String get genderMale => 'Male';
+
+  @override
+  String get genderFemale => 'Female';
+
+  @override
+  String get genderUnknown => 'Unknown';
+
+  @override
+  String get createPetSubmit => 'Save Pet';
+
+  @override
+  String createPetSuccess(String name) {
+    return '$name has been added!';
+  }
+
+  @override
+  String get petDetailSetActive => 'Set as Active';
+
+  @override
+  String get petDetailAlreadyActive => 'Currently Active';
+
+  @override
+  String get petDetailGender => 'Gender';
+
+  @override
+  String get petDetailDateOfBirth => 'Date of Birth';
+
+  @override
+  String get petDetailBreed => 'Breed';
+
+  @override
+  String get petDetailPelage => 'Coat';
+
+  @override
+  String get petDetailMicrochip => 'Microchip';
+
+  @override
+  String get petDetailMicrochipLocation => 'Location';
+
+  @override
+  String get petDetailSterilization => 'Sterilization';
+
+  @override
+  String get petDetailSterilizationDate => 'Date';
+
+  @override
+  String petDetailAge(int years) {
+    String _temp0 = intl.Intl.pluralLogic(
+      years,
+      locale: localeName,
+      other: '$years years old',
+      one: '1 year old',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String viewAllPets(int count) {
+    return 'View all $count pets';
+  }
+
+  @override
+  String get createPetAdditionalInfo => 'Additional Information';
+
+  @override
+  String get createPetAdditionalInfoSubtitle =>
+      'Optional — you can fill these in later';
+
+  @override
+  String get createPetPelage => 'Coat / Fur Color';
+
+  @override
+  String get createPetMicrochipNumber => 'Microchip Number';
+
+  @override
+  String get createPetMicrochipLocation => 'Microchip Location';
+
+  @override
+  String get createPetSterilizationStatus => 'Sterilization Status';
+
+  @override
+  String get sterilizationStatusIntact => 'Intact';
+
+  @override
+  String get sterilizationStatusNeutered => 'Neutered';
+
+  @override
+  String get sterilizationStatusSpayed => 'Spayed';
+
+  @override
+  String get sterilizationStatusUnknown => 'Unknown';
+
+  @override
+  String get createPetSterilizationDate => 'Sterilization Date';
+
+  @override
+  String get editPetTitle => 'Edit Pet';
+
+  @override
+  String get editPetSave => 'Save Changes';
+
+  @override
+  String get deletePetTitle => 'Delete Pet';
+
+  @override
+  String deletePetMessage(String petName) {
+    return 'Are you sure you want to delete $petName? This action cannot be undone.';
+  }
+
+  @override
+  String get deletePetConfirm => 'Delete';
+
+  @override
+  String get petUpdatedSuccess => 'Pet updated successfully';
+
+  @override
+  String get petDeletedSuccess => 'Pet deleted';
+
+  @override
+  String get petDetailTabOverview => 'Overview';
+
+  @override
+  String get petDetailTabHealth => 'Health';
+
+  @override
+  String get petDetailTabRecords => 'Records';
+
+  @override
+  String get petDetailTabTimeline => 'Timeline';
+
+  @override
+  String get petDetailActionEdit => 'Edit';
+
+  @override
+  String get petDetailActionBook => 'Book';
+
+  @override
+  String get petDetailActionShare => 'Share';
+
+  @override
+  String get petDetailActionMore => 'More';
+
+  @override
+  String get petDetailDateAdded => 'Date Added';
+
+  @override
+  String petDetailProfileCompleteTitle(String petName) {
+    return '$petName is all set!';
+  }
+
+  @override
+  String get petDetailProfileCompleteSubtitle =>
+      'Your pet profile is complete and information is up to date.';
+
+  @override
+  String get microchipCopied => 'Microchip number copied';
 }

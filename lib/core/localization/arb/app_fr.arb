@@ -238,5 +238,86 @@
   "errorCache": "Impossible de charger les données enregistrées.",
   "errorUnknown": "Une erreur inattendue est survenue. Veuillez réessayer.",
   "errorNotFound": "Nous n'avons trouvé aucun compte avec ces informations.",
-  "errorPhoneNotRegistered": "Aucun compte n'est enregistré avec ce numéro de mobile."
+  "errorPhoneNotRegistered": "Aucun compte n'est enregistré avec ce numéro de mobile.",
+  "petOnboardingTitleTop": "Ajoutez votre",
+  "petOnboardingTitleAccent": "premier animal",
+  "petOnboardingSubtitle": "Parlez-nous de votre compagnon afin d'adapter sa santé, ses rappels et ses soins.",
+  "petOnboardingAction": "Ajouter un animal",
+  "petOnboardingLoading": "Vérification de vos animaux…",
+  "selectPetTitle": "Choisir un animal",
+  "selectPetSubtitle": "De qui prenons-nous soin aujourd'hui ?",
+  "createPetTitle": "Ajouter un animal",
+  "createPetSubtitle": "Parlez-nous de votre nouveau compagnon",
+  "createPetName": "Nom de l'animal",
+  "createPetSpecies": "Type d'animal",
+  "createPetBreed": "Race",
+  "createPetSelectSpeciesFirst": "Sélectionnez d'abord un type d'animal",
+  "createPetDateOfBirth": "Date de naissance",
+  "createPetGender": "Sexe",
+  "genderMale": "Mâle",
+  "genderFemale": "Femelle",
+  "genderUnknown": "Inconnu",
+  "createPetSubmit": "Enregistrer l'animal",
+  "createPetSuccess": "{name} a été ajouté !",
+  "@createPetSuccess": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "petDetailSetActive": "Définir comme actif",
+  "petDetailAlreadyActive": "Actuellement actif",
+  "petDetailGender": "Sexe",
+  "petDetailDateOfBirth": "Date de naissance",
+  "petDetailBreed": "Race",
+  "petDetailPelage": "Pelage",
+  "petDetailMicrochip": "Micropuce",
+  "petDetailMicrochipLocation": "Emplacement",
+  "petDetailSterilization": "Stérilisation",
+  "petDetailSterilizationDate": "Date",
+  "petDetailAge": "{years, plural, =1{1 an} other{{years} ans}}",
+  "@petDetailAge": {
+    "placeholders": { "years": { "type": "int" } }
+  },
+  "viewAllPets": "Voir tous les {count} animaux",
+  "@viewAllPets": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "createPetAdditionalInfo": "Informations supplémentaires",
+  "createPetAdditionalInfoSubtitle": "Facultatif — vous pouvez compléter plus tard",
+  "createPetPelage": "Couleur du pelage",
+  "createPetMicrochipNumber": "Numéro de micropuce",
+  "createPetMicrochipLocation": "Emplacement de la micropuce",
+  "createPetSterilizationStatus": "Statut de stérilisation",
+  "sterilizationStatusIntact": "Intact(e)",
+  "sterilizationStatusNeutered": "Castré",
+  "sterilizationStatusSpayed": "Stérilisée",
+  "sterilizationStatusUnknown": "Inconnu",
+  "createPetSterilizationDate": "Date de stérilisation",
+  "editPetTitle": "Modifier l'animal",
+  "editPetSave": "Enregistrer les modifications",
+  "deletePetTitle": "Supprimer l'animal",
+  "deletePetMessage": "Êtes-vous sûr de vouloir supprimer {petName} ? Cette action est irréversible.",
+  "@deletePetMessage": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "deletePetConfirm": "Supprimer",
+  "petUpdatedSuccess": "Animal mis à jour avec succès",
+  "petDeletedSuccess": "Animal supprimé",
+  "petDetailTabOverview": "Aperçu",
+  "petDetailTabHealth": "Santé",
+  "petDetailTabRecords": "Dossiers",
+  "petDetailTabTimeline": "Historique",
+  "petDetailActionEdit": "Modifier",
+  "petDetailActionBook": "Réserver",
+  "petDetailActionShare": "Partager",
+  "petDetailActionMore": "Plus",
+  "petDetailDateAdded": "Date d'ajout",
+  "petDetailProfileCompleteTitle": "{petName} est prêt !",
+  "@petDetailProfileCompleteTitle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "petDetailProfileCompleteSubtitle": "Le profil de votre animal est complet et à jour.",
+  "microchipCopied": "Numéro de micropuce copié"
 }

@@ -238,5 +238,86 @@
   "errorCache": "Could not load saved data.",
   "errorUnknown": "An unexpected error occurred. Please try again.",
   "errorNotFound": "We couldn't find an account with that information.",
-  "errorPhoneNotRegistered": "No account is registered with this mobile number."
+  "errorPhoneNotRegistered": "No account is registered with this mobile number.",
+  "petOnboardingTitleTop": "Add your",
+  "petOnboardingTitleAccent": "first pet",
+  "petOnboardingSubtitle": "Tell us about your companion so we can tailor health, reminders, and care to them.",
+  "petOnboardingAction": "Add a Pet",
+  "petOnboardingLoading": "Checking your pets…",
+  "selectPetTitle": "Select a Pet",
+  "selectPetSubtitle": "Who are we caring for today?",
+  "createPetTitle": "Add a Pet",
+  "createPetSubtitle": "Tell us about your new furry friend",
+  "createPetName": "Pet Name",
+  "createPetSpecies": "Animal Type",
+  "createPetBreed": "Breed",
+  "createPetSelectSpeciesFirst": "Select an animal type first",
+  "createPetDateOfBirth": "Date of Birth",
+  "createPetGender": "Gender",
+  "genderMale": "Male",
+  "genderFemale": "Female",
+  "genderUnknown": "Unknown",
+  "createPetSubmit": "Save Pet",
+  "createPetSuccess": "{name} has been added!",
+  "@createPetSuccess": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "petDetailSetActive": "Set as Active",
+  "petDetailAlreadyActive": "Currently Active",
+  "petDetailGender": "Gender",
+  "petDetailDateOfBirth": "Date of Birth",
+  "petDetailBreed": "Breed",
+  "petDetailPelage": "Coat",
+  "petDetailMicrochip": "Microchip",
+  "petDetailMicrochipLocation": "Location",
+  "petDetailSterilization": "Sterilization",
+  "petDetailSterilizationDate": "Date",
+  "petDetailAge": "{years, plural, =1{1 year old} other{{years} years old}}",
+  "@petDetailAge": {
+    "placeholders": { "years": { "type": "int" } }
+  },
+  "viewAllPets": "View all {count} pets",
+  "@viewAllPets": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "createPetAdditionalInfo": "Additional Information",
+  "createPetAdditionalInfoSubtitle": "Optional — you can fill these in later",
+  "createPetPelage": "Coat / Fur Color",
+  "createPetMicrochipNumber": "Microchip Number",
+  "createPetMicrochipLocation": "Microchip Location",
+  "createPetSterilizationStatus": "Sterilization Status",
+  "sterilizationStatusIntact": "Intact",
+  "sterilizationStatusNeutered": "Neutered",
+  "sterilizationStatusSpayed": "Spayed",
+  "sterilizationStatusUnknown": "Unknown",
+  "createPetSterilizationDate": "Sterilization Date",
+  "editPetTitle": "Edit Pet",
+  "editPetSave": "Save Changes",
+  "deletePetTitle": "Delete Pet",
+  "deletePetMessage": "Are you sure you want to delete {petName}? This action cannot be undone.",
+  "@deletePetMessage": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "deletePetConfirm": "Delete",
+  "petUpdatedSuccess": "Pet updated successfully",
+  "petDeletedSuccess": "Pet deleted",
+  "petDetailTabOverview": "Overview",
+  "petDetailTabHealth": "Health",
+  "petDetailTabRecords": "Records",
+  "petDetailTabTimeline": "Timeline",
+  "petDetailActionEdit": "Edit",
+  "petDetailActionBook": "Book",
+  "petDetailActionShare": "Share",
+  "petDetailActionMore": "More",
+  "petDetailDateAdded": "Date Added",
+  "petDetailProfileCompleteTitle": "{petName} is all set!",
+  "@petDetailProfileCompleteTitle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "petDetailProfileCompleteSubtitle": "Your pet profile is complete and information is up to date.",
+  "microchipCopied": "Microchip number copied"
 }

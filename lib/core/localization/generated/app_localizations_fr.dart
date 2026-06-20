@@ -504,4 +504,210 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get errorPhoneNotRegistered =>
       'Aucun compte n\'est enregistré avec ce numéro de mobile.';
+
+  @override
+  String get petOnboardingTitleTop => 'Ajoutez votre';
+
+  @override
+  String get petOnboardingTitleAccent => 'premier animal';
+
+  @override
+  String get petOnboardingSubtitle =>
+      'Parlez-nous de votre compagnon afin d\'adapter sa santé, ses rappels et ses soins.';
+
+  @override
+  String get petOnboardingAction => 'Ajouter un animal';
+
+  @override
+  String get petOnboardingLoading => 'Vérification de vos animaux…';
+
+  @override
+  String get selectPetTitle => 'Choisir un animal';
+
+  @override
+  String get selectPetSubtitle => 'De qui prenons-nous soin aujourd\'hui ?';
+
+  @override
+  String get createPetTitle => 'Ajouter un animal';
+
+  @override
+  String get createPetSubtitle => 'Parlez-nous de votre nouveau compagnon';
+
+  @override
+  String get createPetName => 'Nom de l\'animal';
+
+  @override
+  String get createPetSpecies => 'Type d\'animal';
+
+  @override
+  String get createPetBreed => 'Race';
+
+  @override
+  String get createPetSelectSpeciesFirst =>
+      'Sélectionnez d\'abord un type d\'animal';
+
+  @override
+  String get createPetDateOfBirth => 'Date de naissance';
+
+  @override
+  String get createPetGender => 'Sexe';
+
+  @override
+  String get genderMale => 'Mâle';
+
+  @override
+  String get genderFemale => 'Femelle';
+
+  @override
+  String get genderUnknown => 'Inconnu';
+
+  @override
+  String get createPetSubmit => 'Enregistrer l\'animal';
+
+  @override
+  String createPetSuccess(String name) {
+    return '$name a été ajouté !';
+  }
+
+  @override
+  String get petDetailSetActive => 'Définir comme actif';
+
+  @override
+  String get petDetailAlreadyActive => 'Actuellement actif';
+
+  @override
+  String get petDetailGender => 'Sexe';
+
+  @override
+  String get petDetailDateOfBirth => 'Date de naissance';
+
+  @override
+  String get petDetailBreed => 'Race';
+
+  @override
+  String get petDetailPelage => 'Pelage';
+
+  @override
+  String get petDetailMicrochip => 'Micropuce';
+
+  @override
+  String get petDetailMicrochipLocation => 'Emplacement';
+
+  @override
+  String get petDetailSterilization => 'Stérilisation';
+
+  @override
+  String get petDetailSterilizationDate => 'Date';
+
+  @override
+  String petDetailAge(int years) {
+    String _temp0 = intl.Intl.pluralLogic(
+      years,
+      locale: localeName,
+      other: '$years ans',
+      one: '1 an',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String viewAllPets(int count) {
+    return 'Voir tous les $count animaux';
+  }
+
+  @override
+  String get createPetAdditionalInfo => 'Informations supplémentaires';
+
+  @override
+  String get createPetAdditionalInfoSubtitle =>
+      'Facultatif — vous pouvez compléter plus tard';
+
+  @override
+  String get createPetPelage => 'Couleur du pelage';
+
+  @override
+  String get createPetMicrochipNumber => 'Numéro de micropuce';
+
+  @override
+  String get createPetMicrochipLocation => 'Emplacement de la micropuce';
+
+  @override
+  String get createPetSterilizationStatus => 'Statut de stérilisation';
+
+  @override
+  String get sterilizationStatusIntact => 'Intact(e)';
+
+  @override
+  String get sterilizationStatusNeutered => 'Castré';
+
+  @override
+  String get sterilizationStatusSpayed => 'Stérilisée';
+
+  @override
+  String get sterilizationStatusUnknown => 'Inconnu';
+
+  @override
+  String get createPetSterilizationDate => 'Date de stérilisation';
+
+  @override
+  String get editPetTitle => 'Modifier l\'animal';
+
+  @override
+  String get editPetSave => 'Enregistrer les modifications';
+
+  @override
+  String get deletePetTitle => 'Supprimer l\'animal';
+
+  @override
+  String deletePetMessage(String petName) {
+    return 'Êtes-vous sûr de vouloir supprimer $petName ? Cette action est irréversible.';
+  }
+
+  @override
+  String get deletePetConfirm => 'Supprimer';
+
+  @override
+  String get petUpdatedSuccess => 'Animal mis à jour avec succès';
+
+  @override
+  String get petDeletedSuccess => 'Animal supprimé';
+
+  @override
+  String get petDetailTabOverview => 'Aperçu';
+
+  @override
+  String get petDetailTabHealth => 'Santé';
+
+  @override
+  String get petDetailTabRecords => 'Dossiers';
+
+  @override
+  String get petDetailTabTimeline => 'Historique';
+
+  @override
+  String get petDetailActionEdit => 'Modifier';
+
+  @override
+  String get petDetailActionBook => 'Réserver';
+
+  @override
+  String get petDetailActionShare => 'Partager';
+
+  @override
+  String get petDetailActionMore => 'Plus';
+
+  @override
+  String get petDetailDateAdded => 'Date d\'ajout';
+
+  @override
+  String petDetailProfileCompleteTitle(String petName) {
+    return '$petName est prêt !';
+  }
+
+  @override
+  String get petDetailProfileCompleteSubtitle =>
+      'Le profil de votre animal est complet et à jour.';
+
+  @override
+  String get microchipCopied => 'Numéro de micropuce copié';
 }

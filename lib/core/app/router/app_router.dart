@@ -11,9 +11,16 @@ import '../../../features/assistant/presentation/pages/assistant_page.dart';
 import '../../../features/home/presentation/pages/home_page.dart';
 import '../../../features/lost_and_found/presentation/pages/lost_and_found_page.dart';
 import '../../../features/onboarding/presentation/pages/onboarding_page.dart';
+import '../../../features/pets/presentation/pages/create_pet_page.dart';
+import '../../../features/pets/presentation/pages/edit_pet_page.dart';
+import '../../../features/pets/presentation/pages/pet_detail_page.dart';
+import '../../../features/pets/presentation/pages/pet_list_page.dart';
+import '../../../features/pets/presentation/pages/pet_onboarding_page.dart';
+import '../../../features/pets/presentation/pages/select_pet_page.dart';
 import '../../../features/profile/presentation/pages/profile_page.dart';
 import '../../../features/auth/presentation/providers/session_provider.dart';
 import '../../../features/onboarding/presentation/providers/onboarding_provider.dart';
+import '../../../features/pets/presentation/providers/pets_provider.dart';
 import '../../dev/sandbox_page.dart';
 import '../../widgets/coming_soon_page.dart';
 import '../../widgets/map/map_page.dart';
@@ -33,6 +40,14 @@ abstract final class AppRoutes {
   static const String otp = '/otp';
   static const String forgotPassword = '/forgot-password';
   static const String changePassword = '/change-password';
+  static const String petOnboarding = '/pet-onboarding';
+  static const String createPet = '/create-pet';
+  static const String selectPet = '/select-pet';
+  static const String petList = '/pet-list';
+  static String petDetailPath(int id) => '/pet-detail/$id';
+  static const String petDetail = '/pet-detail/:id';
+  static String editPetPath(int id) => '/edit-pet/$id';
+  static const String editPet = '/edit-pet/:id';
   static const String home = '/home';
   static const String community = '/community';
   static const String care = '/care';
@@ -44,6 +59,20 @@ abstract final class AppRoutes {
   static const String sandbox = '/sandbox';
 }
 
+/// The route a logged-in user should land on, given the RESOLVED pet gate.
+///
+/// Assumes the gate is ready (callers that may run mid-resolve handle that
+/// first). The post-auth fork:
+///   • no pet (or unconfirmed-empty offline) → pet onboarding,
+///   • 2+ pets with none chosen yet → the selection page,
+///   • a pet selected (incl. an auto-selected single pet) → home.
+String petLandingFor(PetsState pets) {
+  if (pets.unresolvedEmpty || !pets.hasPets) return AppRoutes.petOnboarding;
+  if (pets.currentPetId == null) return AppRoutes.selectPet;
+  return AppRoutes.home;
+}
+
+
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey();
 
 @Riverpod(keepAlive: true)
@@ -54,7 +83,8 @@ GoRouter appRouter(Ref ref) {
   ref
     ..onDispose(refresh.dispose)
     ..listen(onboardingCompletedProvider, (_, _) => refresh.value++)
-    ..listen(sessionProvider, (_, _) => refresh.value++);
+    ..listen(sessionProvider, (_, _) => refresh.value++)
+    ..listen(petsProvider, (_, _) => refresh.value++);
 
   // Routes reachable while signed out (the auth flow itself).
   const authRoutes = {
@@ -71,6 +101,7 @@ GoRouter appRouter(Ref ref) {
     redirect: (context, state) {
       final onboardingAsync = ref.read(onboardingCompletedProvider);
       final session = ref.read(sessionProvider);
+      final pets = ref.read(petsProvider);
       final location = state.matchedLocation;
       final onSplash = location == AppRoutes.splash;
 
@@ -83,20 +114,67 @@ GoRouter appRouter(Ref ref) {
       final loggedIn = session.loggedIn;
       final onOnboarding = location == AppRoutes.onboarding;
       final onAuthRoute = authRoutes.contains(location);
+      final onPetOnboarding = location == AppRoutes.petOnboarding;
+      final onSelectPet = location == AppRoutes.selectPet;
+      // The create-pet form is part of the "no pet yet" flow, so a pet-less
+      // user is allowed to sit on it without being bounced to onboarding.
+      final onPetCreation =
+          onPetOnboarding || location == AppRoutes.createPet;
+
+      // The post-auth landing for a logged-in user. The pet gate must resolve
+      // BEFORE we ever allow /home — otherwise home flashes for a frame before
+      // being replaced. While the gate is still resolving we hold on the splash
+      // (a neutral screen), never on home.
+      String petLanding() =>
+          pets.ready ? petLandingFor(pets) : AppRoutes.splash;
 
       // Resolve the splash to the correct first destination.
       if (onSplash) {
         if (!completed) return AppRoutes.onboarding;
-        return loggedIn ? AppRoutes.home : AppRoutes.login;
+        if (!loggedIn) return AppRoutes.login;
+        final landing = petLanding();
+        // Already on splash and still resolving → stay put (no self-redirect).
+        return landing == AppRoutes.splash ? null : landing;
       }
 
       // 1. Onboarding gate — must finish onboarding first.
       if (!completed) return onOnboarding ? null : AppRoutes.onboarding;
-      if (onOnboarding) return loggedIn ? AppRoutes.home : AppRoutes.login;
+      if (onOnboarding) {
+        if (!loggedIn) return AppRoutes.login;
+        return petLanding();
+      }
 
       // 2. Auth gate — protect everything except the auth flow.
       if (!loggedIn && !onAuthRoute) return AppRoutes.login;
-      if (loggedIn && onAuthRoute) return AppRoutes.home;
+      // Logged in but still on an auth route: the auth page resolves the pet
+      // gate itself and then navigates directly to the landing. Hold on the
+      // auth screen (its spinner is up) until it does — never bounce to the
+      // splash, which would flash between login and the real destination.
+      if (loggedIn && onAuthRoute) {
+        if (!pets.ready) return null; // hold on the auth page; it will route.
+        return petLanding();
+      }
+
+      // 3. Pet gate — decide where a logged-in user belongs.
+      // Until the gate is ready, hold on the splash (cold start already shows
+      // it) so /home can never render before the gate decides.
+      if (loggedIn) {
+        if (!pets.ready) return onSplash ? null : AppRoutes.splash;
+
+        // No pet (or unconfirmed-empty offline): the pet-creation flow only.
+        if (pets.unresolvedEmpty || !pets.hasPets) {
+          return onPetCreation ? null : AppRoutes.petOnboarding;
+        }
+
+        // Has pets but none chosen yet (2+): the selection page only.
+        if (pets.currentPetId == null) {
+          return onSelectPet ? null : AppRoutes.selectPet;
+        }
+
+        // A pet is selected: the onboarding / selection screens no longer
+        // apply — send those back to home; everything else is allowed.
+        if (onPetOnboarding || onSelectPet) return AppRoutes.home;
+      }
 
       return null;
     },
@@ -174,6 +252,66 @@ GoRouter appRouter(Ref ref) {
               key: state.pageKey,
               child: const ChangePasswordPage(),
             ),
+      ),
+      GoRoute(
+        path: AppRoutes.petOnboarding,
+        name: 'petOnboarding',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+              key: state.pageKey,
+              child: const PetOnboardingPage(),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.createPet,
+        name: 'createPet',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+              key: state.pageKey,
+              child: const CreatePetPage(),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.selectPet,
+        name: 'selectPet',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+              key: state.pageKey,
+              child: const SelectPetPage(),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.petDetail,
+        name: 'petDetail',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return AppTransitionPage(
+            key: state.pageKey,
+            child: PetDetailPage(petId: id),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.petList,
+        name: 'petList',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+              key: state.pageKey,
+              child: const PetListPage(),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.editPet,
+        name: 'editPet',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          return AppTransitionPage(
+            key: state.pageKey,
+            child: EditPetPage(petId: id),
+          );
+        },
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>

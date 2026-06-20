@@ -11,7 +11,7 @@ abstract final class AppConstants {
   /// Run with: flutter run --dart-define=API_BASE_URL=http://192.168.1.50:5075/api
   static const String apiBaseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    // defaultValue: 'http://192.168.200.176:5075/api',
+    // defaultValue: 'http://192.168.0.110:5075/api',
     defaultValue: 'http://petaverse.runasp.net/api',
     // defaultValue: 'http://10.0.2.2:5075/api',
   );

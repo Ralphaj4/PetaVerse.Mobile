@@ -500,4 +500,209 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get errorPhoneNotRegistered => 'لا يوجد حساب مسجّل بهذا الرقم.';
+
+  @override
+  String get petOnboardingTitleTop => 'أضف';
+
+  @override
+  String get petOnboardingTitleAccent => 'حيوانك الأول';
+
+  @override
+  String get petOnboardingSubtitle =>
+      'أخبرنا عن رفيقك لنخصّص له الرعاية الصحية والتذكيرات والعناية.';
+
+  @override
+  String get petOnboardingAction => 'إضافة حيوان أليف';
+
+  @override
+  String get petOnboardingLoading => 'جارٍ التحقق من حيواناتك الأليفة…';
+
+  @override
+  String get selectPetTitle => 'اختر حيوانًا أليفًا';
+
+  @override
+  String get selectPetSubtitle => 'بمن نعتني اليوم؟';
+
+  @override
+  String get createPetTitle => 'إضافة حيوان أليف';
+
+  @override
+  String get createPetSubtitle => 'أخبرنا عن صديقك الجديد';
+
+  @override
+  String get createPetName => 'اسم الحيوان';
+
+  @override
+  String get createPetSpecies => 'نوع الحيوان';
+
+  @override
+  String get createPetBreed => 'السلالة';
+
+  @override
+  String get createPetSelectSpeciesFirst => 'اختر نوع الحيوان أولاً';
+
+  @override
+  String get createPetDateOfBirth => 'تاريخ الميلاد';
+
+  @override
+  String get createPetGender => 'الجنس';
+
+  @override
+  String get genderMale => 'ذكر';
+
+  @override
+  String get genderFemale => 'أنثى';
+
+  @override
+  String get genderUnknown => 'غير معروف';
+
+  @override
+  String get createPetSubmit => 'حفظ الحيوان';
+
+  @override
+  String createPetSuccess(String name) {
+    return 'تمت إضافة $name!';
+  }
+
+  @override
+  String get petDetailSetActive => 'تعيين كنشط';
+
+  @override
+  String get petDetailAlreadyActive => 'نشط حالياً';
+
+  @override
+  String get petDetailGender => 'الجنس';
+
+  @override
+  String get petDetailDateOfBirth => 'تاريخ الميلاد';
+
+  @override
+  String get petDetailBreed => 'السلالة';
+
+  @override
+  String get petDetailPelage => 'الفراء';
+
+  @override
+  String get petDetailMicrochip => 'الرقاقة';
+
+  @override
+  String get petDetailMicrochipLocation => 'الموقع';
+
+  @override
+  String get petDetailSterilization => 'التعقيم';
+
+  @override
+  String get petDetailSterilizationDate => 'التاريخ';
+
+  @override
+  String petDetailAge(int years) {
+    String _temp0 = intl.Intl.pluralLogic(
+      years,
+      locale: localeName,
+      other: '$years سنوات',
+      one: 'سنة واحدة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String viewAllPets(int count) {
+    return 'عرض جميع الحيوانات ($count)';
+  }
+
+  @override
+  String get createPetAdditionalInfo => 'معلومات إضافية';
+
+  @override
+  String get createPetAdditionalInfoSubtitle =>
+      'اختياري — يمكنك إضافتها لاحقاً';
+
+  @override
+  String get createPetPelage => 'لون الفراء';
+
+  @override
+  String get createPetMicrochipNumber => 'رقم الرقاقة';
+
+  @override
+  String get createPetMicrochipLocation => 'موقع الرقاقة';
+
+  @override
+  String get createPetSterilizationStatus => 'حالة التعقيم';
+
+  @override
+  String get sterilizationStatusIntact => 'سليم';
+
+  @override
+  String get sterilizationStatusNeutered => 'مُخصى';
+
+  @override
+  String get sterilizationStatusSpayed => 'مُعقَّمة';
+
+  @override
+  String get sterilizationStatusUnknown => 'غير معروف';
+
+  @override
+  String get createPetSterilizationDate => 'تاريخ التعقيم';
+
+  @override
+  String get editPetTitle => 'تعديل الحيوان الأليف';
+
+  @override
+  String get editPetSave => 'حفظ التغييرات';
+
+  @override
+  String get deletePetTitle => 'حذف الحيوان الأليف';
+
+  @override
+  String deletePetMessage(String petName) {
+    return 'هل أنت متأكد أنك تريد حذف $petName؟ لا يمكن التراجع عن هذا الإجراء.';
+  }
+
+  @override
+  String get deletePetConfirm => 'حذف';
+
+  @override
+  String get petUpdatedSuccess => 'تم تحديث الحيوان الأليف بنجاح';
+
+  @override
+  String get petDeletedSuccess => 'تم حذف الحيوان الأليف';
+
+  @override
+  String get petDetailTabOverview => 'نظرة عامة';
+
+  @override
+  String get petDetailTabHealth => 'الصحة';
+
+  @override
+  String get petDetailTabRecords => 'السجلات';
+
+  @override
+  String get petDetailTabTimeline => 'الجدول الزمني';
+
+  @override
+  String get petDetailActionEdit => 'تعديل';
+
+  @override
+  String get petDetailActionBook => 'حجز';
+
+  @override
+  String get petDetailActionShare => 'مشاركة';
+
+  @override
+  String get petDetailActionMore => 'المزيد';
+
+  @override
+  String get petDetailDateAdded => 'تاريخ الإضافة';
+
+  @override
+  String petDetailProfileCompleteTitle(String petName) {
+    return '$petName جاهز!';
+  }
+
+  @override
+  String get petDetailProfileCompleteSubtitle =>
+      'ملف حيوانك الأليف مكتمل والمعلومات محدَّثة.';
+
+  @override
+  String get microchipCopied => 'تم نسخ رقم الرقاقة';
 }

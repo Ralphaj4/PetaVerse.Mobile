@@ -981,6 +981,378 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No account is registered with this mobile number.'**
   String get errorPhoneNotRegistered;
+
+  /// No description provided for @petOnboardingTitleTop.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your'**
+  String get petOnboardingTitleTop;
+
+  /// No description provided for @petOnboardingTitleAccent.
+  ///
+  /// In en, this message translates to:
+  /// **'first pet'**
+  String get petOnboardingTitleAccent;
+
+  /// No description provided for @petOnboardingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us about your companion so we can tailor health, reminders, and care to them.'**
+  String get petOnboardingSubtitle;
+
+  /// No description provided for @petOnboardingAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a Pet'**
+  String get petOnboardingAction;
+
+  /// No description provided for @petOnboardingLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking your pets…'**
+  String get petOnboardingLoading;
+
+  /// No description provided for @selectPetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a Pet'**
+  String get selectPetTitle;
+
+  /// No description provided for @selectPetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Who are we caring for today?'**
+  String get selectPetSubtitle;
+
+  /// No description provided for @createPetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a Pet'**
+  String get createPetTitle;
+
+  /// No description provided for @createPetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us about your new furry friend'**
+  String get createPetSubtitle;
+
+  /// No description provided for @createPetName.
+  ///
+  /// In en, this message translates to:
+  /// **'Pet Name'**
+  String get createPetName;
+
+  /// No description provided for @createPetSpecies.
+  ///
+  /// In en, this message translates to:
+  /// **'Animal Type'**
+  String get createPetSpecies;
+
+  /// No description provided for @createPetBreed.
+  ///
+  /// In en, this message translates to:
+  /// **'Breed'**
+  String get createPetBreed;
+
+  /// No description provided for @createPetSelectSpeciesFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an animal type first'**
+  String get createPetSelectSpeciesFirst;
+
+  /// No description provided for @createPetDateOfBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of Birth'**
+  String get createPetDateOfBirth;
+
+  /// No description provided for @createPetGender.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get createPetGender;
+
+  /// No description provided for @genderMale.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get genderMale;
+
+  /// No description provided for @genderFemale.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get genderFemale;
+
+  /// No description provided for @genderUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get genderUnknown;
+
+  /// No description provided for @createPetSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Pet'**
+  String get createPetSubmit;
+
+  /// No description provided for @createPetSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} has been added!'**
+  String createPetSuccess(String name);
+
+  /// No description provided for @petDetailSetActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Set as Active'**
+  String get petDetailSetActive;
+
+  /// No description provided for @petDetailAlreadyActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Currently Active'**
+  String get petDetailAlreadyActive;
+
+  /// No description provided for @petDetailGender.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get petDetailGender;
+
+  /// No description provided for @petDetailDateOfBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of Birth'**
+  String get petDetailDateOfBirth;
+
+  /// No description provided for @petDetailBreed.
+  ///
+  /// In en, this message translates to:
+  /// **'Breed'**
+  String get petDetailBreed;
+
+  /// No description provided for @petDetailPelage.
+  ///
+  /// In en, this message translates to:
+  /// **'Coat'**
+  String get petDetailPelage;
+
+  /// No description provided for @petDetailMicrochip.
+  ///
+  /// In en, this message translates to:
+  /// **'Microchip'**
+  String get petDetailMicrochip;
+
+  /// No description provided for @petDetailMicrochipLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get petDetailMicrochipLocation;
+
+  /// No description provided for @petDetailSterilization.
+  ///
+  /// In en, this message translates to:
+  /// **'Sterilization'**
+  String get petDetailSterilization;
+
+  /// No description provided for @petDetailSterilizationDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get petDetailSterilizationDate;
+
+  /// No description provided for @petDetailAge.
+  ///
+  /// In en, this message translates to:
+  /// **'{years, plural, =1{1 year old} other{{years} years old}}'**
+  String petDetailAge(int years);
+
+  /// No description provided for @viewAllPets.
+  ///
+  /// In en, this message translates to:
+  /// **'View all {count} pets'**
+  String viewAllPets(int count);
+
+  /// No description provided for @createPetAdditionalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional Information'**
+  String get createPetAdditionalInfo;
+
+  /// No description provided for @createPetAdditionalInfoSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional — you can fill these in later'**
+  String get createPetAdditionalInfoSubtitle;
+
+  /// No description provided for @createPetPelage.
+  ///
+  /// In en, this message translates to:
+  /// **'Coat / Fur Color'**
+  String get createPetPelage;
+
+  /// No description provided for @createPetMicrochipNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Microchip Number'**
+  String get createPetMicrochipNumber;
+
+  /// No description provided for @createPetMicrochipLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Microchip Location'**
+  String get createPetMicrochipLocation;
+
+  /// No description provided for @createPetSterilizationStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Sterilization Status'**
+  String get createPetSterilizationStatus;
+
+  /// No description provided for @sterilizationStatusIntact.
+  ///
+  /// In en, this message translates to:
+  /// **'Intact'**
+  String get sterilizationStatusIntact;
+
+  /// No description provided for @sterilizationStatusNeutered.
+  ///
+  /// In en, this message translates to:
+  /// **'Neutered'**
+  String get sterilizationStatusNeutered;
+
+  /// No description provided for @sterilizationStatusSpayed.
+  ///
+  /// In en, this message translates to:
+  /// **'Spayed'**
+  String get sterilizationStatusSpayed;
+
+  /// No description provided for @sterilizationStatusUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get sterilizationStatusUnknown;
+
+  /// No description provided for @createPetSterilizationDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Sterilization Date'**
+  String get createPetSterilizationDate;
+
+  /// No description provided for @editPetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Pet'**
+  String get editPetTitle;
+
+  /// No description provided for @editPetSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Changes'**
+  String get editPetSave;
+
+  /// No description provided for @deletePetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Pet'**
+  String get deletePetTitle;
+
+  /// No description provided for @deletePetMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete {petName}? This action cannot be undone.'**
+  String deletePetMessage(String petName);
+
+  /// No description provided for @deletePetConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get deletePetConfirm;
+
+  /// No description provided for @petUpdatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Pet updated successfully'**
+  String get petUpdatedSuccess;
+
+  /// No description provided for @petDeletedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Pet deleted'**
+  String get petDeletedSuccess;
+
+  /// No description provided for @petDetailTabOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get petDetailTabOverview;
+
+  /// No description provided for @petDetailTabHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Health'**
+  String get petDetailTabHealth;
+
+  /// No description provided for @petDetailTabRecords.
+  ///
+  /// In en, this message translates to:
+  /// **'Records'**
+  String get petDetailTabRecords;
+
+  /// No description provided for @petDetailTabTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Timeline'**
+  String get petDetailTabTimeline;
+
+  /// No description provided for @petDetailActionEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get petDetailActionEdit;
+
+  /// No description provided for @petDetailActionBook.
+  ///
+  /// In en, this message translates to:
+  /// **'Book'**
+  String get petDetailActionBook;
+
+  /// No description provided for @petDetailActionShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get petDetailActionShare;
+
+  /// No description provided for @petDetailActionMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get petDetailActionMore;
+
+  /// No description provided for @petDetailDateAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Date Added'**
+  String get petDetailDateAdded;
+
+  /// No description provided for @petDetailProfileCompleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{petName} is all set!'**
+  String petDetailProfileCompleteTitle(String petName);
+
+  /// No description provided for @petDetailProfileCompleteSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your pet profile is complete and information is up to date.'**
+  String get petDetailProfileCompleteSubtitle;
+
+  /// No description provided for @microchipCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Microchip number copied'**
+  String get microchipCopied;
 }
 
 class _AppLocalizationsDelegate

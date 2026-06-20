@@ -6,15 +6,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/app/router/app_router.dart';
+import '../../../../core/errors/failure.dart';
+import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_confirm_dialog.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/providers/session_provider.dart';
+import '../../../pets/presentation/providers/pet_list_provider.dart';
+import '../../../pets/presentation/providers/pets_provider.dart';
+import '../../../pets/presentation/widgets/pet_card_grid.dart';
 import '../widgets/log_out_button.dart';
-import '../widgets/pet_profile_card.dart';
 import '../widgets/profile_header.dart';
 import '../widgets/settings_tile.dart';
 
@@ -52,7 +57,16 @@ class ProfilePage extends ConsumerWidget {
               _PetSectionHeader(
                 title: l10n.petProfiles,
                 actionLabel: l10n.addPet,
-                onAdd: () {},
+                onAdd: () async {
+                  await context.push(AppRoutes.createPet);
+                  // Reconcile the list after returning — the create provider
+                  // invalidates petListProvider on success, but if the
+                  // provider was disposed while off-screen we need a fresh
+                  // fetch here too.
+                  if (context.mounted) {
+                    unawaited(ref.read(petListProvider.notifier).refresh());
+                  }
+                },
               ),
               const SizedBox(height: AppSpacing.md),
               const _PetGrid(),
@@ -217,31 +231,89 @@ class _GroupTitle extends StatelessWidget {
   }
 }
 
-class _PetGrid extends StatelessWidget {
+/// The user's pets, offline-first via [petListProvider]. Tapping a
+/// card makes that pet the active one (live "ACTIVE" badge).
+class _PetGrid extends ConsumerWidget {
   const _PetGrid();
 
   @override
-  Widget build(BuildContext context) {
-    return const Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: PetProfileCard(
-            name: 'Oreo',
-            breed: 'Golden Retriever',
-            ageYears: 2,
-            isActive: true,
-          ),
-        ),
-        SizedBox(width: AppSpacing.md),
-        Expanded(
-          child: PetProfileCard(
-            name: 'Luna',
-            breed: 'Domestic Shorthair',
-            ageYears: 4,
-          ),
-        ),
-      ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final petsAsync = ref.watch(petListProvider);
+    final currentPetId = ref.watch(petsProvider).currentPetId;
+
+    return petsAsync.when(
+      skipLoadingOnRefresh: true,
+      loading: () => const SizedBox(
+        height: 140,
+        child: Center(child: CircularProgressIndicator()),
+      ),
+      error: (e, _) => _PetGridError(
+        message: (e is Failure ? e : const UnknownFailure())
+            .localizedMessage(context.l10n),
+        onRetry: () => ref.invalidate(petListProvider),
+      ),
+      data: (pets) {
+        if (pets.isEmpty) return const SizedBox.shrink();
+        const preview = 2;
+        // Active pet always first in the preview.
+        final sorted = currentPetId == null
+            ? pets
+            : [
+                ...pets.where((p) => p.id == currentPetId),
+                ...pets.where((p) => p.id != currentPetId),
+              ];
+        final shown = sorted.length > preview ? sorted.sublist(0, preview) : sorted;
+        final hasMore = pets.length > preview;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            PetCardGrid(
+              pets: shown,
+              activePetId: currentPetId,
+            ),
+            if (hasMore) ...[
+              const SizedBox(height: AppSpacing.md),
+              OutlinedButton.icon(
+                onPressed: () => context.push(AppRoutes.petList),
+                icon: const Icon(FluentIcons.animal_paw_print_24_regular,
+                    size: 18),
+                label: Text(context.l10n.viewAllPets(pets.length)),
+              ),
+            ],
+          ],
+        );
+      },
     );
   }
 }
+
+class _PetGridError extends StatelessWidget {
+  const _PetGridError({required this.message, required this.onRetry});
+
+  final String message;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: AppRadius.lgAll,
+      ),
+      child: Column(
+        children: [
+          Text(
+            message,
+            style: AppTextStyles.bodySmall,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          TextButton(onPressed: onRetry, child: Text(context.l10n.retry)),
+        ],
+      ),
+    );
+  }
+}
+

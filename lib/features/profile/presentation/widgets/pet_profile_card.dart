@@ -11,21 +11,37 @@ import '../../../../shared/widgets/app_cached_image.dart';
 /// badge, then the pet's name and "breed • age" subtitle.
 class PetProfileCard extends StatelessWidget {
   const PetProfileCard({
+    required this.petId,
     required this.name,
     required this.breed,
     required this.ageYears,
     this.imageUrl,
     this.isActive = false,
+    this.enableHero = false,
     this.onTap,
     super.key,
   });
 
+  final int petId;
   final String name;
   final String breed;
   final int ageYears;
   final String? imageUrl;
   final bool isActive;
+  final bool enableHero;
   final VoidCallback? onTap;
+
+  Widget _buildImage() {
+    final image = AppCachedImage(
+      imageUrl: imageUrl,
+      height: 110,
+      width: double.infinity,
+      borderRadius: AppRadius.mdAll,
+      semanticLabel: name,
+    );
+    if (!enableHero) return image;
+    return Hero(tag: 'pet-image-$petId', child: image);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,13 +62,7 @@ class PetProfileCard extends StatelessWidget {
               children: [
                 Stack(
                   children: [
-                    AppCachedImage(
-                      imageUrl: imageUrl,
-                      height: 110,
-                      width: double.infinity,
-                      borderRadius: AppRadius.mdAll,
-                      semanticLabel: name,
-                    ),
+                    _buildImage(),
                     if (isActive)
                       PositionedDirectional(
                         top: AppSpacing.sm,

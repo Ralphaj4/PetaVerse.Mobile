@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/app/router/app_router.dart';
@@ -10,19 +11,21 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/section_header.dart';
+import '../../../pets/presentation/providers/pets_provider.dart';
 import '../widgets/appointment_card.dart';
 import '../widgets/home_hero_banner.dart';
 import '../widgets/pet_stat_card.dart';
 import '../widgets/quick_action_button.dart';
 
-/// Home dashboard. Data is mocked until the pets/health backend is
-/// wired; the layout and widgets are final.
-class HomePage extends StatelessWidget {
+/// Home dashboard. The active pet's name is live from the pet gate; the rest
+/// is mocked until the health backend is wired.
+class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
+    final petName = ref.watch(petsProvider).currentPet?.name ?? '';
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
@@ -33,7 +36,7 @@ class HomePage extends StatelessWidget {
             children: [
               HomeHeroBanner(
                 userName: 'Sarah',
-                petName: 'Oreo',
+                petName: petName,
                 healthScore: 92,
                 healthStatusLabel: l10n.healthExcellent,
                 nextVisitLabel: 'Jun 21, 2026',

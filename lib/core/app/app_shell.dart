@@ -1,7 +1,9 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/pets/presentation/providers/pet_list_provider.dart';
 import '../extensions/context_extensions.dart';
 import '../theme/app_colors.dart';
 
@@ -26,16 +28,33 @@ class _OverlappingCenterFabLocation extends FloatingActionButtonLocation {
   }
 }
 
+/// Index of the profile branch in the bottom navigation.
+const int _profileBranchIndex = 3;
+
 /// Scaffold with the design's bottom navigation: four tabs and a
 /// prominent center paw button that opens the AI assistant.
-class AppShell extends StatelessWidget {
+class AppShell extends ConsumerWidget {
   const AppShell({required this.navigationShell, super.key});
 
   final StatefulNavigationShell navigationShell;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
+
+    void goBranch(int index) {
+      // Offline-first refresh: reconcile the pet list when entering the
+      // profile tab (it shows the cached list instantly, then updates).
+      if (index == _profileBranchIndex &&
+          index != navigationShell.currentIndex) {
+        ref.read(petListProvider.notifier).refresh();
+      }
+      navigationShell.goBranch(
+        index,
+        initialLocation: index == navigationShell.currentIndex,
+      );
+    }
+
     return Scaffold(
       body: navigationShell,
       floatingActionButton: SizedBox(
@@ -59,14 +78,14 @@ class AppShell extends StatelessWidget {
               selectedIcon: FluentIcons.home_24_filled,
               label: l10n.navHome,
               isSelected: navigationShell.currentIndex == 0,
-              onTap: () => _goBranch(0),
+              onTap: () => goBranch(0),
             ),
             _NavItem(
               icon: FluentIcons.people_community_24_regular,
               selectedIcon: FluentIcons.people_community_24_filled,
               label: l10n.navCommunity,
               isSelected: navigationShell.currentIndex == 1,
-              onTap: () => _goBranch(1),
+              onTap: () => goBranch(1),
             ),
             const Spacer(),
             _NavItem(
@@ -74,14 +93,14 @@ class AppShell extends StatelessWidget {
               selectedIcon: FluentIcons.stethoscope_24_filled,
               label: l10n.navCare,
               isSelected: navigationShell.currentIndex == 2,
-              onTap: () => _goBranch(2),
+              onTap: () => goBranch(2),
             ),
             _NavItem(
               icon: FluentIcons.person_24_regular,
               selectedIcon: FluentIcons.person_24_filled,
               label: l10n.navProfile,
-              isSelected: navigationShell.currentIndex == 3,
-              onTap: () => _goBranch(3),
+              isSelected: navigationShell.currentIndex == _profileBranchIndex,
+              onTap: () => goBranch(_profileBranchIndex),
             ),
           ],
         ),
@@ -89,10 +108,6 @@ class AppShell extends StatelessWidget {
     );
   }
 
-  void _goBranch(int index) => navigationShell.goBranch(
-        index,
-        initialLocation: index == navigationShell.currentIndex,
-      );
 }
 
 class _NavItem extends StatelessWidget {

@@ -238,5 +238,86 @@
   "errorCache": "تعذر تحميل البيانات المحفوظة.",
   "errorUnknown": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.",
   "errorNotFound": "لم نتمكن من العثور على حساب بهذه المعلومات.",
-  "errorPhoneNotRegistered": "لا يوجد حساب مسجّل بهذا الرقم."
+  "errorPhoneNotRegistered": "لا يوجد حساب مسجّل بهذا الرقم.",
+  "petOnboardingTitleTop": "أضف",
+  "petOnboardingTitleAccent": "حيوانك الأول",
+  "petOnboardingSubtitle": "أخبرنا عن رفيقك لنخصّص له الرعاية الصحية والتذكيرات والعناية.",
+  "petOnboardingAction": "إضافة حيوان أليف",
+  "petOnboardingLoading": "جارٍ التحقق من حيواناتك الأليفة…",
+  "selectPetTitle": "اختر حيوانًا أليفًا",
+  "selectPetSubtitle": "بمن نعتني اليوم؟",
+  "createPetTitle": "إضافة حيوان أليف",
+  "createPetSubtitle": "أخبرنا عن صديقك الجديد",
+  "createPetName": "اسم الحيوان",
+  "createPetSpecies": "نوع الحيوان",
+  "createPetBreed": "السلالة",
+  "createPetSelectSpeciesFirst": "اختر نوع الحيوان أولاً",
+  "createPetDateOfBirth": "تاريخ الميلاد",
+  "createPetGender": "الجنس",
+  "genderMale": "ذكر",
+  "genderFemale": "أنثى",
+  "genderUnknown": "غير معروف",
+  "createPetSubmit": "حفظ الحيوان",
+  "createPetSuccess": "تمت إضافة {name}!",
+  "@createPetSuccess": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "petDetailSetActive": "تعيين كنشط",
+  "petDetailAlreadyActive": "نشط حالياً",
+  "petDetailGender": "الجنس",
+  "petDetailDateOfBirth": "تاريخ الميلاد",
+  "petDetailBreed": "السلالة",
+  "petDetailPelage": "الفراء",
+  "petDetailMicrochip": "الرقاقة",
+  "petDetailMicrochipLocation": "الموقع",
+  "petDetailSterilization": "التعقيم",
+  "petDetailSterilizationDate": "التاريخ",
+  "petDetailAge": "{years, plural, =1{سنة واحدة} other{{years} سنوات}}",
+  "@petDetailAge": {
+    "placeholders": { "years": { "type": "int" } }
+  },
+  "viewAllPets": "عرض جميع الحيوانات ({count})",
+  "@viewAllPets": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "createPetAdditionalInfo": "معلومات إضافية",
+  "createPetAdditionalInfoSubtitle": "اختياري — يمكنك إضافتها لاحقاً",
+  "createPetPelage": "لون الفراء",
+  "createPetMicrochipNumber": "رقم الرقاقة",
+  "createPetMicrochipLocation": "موقع الرقاقة",
+  "createPetSterilizationStatus": "حالة التعقيم",
+  "sterilizationStatusIntact": "سليم",
+  "sterilizationStatusNeutered": "مُخصى",
+  "sterilizationStatusSpayed": "مُعقَّمة",
+  "sterilizationStatusUnknown": "غير معروف",
+  "createPetSterilizationDate": "تاريخ التعقيم",
+  "editPetTitle": "تعديل الحيوان الأليف",
+  "editPetSave": "حفظ التغييرات",
+  "deletePetTitle": "حذف الحيوان الأليف",
+  "deletePetMessage": "هل أنت متأكد أنك تريد حذف {petName}؟ لا يمكن التراجع عن هذا الإجراء.",
+  "@deletePetMessage": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "deletePetConfirm": "حذف",
+  "petUpdatedSuccess": "تم تحديث الحيوان الأليف بنجاح",
+  "petDeletedSuccess": "تم حذف الحيوان الأليف",
+  "petDetailTabOverview": "نظرة عامة",
+  "petDetailTabHealth": "الصحة",
+  "petDetailTabRecords": "السجلات",
+  "petDetailTabTimeline": "الجدول الزمني",
+  "petDetailActionEdit": "تعديل",
+  "petDetailActionBook": "حجز",
+  "petDetailActionShare": "مشاركة",
+  "petDetailActionMore": "المزيد",
+  "petDetailDateAdded": "تاريخ الإضافة",
+  "petDetailProfileCompleteTitle": "{petName} جاهز!",
+  "@petDetailProfileCompleteTitle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "petDetailProfileCompleteSubtitle": "ملف حيوانك الأليف مكتمل والمعلومات محدَّثة.",
+  "microchipCopied": "تم نسخ رقم الرقاقة"
 }
