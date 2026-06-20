@@ -135,7 +135,6 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
                   isSubmitting: isSubmitting,
                   onSpeciesChanged: (value) {
                     setState(() => _speciesId = value);
-                    _formKey.currentState?.fields['breedId']?.didChange(null);
                   },
                   onSubmit: () => _submit(pet),
                 ),
@@ -269,7 +268,6 @@ class _FormState extends State<_Form> {
         initialValue: {
           'name': widget.pet.name,
           'speciesId': widget.speciesId,
-          'breedId': widget.pet.breedId,
           'dateOfBirth': widget.pet.dateOfBirth,
           'gender': widget.pet.gender,
           'pelage': widget.pet.pelage,
@@ -316,7 +314,10 @@ class _FormState extends State<_Form> {
             const SizedBox(height: AppSpacing.md),
 
             // Breed.
-            _BreedCard(speciesId: widget.speciesId),
+            _BreedCard(
+              speciesId: widget.speciesId,
+              initialBreedId: widget.pet.breedId,
+            ),
             const SizedBox(height: AppSpacing.md),
 
             // Date of birth.
@@ -596,16 +597,28 @@ class _FieldCard extends StatelessWidget {
 
 // ── Breed card ────────────────────────────────────────────────────────────────
 
-class _BreedCard extends ConsumerWidget {
-  const _BreedCard({required this.speciesId});
+class _BreedCard extends ConsumerStatefulWidget {
+  const _BreedCard({required this.speciesId, required this.initialBreedId});
 
   final int? speciesId;
+  final int? initialBreedId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_BreedCard> createState() => _BreedCardState();
+}
+
+class _BreedCardState extends ConsumerState<_BreedCard> {
+  // Tracks whether the initial breed has been seeded yet (first load only).
+  bool _initialSeeded = false;
+  int? _lastSpeciesId;
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    if (speciesId == null) {
+    if (widget.speciesId == null) {
+      _lastSpeciesId = null;
+      _initialSeeded = false;
       return _FieldCard(
         icon: FluentIcons.ribbon_24_regular,
         child: AppDropdownField<int>(
@@ -618,7 +631,7 @@ class _BreedCard extends ConsumerWidget {
       );
     }
 
-    final breedsAsync = ref.watch(breedsListProvider(speciesId!));
+    final breedsAsync = ref.watch(breedsListProvider(widget.speciesId!));
     return breedsAsync.when(
       loading: () => _FieldCard(
         icon: FluentIcons.ribbon_24_regular,
@@ -631,19 +644,33 @@ class _BreedCard extends ConsumerWidget {
           error: asFailure(e).localizedMessage(l10n),
         ),
       ),
-      data: (breeds) => _FieldCard(
-        icon: FluentIcons.ribbon_24_regular,
-        child: AppDropdownField<int>(
-          name: 'breedId',
-          label: l10n.createPetBreed,
-          validator: FormBuilderValidators.required(
-              errorText: l10n.fieldRequired),
-          items: [
-            for (final b in breeds)
-              DropdownMenuItem(value: b.id, child: Text(b.name)),
-          ],
-        ),
-      ),
+      data: (breeds) {
+        final speciesChanged = widget.speciesId != _lastSpeciesId;
+        if (speciesChanged && breeds.isNotEmpty) {
+          _lastSpeciesId = widget.speciesId;
+          // On first load seed the pet's existing breed; on species change pick [0].
+          final target = (!_initialSeeded && widget.initialBreedId != null)
+              ? widget.initialBreedId
+              : breeds.first.id;
+          _initialSeeded = true;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            FormBuilder.of(context)?.fields['breedId']?.didChange(target);
+          });
+        }
+        return _FieldCard(
+          icon: FluentIcons.ribbon_24_regular,
+          child: AppDropdownField<int>(
+            name: 'breedId',
+            label: l10n.createPetBreed,
+            validator: FormBuilderValidators.required(
+                errorText: l10n.fieldRequired),
+            items: [
+              for (final b in breeds)
+                DropdownMenuItem(value: b.id, child: Text(b.name)),
+            ],
+          ),
+        );
+      },
     );
   }
 }

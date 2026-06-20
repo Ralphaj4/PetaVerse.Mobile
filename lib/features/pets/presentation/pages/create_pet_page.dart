@@ -129,8 +129,6 @@ class _CreatePetPageState extends ConsumerState<CreatePetPage> {
                   isSubmitting: isSubmitting,
                   onSpeciesChanged: (value) {
                     setState(() => _speciesId = value);
-                    _formKey.currentState?.fields['breedId']
-                        ?.didChange(null);
                   },
                   onSubmit: _submit,
                 ),
@@ -643,16 +641,25 @@ class _IconTile extends StatelessWidget {
 
 /// Breed dropdown card, dependent on the selected species. Disabled until a
 /// species is picked; loads that species' breeds with inline loading/error.
-class _BreedCard extends ConsumerWidget {
+/// Auto-selects the first breed whenever the species changes.
+class _BreedCard extends ConsumerStatefulWidget {
   const _BreedCard({required this.speciesId});
 
   final int? speciesId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_BreedCard> createState() => _BreedCardState();
+}
+
+class _BreedCardState extends ConsumerState<_BreedCard> {
+  int? _lastSpeciesId;
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    if (speciesId == null) {
+    if (widget.speciesId == null) {
+      _lastSpeciesId = null;
       return _FieldCard(
         icon: FluentIcons.ribbon_24_regular,
         child: AppDropdownField<int>(
@@ -665,7 +672,7 @@ class _BreedCard extends ConsumerWidget {
       );
     }
 
-    final breedsAsync = ref.watch(breedsListProvider(speciesId!));
+    final breedsAsync = ref.watch(breedsListProvider(widget.speciesId!));
     return breedsAsync.when(
       loading: () => _FieldCard(
         icon: FluentIcons.ribbon_24_regular,
@@ -678,20 +685,29 @@ class _BreedCard extends ConsumerWidget {
           error: asFailure(e).localizedMessage(l10n),
         ),
       ),
-      data: (breeds) => _FieldCard(
-        icon: FluentIcons.ribbon_24_regular,
-        child: AppDropdownField<int>(
-          name: 'breedId',
-          label: l10n.createPetBreed,
-          validator: FormBuilderValidators.required(
-            errorText: l10n.fieldRequired,
+      data: (breeds) {
+        if (widget.speciesId != _lastSpeciesId && breeds.isNotEmpty) {
+          _lastSpeciesId = widget.speciesId;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            final field = FormBuilder.of(context)?.fields['breedId'];
+            field?.didChange(breeds.first.id);
+          });
+        }
+        return _FieldCard(
+          icon: FluentIcons.ribbon_24_regular,
+          child: AppDropdownField<int>(
+            name: 'breedId',
+            label: l10n.createPetBreed,
+            validator: FormBuilderValidators.required(
+              errorText: l10n.fieldRequired,
+            ),
+            items: [
+              for (final b in breeds)
+                DropdownMenuItem(value: b.id, child: Text(b.name)),
+            ],
           ),
-          items: [
-            for (final b in breeds)
-              DropdownMenuItem(value: b.id, child: Text(b.name)),
-          ],
-        ),
-      ),
+        );
+      },
     );
   }
 }
