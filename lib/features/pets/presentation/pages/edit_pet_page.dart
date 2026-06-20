@@ -14,6 +14,8 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_button.dart';
+import '../../../../shared/widgets/app_dropdown_field.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../domain/entities/new_pet.dart';
 import '../../domain/entities/pet.dart';
 import '../../domain/entities/species.dart';
@@ -67,7 +69,6 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
     if (!mounted) return;
 
     if (result != null) {
-      // Refresh caches so the list and detail pages show the new data.
       ref.invalidate(petDetailProvider(widget.petId));
       ref.invalidate(petListProvider);
 
@@ -76,11 +77,11 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
       context.pop();
       messenger
         ..hideCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text(message)));
+        ..showSnackBar(AppSnackBar.buildSuccess(message));
     } else {
       final failure = notifier.lastFailure;
       if (failure != null) {
-        context.showSnackBar(failure.localizedMessage(context.l10n));
+        context.showErrorSnackBar(failure.localizedMessage(context.l10n));
       }
     }
   }
@@ -91,7 +92,6 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
     final speciesAsync = ref.watch(speciesListProvider);
     final isSubmitting = ref.watch(updatePetProvider).isLoading;
 
-    // Use the full record if already fetched; fall back to the list cache.
     final pet = ref.watch(petDetailProvider(widget.petId)).value ??
         ref
             .watch(petListProvider)
@@ -107,12 +107,9 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
 
     // Seed speciesId by matching pet's speciesName against the loaded list.
     if (_speciesId == null && speciesAsync.value != null) {
-      final match = speciesAsync.value!
-          .where((s) => s.name == pet.speciesName)
-          .firstOrNull;
-      if (match != null) {
-        _speciesId = match.id;
-      }
+      final match =
+          speciesAsync.value!.where((s) => s.name == pet.speciesName).firstOrNull;
+      if (match != null) _speciesId = match.id;
     }
 
     return Scaffold(
@@ -121,16 +118,14 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _Header(
-              title: l10n.editPetTitle,
-              isRtl: context.isRtl,
-            ),
+            _Header(title: l10n.editPetTitle),
             Expanded(
               child: speciesAsync.when(
                 loading: () =>
                     const Center(child: CircularProgressIndicator()),
-                error: (e, _) => Center(
-                  child: Text(asFailure(e).localizedMessage(l10n)),
+                error: (e, _) => _SpeciesError(
+                  message: asFailure(e).localizedMessage(l10n),
+                  onRetry: () => ref.invalidate(speciesListProvider),
                 ),
                 data: (species) => _Form(
                   formKey: _formKey,
@@ -153,16 +148,17 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
   }
 }
 
-// ── Header ───────────────────────────────────────────────────────────────────
+// ── Header ────────────────────────────────────────────────────────────────────
 
 class _Header extends StatelessWidget {
-  const _Header({required this.title, required this.isRtl});
+  const _Header({required this.title});
 
   final String title;
-  final bool isRtl;
 
   @override
   Widget build(BuildContext context) {
+    final isRtl = context.isRtl;
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.sm,
@@ -171,43 +167,15 @@ class _Header extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          Text(title, style: AppTextStyles.headlineLarge),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 52),
+            child: Text(title, style: AppTextStyles.headlineLarge),
+          ),
           PositionedDirectional(
             start: 0,
             top: 0,
             bottom: 0,
-            child: Center(
-              child: Material(
-                color: AppColors.surface,
-                borderRadius: AppRadius.mdAll,
-                child: InkWell(
-                  borderRadius: AppRadius.mdAll,
-                  onTap: () =>
-                      context.canPop() ? context.pop() : null,
-                  child: Container(
-                    width: 44,
-                    height: 44,
-                    decoration: BoxDecoration(
-                      borderRadius: AppRadius.mdAll,
-                      boxShadow: [
-                        BoxShadow(
-                          color:
-                              AppColors.textPrimary.withValues(alpha: 0.08),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Icon(
-                      isRtl
-                          ? FluentIcons.chevron_right_24_regular
-                          : FluentIcons.chevron_left_24_regular,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            child: Center(child: _FloatingBackButton(isRtl: isRtl)),
           ),
         ],
       ),
@@ -215,7 +183,46 @@ class _Header extends StatelessWidget {
   }
 }
 
-// ── Form ─────────────────────────────────────────────────────────────────────
+class _FloatingBackButton extends StatelessWidget {
+  const _FloatingBackButton({required this.isRtl});
+
+  final bool isRtl;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.surface,
+      borderRadius: AppRadius.mdAll,
+      elevation: 0,
+      child: InkWell(
+        borderRadius: AppRadius.mdAll,
+        onTap: () => context.canPop() ? context.pop() : null,
+        child: Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            borderRadius: AppRadius.mdAll,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.textPrimary.withValues(alpha: 0.08),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Icon(
+            isRtl
+                ? FluentIcons.chevron_right_24_regular
+                : FluentIcons.chevron_left_24_regular,
+            color: AppColors.textPrimary,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ── Form ──────────────────────────────────────────────────────────────────────
 
 class _Form extends StatefulWidget {
   const _Form({
@@ -241,14 +248,12 @@ class _Form extends StatefulWidget {
 }
 
 class _FormState extends State<_Form> {
-  late String? _sterilizationStatus =
-      widget.pet.sterilizationStatus;
+  late String? _sterilizationStatus = widget.pet.sterilizationStatus;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final locale = Localizations.localeOf(context).toString();
-    final dateFmt = DateFormat.yMMMMd(locale);
     final showSterilizationDate =
         _sterilizationStatus != null && _sterilizationStatus != 'Intact';
 
@@ -276,6 +281,9 @@ class _FormState extends State<_Form> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const _HeroAvatar(),
+            const SizedBox(height: AppSpacing.md),
+
             // Pet name.
             _FieldCard(
               icon: FluentIcons.animal_dog_24_regular,
@@ -290,18 +298,12 @@ class _FormState extends State<_Form> {
             ),
             const SizedBox(height: AppSpacing.md),
 
-            // Species.
+            // Animal type (species).
             _FieldCard(
               icon: FluentIcons.animal_paw_print_24_regular,
-              child: FormBuilderDropdown<int>(
+              child: AppDropdownField<int>(
                 name: 'speciesId',
-                style: AppTextStyles.titleMedium,
-                icon: const Icon(
-                  FluentIcons.chevron_down_24_regular,
-                  size: 20,
-                  color: AppColors.textSecondary,
-                ),
-                decoration: _cardInput(label: l10n.createPetSpecies),
+                label: l10n.createPetSpecies,
                 validator: FormBuilderValidators.required(
                     errorText: l10n.fieldRequired),
                 items: [
@@ -324,14 +326,12 @@ class _FormState extends State<_Form> {
                 name: 'dateOfBirth',
                 inputType: InputType.date,
                 lastDate: DateTime.now(),
-                format: dateFmt,
+                format: DateFormat.yMMMMd(locale),
                 style: AppTextStyles.titleMedium,
                 decoration: _cardInput(
                   label: l10n.createPetDateOfBirth,
-                  suffixIcon: const Icon(
-                    FluentIcons.calendar_24_regular,
-                    color: AppColors.textSecondary,
-                  ),
+                  suffixIcon: const Icon(FluentIcons.calendar_24_regular,
+                      color: AppColors.textSecondary),
                 ),
                 validator: FormBuilderValidators.required(
                     errorText: l10n.fieldRequired),
@@ -343,8 +343,14 @@ class _FormState extends State<_Form> {
             const _GenderCard(),
             const SizedBox(height: AppSpacing.xl),
 
-            // ── Optional fields ───────────────────────────────────────────
+            // ── Optional section ─────────────────────────────────────────
             _SectionDivider(label: l10n.createPetAdditionalInfo),
+            const SizedBox(height: AppSpacing.xs),
+            Text(
+              l10n.createPetAdditionalInfoSubtitle,
+              style: AppTextStyles.bodySmall
+                  .copyWith(color: AppColors.textTertiary),
+            ),
             const SizedBox(height: AppSpacing.md),
 
             // Pelage.
@@ -388,36 +394,24 @@ class _FormState extends State<_Form> {
             // Sterilization status.
             _FieldCard(
               icon: FluentIcons.heart_pulse_24_regular,
-              child: FormBuilderDropdown<String>(
+              child: AppDropdownField<String>(
                 name: 'sterilizationStatus',
-                style: AppTextStyles.titleMedium,
-                icon: const Icon(
-                  FluentIcons.chevron_down_24_regular,
-                  size: 20,
-                  color: AppColors.textSecondary,
-                ),
-                decoration: _cardInput(
-                    label: l10n.createPetSterilizationStatus),
+                label: l10n.createPetSterilizationStatus,
                 items: [
                   DropdownMenuItem(
-                    value: 'Intact',
-                    child: Text(l10n.sterilizationStatusIntact),
-                  ),
+                      value: 'Intact',
+                      child: Text(l10n.sterilizationStatusIntact)),
                   DropdownMenuItem(
-                    value: 'Neutered',
-                    child: Text(l10n.sterilizationStatusNeutered),
-                  ),
+                      value: 'Neutered',
+                      child: Text(l10n.sterilizationStatusNeutered)),
                   DropdownMenuItem(
-                    value: 'Spayed',
-                    child: Text(l10n.sterilizationStatusSpayed),
-                  ),
+                      value: 'Spayed',
+                      child: Text(l10n.sterilizationStatusSpayed)),
                   DropdownMenuItem(
-                    value: 'Unknown',
-                    child: Text(l10n.sterilizationStatusUnknown),
-                  ),
+                      value: 'Unknown',
+                      child: Text(l10n.sterilizationStatusUnknown)),
                 ],
-                onChanged: (v) =>
-                    setState(() => _sterilizationStatus = v),
+                onChanged: (v) => setState(() => _sterilizationStatus = v),
               ),
             ),
 
@@ -429,14 +423,12 @@ class _FormState extends State<_Form> {
                   name: 'sterilizationDate',
                   inputType: InputType.date,
                   lastDate: DateTime.now(),
-                  format: dateFmt,
+                  format: DateFormat.yMMMMd(locale),
                   style: AppTextStyles.titleMedium,
                   decoration: _cardInput(
                     label: l10n.createPetSterilizationDate,
-                    suffixIcon: const Icon(
-                      FluentIcons.calendar_24_regular,
-                      color: AppColors.textSecondary,
-                    ),
+                    suffixIcon: const Icon(FluentIcons.calendar_24_regular,
+                        color: AppColors.textSecondary),
                   ),
                 ),
               ),
@@ -458,7 +450,7 @@ class _FormState extends State<_Form> {
   }
 }
 
-// ── Shared helper widgets (mirrors of create_pet_page privates) ───────────────
+// ── Shared input decoration ───────────────────────────────────────────────────
 
 InputDecoration _cardInput({required String label, Widget? suffixIcon}) =>
     InputDecoration(
@@ -477,8 +469,11 @@ InputDecoration _cardInput({required String label, Widget? suffixIcon}) =>
       suffixIconConstraints: const BoxConstraints(minWidth: 24, minHeight: 24),
     );
 
+// ── Section divider ───────────────────────────────────────────────────────────
+
 class _SectionDivider extends StatelessWidget {
   const _SectionDivider({required this.label});
+
   final String label;
 
   @override
@@ -503,8 +498,61 @@ class _SectionDivider extends StatelessWidget {
   }
 }
 
+// ── Hero avatar ───────────────────────────────────────────────────────────────
+
+class _HeroAvatar extends StatelessWidget {
+  const _HeroAvatar();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 100,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            width: 88,
+            height: 88,
+            decoration: const BoxDecoration(
+              color: AppColors.primarySoft,
+              shape: BoxShape.circle,
+            ),
+            alignment: Alignment.center,
+            child: const Icon(
+              FluentIcons.animal_paw_print_24_filled,
+              size: 40,
+              color: AppColors.primary,
+            ),
+          ),
+          const PositionedDirectional(
+            start: 100,
+            top: 16,
+            child: Icon(
+              FluentIcons.heart_20_filled,
+              size: 14,
+              color: AppColors.accentCoral,
+            ),
+          ),
+          const PositionedDirectional(
+            end: 100,
+            top: 36,
+            child: Icon(
+              FluentIcons.sparkle_20_filled,
+              size: 14,
+              color: AppColors.primary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Field card ────────────────────────────────────────────────────────────────
+
 class _FieldCard extends StatelessWidget {
   const _FieldCard({required this.icon, required this.child});
+
   final IconData icon;
   final Widget child;
 
@@ -546,8 +594,11 @@ class _FieldCard extends StatelessWidget {
   }
 }
 
+// ── Breed card ────────────────────────────────────────────────────────────────
+
 class _BreedCard extends ConsumerWidget {
   const _BreedCard({required this.speciesId});
+
   final int? speciesId;
 
   @override
@@ -557,17 +608,11 @@ class _BreedCard extends ConsumerWidget {
     if (speciesId == null) {
       return _FieldCard(
         icon: FluentIcons.ribbon_24_regular,
-        child: FormBuilderDropdown<int>(
+        child: AppDropdownField<int>(
           name: 'breedId',
+          label: l10n.createPetBreed,
+          hint: l10n.createPetSelectSpeciesFirst,
           enabled: false,
-          style: AppTextStyles.titleMedium,
-          icon: const Icon(FluentIcons.chevron_down_24_regular,
-              size: 20, color: AppColors.textSecondary),
-          decoration: _cardInput(label: l10n.createPetBreed).copyWith(
-            hintText: l10n.createPetSelectSpeciesFirst,
-            hintStyle: AppTextStyles.bodyMedium
-                .copyWith(color: AppColors.textTertiary),
-          ),
           items: const [],
         ),
       );
@@ -577,30 +622,20 @@ class _BreedCard extends ConsumerWidget {
     return breedsAsync.when(
       loading: () => _FieldCard(
         icon: FluentIcons.ribbon_24_regular,
-        child: InputDecorator(
-          decoration: _cardInput(label: l10n.createPetBreed),
-          child: const SizedBox(
-              height: 20,
-              width: 20,
-              child: CircularProgressIndicator(strokeWidth: 2)),
-        ),
+        child: _BreedLoadingField(label: l10n.createPetBreed),
       ),
       error: (e, _) => _FieldCard(
         icon: FluentIcons.ribbon_24_regular,
-        child: InputDecorator(
-          decoration: _cardInput(label: l10n.createPetBreed)
-              .copyWith(errorText: asFailure(e).localizedMessage(l10n)),
-          child: const SizedBox.shrink(),
+        child: _BreedErrorField(
+          label: l10n.createPetBreed,
+          error: asFailure(e).localizedMessage(l10n),
         ),
       ),
       data: (breeds) => _FieldCard(
         icon: FluentIcons.ribbon_24_regular,
-        child: FormBuilderDropdown<int>(
+        child: AppDropdownField<int>(
           name: 'breedId',
-          style: AppTextStyles.titleMedium,
-          icon: const Icon(FluentIcons.chevron_down_24_regular,
-              size: 20, color: AppColors.textSecondary),
-          decoration: _cardInput(label: l10n.createPetBreed),
+          label: l10n.createPetBreed,
           validator: FormBuilderValidators.required(
               errorText: l10n.fieldRequired),
           items: [
@@ -612,6 +647,57 @@ class _BreedCard extends ConsumerWidget {
     );
   }
 }
+
+// ── Breed loading / error stubs ───────────────────────────────────────────────
+
+class _BreedLoadingField extends StatelessWidget {
+  const _BreedLoadingField({required this.label});
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(label,
+            style: AppTextStyles.bodySmall
+                .copyWith(color: AppColors.textSecondary)),
+        const SizedBox(height: AppSpacing.xs),
+        const SizedBox(
+          height: 20,
+          width: 20,
+          child: CircularProgressIndicator(strokeWidth: 2),
+        ),
+      ],
+    );
+  }
+}
+
+class _BreedErrorField extends StatelessWidget {
+  const _BreedErrorField({required this.label, required this.error});
+  final String label;
+  final String error;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(label,
+            style: AppTextStyles.bodySmall
+                .copyWith(color: AppColors.textSecondary)),
+        const SizedBox(height: AppSpacing.xs),
+        Text(error,
+            style:
+                AppTextStyles.bodySmall.copyWith(color: AppColors.error)),
+      ],
+    );
+  }
+}
+
+// ── Gender card ───────────────────────────────────────────────────────────────
 
 class _GenderCard extends StatelessWidget {
   const _GenderCard();
@@ -695,20 +781,27 @@ class _GenderChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fg = selected ? AppColors.onPrimary : AppColors.textSecondary;
-    final bg = selected ? AppColors.primary : AppColors.background;
 
     return GestureDetector(
       onTap: onTap,
+      behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
+        duration: const Duration(milliseconds: 160),
+        curve: Curves.easeOut,
         padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
+            vertical: 9, horizontal: AppSpacing.md),
         decoration: BoxDecoration(
-          color: bg,
+          color: selected ? AppColors.primary : AppColors.background,
           borderRadius: BorderRadius.circular(50),
-          border: Border.all(
-            color: selected ? AppColors.primary : AppColors.divider,
-          ),
+          boxShadow: selected
+              ? [
+                  BoxShadow(
+                    color: AppColors.primary.withValues(alpha: 0.25),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ]
+              : null,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -716,17 +809,53 @@ class _GenderChip extends StatelessWidget {
             if (asset != null)
               SvgPicture.asset(
                 asset!,
-                width: 14,
-                height: 14,
+                width: 16,
+                height: 16,
                 colorFilter: ColorFilter.mode(fg, BlendMode.srcIn),
               )
             else
               Icon(FluentIcons.question_circle_24_regular,
-                  size: 14, color: fg),
-            const SizedBox(width: 4),
+                  size: 16, color: fg),
+            const SizedBox(width: 6),
             Text(
               label,
-              style: AppTextStyles.labelSmall.copyWith(color: fg),
+              style: AppTextStyles.labelMedium.copyWith(color: fg),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── Species error ─────────────────────────────────────────────────────────────
+
+class _SpeciesError extends StatelessWidget {
+  const _SpeciesError({required this.message, required this.onRetry});
+
+  final String message;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.xl),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(FluentIcons.error_circle_24_regular,
+                size: 48, color: AppColors.error),
+            const SizedBox(height: AppSpacing.lg),
+            Text(
+              message,
+              style: context.textTheme.bodySmall,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            OutlinedButton(
+              onPressed: onRetry,
+              child: Text(context.l10n.retry),
             ),
           ],
         ),

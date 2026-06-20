@@ -15,6 +15,8 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_button.dart';
+import '../../../../shared/widgets/app_dropdown_field.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../domain/entities/new_pet.dart';
 import '../../domain/entities/species.dart';
 import '../providers/create_pet_provider.dart';
@@ -87,11 +89,11 @@ class _CreatePetPageState extends ConsumerState<CreatePetPage> {
 
       messenger
         ..hideCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text(message)));
+        ..showSnackBar(AppSnackBar.buildSuccess(message));
     } else {
       final failure = notifier.lastFailure;
       if (failure != null) {
-        context.showSnackBar(failure.localizedMessage(context.l10n));
+        context.showErrorSnackBar(failure.localizedMessage(context.l10n));
       }
     }
   }
@@ -309,15 +311,9 @@ class _FormState extends State<_Form> {
             // Animal type (species).
             _FieldCard(
               icon: FluentIcons.animal_paw_print_24_regular,
-              child: FormBuilderDropdown<int>(
+              child: AppDropdownField<int>(
                 name: 'speciesId',
-                style: AppTextStyles.titleMedium,
-                icon: const Icon(
-                  FluentIcons.chevron_down_24_regular,
-                  size: 20,
-                  color: AppColors.textSecondary,
-                ),
-                decoration: _cardInput(label: l10n.createPetSpecies),
+                label: l10n.createPetSpecies,
                 validator: FormBuilderValidators.required(
                   errorText: l10n.fieldRequired,
                 ),
@@ -413,36 +409,24 @@ class _FormState extends State<_Form> {
             // Sterilization status.
             _FieldCard(
               icon: FluentIcons.heart_pulse_24_regular,
-              child: FormBuilderDropdown<String>(
+              child: AppDropdownField<String>(
                 name: 'sterilizationStatus',
-                style: AppTextStyles.titleMedium,
-                icon: const Icon(
-                  FluentIcons.chevron_down_24_regular,
-                  size: 20,
-                  color: AppColors.textSecondary,
-                ),
-                decoration: _cardInput(
-                    label: l10n.createPetSterilizationStatus),
+                label: l10n.createPetSterilizationStatus,
                 items: [
                   DropdownMenuItem(
-                    value: 'Intact',
-                    child: Text(l10n.sterilizationStatusIntact),
-                  ),
+                      value: 'Intact',
+                      child: Text(l10n.sterilizationStatusIntact)),
                   DropdownMenuItem(
-                    value: 'Neutered',
-                    child: Text(l10n.sterilizationStatusNeutered),
-                  ),
+                      value: 'Neutered',
+                      child: Text(l10n.sterilizationStatusNeutered)),
                   DropdownMenuItem(
-                    value: 'Spayed',
-                    child: Text(l10n.sterilizationStatusSpayed),
-                  ),
+                      value: 'Spayed',
+                      child: Text(l10n.sterilizationStatusSpayed)),
                   DropdownMenuItem(
-                    value: 'Unknown',
-                    child: Text(l10n.sterilizationStatusUnknown),
-                  ),
+                      value: 'Unknown',
+                      child: Text(l10n.sterilizationStatusUnknown)),
                 ],
-                onChanged: (v) =>
-                    setState(() => _sterilizationStatus = v),
+                onChanged: (v) => setState(() => _sterilizationStatus = v),
               ),
             ),
 
@@ -671,21 +655,11 @@ class _BreedCard extends ConsumerWidget {
     if (speciesId == null) {
       return _FieldCard(
         icon: FluentIcons.ribbon_24_regular,
-        child: FormBuilderDropdown<int>(
+        child: AppDropdownField<int>(
           name: 'breedId',
+          label: l10n.createPetBreed,
+          hint: l10n.createPetSelectSpeciesFirst,
           enabled: false,
-          style: AppTextStyles.titleMedium,
-          icon: const Icon(
-            FluentIcons.chevron_down_24_regular,
-            size: 20,
-            color: AppColors.textSecondary,
-          ),
-          decoration: _cardInput(label: l10n.createPetBreed).copyWith(
-            hintText: l10n.createPetSelectSpeciesFirst,
-            hintStyle: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textTertiary,
-            ),
-          ),
           items: const [],
         ),
       );
@@ -695,35 +669,20 @@ class _BreedCard extends ConsumerWidget {
     return breedsAsync.when(
       loading: () => _FieldCard(
         icon: FluentIcons.ribbon_24_regular,
-        child: InputDecorator(
-          decoration: _cardInput(label: l10n.createPetBreed),
-          child: const SizedBox(
-            height: 20,
-            width: 20,
-            child: CircularProgressIndicator(strokeWidth: 2),
-          ),
-        ),
+        child: _BreedLoadingField(label: l10n.createPetBreed),
       ),
       error: (e, _) => _FieldCard(
         icon: FluentIcons.ribbon_24_regular,
-        child: InputDecorator(
-          decoration: _cardInput(label: l10n.createPetBreed).copyWith(
-            errorText: asFailure(e).localizedMessage(l10n),
-          ),
-          child: const SizedBox.shrink(),
+        child: _BreedErrorField(
+          label: l10n.createPetBreed,
+          error: asFailure(e).localizedMessage(l10n),
         ),
       ),
       data: (breeds) => _FieldCard(
         icon: FluentIcons.ribbon_24_regular,
-        child: FormBuilderDropdown<int>(
+        child: AppDropdownField<int>(
           name: 'breedId',
-          style: AppTextStyles.titleMedium,
-          icon: const Icon(
-            FluentIcons.chevron_down_24_regular,
-            size: 20,
-            color: AppColors.textSecondary,
-          ),
-          decoration: _cardInput(label: l10n.createPetBreed),
+          label: l10n.createPetBreed,
           validator: FormBuilderValidators.required(
             errorText: l10n.fieldRequired,
           ),
@@ -733,6 +692,55 @@ class _BreedCard extends ConsumerWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+// ── Breed loading / error stubs ───────────────────────────────────────────────
+
+class _BreedLoadingField extends StatelessWidget {
+  const _BreedLoadingField({required this.label});
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(label,
+            style: AppTextStyles.bodySmall
+                .copyWith(color: AppColors.textSecondary)),
+        const SizedBox(height: AppSpacing.xs),
+        const SizedBox(
+          height: 20,
+          width: 20,
+          child: CircularProgressIndicator(strokeWidth: 2),
+        ),
+      ],
+    );
+  }
+}
+
+class _BreedErrorField extends StatelessWidget {
+  const _BreedErrorField({required this.label, required this.error});
+  final String label;
+  final String error;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(label,
+            style: AppTextStyles.bodySmall
+                .copyWith(color: AppColors.textSecondary)),
+        const SizedBox(height: AppSpacing.xs),
+        Text(error,
+            style:
+                AppTextStyles.bodySmall.copyWith(color: AppColors.error)),
+      ],
     );
   }
 }

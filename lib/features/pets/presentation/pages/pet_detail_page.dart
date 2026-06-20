@@ -72,13 +72,11 @@ class _PetDetailPageState extends ConsumerState<PetDetailPage>
       ref.invalidate(petDetailProvider(widget.petId));
       context.pop();
       ref.read(petsProvider.notifier).removePet(widget.petId);
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text(l10n.petDeletedSuccess)));
+      context.showSuccessSnackBar(l10n.petDeletedSuccess);
     } else {
       final failure = ref.read(deletePetProvider.notifier).failure;
       if (failure != null) {
-        context.showSnackBar(failure.localizedMessage(l10n));
+        context.showErrorSnackBar(failure.localizedMessage(l10n));
       }
     }
   }
@@ -616,10 +614,7 @@ class _InfoSection extends StatelessWidget {
                 onPressed: () {
                   Clipboard.setData(
                       ClipboardData(text: pet.microchipNumber!));
-                  ScaffoldMessenger.of(context)
-                    ..hideCurrentSnackBar()
-                    ..showSnackBar(SnackBar(
-                        content: Text(context.l10n.microchipCopied)));
+                  context.showSuccessSnackBar(context.l10n.microchipCopied);
                 },
               ),
             ),
