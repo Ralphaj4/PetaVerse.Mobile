@@ -54,7 +54,8 @@ class _CreatePetPageState extends ConsumerState<CreatePetPage> {
 
     final newPet = NewPet(
       name: (values['name'] as String).trim(),
-      breedId: values['breedId'] as int,
+      speciesId: values['speciesId'] as int,
+      breedId: values['breedId'] as int?,
       dateOfBirth: values['dateOfBirth'] as DateTime,
       gender: values['gender'] as String,
       pelage: trimOrNull('pelage'),
@@ -686,13 +687,20 @@ class _BreedCardState extends ConsumerState<_BreedCard> {
         ),
       ),
       data: (breeds) {
-        if (widget.speciesId != _lastSpeciesId && breeds.isNotEmpty) {
+        // If no breeds, hide the field and leave breedId empty
+        if (breeds.isEmpty) {
+          _lastSpeciesId = widget.speciesId;
+          return const SizedBox.shrink();
+        }
+
+        if (widget.speciesId != _lastSpeciesId) {
           _lastSpeciesId = widget.speciesId;
           WidgetsBinding.instance.addPostFrameCallback((_) {
             final field = FormBuilder.of(context)?.fields['breedId'];
             field?.didChange(breeds.first.id);
           });
         }
+
         return _FieldCard(
           icon: FluentIcons.ribbon_24_regular,
           child: AppDropdownField<int>(

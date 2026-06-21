@@ -85,14 +85,7 @@ class ApiClient {
       case DioExceptionType.badResponse:
         final status = e.response?.statusCode ?? 0;
         final body = e.response?.data;
-        // The backend returns RFC 7807 ProblemDetails: the human-readable
-        // text is in `detail` (legacy `message` kept as a fallback).
-        final message = body is Map<String, dynamic>
-            ? (body['detail'] as String? ??
-                body['message'] as String? ??
-                body['title'] as String? ??
-                'Request failed')
-            : 'Request failed with status $status';
+        final message = _extractErrorMessage(body, status);
         if (status == 401) return UnauthorizedException(message);
         if (status == 403) return ForbiddenException(message);
         if (status == 404) return NotFoundException(message);
@@ -110,6 +103,25 @@ class ApiClient {
         return NetworkException(e.message ?? 'Unexpected network error');
     }
   }
+
+  String _extractErrorMessage(dynamic body, int status) {
+    if (body is! Map<String, dynamic>) return 'Request failed with status $status';
+    // RFC 7807 ProblemDetails: detail > message > title > status-based fallback
+    return body['detail'] as String? ??
+        body['message'] as String? ??
+        body['title'] as String? ??
+        _defaultErrorMessage(status);
+  }
+
+  String _defaultErrorMessage(int status) => switch (status) {
+        400 => 'Invalid request',
+        401 => 'Unauthorized',
+        403 => 'Forbidden',
+        404 => 'Not found',
+        422 => 'Validation failed',
+        >= 500 => 'Server error',
+        _ => 'Request failed',
+      };
 
   Map<String, String> _extractFieldErrors(dynamic body) {
     if (body is! Map<String, dynamic>) return const {};

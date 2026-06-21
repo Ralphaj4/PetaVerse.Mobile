@@ -18,6 +18,10 @@ abstract final class ApiEndpoints {
   // Species / breeds (lookup data for the create-pet form)
   static const String species = '/species';
   static String speciesBreeds(int speciesId) => '/species/$speciesId/breeds';
+  static String speciesVision(int speciesId) => '/species/$speciesId/vision';
+  static String speciesVisionByName(String speciesName) =>
+      '/species/vision/$speciesName';
+  static const String speciesVisionAll = '/species/vision';
   static String petMedicalRecords(String petId) =>
       '/pets/$petId/medical-records';
   static String petVaccinations(String petId) => '/pets/$petId/vaccinations';

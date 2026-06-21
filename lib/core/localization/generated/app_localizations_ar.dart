@@ -651,11 +651,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get editPetSave => 'حفظ التغييرات';
 
   @override
-  String get deletePetTitle => 'حذف الحيوان الأليف';
+  String get deletePetTitle => 'حذف ملف الحيوان الأليف';
 
   @override
   String deletePetMessage(String petName) {
-    return 'هل أنت متأكد أنك تريد حذف $petName؟ لا يمكن التراجع عن هذا الإجراء.';
+    return 'ملف هل أنت متأكد أنك تريد حذف $petName؟ لا يمكن التراجع عن هذا الإجراء.';
   }
 
   @override
@@ -686,7 +686,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get petDetailActionBook => 'حجز';
 
   @override
-  String get petDetailActionShare => 'مشاركة';
+  String get petDetailActionShare => 'Pet Vision';
 
   @override
   String get petDetailActionMore => 'المزيد';
@@ -705,4 +705,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get microchipCopied => 'تم نسخ رقم الرقاقة';
+
+  @override
+  String get photoSavedToGallery => 'تم حفظ الصورة في المعرض';
+
+  @override
+  String get couldNotSavePhoto => 'تعذر حفظ الصورة';
+
+  @override
+  String get didYouKnow => 'هل تعلم؟';
+
+  @override
+  String get gotIt => 'حسناً';
 }

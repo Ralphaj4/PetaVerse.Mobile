@@ -311,7 +311,7 @@
   "petDetailTabTimeline": "Timeline",
   "petDetailActionEdit": "Edit",
   "petDetailActionBook": "Book",
-  "petDetailActionShare": "Share",
+  "petDetailActionShare": "Pet Vision",
   "petDetailActionMore": "More",
   "petDetailDateAdded": "Date Added",
   "petDetailProfileCompleteTitle": "{petName} is all set!",
@@ -319,5 +319,9 @@
     "placeholders": { "petName": { "type": "String" } }
   },
   "petDetailProfileCompleteSubtitle": "Your pet profile is complete and information is up to date.",
-  "microchipCopied": "Microchip number copied"
+  "microchipCopied": "Microchip number copied",
+  "photoSavedToGallery": "Photo saved to gallery",
+  "couldNotSavePhoto": "Could not save photo",
+  "didYouKnow": "Did you know?",
+  "gotIt": "Got it"
 }

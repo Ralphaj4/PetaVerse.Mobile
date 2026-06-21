@@ -331,9 +331,9 @@ class _PetHeroHeader extends StatelessWidget {
                     ),
                     const SizedBox(width: AppSpacing.sm),
                     _ActionButton(
-                      icon: FluentIcons.share_24_regular,
+                      icon: FluentIcons.eye_24_regular,
                       label: l10n.petDetailActionShare,
-                      onTap: () {},
+                      onTap: () => context.push(AppRoutes.petVision),
                     ),
                     const SizedBox(width: AppSpacing.sm),
                     _ActionButton(

@@ -51,7 +51,8 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
 
     final updated = NewPet(
       name: (values['name'] as String).trim(),
-      breedId: values['breedId'] as int,
+      speciesId: values['speciesId'] as int,
+      breedId: values['breedId'] as int?,  // Optional if no breeds for this species
       dateOfBirth: values['dateOfBirth'] as DateTime,
       gender: values['gender'] as String,
       pelage: trimOrNull('pelage'),
@@ -645,8 +646,14 @@ class _BreedCardState extends ConsumerState<_BreedCard> {
         ),
       ),
       data: (breeds) {
+        // If no breeds, hide the field and leave breedId empty
+        if (breeds.isEmpty) {
+          _lastSpeciesId = widget.speciesId;
+          return const SizedBox.shrink();
+        }
+
         final speciesChanged = widget.speciesId != _lastSpeciesId;
-        if (speciesChanged && breeds.isNotEmpty) {
+        if (speciesChanged) {
           _lastSpeciesId = widget.speciesId;
           // On first load seed the pet's existing breed; on species change pick [0].
           final target = (!_initialSeeded && widget.initialBreedId != null)
@@ -657,13 +664,15 @@ class _BreedCardState extends ConsumerState<_BreedCard> {
             FormBuilder.of(context)?.fields['breedId']?.didChange(target);
           });
         }
+
         return _FieldCard(
           icon: FluentIcons.ribbon_24_regular,
           child: AppDropdownField<int>(
             name: 'breedId',
             label: l10n.createPetBreed,
             validator: FormBuilderValidators.required(
-                errorText: l10n.fieldRequired),
+              errorText: l10n.fieldRequired,
+            ),
             items: [
               for (final b in breeds)
                 DropdownMenuItem(value: b.id, child: Text(b.name)),

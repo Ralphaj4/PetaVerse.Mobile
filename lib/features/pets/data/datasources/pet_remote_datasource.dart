@@ -30,6 +30,7 @@ class PetRemoteDataSource {
       ApiEndpoints.pets,
       data: {
         'name': pet.name,
+        'speciesId': pet.speciesId,
         'breedId': pet.breedId,
         'dateOfBirth': pet.dateOfBirth.toUtc().toIso8601String(),
         'gender': pet.gender,
@@ -58,6 +59,7 @@ class PetRemoteDataSource {
       ApiEndpoints.pet(id.toString()),
       data: {
         'name': pet.name,
+        'speciesId': pet.speciesId,
         'breedId': pet.breedId,
         'dateOfBirth': pet.dateOfBirth.toUtc().toIso8601String(),
         'gender': pet.gender,

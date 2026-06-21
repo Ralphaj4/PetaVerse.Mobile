@@ -688,7 +688,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get petDetailActionBook => 'Book';
 
   @override
-  String get petDetailActionShare => 'Share';
+  String get petDetailActionShare => 'Pet Vision';
 
   @override
   String get petDetailActionMore => 'More';
@@ -707,4 +707,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get microchipCopied => 'Microchip number copied';
+
+  @override
+  String get photoSavedToGallery => 'Photo saved to gallery';
+
+  @override
+  String get couldNotSavePhoto => 'Could not save photo';
+
+  @override
+  String get didYouKnow => 'Did you know?';
+
+  @override
+  String get gotIt => 'Got it';
 }

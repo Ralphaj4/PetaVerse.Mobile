@@ -297,7 +297,7 @@
   "createPetSterilizationDate": "Date de stérilisation",
   "editPetTitle": "Modifier l'animal",
   "editPetSave": "Enregistrer les modifications",
-  "deletePetTitle": "Supprimer l'animal",
+  "deletePetTitle": "Supprimer le profile de l'animal",
   "deletePetMessage": "Êtes-vous sûr de vouloir supprimer {petName} ? Cette action est irréversible.",
   "@deletePetMessage": {
     "placeholders": { "petName": { "type": "String" } }
@@ -311,7 +311,7 @@
   "petDetailTabTimeline": "Historique",
   "petDetailActionEdit": "Modifier",
   "petDetailActionBook": "Réserver",
-  "petDetailActionShare": "Partager",
+  "petDetailActionShare": "Pet Vision",
   "petDetailActionMore": "Plus",
   "petDetailDateAdded": "Date d'ajout",
   "petDetailProfileCompleteTitle": "{petName} est prêt !",
@@ -319,5 +319,9 @@
     "placeholders": { "petName": { "type": "String" } }
   },
   "petDetailProfileCompleteSubtitle": "Le profil de votre animal est complet et à jour.",
-  "microchipCopied": "Numéro de micropuce copié"
+  "microchipCopied": "Numéro de micropuce copié",
+  "photoSavedToGallery": "Photo enregistrée dans la galerie",
+  "couldNotSavePhoto": "Impossible d'enregistrer la photo",
+  "didYouKnow": "Le saviez-vous?",
+  "gotIt": "D'accord"
 }

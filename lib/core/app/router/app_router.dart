@@ -17,6 +17,7 @@ import '../../../features/pets/presentation/pages/pet_detail_page.dart';
 import '../../../features/pets/presentation/pages/pet_list_page.dart';
 import '../../../features/pets/presentation/pages/pet_onboarding_page.dart';
 import '../../../features/pets/presentation/pages/select_pet_page.dart';
+import '../../../features/pet_vision/presentation/pages/pet_vision_page.dart';
 import '../../../features/profile/presentation/pages/profile_page.dart';
 import '../../../features/auth/presentation/providers/session_provider.dart';
 import '../../../features/onboarding/presentation/providers/onboarding_provider.dart';
@@ -56,6 +57,7 @@ abstract final class AppRoutes {
   static const String assistant = '/assistant';
   static const String lostAndFound = '/lost-and-found';
   static const String map = '/map';
+  static const String petVision = '/pet-vision';
   static const String sandbox = '/sandbox';
 }
 
@@ -401,6 +403,15 @@ GoRouter appRouter(Ref ref) {
         pageBuilder: (context, state) => AppFadeTransitionPage(
               key: state.pageKey,
               child: MapPage(args: state.extra! as MapPageArgs),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.petVision,
+        name: 'petVision',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+              key: state.pageKey,
+              child: const PetVisionPage(),
             ),
       ),
       GoRoute(

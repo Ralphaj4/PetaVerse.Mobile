@@ -56,7 +56,7 @@ final class PetsNotifierProvider
   }
 }
 
-String _$petsNotifierHash() => r'944f85fbeca2df0c9ca2156c071278654b63184a';
+String _$petsNotifierHash() => r'2de0c61c4fd4fc7bd91da8aa858d00dfb774108e';
 
 /// Gate for "does the signed-in user have a pet", driving post-auth routing.
 ///

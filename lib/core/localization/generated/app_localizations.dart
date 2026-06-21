@@ -1321,7 +1321,7 @@ abstract class AppLocalizations {
   /// No description provided for @petDetailActionShare.
   ///
   /// In en, this message translates to:
-  /// **'Share'**
+  /// **'Pet Vision'**
   String get petDetailActionShare;
 
   /// No description provided for @petDetailActionMore.
@@ -1353,6 +1353,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Microchip number copied'**
   String get microchipCopied;
+
+  /// No description provided for @photoSavedToGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo saved to gallery'**
+  String get photoSavedToGallery;
+
+  /// No description provided for @couldNotSavePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save photo'**
+  String get couldNotSavePhoto;
+
+  /// No description provided for @didYouKnow.
+  ///
+  /// In en, this message translates to:
+  /// **'Did you know?'**
+  String get didYouKnow;
+
+  /// No description provided for @gotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get gotIt;
 }
 
 class _AppLocalizationsDelegate

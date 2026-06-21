@@ -297,8 +297,8 @@
   "createPetSterilizationDate": "تاريخ التعقيم",
   "editPetTitle": "تعديل الحيوان الأليف",
   "editPetSave": "حفظ التغييرات",
-  "deletePetTitle": "حذف الحيوان الأليف",
-  "deletePetMessage": "هل أنت متأكد أنك تريد حذف {petName}؟ لا يمكن التراجع عن هذا الإجراء.",
+  "deletePetTitle": "حذف ملف الحيوان الأليف",
+  "deletePetMessage": "ملف هل أنت متأكد أنك تريد حذف {petName}؟ لا يمكن التراجع عن هذا الإجراء.",
   "@deletePetMessage": {
     "placeholders": { "petName": { "type": "String" } }
   },
@@ -311,7 +311,7 @@
   "petDetailTabTimeline": "الجدول الزمني",
   "petDetailActionEdit": "تعديل",
   "petDetailActionBook": "حجز",
-  "petDetailActionShare": "مشاركة",
+  "petDetailActionShare": "Pet Vision",
   "petDetailActionMore": "المزيد",
   "petDetailDateAdded": "تاريخ الإضافة",
   "petDetailProfileCompleteTitle": "{petName} جاهز!",
@@ -319,5 +319,9 @@
     "placeholders": { "petName": { "type": "String" } }
   },
   "petDetailProfileCompleteSubtitle": "ملف حيوانك الأليف مكتمل والمعلومات محدَّثة.",
-  "microchipCopied": "تم نسخ رقم الرقاقة"
+  "microchipCopied": "تم نسخ رقم الرقاقة",
+  "photoSavedToGallery": "تم حفظ الصورة في المعرض",
+  "couldNotSavePhoto": "تعذر حفظ الصورة",
+  "didYouKnow": "هل تعلم؟",
+  "gotIt": "حسناً"
 }

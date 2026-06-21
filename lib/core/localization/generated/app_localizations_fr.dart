@@ -656,7 +656,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get editPetSave => 'Enregistrer les modifications';
 
   @override
-  String get deletePetTitle => 'Supprimer l\'animal';
+  String get deletePetTitle => 'Supprimer le profile de l\'animal';
 
   @override
   String deletePetMessage(String petName) {
@@ -691,7 +691,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get petDetailActionBook => 'Réserver';
 
   @override
-  String get petDetailActionShare => 'Partager';
+  String get petDetailActionShare => 'Pet Vision';
 
   @override
   String get petDetailActionMore => 'Plus';
@@ -710,4 +710,16 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get microchipCopied => 'Numéro de micropuce copié';
+
+  @override
+  String get photoSavedToGallery => 'Photo enregistrée dans la galerie';
+
+  @override
+  String get couldNotSavePhoto => 'Impossible d\'enregistrer la photo';
+
+  @override
+  String get didYouKnow => 'Le saviez-vous?';
+
+  @override
+  String get gotIt => 'D\'accord';
 }
