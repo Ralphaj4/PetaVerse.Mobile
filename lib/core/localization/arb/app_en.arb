@@ -323,5 +323,7 @@
   "photoSavedToGallery": "Photo saved to gallery",
   "couldNotSavePhoto": "Could not save photo",
   "didYouKnow": "Did you know?",
-  "gotIt": "Got it"
+  "gotIt": "Got it",
+  "profile": "Profile",
+  "dateOfBirth": "Date of Birth"
 }

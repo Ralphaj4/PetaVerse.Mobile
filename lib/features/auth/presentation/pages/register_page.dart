@@ -46,7 +46,11 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     if (result.ok) {
       await context.push(
         AppRoutes.otp,
-        extra: OtpArgs(phone: _completePhone, devOtp: result.devOtp),
+        extra: OtpArgs(
+          phone: _completePhone,
+          devOtp: result.devOtp,
+          isRegister: true,
+        ),
       );
     } else {
       final failure = notifier.lastFailure;
@@ -114,7 +118,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               name: 'email',
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(labelText: l10n.emailOptional),
-              // Optional: only validate the format when something is typed.
               validator: (value) {
                 if (value == null || value.trim().isEmpty) return null;
                 return FormBuilderValidators.email(
@@ -165,7 +168,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                   ),
                 ),
               ),
-              // Not part of the DTO — used only to confirm the password match.
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return l10n.fieldRequired;

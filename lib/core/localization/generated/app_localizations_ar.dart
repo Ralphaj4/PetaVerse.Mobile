@@ -717,4 +717,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get gotIt => 'حسناً';
+
+  @override
+  String get profile => 'الملف الشخصي';
+
+  @override
+  String get dateOfBirth => 'تاريخ الميلاد';
 }

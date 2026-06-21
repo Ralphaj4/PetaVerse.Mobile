@@ -323,5 +323,7 @@
   "photoSavedToGallery": "تم حفظ الصورة في المعرض",
   "couldNotSavePhoto": "تعذر حفظ الصورة",
   "didYouKnow": "هل تعلم؟",
-  "gotIt": "حسناً"
+  "gotIt": "حسناً",
+  "profile": "الملف الشخصي",
+  "dateOfBirth": "تاريخ الميلاد"
 }

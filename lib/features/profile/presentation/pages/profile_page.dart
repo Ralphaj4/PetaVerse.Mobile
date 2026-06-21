@@ -79,7 +79,7 @@ class ProfilePage extends ConsumerWidget {
                 icon: FluentIcons.person_24_regular,
                 iconColor: AppColors.secondary,
                 label: l10n.personalInformation,
-                onTap: () {},
+                onTap: () => context.push(AppRoutes.personalInformation),
               ),
               const SizedBox(height: AppSpacing.sm),
               SettingsTile(

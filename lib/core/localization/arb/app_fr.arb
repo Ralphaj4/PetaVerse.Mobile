@@ -323,5 +323,7 @@
   "photoSavedToGallery": "Photo enregistrée dans la galerie",
   "couldNotSavePhoto": "Impossible d'enregistrer la photo",
   "didYouKnow": "Le saviez-vous?",
-  "gotIt": "D'accord"
+  "gotIt": "D'accord",
+  "profile": "Profil",
+  "dateOfBirth": "Date de naissance"
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../features/auth/presentation/pages/avatar_setup_page.dart';
 import '../../../features/auth/presentation/pages/change_password_page.dart';
 import '../../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../../features/auth/presentation/pages/login_page.dart';
@@ -19,6 +20,7 @@ import '../../../features/pets/presentation/pages/pet_onboarding_page.dart';
 import '../../../features/pets/presentation/pages/select_pet_page.dart';
 import '../../../features/pet_vision/presentation/pages/pet_vision_page.dart';
 import '../../../features/profile/presentation/pages/profile_page.dart';
+import '../../../features/profile/presentation/pages/personal_information_page.dart';
 import '../../../features/auth/presentation/providers/session_provider.dart';
 import '../../../features/onboarding/presentation/providers/onboarding_provider.dart';
 import '../../../features/pets/presentation/providers/pets_provider.dart';
@@ -39,6 +41,7 @@ abstract final class AppRoutes {
   static const String login = '/login';
   static const String register = '/register';
   static const String otp = '/otp';
+  static const String avatarSetup = '/avatar-setup';
   static const String forgotPassword = '/forgot-password';
   static const String changePassword = '/change-password';
   static const String petOnboarding = '/pet-onboarding';
@@ -53,6 +56,7 @@ abstract final class AppRoutes {
   static const String community = '/community';
   static const String care = '/care';
   static const String profile = '/profile';
+  static const String personalInformation = '/personal-information';
   static const String services = '/services';
   static const String assistant = '/assistant';
   static const String lostAndFound = '/lost-and-found';
@@ -93,6 +97,7 @@ GoRouter appRouter(Ref ref) {
     AppRoutes.login,
     AppRoutes.register,
     AppRoutes.otp,
+    AppRoutes.avatarSetup,
     AppRoutes.forgotPassword,
   };
 
@@ -118,10 +123,12 @@ GoRouter appRouter(Ref ref) {
       final onAuthRoute = authRoutes.contains(location);
       final onPetOnboarding = location == AppRoutes.petOnboarding;
       final onSelectPet = location == AppRoutes.selectPet;
+      final onAvatarSetup = location == AppRoutes.avatarSetup;
       // The create-pet form is part of the "no pet yet" flow, so a pet-less
       // user is allowed to sit on it without being bounced to onboarding.
+      // Avatar setup is also part of the post-register flow.
       final onPetCreation =
-          onPetOnboarding || location == AppRoutes.createPet;
+          onPetOnboarding || location == AppRoutes.createPet || onAvatarSetup;
 
       // The post-auth landing for a logged-in user. The pet gate must resolve
       // BEFORE we ever allow /home — otherwise home flashes for a frame before
@@ -153,6 +160,9 @@ GoRouter appRouter(Ref ref) {
       // auth screen (its spinner is up) until it does — never bounce to the
       // splash, which would flash between login and the real destination.
       if (loggedIn && onAuthRoute) {
+        // Avatar setup (post-register) is a special auth route that transitions
+        // itself when ready — never bounce it to pet landing.
+        if (onAvatarSetup) return null;
         if (!pets.ready) return null; // hold on the auth page; it will route.
         return petLanding();
       }
@@ -233,9 +243,19 @@ GoRouter appRouter(Ref ref) {
             child: OtpVerificationPage(
               phone: args.phone,
               devOtp: args.devOtp,
+              isRegister: args.isRegister,
             ),
           );
         },
+      ),
+      GoRoute(
+        path: AppRoutes.avatarSetup,
+        name: 'avatar-setup',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+          key: state.pageKey,
+          child: const AvatarSetupPage(),
+        ),
       ),
       GoRoute(
         path: AppRoutes.forgotPassword,
@@ -368,6 +388,15 @@ GoRouter appRouter(Ref ref) {
             ],
           ),
         ],
+      ),
+      GoRoute(
+        path: AppRoutes.personalInformation,
+        name: 'personalInformation',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+              key: state.pageKey,
+              child: const PersonalInformationPage(),
+            ),
       ),
       GoRoute(
         path: AppRoutes.services,

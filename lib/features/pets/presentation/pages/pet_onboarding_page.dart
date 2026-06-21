@@ -171,7 +171,7 @@ class _AddFirstPet extends StatelessWidget {
               variant: AppButtonVariant.primary,
               // Opens the create-pet form. On success it refreshes the pet
               // gate, so the router advances from onboarding to home.
-              onPressed: () => context.push(AppRoutes.createPet),
+              onPressed: () => context.go(AppRoutes.createPet),
             ),
             const SizedBox(height: AppSpacing.xl),
           ],

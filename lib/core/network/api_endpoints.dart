@@ -11,6 +11,10 @@ abstract final class ApiEndpoints {
   static const String resetPassword = '/auth/reset-password';
   static const String changePassword = '/auth/change-password';
 
+  // Users
+  static const String usersMe = '/users/me';
+  static const String usersProfile = '/users/profile';
+
   // Pets
   static const String pets = '/pets';
   static String pet(String id) => '/pets/$id';
@@ -46,4 +50,9 @@ abstract final class ApiEndpoints {
   static String post(String id) => '/community/posts/$id';
   static String postLike(String id) => '/community/posts/$id/like';
   static String postComments(String id) => '/community/posts/$id/comments';
+
+  // Media (avatars, pet documents, etc.)
+  static const String mediaUploadUrl = '/media/upload-url';
+  static String mediaConfirm(String assetId) => '/media/$assetId/confirm';
+  static String media(String assetId) => '/media/$assetId';
 }

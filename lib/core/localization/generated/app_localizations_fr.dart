@@ -722,4 +722,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get gotIt => 'D\'accord';
+
+  @override
+  String get profile => 'Profil';
+
+  @override
+  String get dateOfBirth => 'Date de naissance';
 }
