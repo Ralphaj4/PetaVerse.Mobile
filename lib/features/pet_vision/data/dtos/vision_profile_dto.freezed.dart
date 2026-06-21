@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$VisionProfileDto {
 
- int get id; int get speciesId; String get speciesName; int get version; List<List<double>> get colorMatrix; double get brightness; double get contrast; double get saturation; String get description; String get funFact; DateTime get effectiveDate; bool get isActive;
+ int get id; int get speciesId; String get speciesName; int get version; List<List<double>> get colorMatrix; double get brightness; double get contrast; double get saturation; String get description; String get funFact; bool get isActive;
 /// Create a copy of VisionProfileDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $VisionProfileDtoCopyWith<VisionProfileDto> get copyWith => _$VisionProfileDtoCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is VisionProfileDto&&(identical(other.id, id) || other.id == id)&&(identical(other.speciesId, speciesId) || other.speciesId == speciesId)&&(identical(other.speciesName, speciesName) || other.speciesName == speciesName)&&(identical(other.version, version) || other.version == version)&&const DeepCollectionEquality().equals(other.colorMatrix, colorMatrix)&&(identical(other.brightness, brightness) || other.brightness == brightness)&&(identical(other.contrast, contrast) || other.contrast == contrast)&&(identical(other.saturation, saturation) || other.saturation == saturation)&&(identical(other.description, description) || other.description == description)&&(identical(other.funFact, funFact) || other.funFact == funFact)&&(identical(other.effectiveDate, effectiveDate) || other.effectiveDate == effectiveDate)&&(identical(other.isActive, isActive) || other.isActive == isActive));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VisionProfileDto&&(identical(other.id, id) || other.id == id)&&(identical(other.speciesId, speciesId) || other.speciesId == speciesId)&&(identical(other.speciesName, speciesName) || other.speciesName == speciesName)&&(identical(other.version, version) || other.version == version)&&const DeepCollectionEquality().equals(other.colorMatrix, colorMatrix)&&(identical(other.brightness, brightness) || other.brightness == brightness)&&(identical(other.contrast, contrast) || other.contrast == contrast)&&(identical(other.saturation, saturation) || other.saturation == saturation)&&(identical(other.description, description) || other.description == description)&&(identical(other.funFact, funFact) || other.funFact == funFact)&&(identical(other.isActive, isActive) || other.isActive == isActive));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,speciesId,speciesName,version,const DeepCollectionEquality().hash(colorMatrix),brightness,contrast,saturation,description,funFact,effectiveDate,isActive);
+int get hashCode => Object.hash(runtimeType,id,speciesId,speciesName,version,const DeepCollectionEquality().hash(colorMatrix),brightness,contrast,saturation,description,funFact,isActive);
 
 @override
 String toString() {
-  return 'VisionProfileDto(id: $id, speciesId: $speciesId, speciesName: $speciesName, version: $version, colorMatrix: $colorMatrix, brightness: $brightness, contrast: $contrast, saturation: $saturation, description: $description, funFact: $funFact, effectiveDate: $effectiveDate, isActive: $isActive)';
+  return 'VisionProfileDto(id: $id, speciesId: $speciesId, speciesName: $speciesName, version: $version, colorMatrix: $colorMatrix, brightness: $brightness, contrast: $contrast, saturation: $saturation, description: $description, funFact: $funFact, isActive: $isActive)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $VisionProfileDtoCopyWith<$Res>  {
   factory $VisionProfileDtoCopyWith(VisionProfileDto value, $Res Function(VisionProfileDto) _then) = _$VisionProfileDtoCopyWithImpl;
 @useResult
 $Res call({
- int id, int speciesId, String speciesName, int version, List<List<double>> colorMatrix, double brightness, double contrast, double saturation, String description, String funFact, DateTime effectiveDate, bool isActive
+ int id, int speciesId, String speciesName, int version, List<List<double>> colorMatrix, double brightness, double contrast, double saturation, String description, String funFact, bool isActive
 });
 
 
@@ -65,7 +65,7 @@ class _$VisionProfileDtoCopyWithImpl<$Res>
 
 /// Create a copy of VisionProfileDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? speciesId = null,Object? speciesName = null,Object? version = null,Object? colorMatrix = null,Object? brightness = null,Object? contrast = null,Object? saturation = null,Object? description = null,Object? funFact = null,Object? effectiveDate = null,Object? isActive = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? speciesId = null,Object? speciesName = null,Object? version = null,Object? colorMatrix = null,Object? brightness = null,Object? contrast = null,Object? saturation = null,Object? description = null,Object? funFact = null,Object? isActive = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,speciesId: null == speciesId ? _self.speciesId : speciesId // ignore: cast_nullable_to_non_nullable
@@ -77,8 +77,7 @@ as double,contrast: null == contrast ? _self.contrast : contrast // ignore: cast
 as double,saturation: null == saturation ? _self.saturation : saturation // ignore: cast_nullable_to_non_nullable
 as double,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,funFact: null == funFact ? _self.funFact : funFact // ignore: cast_nullable_to_non_nullable
-as String,effectiveDate: null == effectiveDate ? _self.effectiveDate : effectiveDate // ignore: cast_nullable_to_non_nullable
-as DateTime,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as String,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -164,10 +163,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int speciesId,  String speciesName,  int version,  List<List<double>> colorMatrix,  double brightness,  double contrast,  double saturation,  String description,  String funFact,  DateTime effectiveDate,  bool isActive)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int speciesId,  String speciesName,  int version,  List<List<double>> colorMatrix,  double brightness,  double contrast,  double saturation,  String description,  String funFact,  bool isActive)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _VisionProfileDto() when $default != null:
-return $default(_that.id,_that.speciesId,_that.speciesName,_that.version,_that.colorMatrix,_that.brightness,_that.contrast,_that.saturation,_that.description,_that.funFact,_that.effectiveDate,_that.isActive);case _:
+return $default(_that.id,_that.speciesId,_that.speciesName,_that.version,_that.colorMatrix,_that.brightness,_that.contrast,_that.saturation,_that.description,_that.funFact,_that.isActive);case _:
   return orElse();
 
 }
@@ -185,10 +184,10 @@ return $default(_that.id,_that.speciesId,_that.speciesName,_that.version,_that.c
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int speciesId,  String speciesName,  int version,  List<List<double>> colorMatrix,  double brightness,  double contrast,  double saturation,  String description,  String funFact,  DateTime effectiveDate,  bool isActive)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int speciesId,  String speciesName,  int version,  List<List<double>> colorMatrix,  double brightness,  double contrast,  double saturation,  String description,  String funFact,  bool isActive)  $default,) {final _that = this;
 switch (_that) {
 case _VisionProfileDto():
-return $default(_that.id,_that.speciesId,_that.speciesName,_that.version,_that.colorMatrix,_that.brightness,_that.contrast,_that.saturation,_that.description,_that.funFact,_that.effectiveDate,_that.isActive);case _:
+return $default(_that.id,_that.speciesId,_that.speciesName,_that.version,_that.colorMatrix,_that.brightness,_that.contrast,_that.saturation,_that.description,_that.funFact,_that.isActive);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -205,10 +204,10 @@ return $default(_that.id,_that.speciesId,_that.speciesName,_that.version,_that.c
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int speciesId,  String speciesName,  int version,  List<List<double>> colorMatrix,  double brightness,  double contrast,  double saturation,  String description,  String funFact,  DateTime effectiveDate,  bool isActive)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int speciesId,  String speciesName,  int version,  List<List<double>> colorMatrix,  double brightness,  double contrast,  double saturation,  String description,  String funFact,  bool isActive)?  $default,) {final _that = this;
 switch (_that) {
 case _VisionProfileDto() when $default != null:
-return $default(_that.id,_that.speciesId,_that.speciesName,_that.version,_that.colorMatrix,_that.brightness,_that.contrast,_that.saturation,_that.description,_that.funFact,_that.effectiveDate,_that.isActive);case _:
+return $default(_that.id,_that.speciesId,_that.speciesName,_that.version,_that.colorMatrix,_that.brightness,_that.contrast,_that.saturation,_that.description,_that.funFact,_that.isActive);case _:
   return null;
 
 }
@@ -220,7 +219,7 @@ return $default(_that.id,_that.speciesId,_that.speciesName,_that.version,_that.c
 @JsonSerializable()
 
 class _VisionProfileDto implements VisionProfileDto {
-  const _VisionProfileDto({required this.id, required this.speciesId, required this.speciesName, required this.version, required final  List<List<double>> colorMatrix, required this.brightness, required this.contrast, required this.saturation, required this.description, required this.funFact, required this.effectiveDate, required this.isActive}): _colorMatrix = colorMatrix;
+  const _VisionProfileDto({required this.id, required this.speciesId, required this.speciesName, required this.version, required final  List<List<double>> colorMatrix, required this.brightness, required this.contrast, required this.saturation, required this.description, required this.funFact, required this.isActive}): _colorMatrix = colorMatrix;
   factory _VisionProfileDto.fromJson(Map<String, dynamic> json) => _$VisionProfileDtoFromJson(json);
 
 @override final  int id;
@@ -239,7 +238,6 @@ class _VisionProfileDto implements VisionProfileDto {
 @override final  double saturation;
 @override final  String description;
 @override final  String funFact;
-@override final  DateTime effectiveDate;
 @override final  bool isActive;
 
 /// Create a copy of VisionProfileDto
@@ -255,16 +253,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VisionProfileDto&&(identical(other.id, id) || other.id == id)&&(identical(other.speciesId, speciesId) || other.speciesId == speciesId)&&(identical(other.speciesName, speciesName) || other.speciesName == speciesName)&&(identical(other.version, version) || other.version == version)&&const DeepCollectionEquality().equals(other._colorMatrix, _colorMatrix)&&(identical(other.brightness, brightness) || other.brightness == brightness)&&(identical(other.contrast, contrast) || other.contrast == contrast)&&(identical(other.saturation, saturation) || other.saturation == saturation)&&(identical(other.description, description) || other.description == description)&&(identical(other.funFact, funFact) || other.funFact == funFact)&&(identical(other.effectiveDate, effectiveDate) || other.effectiveDate == effectiveDate)&&(identical(other.isActive, isActive) || other.isActive == isActive));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VisionProfileDto&&(identical(other.id, id) || other.id == id)&&(identical(other.speciesId, speciesId) || other.speciesId == speciesId)&&(identical(other.speciesName, speciesName) || other.speciesName == speciesName)&&(identical(other.version, version) || other.version == version)&&const DeepCollectionEquality().equals(other._colorMatrix, _colorMatrix)&&(identical(other.brightness, brightness) || other.brightness == brightness)&&(identical(other.contrast, contrast) || other.contrast == contrast)&&(identical(other.saturation, saturation) || other.saturation == saturation)&&(identical(other.description, description) || other.description == description)&&(identical(other.funFact, funFact) || other.funFact == funFact)&&(identical(other.isActive, isActive) || other.isActive == isActive));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,speciesId,speciesName,version,const DeepCollectionEquality().hash(_colorMatrix),brightness,contrast,saturation,description,funFact,effectiveDate,isActive);
+int get hashCode => Object.hash(runtimeType,id,speciesId,speciesName,version,const DeepCollectionEquality().hash(_colorMatrix),brightness,contrast,saturation,description,funFact,isActive);
 
 @override
 String toString() {
-  return 'VisionProfileDto(id: $id, speciesId: $speciesId, speciesName: $speciesName, version: $version, colorMatrix: $colorMatrix, brightness: $brightness, contrast: $contrast, saturation: $saturation, description: $description, funFact: $funFact, effectiveDate: $effectiveDate, isActive: $isActive)';
+  return 'VisionProfileDto(id: $id, speciesId: $speciesId, speciesName: $speciesName, version: $version, colorMatrix: $colorMatrix, brightness: $brightness, contrast: $contrast, saturation: $saturation, description: $description, funFact: $funFact, isActive: $isActive)';
 }
 
 
@@ -275,7 +273,7 @@ abstract mixin class _$VisionProfileDtoCopyWith<$Res> implements $VisionProfileD
   factory _$VisionProfileDtoCopyWith(_VisionProfileDto value, $Res Function(_VisionProfileDto) _then) = __$VisionProfileDtoCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int speciesId, String speciesName, int version, List<List<double>> colorMatrix, double brightness, double contrast, double saturation, String description, String funFact, DateTime effectiveDate, bool isActive
+ int id, int speciesId, String speciesName, int version, List<List<double>> colorMatrix, double brightness, double contrast, double saturation, String description, String funFact, bool isActive
 });
 
 
@@ -292,7 +290,7 @@ class __$VisionProfileDtoCopyWithImpl<$Res>
 
 /// Create a copy of VisionProfileDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? speciesId = null,Object? speciesName = null,Object? version = null,Object? colorMatrix = null,Object? brightness = null,Object? contrast = null,Object? saturation = null,Object? description = null,Object? funFact = null,Object? effectiveDate = null,Object? isActive = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? speciesId = null,Object? speciesName = null,Object? version = null,Object? colorMatrix = null,Object? brightness = null,Object? contrast = null,Object? saturation = null,Object? description = null,Object? funFact = null,Object? isActive = null,}) {
   return _then(_VisionProfileDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,speciesId: null == speciesId ? _self.speciesId : speciesId // ignore: cast_nullable_to_non_nullable
@@ -304,8 +302,7 @@ as double,contrast: null == contrast ? _self.contrast : contrast // ignore: cast
 as double,saturation: null == saturation ? _self.saturation : saturation // ignore: cast_nullable_to_non_nullable
 as double,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,funFact: null == funFact ? _self.funFact : funFact // ignore: cast_nullable_to_non_nullable
-as String,effectiveDate: null == effectiveDate ? _self.effectiveDate : effectiveDate // ignore: cast_nullable_to_non_nullable
-as DateTime,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as String,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

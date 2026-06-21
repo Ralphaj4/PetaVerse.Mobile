@@ -23,7 +23,6 @@ _VisionProfileDto _$VisionProfileDtoFromJson(Map<String, dynamic> json) =>
       saturation: (json['saturation'] as num).toDouble(),
       description: json['description'] as String,
       funFact: json['funFact'] as String,
-      effectiveDate: DateTime.parse(json['effectiveDate'] as String),
       isActive: json['isActive'] as bool,
     );
 
@@ -39,6 +38,5 @@ Map<String, dynamic> _$VisionProfileDtoToJson(_VisionProfileDto instance) =>
       'saturation': instance.saturation,
       'description': instance.description,
       'funFact': instance.funFact,
-      'effectiveDate': instance.effectiveDate.toIso8601String(),
       'isActive': instance.isActive,
     };

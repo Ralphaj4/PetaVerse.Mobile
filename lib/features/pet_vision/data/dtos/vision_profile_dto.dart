@@ -18,7 +18,6 @@ abstract class VisionProfileDto with _$VisionProfileDto {
     required double saturation,
     required String description,
     required String funFact,
-    required DateTime effectiveDate,
     required bool isActive,
   }) = _VisionProfileDto;
 
