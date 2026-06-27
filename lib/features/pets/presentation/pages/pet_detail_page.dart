@@ -211,7 +211,7 @@ class _PetHeroHeader extends StatelessWidget {
             child: Hero(
               tag: 'pet-image-$petId',
               child: AppCachedImage(
-                imageUrl: null,
+                imageUrl: pet?.avatarUrl,
                 height: double.infinity,
                 width: double.infinity,
                 borderRadius: BorderRadius.zero,

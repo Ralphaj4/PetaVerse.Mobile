@@ -57,30 +57,12 @@
       }
     }
   },
-  "goodMorning": "صباح الخير، {name} 👋",
-  "@goodMorning": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "goodAfternoon": "مساء الخير، {name} 👋",
-  "@goodAfternoon": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "goodEvening": "مساء الخير، {name} 👋",
-  "@goodEvening": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
+  "goodMorning": "صباح الخير 👋",
+  "@goodMorning": {},
+  "goodAfternoon": "مساء الخير 👋",
+  "@goodAfternoon": {},
+  "goodEvening": "مساء الخير 👋",
+  "@goodEvening": {},
   "petDoingGreat": "{petName} بحالة رائعة اليوم! 🐾",
   "@petDoingGreat": {
     "placeholders": {
@@ -167,6 +149,16 @@
   "notificationsSupport": "الإشعارات والدعم",
   "helpCenter": "مركز المساعدة",
   "privacyPolicy": "سياسة الخصوصية",
+  "preferences": "التفضيلات",
+  "language": "اللغة",
+  "changeLanguage": "اللغة",
+  "changeLanguageSubtitle": "اختر اللغة التي تريد استخدامها في التطبيق",
+  "privacySettings": "إعدادات الخصوصية",
+  "support": "الدعم",
+  "contactUs": "اتصل بنا",
+  "reportProblem": "الإبلاغ عن مشكلة",
+  "termsPrivacy": "الشروط والخصوصية",
+  "termsConditions": "الشروط والأحكام",
   "toggleOn": "مفعّل",
   "toggleOff": "معطّل",
   "logOut": "تسجيل الخروج",
@@ -325,5 +317,32 @@
   "didYouKnow": "هل تعلم؟",
   "gotIt": "حسناً",
   "profile": "الملف الشخصي",
-  "dateOfBirth": "تاريخ الميلاد"
+  "dateOfBirth": "تاريخ الميلاد",
+  "personalInformationSubtitle": "إدارة بياناتك الشخصية ومعلومات الاتصال",
+  "basicInformation": "المعلومات الأساسية",
+  "contactDetails": "معلومات الاتصال",
+  "accountDetails": "تفاصيل الحساب",
+  "verified": "موثَّق",
+  "unverified": "غير موثَّق",
+  "selectDate": "اختر التاريخ",
+  "noEmailAdded": "لم تتم إضافة بريد إلكتروني",
+  "memberSince": "عضو منذ {date}",
+  "@memberSince": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "emailPendingVerification": "في انتظار التحقق: {email}",
+  "@emailPendingVerification": {
+    "placeholders": { "email": { "type": "String" } }
+  },
+  "profileUpdated": "تم تحديث الملف الشخصي",
+  "changePhoto": "تغيير الصورة",
+  "camera": "الكاميرا",
+  "gallery": "المعرض",
+  "photoUpdated": "تم تحديث صورة الملف الشخصي",
+  "photoUploadFailed": "تعذر تحديث صورتك. يرجى المحاولة مرة أخرى.",
+  "skipForNow": "تخطٍ الآن",
+  "continueLabel": "متابعة",
+  "petAvatarSetupTitle": "إضافة صورة",
+  "petAvatarSetupSubtitle": "أضف صورة لحيوانك الأليف. هذا اختياري ويمكنك تغييره في أي وقت.",
+  "petAvatarUploadHint": "تحميل صورة"
 }

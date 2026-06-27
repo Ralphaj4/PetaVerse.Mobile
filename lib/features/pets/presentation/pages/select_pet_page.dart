@@ -118,6 +118,7 @@ class _SelectGrid extends StatelessWidget {
         name: pet.name,
         breed: pet.breedOrSpecies,
         ageYears: pet.ageInYears,
+        imageUrl: pet.avatarUrl,
         onTap: () => onSelect(pet),
       );
 }

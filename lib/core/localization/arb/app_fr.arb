@@ -57,30 +57,12 @@
       }
     }
   },
-  "goodMorning": "Bonjour, {name} 👋",
-  "@goodMorning": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "goodAfternoon": "Bon après-midi, {name} 👋",
-  "@goodAfternoon": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "goodEvening": "Bonsoir, {name} 👋",
-  "@goodEvening": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
+  "goodMorning": "Bonjour 👋",
+  "@goodMorning": {},
+  "goodAfternoon": "Bon après-midi 👋",
+  "@goodAfternoon": {},
+  "goodEvening": "Bonsoir 👋",
+  "@goodEvening": {},
   "petDoingGreat": "{petName} va très bien aujourd'hui ! 🐾",
   "@petDoingGreat": {
     "placeholders": {
@@ -167,6 +149,16 @@
   "notificationsSupport": "Notifications & Assistance",
   "helpCenter": "Centre d'Aide",
   "privacyPolicy": "Politique de Confidentialité",
+  "preferences": "Préférences",
+  "language": "Langue",
+  "changeLanguage": "Langue",
+  "changeLanguageSubtitle": "Choisissez la langue que vous souhaitez utiliser dans l'application",
+  "privacySettings": "Paramètres de Confidentialité",
+  "support": "Assistance",
+  "contactUs": "Nous Contacter",
+  "reportProblem": "Signaler un Problème",
+  "termsPrivacy": "Conditions & Confidentialité",
+  "termsConditions": "Conditions Générales",
   "toggleOn": "Activé",
   "toggleOff": "Désactivé",
   "logOut": "Se Déconnecter",
@@ -325,5 +317,32 @@
   "didYouKnow": "Le saviez-vous?",
   "gotIt": "D'accord",
   "profile": "Profil",
-  "dateOfBirth": "Date de naissance"
+  "dateOfBirth": "Date de naissance",
+  "personalInformationSubtitle": "Gérez vos informations personnelles et vos coordonnées",
+  "basicInformation": "Informations de base",
+  "contactDetails": "Coordonnées",
+  "accountDetails": "Détails du compte",
+  "verified": "Vérifié",
+  "unverified": "Non vérifié",
+  "selectDate": "Choisir une date",
+  "noEmailAdded": "Aucun e-mail ajouté",
+  "memberSince": "Membre depuis {date}",
+  "@memberSince": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "emailPendingVerification": "En attente de vérification : {email}",
+  "@emailPendingVerification": {
+    "placeholders": { "email": { "type": "String" } }
+  },
+  "profileUpdated": "Profil mis à jour",
+  "changePhoto": "Changer la photo",
+  "camera": "Appareil photo",
+  "gallery": "Galerie",
+  "photoUpdated": "Photo de profil mise à jour",
+  "photoUploadFailed": "Impossible de mettre à jour votre photo. Veuillez réessayer.",
+  "skipForNow": "Ignorer pour l'instant",
+  "continueLabel": "Continuer",
+  "petAvatarSetupTitle": "Ajouter une photo",
+  "petAvatarSetupSubtitle": "Ajoutez une photo de votre animal. C'est facultatif et vous pouvez la changer à tout moment.",
+  "petAvatarUploadHint": "Télécharger une photo"
 }

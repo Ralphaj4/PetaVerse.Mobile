@@ -48,7 +48,7 @@ final class ApiClientProvider
   }
 }
 
-String _$apiClientHash() => r'c1ba1ad44459aa513e132310873da9aca5c28c1f';
+String _$apiClientHash() => r'f9fd6596b69dd77dd712d092f53ce6323c9a6abf';
 
 @ProviderFor(loggerService)
 final loggerServiceProvider = LoggerServiceProvider._();

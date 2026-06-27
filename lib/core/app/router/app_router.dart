@@ -12,8 +12,10 @@ import '../../../features/assistant/presentation/pages/assistant_page.dart';
 import '../../../features/home/presentation/pages/home_page.dart';
 import '../../../features/lost_and_found/presentation/pages/lost_and_found_page.dart';
 import '../../../features/onboarding/presentation/pages/onboarding_page.dart';
+import '../../../features/pets/domain/entities/pet_ref.dart';
 import '../../../features/pets/presentation/pages/create_pet_page.dart';
 import '../../../features/pets/presentation/pages/edit_pet_page.dart';
+import '../../../features/pets/presentation/pages/pet_avatar_setup_page.dart';
 import '../../../features/pets/presentation/pages/pet_detail_page.dart';
 import '../../../features/pets/presentation/pages/pet_list_page.dart';
 import '../../../features/pets/presentation/pages/pet_onboarding_page.dart';
@@ -21,6 +23,7 @@ import '../../../features/pets/presentation/pages/select_pet_page.dart';
 import '../../../features/pet_vision/presentation/pages/pet_vision_page.dart';
 import '../../../features/profile/presentation/pages/profile_page.dart';
 import '../../../features/profile/presentation/pages/personal_information_page.dart';
+import '../../../features/profile/presentation/pages/change_language_page.dart';
 import '../../../features/auth/presentation/providers/session_provider.dart';
 import '../../../features/onboarding/presentation/providers/onboarding_provider.dart';
 import '../../../features/pets/presentation/providers/pets_provider.dart';
@@ -46,6 +49,8 @@ abstract final class AppRoutes {
   static const String changePassword = '/change-password';
   static const String petOnboarding = '/pet-onboarding';
   static const String createPet = '/create-pet';
+  static String petAvatarSetupPath(int id) => '/pet-avatar-setup/$id';
+  static const String petAvatarSetup = '/pet-avatar-setup/:id';
   static const String selectPet = '/select-pet';
   static const String petList = '/pet-list';
   static String petDetailPath(int id) => '/pet-detail/$id';
@@ -57,6 +62,7 @@ abstract final class AppRoutes {
   static const String care = '/care';
   static const String profile = '/profile';
   static const String personalInformation = '/personal-information';
+  static const String changeLanguage = '/change-language';
   static const String services = '/services';
   static const String assistant = '/assistant';
   static const String lostAndFound = '/lost-and-found';
@@ -126,9 +132,14 @@ GoRouter appRouter(Ref ref) {
       final onAvatarSetup = location == AppRoutes.avatarSetup;
       // The create-pet form is part of the "no pet yet" flow, so a pet-less
       // user is allowed to sit on it without being bounced to onboarding.
-      // Avatar setup is also part of the post-register flow.
-      final onPetCreation =
-          onPetOnboarding || location == AppRoutes.createPet || onAvatarSetup;
+      // Avatar setup is also part of the post-register flow. Pet avatar setup
+      // follows create-pet (before the gate is committed), so it must be
+      // allowed too — match on the prefix since it carries a :id segment.
+      final onPetAvatarSetup = location.startsWith('/pet-avatar-setup/');
+      final onPetCreation = onPetOnboarding ||
+          location == AppRoutes.createPet ||
+          onAvatarSetup ||
+          onPetAvatarSetup;
 
       // The post-auth landing for a logged-in user. The pet gate must resolve
       // BEFORE we ever allow /home — otherwise home flashes for a frame before
@@ -294,6 +305,19 @@ GoRouter appRouter(Ref ref) {
             ),
       ),
       GoRoute(
+        path: AppRoutes.petAvatarSetup,
+        name: 'petAvatarSetup',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final petId = int.parse(state.pathParameters['id']!);
+          final petRef = state.extra as PetRef?;
+          return AppTransitionPage(
+            key: state.pageKey,
+            child: PetAvatarSetupPage(petId: petId, petRef: petRef),
+          );
+        },
+      ),
+      GoRoute(
         path: AppRoutes.selectPet,
         name: 'selectPet',
         parentNavigatorKey: _rootNavigatorKey,
@@ -396,6 +420,15 @@ GoRouter appRouter(Ref ref) {
         pageBuilder: (context, state) => AppTransitionPage(
               key: state.pageKey,
               child: const PersonalInformationPage(),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.changeLanguage,
+        name: 'changeLanguage',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+              key: state.pageKey,
+              child: const ChangeLanguagePage(),
             ),
       ),
       GoRoute(

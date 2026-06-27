@@ -120,7 +120,7 @@ class _AvatarSetupPageState extends ConsumerState<AvatarSetupPage> {
       await uploadService.uploadFile(
         file: _avatarFile!,
         contentType: 'image/jpeg',
-        category: MediaCategory.avatar,
+        category: MediaCategory.userAvatar,
         fileName: 'avatar.jpg',
       );
 

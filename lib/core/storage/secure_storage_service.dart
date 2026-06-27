@@ -15,6 +15,12 @@ class SecureStorageService {
 
   static const String _accessTokenKey = 'access_token';
   static const String _refreshTokenKey = 'refresh_token';
+  static const String _cultureKey = 'culture';
+
+  Future<String?> readCulture() => _storage.read(key: _cultureKey);
+
+  Future<void> saveCulture(String culture) =>
+      _storage.write(key: _cultureKey, value: culture);
 
   Future<String?> readAccessToken() => _storage.read(key: _accessTokenKey);
 

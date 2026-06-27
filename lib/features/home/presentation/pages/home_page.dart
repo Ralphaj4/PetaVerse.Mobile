@@ -12,6 +12,7 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/section_header.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
+import '../../../profile/presentation/providers/user_provider.dart';
 import '../widgets/appointment_card.dart';
 import '../widgets/home_hero_banner.dart';
 import '../widgets/pet_stat_card.dart';
@@ -25,7 +26,12 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
-    final petName = ref.watch(petsProvider).currentPet?.name ?? '';
+    final currentPet = ref.watch(petsProvider).currentPet;
+    final petName = currentPet?.name ?? '';
+    final user = ref.watch(userProvider).value;
+    final userName = user == null
+        ? ''
+        : '${user.firstName} ${user.lastName}'.trim();
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
@@ -35,8 +41,10 @@ class HomePage extends ConsumerWidget {
           child: Column(
             children: [
               HomeHeroBanner(
-                userName: 'Sarah',
+                userName: userName,
+                avatarUrl: user?.avatarUrl,
                 petName: petName,
+                petImageUrl: currentPet?.imagePath,
                 healthScore: 92,
                 healthStatusLabel: l10n.healthExcellent,
                 nextVisitLabel: 'Jun 21, 2026',

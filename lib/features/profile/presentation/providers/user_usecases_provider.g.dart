@@ -9,53 +9,102 @@ part of 'user_usecases_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(getUserProfileUsecase)
-final getUserProfileUsecaseProvider = GetUserProfileUsecaseProvider._();
+@ProviderFor(getCachedUserProfileUsecase)
+final getCachedUserProfileUsecaseProvider =
+    GetCachedUserProfileUsecaseProvider._();
 
-final class GetUserProfileUsecaseProvider
+final class GetCachedUserProfileUsecaseProvider
     extends
         $FunctionalProvider<
-          GetUserProfileUsecase,
-          GetUserProfileUsecase,
-          GetUserProfileUsecase
+          GetCachedUserProfileUsecase,
+          GetCachedUserProfileUsecase,
+          GetCachedUserProfileUsecase
         >
-    with $Provider<GetUserProfileUsecase> {
-  GetUserProfileUsecaseProvider._()
+    with $Provider<GetCachedUserProfileUsecase> {
+  GetCachedUserProfileUsecaseProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'getUserProfileUsecaseProvider',
+        name: r'getCachedUserProfileUsecaseProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$getUserProfileUsecaseHash();
+  String debugGetCreateSourceHash() => _$getCachedUserProfileUsecaseHash();
 
   @$internal
   @override
-  $ProviderElement<GetUserProfileUsecase> $createElement(
+  $ProviderElement<GetCachedUserProfileUsecase> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  GetUserProfileUsecase create(Ref ref) {
-    return getUserProfileUsecase(ref);
+  GetCachedUserProfileUsecase create(Ref ref) {
+    return getCachedUserProfileUsecase(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(GetUserProfileUsecase value) {
+  Override overrideWithValue(GetCachedUserProfileUsecase value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<GetUserProfileUsecase>(value),
+      providerOverride: $SyncValueProvider<GetCachedUserProfileUsecase>(value),
     );
   }
 }
 
-String _$getUserProfileUsecaseHash() =>
-    r'387d207925ee7b440190a5a198ccd32050de4289';
+String _$getCachedUserProfileUsecaseHash() =>
+    r'322c59fbbb70f9e4981b89345ce2ef9ee9bb6e95';
+
+@ProviderFor(fetchUserProfileUsecase)
+final fetchUserProfileUsecaseProvider = FetchUserProfileUsecaseProvider._();
+
+final class FetchUserProfileUsecaseProvider
+    extends
+        $FunctionalProvider<
+          FetchUserProfileUsecase,
+          FetchUserProfileUsecase,
+          FetchUserProfileUsecase
+        >
+    with $Provider<FetchUserProfileUsecase> {
+  FetchUserProfileUsecaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'fetchUserProfileUsecaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$fetchUserProfileUsecaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<FetchUserProfileUsecase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  FetchUserProfileUsecase create(Ref ref) {
+    return fetchUserProfileUsecase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(FetchUserProfileUsecase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<FetchUserProfileUsecase>(value),
+    );
+  }
+}
+
+String _$fetchUserProfileUsecaseHash() =>
+    r'6e3ee9191618e8cc492b5b746cc44db420872a81';
 
 @ProviderFor(updateUserProfileUsecase)
 final updateUserProfileUsecaseProvider = UpdateUserProfileUsecaseProvider._();

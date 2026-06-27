@@ -5,7 +5,9 @@ import '../constants/app_constants.dart';
 import '../errors/app_exception.dart';
 import '../storage/secure_storage_service.dart';
 import '../utils/logger_service.dart';
+import '../localization/culture_provider.dart';
 import 'interceptors/auth_interceptor.dart';
+import 'interceptors/culture_interceptor.dart';
 import 'interceptors/logging_interceptor.dart';
 import 'interceptors/retry_interceptor.dart';
 
@@ -20,6 +22,7 @@ class ApiClient {
   ApiClient({
     required SecureStorageService secureStorage,
     required LoggerService logger,
+    required String Function() cultureCode,
     Dio? dio,
   }) : _dio = dio ??
             Dio(
@@ -39,6 +42,7 @@ class ApiClient {
       ),
     );
     _dio.interceptors.addAll([
+      CultureInterceptor(cultureCode),
       AuthInterceptor(secureStorage: secureStorage, refreshDio: refreshDio),
       RetryInterceptor(_dio),
       LoggingInterceptor(logger),
@@ -135,6 +139,7 @@ class ApiClient {
 ApiClient apiClient(Ref ref) => ApiClient(
       secureStorage: ref.watch(secureStorageServiceProvider),
       logger: ref.watch(loggerServiceProvider),
+      cultureCode: () => ref.read(cultureProvider).code,
     );
 
 @Riverpod(keepAlive: true)

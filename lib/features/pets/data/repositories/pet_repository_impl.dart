@@ -39,9 +39,7 @@ class PetRepositoryImpl implements PetRepository {
   Future<Result<List<PetRef>>> fetchRefs() async {
     try {
       final dtos = await _remote.getMyPets();
-      final refs = dtos
-          .map((d) => PetRef(id: d.id, name: d.name))
-          .toList(growable: false);
+      final refs = dtos.map((d) => d.toRef()).toList(growable: false);
       // Authoritative: replace the ref cache, then return.
       await _local.writeRefs(refs);
       return Result.success(refs);

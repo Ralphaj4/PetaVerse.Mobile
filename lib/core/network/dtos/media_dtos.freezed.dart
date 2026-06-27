@@ -15,7 +15,9 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UploadUrlRequest {
 
- int get category; String get contentType; String? get fileName; int? get entityId;
+ int get category; String get contentType; String? get fileName;// Required by the backend for petAvatar/petDocument categories; the pet
+// must already exist and be owned by the caller.
+ int? get petId;
 /// Create a copy of UploadUrlRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +30,16 @@ $UploadUrlRequestCopyWith<UploadUrlRequest> get copyWith => _$UploadUrlRequestCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UploadUrlRequest&&(identical(other.category, category) || other.category == category)&&(identical(other.contentType, contentType) || other.contentType == contentType)&&(identical(other.fileName, fileName) || other.fileName == fileName)&&(identical(other.entityId, entityId) || other.entityId == entityId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UploadUrlRequest&&(identical(other.category, category) || other.category == category)&&(identical(other.contentType, contentType) || other.contentType == contentType)&&(identical(other.fileName, fileName) || other.fileName == fileName)&&(identical(other.petId, petId) || other.petId == petId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,category,contentType,fileName,entityId);
+int get hashCode => Object.hash(runtimeType,category,contentType,fileName,petId);
 
 @override
 String toString() {
-  return 'UploadUrlRequest(category: $category, contentType: $contentType, fileName: $fileName, entityId: $entityId)';
+  return 'UploadUrlRequest(category: $category, contentType: $contentType, fileName: $fileName, petId: $petId)';
 }
 
 
@@ -48,7 +50,7 @@ abstract mixin class $UploadUrlRequestCopyWith<$Res>  {
   factory $UploadUrlRequestCopyWith(UploadUrlRequest value, $Res Function(UploadUrlRequest) _then) = _$UploadUrlRequestCopyWithImpl;
 @useResult
 $Res call({
- int category, String contentType, String? fileName, int? entityId
+ int category, String contentType, String? fileName, int? petId
 });
 
 
@@ -65,12 +67,12 @@ class _$UploadUrlRequestCopyWithImpl<$Res>
 
 /// Create a copy of UploadUrlRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? category = null,Object? contentType = null,Object? fileName = freezed,Object? entityId = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? category = null,Object? contentType = null,Object? fileName = freezed,Object? petId = freezed,}) {
   return _then(_self.copyWith(
 category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as int,contentType: null == contentType ? _self.contentType : contentType // ignore: cast_nullable_to_non_nullable
 as String,fileName: freezed == fileName ? _self.fileName : fileName // ignore: cast_nullable_to_non_nullable
-as String?,entityId: freezed == entityId ? _self.entityId : entityId // ignore: cast_nullable_to_non_nullable
+as String?,petId: freezed == petId ? _self.petId : petId // ignore: cast_nullable_to_non_nullable
 as int?,
   ));
 }
@@ -156,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int category,  String contentType,  String? fileName,  int? entityId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int category,  String contentType,  String? fileName,  int? petId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UploadUrlRequest() when $default != null:
-return $default(_that.category,_that.contentType,_that.fileName,_that.entityId);case _:
+return $default(_that.category,_that.contentType,_that.fileName,_that.petId);case _:
   return orElse();
 
 }
@@ -177,10 +179,10 @@ return $default(_that.category,_that.contentType,_that.fileName,_that.entityId);
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int category,  String contentType,  String? fileName,  int? entityId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int category,  String contentType,  String? fileName,  int? petId)  $default,) {final _that = this;
 switch (_that) {
 case _UploadUrlRequest():
-return $default(_that.category,_that.contentType,_that.fileName,_that.entityId);case _:
+return $default(_that.category,_that.contentType,_that.fileName,_that.petId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +199,10 @@ return $default(_that.category,_that.contentType,_that.fileName,_that.entityId);
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int category,  String contentType,  String? fileName,  int? entityId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int category,  String contentType,  String? fileName,  int? petId)?  $default,) {final _that = this;
 switch (_that) {
 case _UploadUrlRequest() when $default != null:
-return $default(_that.category,_that.contentType,_that.fileName,_that.entityId);case _:
+return $default(_that.category,_that.contentType,_that.fileName,_that.petId);case _:
   return null;
 
 }
@@ -212,13 +214,15 @@ return $default(_that.category,_that.contentType,_that.fileName,_that.entityId);
 @JsonSerializable()
 
 class _UploadUrlRequest implements UploadUrlRequest {
-  const _UploadUrlRequest({required this.category, required this.contentType, this.fileName, this.entityId});
+  const _UploadUrlRequest({required this.category, required this.contentType, this.fileName, this.petId});
   factory _UploadUrlRequest.fromJson(Map<String, dynamic> json) => _$UploadUrlRequestFromJson(json);
 
 @override final  int category;
 @override final  String contentType;
 @override final  String? fileName;
-@override final  int? entityId;
+// Required by the backend for petAvatar/petDocument categories; the pet
+// must already exist and be owned by the caller.
+@override final  int? petId;
 
 /// Create a copy of UploadUrlRequest
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UploadUrlRequest&&(identical(other.category, category) || other.category == category)&&(identical(other.contentType, contentType) || other.contentType == contentType)&&(identical(other.fileName, fileName) || other.fileName == fileName)&&(identical(other.entityId, entityId) || other.entityId == entityId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UploadUrlRequest&&(identical(other.category, category) || other.category == category)&&(identical(other.contentType, contentType) || other.contentType == contentType)&&(identical(other.fileName, fileName) || other.fileName == fileName)&&(identical(other.petId, petId) || other.petId == petId));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,category,contentType,fileName,entityId);
+int get hashCode => Object.hash(runtimeType,category,contentType,fileName,petId);
 
 @override
 String toString() {
-  return 'UploadUrlRequest(category: $category, contentType: $contentType, fileName: $fileName, entityId: $entityId)';
+  return 'UploadUrlRequest(category: $category, contentType: $contentType, fileName: $fileName, petId: $petId)';
 }
 
 
@@ -253,7 +257,7 @@ abstract mixin class _$UploadUrlRequestCopyWith<$Res> implements $UploadUrlReque
   factory _$UploadUrlRequestCopyWith(_UploadUrlRequest value, $Res Function(_UploadUrlRequest) _then) = __$UploadUrlRequestCopyWithImpl;
 @override @useResult
 $Res call({
- int category, String contentType, String? fileName, int? entityId
+ int category, String contentType, String? fileName, int? petId
 });
 
 
@@ -270,12 +274,12 @@ class __$UploadUrlRequestCopyWithImpl<$Res>
 
 /// Create a copy of UploadUrlRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? category = null,Object? contentType = null,Object? fileName = freezed,Object? entityId = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? category = null,Object? contentType = null,Object? fileName = freezed,Object? petId = freezed,}) {
   return _then(_UploadUrlRequest(
 category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as int,contentType: null == contentType ? _self.contentType : contentType // ignore: cast_nullable_to_non_nullable
 as String,fileName: freezed == fileName ? _self.fileName : fileName // ignore: cast_nullable_to_non_nullable
-as String?,entityId: freezed == entityId ? _self.entityId : entityId // ignore: cast_nullable_to_non_nullable
+as String?,petId: freezed == petId ? _self.petId : petId // ignore: cast_nullable_to_non_nullable
 as int?,
   ));
 }

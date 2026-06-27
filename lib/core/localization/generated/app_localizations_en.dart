@@ -147,19 +147,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String goodMorning(String name) {
-    return 'Good Morning, $name 👋';
-  }
+  String get goodMorning => 'Good Morning 👋';
 
   @override
-  String goodAfternoon(String name) {
-    return 'Good Afternoon, $name 👋';
-  }
+  String get goodAfternoon => 'Good Afternoon 👋';
 
   @override
-  String goodEvening(String name) {
-    return 'Good Evening, $name 👋';
-  }
+  String get goodEvening => 'Good Evening 👋';
 
   @override
   String petDoingGreat(String petName) {
@@ -330,6 +324,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get preferences => 'Preferences';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get changeLanguage => 'Language';
+
+  @override
+  String get changeLanguageSubtitle =>
+      'Choose the language you\'d like to use across the app';
+
+  @override
+  String get privacySettings => 'Privacy Settings';
+
+  @override
+  String get support => 'Support';
+
+  @override
+  String get contactUs => 'Contact Us';
+
+  @override
+  String get reportProblem => 'Report a Problem';
+
+  @override
+  String get termsPrivacy => 'Terms & Privacy';
+
+  @override
+  String get termsConditions => 'Terms & Conditions';
 
   @override
   String get toggleOn => 'On';
@@ -725,4 +750,74 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dateOfBirth => 'Date of Birth';
+
+  @override
+  String get personalInformationSubtitle =>
+      'Manage your personal details and contact information';
+
+  @override
+  String get basicInformation => 'Basic Information';
+
+  @override
+  String get contactDetails => 'Contact Details';
+
+  @override
+  String get accountDetails => 'Account Details';
+
+  @override
+  String get verified => 'Verified';
+
+  @override
+  String get unverified => 'Unverified';
+
+  @override
+  String get selectDate => 'Select date';
+
+  @override
+  String get noEmailAdded => 'No email added';
+
+  @override
+  String memberSince(String date) {
+    return 'Member since $date';
+  }
+
+  @override
+  String emailPendingVerification(String email) {
+    return 'Pending verification: $email';
+  }
+
+  @override
+  String get profileUpdated => 'Profile updated';
+
+  @override
+  String get changePhoto => 'Change Photo';
+
+  @override
+  String get camera => 'Camera';
+
+  @override
+  String get gallery => 'Gallery';
+
+  @override
+  String get photoUpdated => 'Profile photo updated';
+
+  @override
+  String get photoUploadFailed =>
+      'Couldn\'t update your photo. Please try again.';
+
+  @override
+  String get skipForNow => 'Skip for now';
+
+  @override
+  String get continueLabel => 'Continue';
+
+  @override
+  String get petAvatarSetupTitle => 'Add a Photo';
+
+  @override
+  String get petAvatarSetupSubtitle =>
+      'Add a photo of your pet. This is optional and you can change it anytime.';
+
+  @override
+  String get petAvatarUploadHint => 'Upload a photo';
 }

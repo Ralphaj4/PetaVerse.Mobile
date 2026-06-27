@@ -361,20 +361,20 @@ abstract class AppLocalizations {
   /// No description provided for @goodMorning.
   ///
   /// In en, this message translates to:
-  /// **'Good Morning, {name} 👋'**
-  String goodMorning(String name);
+  /// **'Good Morning 👋'**
+  String get goodMorning;
 
   /// No description provided for @goodAfternoon.
   ///
   /// In en, this message translates to:
-  /// **'Good Afternoon, {name} 👋'**
-  String goodAfternoon(String name);
+  /// **'Good Afternoon 👋'**
+  String get goodAfternoon;
 
   /// No description provided for @goodEvening.
   ///
   /// In en, this message translates to:
-  /// **'Good Evening, {name} 👋'**
-  String goodEvening(String name);
+  /// **'Good Evening 👋'**
+  String get goodEvening;
 
   /// No description provided for @petDoingGreat.
   ///
@@ -669,6 +669,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Privacy Policy'**
   String get privacyPolicy;
+
+  /// No description provided for @preferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Preferences'**
+  String get preferences;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @changeLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get changeLanguage;
+
+  /// No description provided for @changeLanguageSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the language you\'d like to use across the app'**
+  String get changeLanguageSubtitle;
+
+  /// No description provided for @privacySettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Settings'**
+  String get privacySettings;
+
+  /// No description provided for @support.
+  ///
+  /// In en, this message translates to:
+  /// **'Support'**
+  String get support;
+
+  /// No description provided for @contactUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Us'**
+  String get contactUs;
+
+  /// No description provided for @reportProblem.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a Problem'**
+  String get reportProblem;
+
+  /// No description provided for @termsPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & Privacy'**
+  String get termsPrivacy;
+
+  /// No description provided for @termsConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & Conditions'**
+  String get termsConditions;
 
   /// No description provided for @toggleOn.
   ///
@@ -1389,6 +1449,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Date of Birth'**
   String get dateOfBirth;
+
+  /// No description provided for @personalInformationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your personal details and contact information'**
+  String get personalInformationSubtitle;
+
+  /// No description provided for @basicInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic Information'**
+  String get basicInformation;
+
+  /// No description provided for @contactDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Details'**
+  String get contactDetails;
+
+  /// No description provided for @accountDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Details'**
+  String get accountDetails;
+
+  /// No description provided for @verified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get verified;
+
+  /// No description provided for @unverified.
+  ///
+  /// In en, this message translates to:
+  /// **'Unverified'**
+  String get unverified;
+
+  /// No description provided for @selectDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select date'**
+  String get selectDate;
+
+  /// No description provided for @noEmailAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'No email added'**
+  String get noEmailAdded;
+
+  /// No description provided for @memberSince.
+  ///
+  /// In en, this message translates to:
+  /// **'Member since {date}'**
+  String memberSince(String date);
+
+  /// No description provided for @emailPendingVerification.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending verification: {email}'**
+  String emailPendingVerification(String email);
+
+  /// No description provided for @profileUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile updated'**
+  String get profileUpdated;
+
+  /// No description provided for @changePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Photo'**
+  String get changePhoto;
+
+  /// No description provided for @camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get camera;
+
+  /// No description provided for @gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get gallery;
+
+  /// No description provided for @photoUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile photo updated'**
+  String get photoUpdated;
+
+  /// No description provided for @photoUploadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t update your photo. Please try again.'**
+  String get photoUploadFailed;
+
+  /// No description provided for @skipForNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip for now'**
+  String get skipForNow;
+
+  /// No description provided for @continueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueLabel;
+
+  /// No description provided for @petAvatarSetupTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a Photo'**
+  String get petAvatarSetupTitle;
+
+  /// No description provided for @petAvatarSetupSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a photo of your pet. This is optional and you can change it anytime.'**
+  String get petAvatarSetupSubtitle;
+
+  /// No description provided for @petAvatarUploadHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload a photo'**
+  String get petAvatarUploadHint;
 }
 
 class _AppLocalizationsDelegate

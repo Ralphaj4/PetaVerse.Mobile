@@ -11,7 +11,7 @@ _UploadUrlRequest _$UploadUrlRequestFromJson(Map<String, dynamic> json) =>
       category: (json['category'] as num).toInt(),
       contentType: json['contentType'] as String,
       fileName: json['fileName'] as String?,
-      entityId: (json['entityId'] as num?)?.toInt(),
+      petId: (json['petId'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$UploadUrlRequestToJson(_UploadUrlRequest instance) =>
@@ -19,7 +19,7 @@ Map<String, dynamic> _$UploadUrlRequestToJson(_UploadUrlRequest instance) =>
       'category': instance.category,
       'contentType': instance.contentType,
       'fileName': instance.fileName,
-      'entityId': instance.entityId,
+      'petId': instance.petId,
     };
 
 _UploadUrlResponse _$UploadUrlResponseFromJson(Map<String, dynamic> json) =>

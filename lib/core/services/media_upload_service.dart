@@ -17,7 +17,7 @@ class MediaUploadService {
     required String contentType,
     required MediaCategory category,
     String? fileName,
-    int? entityId,
+    int? petId,
   }) async {
     // Step 1: Get upload URL
     final urlResult = await _datasource.getUploadUrl(
@@ -25,7 +25,7 @@ class MediaUploadService {
         category: category.index,
         contentType: contentType,
         fileName: fileName,
-        entityId: entityId,
+        petId: petId,
       ),
     );
 

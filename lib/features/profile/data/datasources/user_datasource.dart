@@ -18,10 +18,20 @@ class UserDatasource implements IUserDatasource {
   @override
   Future<Result<UserDto>> getProfile() async {
     try {
-      final response = await _apiClient.get(ApiEndpoints.usersMe);
-      final dto = UserDto.fromJson(response.data as Map<String, dynamic>);
+      // ignore: avoid_print
+      print('[USER_DS] getProfile: calling ${ApiEndpoints.usersMe}');
+      final json = await _apiClient.get<Map<String, dynamic>>(
+        ApiEndpoints.usersMe,
+      );
+      // ignore: avoid_print
+      print('[USER_DS] getProfile: raw json = $json');
+      final dto = UserDto.fromJson(json);
+      // ignore: avoid_print
+      print('[USER_DS] getProfile: parsed dto OK id=${dto.id}');
       return Result.success(dto);
-    } catch (e) {
+    } catch (e, st) {
+      // ignore: avoid_print
+      print('[USER_DS] getProfile: ERROR $e\n$st');
       return Result.failure(_mapException(e));
     }
   }

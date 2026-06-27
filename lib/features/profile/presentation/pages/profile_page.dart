@@ -19,6 +19,7 @@ import '../../../auth/presentation/providers/session_provider.dart';
 import '../../../pets/presentation/providers/pet_list_provider.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
 import '../../../pets/presentation/widgets/pet_card_grid.dart';
+import '../providers/user_provider.dart';
 import '../widgets/log_out_button.dart';
 import '../widgets/profile_header.dart';
 import '../widgets/settings_tile.dart';
@@ -31,6 +32,10 @@ class ProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
+    final user = ref.watch(userProvider).value;
+    final userName = user == null
+        ? ''
+        : '${user.firstName} ${user.lastName}'.trim();
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -47,7 +52,8 @@ class ProfilePage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ProfileHeader(
-                name: 'Sarah Mitchell',
+                name: userName,
+                avatarUrl: user?.avatarUrl,
                 tierLabel: l10n.premiumMember,
                 onBellTap: () {},
               ),
@@ -83,13 +89,6 @@ class ProfilePage extends ConsumerWidget {
               ),
               const SizedBox(height: AppSpacing.sm),
               SettingsTile(
-                icon: FluentIcons.shield_24_regular,
-                iconColor: AppColors.accentPurple,
-                label: l10n.securityPrivacy,
-                onTap: () {},
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              SettingsTile(
                 icon: FluentIcons.wallet_24_regular,
                 iconColor: AppColors.primary,
                 label: l10n.paymentMethods,
@@ -97,19 +96,8 @@ class ProfilePage extends ConsumerWidget {
               ),
               const SizedBox(height: AppSpacing.xl),
 
-              // ── Security ─────────────────────────────────────────────
-              _GroupTitle(title: l10n.security),
-              const SizedBox(height: AppSpacing.md),
-              SettingsTile(
-                icon: FluentIcons.lock_closed_24_regular,
-                iconColor: AppColors.accentPurple,
-                label: l10n.changePassword,
-                onTap: () => context.push(AppRoutes.changePassword),
-              ),
-              const SizedBox(height: AppSpacing.xl),
-
-              // ── Notifications & Support ──────────────────────────────
-              _GroupTitle(title: l10n.notificationsSupport),
+              // ── Preferences ──────────────────────────────────────────
+              _GroupTitle(title: l10n.preferences),
               const SizedBox(height: AppSpacing.md),
               SettingsTile(
                 icon: FluentIcons.alert_24_regular,
@@ -120,6 +108,35 @@ class ProfilePage extends ConsumerWidget {
               ),
               const SizedBox(height: AppSpacing.sm),
               SettingsTile(
+                icon: FluentIcons.local_language_24_regular,
+                iconColor: AppColors.primary,
+                label: l10n.language,
+                onTap: () => context.push(AppRoutes.changeLanguage),
+              ),
+              const SizedBox(height: AppSpacing.xl),
+
+              // ── Security & Privacy ───────────────────────────────────
+              _GroupTitle(title: l10n.securityPrivacy),
+              const SizedBox(height: AppSpacing.md),
+              SettingsTile(
+                icon: FluentIcons.lock_closed_24_regular,
+                iconColor: AppColors.accentPurple,
+                label: l10n.changePassword,
+                onTap: () => context.push(AppRoutes.changePassword),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              SettingsTile(
+                icon: FluentIcons.shield_24_regular,
+                iconColor: AppColors.secondary,
+                label: l10n.privacySettings,
+                onTap: () {},
+              ),
+              const SizedBox(height: AppSpacing.xl),
+
+              // ── Support ──────────────────────────────────────────────
+              _GroupTitle(title: l10n.support),
+              const SizedBox(height: AppSpacing.md),
+              SettingsTile(
                 icon: FluentIcons.question_circle_24_regular,
                 iconColor: AppColors.accentPurple,
                 label: l10n.helpCenter,
@@ -127,9 +144,34 @@ class ProfilePage extends ConsumerWidget {
               ),
               const SizedBox(height: AppSpacing.sm),
               SettingsTile(
+                icon: FluentIcons.mail_24_regular,
+                iconColor: AppColors.secondary,
+                label: l10n.contactUs,
+                onTap: () {},
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              SettingsTile(
+                icon: FluentIcons.warning_24_regular,
+                iconColor: AppColors.accentCoral,
+                label: l10n.reportProblem,
+                onTap: () {},
+              ),
+              const SizedBox(height: AppSpacing.xl),
+
+              // ── Terms & Privacy ──────────────────────────────────────
+              _GroupTitle(title: l10n.termsPrivacy),
+              const SizedBox(height: AppSpacing.md),
+              SettingsTile(
                 icon: FluentIcons.document_24_regular,
                 iconColor: AppColors.primary,
                 label: l10n.privacyPolicy,
+                onTap: () {},
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              SettingsTile(
+                icon: FluentIcons.document_bullet_list_24_regular,
+                iconColor: AppColors.accentPurple,
+                label: l10n.termsConditions,
                 onTap: () {},
               ),
               const SizedBox(height: AppSpacing.xxl),

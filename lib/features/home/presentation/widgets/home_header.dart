@@ -27,9 +27,9 @@ class HomeHeader extends StatelessWidget {
   String _greeting(BuildContext context) {
     final hour = DateTime.now().hour;
     final l10n = context.l10n;
-    if (hour < 12) return l10n.goodMorning(userName);
-    if (hour < 17) return l10n.goodAfternoon(userName);
-    return l10n.goodEvening(userName);
+    if (hour < 12) return l10n.goodMorning;
+    if (hour < 17) return l10n.goodAfternoon;
+    return l10n.goodEvening;
   }
 
   @override
@@ -37,13 +37,27 @@ class HomeHeader extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: Text(
-            _greeting(context),
-            style: AppTextStyles.titleMedium.copyWith(
-              color: AppColors.onPrimary,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                _greeting(context),
+                style: AppTextStyles.titleMedium.copyWith(
+                  color: AppColors.onPrimary,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                userName,
+                style: AppTextStyles.headlineMedium.copyWith(
+                  color: AppColors.onPrimary,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
         ),
         const SizedBox(width: AppSpacing.md),

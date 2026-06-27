@@ -17,6 +17,7 @@ class Pet {
     this.sterilizationStatus,
     this.sterilizationDate,
     this.createdAt,
+    this.avatarUrl,
   });
 
   final int id;
@@ -32,6 +33,9 @@ class Pet {
   final String? sterilizationStatus;
   final DateTime? sterilizationDate;
   final DateTime? createdAt;
+
+  /// Public CDN URL of the pet's avatar, or null when none is set.
+  final String? avatarUrl;
 
   /// Whole years since [dateOfBirth], floored, never negative.
   int get ageInYears {

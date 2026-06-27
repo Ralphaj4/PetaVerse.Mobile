@@ -7,9 +7,15 @@ import '../../../profile/data/providers/user_repository_provider.dart';
 part 'user_usecases_provider.g.dart';
 
 @riverpod
-GetUserProfileUsecase getUserProfileUsecase(Ref ref) {
+GetCachedUserProfileUsecase getCachedUserProfileUsecase(Ref ref) {
   final repository = ref.watch(userRepositoryProvider);
-  return GetUserProfileUsecase(repository);
+  return GetCachedUserProfileUsecase(repository);
+}
+
+@riverpod
+FetchUserProfileUsecase fetchUserProfileUsecase(Ref ref) {
+  final repository = ref.watch(userRepositoryProvider);
+  return FetchUserProfileUsecase(repository);
 }
 
 @riverpod

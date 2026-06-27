@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/entities/pet.dart';
+import '../../domain/entities/pet_ref.dart';
 
 part 'pet_dto.freezed.dart';
 part 'pet_dto.g.dart';
@@ -25,6 +26,8 @@ abstract class PetDto with _$PetDto {
     String? sterilizationStatus,
     DateTime? sterilizationDate,
     DateTime? createdAt,
+    // Public CDN URL of the pet's avatar, or null when none is set/confirmed.
+    String? avatarUrl,
   }) = _PetDto;
 
   const PetDto._();
@@ -49,5 +52,16 @@ abstract class PetDto with _$PetDto {
         sterilizationStatus: sterilizationStatus,
         sterilizationDate: sterilizationDate,
         createdAt: createdAt,
+        avatarUrl: avatarUrl,
+      );
+
+  /// Slim identity for the routing gate / current-pet pointer, carrying the
+  /// avatar so the home hero can render it from a fetched list.
+  PetRef toRef() => PetRef(
+        id: id,
+        name: name,
+        imagePath: (avatarUrl != null && avatarUrl!.isNotEmpty)
+            ? avatarUrl
+            : null,
       );
 }

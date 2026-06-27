@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'core/app/app.dart';
+import 'core/localization/culture_provider.dart';
 import 'core/storage/hive_service.dart';
 import 'core/utils/logger_service.dart';
 
@@ -34,5 +35,15 @@ Future<void> main() async {
 
   await HiveService.init();
 
-  runApp(const ProviderScope(child: PetaVerseApp()));
+  // Hydrate the saved culture before the first frame so the locale and the
+  // `X-Culture` request header are correct from the start (no flicker).
+  final container = ProviderContainer();
+  await container.read(cultureProvider.notifier).load();
+
+  runApp(
+    UncontrolledProviderScope(
+      container: container,
+      child: const PetaVerseApp(),
+    ),
+  );
 }

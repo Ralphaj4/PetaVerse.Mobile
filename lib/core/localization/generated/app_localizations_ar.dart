@@ -146,19 +146,13 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String goodMorning(String name) {
-    return 'صباح الخير، $name 👋';
-  }
+  String get goodMorning => 'صباح الخير 👋';
 
   @override
-  String goodAfternoon(String name) {
-    return 'مساء الخير، $name 👋';
-  }
+  String get goodAfternoon => 'مساء الخير 👋';
 
   @override
-  String goodEvening(String name) {
-    return 'مساء الخير، $name 👋';
-  }
+  String get goodEvening => 'مساء الخير 👋';
 
   @override
   String petDoingGreat(String petName) {
@@ -331,6 +325,37 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get privacyPolicy => 'سياسة الخصوصية';
+
+  @override
+  String get preferences => 'التفضيلات';
+
+  @override
+  String get language => 'اللغة';
+
+  @override
+  String get changeLanguage => 'اللغة';
+
+  @override
+  String get changeLanguageSubtitle =>
+      'اختر اللغة التي تريد استخدامها في التطبيق';
+
+  @override
+  String get privacySettings => 'إعدادات الخصوصية';
+
+  @override
+  String get support => 'الدعم';
+
+  @override
+  String get contactUs => 'اتصل بنا';
+
+  @override
+  String get reportProblem => 'الإبلاغ عن مشكلة';
+
+  @override
+  String get termsPrivacy => 'الشروط والخصوصية';
+
+  @override
+  String get termsConditions => 'الشروط والأحكام';
 
   @override
   String get toggleOn => 'مفعّل';
@@ -723,4 +748,73 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get dateOfBirth => 'تاريخ الميلاد';
+
+  @override
+  String get personalInformationSubtitle =>
+      'إدارة بياناتك الشخصية ومعلومات الاتصال';
+
+  @override
+  String get basicInformation => 'المعلومات الأساسية';
+
+  @override
+  String get contactDetails => 'معلومات الاتصال';
+
+  @override
+  String get accountDetails => 'تفاصيل الحساب';
+
+  @override
+  String get verified => 'موثَّق';
+
+  @override
+  String get unverified => 'غير موثَّق';
+
+  @override
+  String get selectDate => 'اختر التاريخ';
+
+  @override
+  String get noEmailAdded => 'لم تتم إضافة بريد إلكتروني';
+
+  @override
+  String memberSince(String date) {
+    return 'عضو منذ $date';
+  }
+
+  @override
+  String emailPendingVerification(String email) {
+    return 'في انتظار التحقق: $email';
+  }
+
+  @override
+  String get profileUpdated => 'تم تحديث الملف الشخصي';
+
+  @override
+  String get changePhoto => 'تغيير الصورة';
+
+  @override
+  String get camera => 'الكاميرا';
+
+  @override
+  String get gallery => 'المعرض';
+
+  @override
+  String get photoUpdated => 'تم تحديث صورة الملف الشخصي';
+
+  @override
+  String get photoUploadFailed => 'تعذر تحديث صورتك. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get skipForNow => 'تخطٍ الآن';
+
+  @override
+  String get continueLabel => 'متابعة';
+
+  @override
+  String get petAvatarSetupTitle => 'إضافة صورة';
+
+  @override
+  String get petAvatarSetupSubtitle =>
+      'أضف صورة لحيوانك الأليف. هذا اختياري ويمكنك تغييره في أي وقت.';
+
+  @override
+  String get petAvatarUploadHint => 'تحميل صورة';
 }

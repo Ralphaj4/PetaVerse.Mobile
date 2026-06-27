@@ -3,14 +3,20 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'media_dtos.freezed.dart';
 part 'media_dtos.g.dart';
 
+/// Media categories. The ordinals MUST match the backend `MediaCategory`
+/// enum exactly — the API serializes/deserializes this as an integer
+/// (default System.Text.Json, no string converter), so we send/read the
+/// ordinal via `.index`.
 enum MediaCategory {
   @JsonValue(0)
-  avatar,
+  userAvatar,
   @JsonValue(1)
-  story,
+  petAvatar,
   @JsonValue(2)
-  post,
+  story,
   @JsonValue(3)
+  post,
+  @JsonValue(4)
   petDocument,
 }
 
@@ -20,7 +26,9 @@ abstract class UploadUrlRequest with _$UploadUrlRequest {
     required int category,
     required String contentType,
     String? fileName,
-    int? entityId,
+    // Required by the backend for petAvatar/petDocument categories; the pet
+    // must already exist and be owned by the caller.
+    int? petId,
   }) = _UploadUrlRequest;
 
   factory UploadUrlRequest.fromJson(Map<String, dynamic> json) =>

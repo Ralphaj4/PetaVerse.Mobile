@@ -56,6 +56,7 @@ class PetCardGrid extends StatelessWidget {
         name: pet.name,
         breed: pet.breedOrSpecies,
         ageYears: pet.ageInYears,
+        imageUrl: pet.avatarUrl,
         isActive: pet.id == activePetId,
         enableHero: enableHero,
         onTap: () => context.push(AppRoutes.petDetailPath(pet.id)),

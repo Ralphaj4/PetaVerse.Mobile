@@ -72,18 +72,24 @@ class _CreatePetPageState extends ConsumerState<CreatePetPage> {
     if (!mounted) return;
 
     if (petRef != null) {
-      // Capture messenger + message before navigating (page is about to leave).
+      // Onboarding flow (first pet, nothing to pop back to): continue to the
+      // pet avatar setup step, mirroring user onboarding. That page commits the
+      // pet to the gate after the photo step, so we DON'T commit here.
+      if (!context.canPop()) {
+        context.go(
+          AppRoutes.petAvatarSetupPath(petRef.id),
+          extra: petRef,
+        );
+        return;
+      }
+
+      // Pushed entry (e.g. "add another pet" from profile): pop back and commit
+      // immediately — there's no avatar step in this path. Capture messenger +
+      // message before navigating (page is about to leave).
       final messenger = ScaffoldMessenger.of(context);
       final message = context.l10n.createPetSuccess(newPet.name);
 
-      // Navigate FIRST — pop back to profile if pushed, otherwise go to home
-      // from the onboarding flow. The gate update happens after so the redirect
-      // triggered by the state change never races with the pending pop.
-      if (context.canPop()) {
-        context.pop();
-      } else {
-        context.go(AppRoutes.home);
-      }
+      context.pop();
 
       // Now safe to update the gate — navigation has already committed.
       notifier.commitCreated(petRef);

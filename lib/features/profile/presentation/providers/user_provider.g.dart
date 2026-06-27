@@ -8,12 +8,30 @@ part of 'user_provider.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// Offline-first profile state.
+///
+/// The cache is warmed at login/verify time, so [build] returns the cached
+/// user instantly (no spinner) and reconciles with the server in the
+/// background. Only a cold cache (no login-time warm) falls back to a
+/// blocking network fetch.
 
 @ProviderFor(UserNotifier)
 final userProvider = UserNotifierProvider._();
 
+/// Offline-first profile state.
+///
+/// The cache is warmed at login/verify time, so [build] returns the cached
+/// user instantly (no spinner) and reconciles with the server in the
+/// background. Only a cold cache (no login-time warm) falls back to a
+/// blocking network fetch.
 final class UserNotifierProvider
     extends $AsyncNotifierProvider<UserNotifier, User> {
+  /// Offline-first profile state.
+  ///
+  /// The cache is warmed at login/verify time, so [build] returns the cached
+  /// user instantly (no spinner) and reconciles with the server in the
+  /// background. Only a cold cache (no login-time warm) falls back to a
+  /// blocking network fetch.
   UserNotifierProvider._()
     : super(
         from: null,
@@ -33,7 +51,14 @@ final class UserNotifierProvider
   UserNotifier create() => UserNotifier();
 }
 
-String _$userNotifierHash() => r'846c3a8c72042cd2321c519ed406bd413b3e596b';
+String _$userNotifierHash() => r'9859aec7dfe3aacb117b2163bf994fb86ee91557';
+
+/// Offline-first profile state.
+///
+/// The cache is warmed at login/verify time, so [build] returns the cached
+/// user instantly (no spinner) and reconciles with the server in the
+/// background. Only a cold cache (no login-time warm) falls back to a
+/// blocking network fetch.
 
 abstract class _$UserNotifier extends $AsyncNotifier<User> {
   FutureOr<User> build();

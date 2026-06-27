@@ -147,19 +147,13 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String goodMorning(String name) {
-    return 'Bonjour, $name 👋';
-  }
+  String get goodMorning => 'Bonjour 👋';
 
   @override
-  String goodAfternoon(String name) {
-    return 'Bon après-midi, $name 👋';
-  }
+  String get goodAfternoon => 'Bon après-midi 👋';
 
   @override
-  String goodEvening(String name) {
-    return 'Bonsoir, $name 👋';
-  }
+  String get goodEvening => 'Bonsoir 👋';
 
   @override
   String petDoingGreat(String petName) {
@@ -330,6 +324,37 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get privacyPolicy => 'Politique de Confidentialité';
+
+  @override
+  String get preferences => 'Préférences';
+
+  @override
+  String get language => 'Langue';
+
+  @override
+  String get changeLanguage => 'Langue';
+
+  @override
+  String get changeLanguageSubtitle =>
+      'Choisissez la langue que vous souhaitez utiliser dans l\'application';
+
+  @override
+  String get privacySettings => 'Paramètres de Confidentialité';
+
+  @override
+  String get support => 'Assistance';
+
+  @override
+  String get contactUs => 'Nous Contacter';
+
+  @override
+  String get reportProblem => 'Signaler un Problème';
+
+  @override
+  String get termsPrivacy => 'Conditions & Confidentialité';
+
+  @override
+  String get termsConditions => 'Conditions Générales';
 
   @override
   String get toggleOn => 'Activé';
@@ -728,4 +753,74 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dateOfBirth => 'Date de naissance';
+
+  @override
+  String get personalInformationSubtitle =>
+      'Gérez vos informations personnelles et vos coordonnées';
+
+  @override
+  String get basicInformation => 'Informations de base';
+
+  @override
+  String get contactDetails => 'Coordonnées';
+
+  @override
+  String get accountDetails => 'Détails du compte';
+
+  @override
+  String get verified => 'Vérifié';
+
+  @override
+  String get unverified => 'Non vérifié';
+
+  @override
+  String get selectDate => 'Choisir une date';
+
+  @override
+  String get noEmailAdded => 'Aucun e-mail ajouté';
+
+  @override
+  String memberSince(String date) {
+    return 'Membre depuis $date';
+  }
+
+  @override
+  String emailPendingVerification(String email) {
+    return 'En attente de vérification : $email';
+  }
+
+  @override
+  String get profileUpdated => 'Profil mis à jour';
+
+  @override
+  String get changePhoto => 'Changer la photo';
+
+  @override
+  String get camera => 'Appareil photo';
+
+  @override
+  String get gallery => 'Galerie';
+
+  @override
+  String get photoUpdated => 'Photo de profil mise à jour';
+
+  @override
+  String get photoUploadFailed =>
+      'Impossible de mettre à jour votre photo. Veuillez réessayer.';
+
+  @override
+  String get skipForNow => 'Ignorer pour l\'instant';
+
+  @override
+  String get continueLabel => 'Continuer';
+
+  @override
+  String get petAvatarSetupTitle => 'Ajouter une photo';
+
+  @override
+  String get petAvatarSetupSubtitle =>
+      'Ajoutez une photo de votre animal. C\'est facultatif et vous pouvez la changer à tout moment.';
+
+  @override
+  String get petAvatarUploadHint => 'Télécharger une photo';
 }

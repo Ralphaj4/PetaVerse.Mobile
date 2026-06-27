@@ -57,30 +57,12 @@
       }
     }
   },
-  "goodMorning": "Good Morning, {name} 👋",
-  "@goodMorning": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "goodAfternoon": "Good Afternoon, {name} 👋",
-  "@goodAfternoon": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "goodEvening": "Good Evening, {name} 👋",
-  "@goodEvening": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
+  "goodMorning": "Good Morning 👋",
+  "@goodMorning": {},
+  "goodAfternoon": "Good Afternoon 👋",
+  "@goodAfternoon": {},
+  "goodEvening": "Good Evening 👋",
+  "@goodEvening": {},
   "petDoingGreat": "{petName} is doing great today! 🐾",
   "@petDoingGreat": {
     "placeholders": {
@@ -167,6 +149,16 @@
   "notificationsSupport": "Notifications & Support",
   "helpCenter": "Help Center",
   "privacyPolicy": "Privacy Policy",
+  "preferences": "Preferences",
+  "language": "Language",
+  "changeLanguage": "Language",
+  "changeLanguageSubtitle": "Choose the language you'd like to use across the app",
+  "privacySettings": "Privacy Settings",
+  "support": "Support",
+  "contactUs": "Contact Us",
+  "reportProblem": "Report a Problem",
+  "termsPrivacy": "Terms & Privacy",
+  "termsConditions": "Terms & Conditions",
   "toggleOn": "On",
   "toggleOff": "Off",
   "logOut": "Log Out",
@@ -325,5 +317,32 @@
   "didYouKnow": "Did you know?",
   "gotIt": "Got it",
   "profile": "Profile",
-  "dateOfBirth": "Date of Birth"
+  "dateOfBirth": "Date of Birth",
+  "personalInformationSubtitle": "Manage your personal details and contact information",
+  "basicInformation": "Basic Information",
+  "contactDetails": "Contact Details",
+  "accountDetails": "Account Details",
+  "verified": "Verified",
+  "unverified": "Unverified",
+  "selectDate": "Select date",
+  "noEmailAdded": "No email added",
+  "memberSince": "Member since {date}",
+  "@memberSince": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "emailPendingVerification": "Pending verification: {email}",
+  "@emailPendingVerification": {
+    "placeholders": { "email": { "type": "String" } }
+  },
+  "profileUpdated": "Profile updated",
+  "changePhoto": "Change Photo",
+  "camera": "Camera",
+  "gallery": "Gallery",
+  "photoUpdated": "Profile photo updated",
+  "photoUploadFailed": "Couldn't update your photo. Please try again.",
+  "skipForNow": "Skip for now",
+  "continueLabel": "Continue",
+  "petAvatarSetupTitle": "Add a Photo",
+  "petAvatarSetupSubtitle": "Add a photo of your pet. This is optional and you can change it anytime.",
+  "petAvatarUploadHint": "Upload a photo"
 }
