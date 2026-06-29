@@ -64,7 +64,7 @@ class HomeHeroBanner extends StatelessWidget {
             if (petImageUrl != null && petImageUrl!.isNotEmpty)
               PositionedDirectional(
                 end: AppSpacing.lg,
-                bottom: AppSpacing.xxl,
+                bottom: AppSpacing.xxl + AppSpacing.xxl,
                 child: Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,

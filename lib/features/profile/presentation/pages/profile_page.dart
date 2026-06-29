@@ -5,6 +5,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/app/app_shell.dart';
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/failure_l10n.dart';
@@ -42,11 +43,11 @@ class ProfilePage extends ConsumerWidget {
       body: SafeArea(
         bottom: false,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(
+          padding: EdgeInsets.fromLTRB(
             AppSpacing.lg,
             AppSpacing.md,
             AppSpacing.lg,
-            AppSpacing.xxl,
+            AppSpacing.xxl + floatingNavBarClearance(context) / 1.5,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

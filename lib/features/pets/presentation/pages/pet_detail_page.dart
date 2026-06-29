@@ -187,7 +187,7 @@ class _PetHeroHeader extends StatelessWidget {
     final screenWidth = MediaQuery.sizeOf(context).width;
 
     return SizedBox(
-      height: 280 + topPadding,
+      height: 300 + topPadding,
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -202,35 +202,64 @@ class _PetHeroHeader extends StatelessWidget {
             ),
           ),
 
-          // Pet image — right half.
-          Positioned(
-            right: 0,
+          // Pet image — right portion, with a rounded bottom-start corner so
+          // the white sheet curves in beneath it. A start-edge gradient fades
+          // the photo into the warm background instead of a hard seam.
+          PositionedDirectional(
+            end: 0,
             top: 0,
             bottom: 0,
-            width: screenWidth * 0.58,
+            width: screenWidth * 0.62,
             child: Hero(
               tag: 'pet-image-$petId',
-              child: AppCachedImage(
-                imageUrl: pet?.avatarUrl,
-                height: double.infinity,
-                width: double.infinity,
-                borderRadius: BorderRadius.zero,
-                semanticLabel: pet?.name,
-                fit: BoxFit.cover,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  AppCachedImage(
+                    imageUrl: pet?.avatarUrl,
+                    height: double.infinity,
+                    width: double.infinity,
+                    borderRadius: const BorderRadiusDirectional.only(
+                      bottomStart: Radius.circular(AppRadius.lg),
+                    ).resolve(Directionality.of(context)),
+                    semanticLabel: pet?.name,
+                    fit: BoxFit.cover,
+                  ),
+                  // Fade the start (left) edge into the background.
+                  PositionedDirectional(
+                    start: 0,
+                    top: 0,
+                    bottom: 0,
+                    width: 90,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: AlignmentDirectional.centerStart,
+                          end: AlignmentDirectional.centerEnd,
+                          colors: [
+                            AppColors.backgroundWarm,
+                            AppColors.backgroundWarm.withValues(alpha: 0),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
 
-          // Left-side info.
-          Positioned(
-            left: AppSpacing.lg,
-            right: screenWidth * 0.42,
-            bottom: AppSpacing.xl,
+          // Left-side info — anchored under the back button so the pill and
+          // name sit high and fill the space above the action cards.
+          PositionedDirectional(
+            start: AppSpacing.lg,
+            end: screenWidth * 0.42,
+            top: topPadding + 40 + AppSpacing.xl,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Active pill.
+                // Currently-active status pill.
                 if (isActive) ...[
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -261,7 +290,7 @@ class _PetHeroHeader extends StatelessWidget {
                         const SizedBox(width: AppSpacing.xs),
                         Text(
                           l10n.petDetailAlreadyActive,
-                          style: AppTextStyles.labelSmall.copyWith(
+                          style: AppTextStyles.labelMedium.copyWith(
                             color: AppColors.success,
                             letterSpacing: 0,
                           ),
@@ -272,7 +301,7 @@ class _PetHeroHeader extends StatelessWidget {
                   const SizedBox(height: AppSpacing.sm),
                 ],
 
-                // Name + verified icon.
+                // Name + verified badge.
                 if (pet != null) ...[
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -280,29 +309,35 @@ class _PetHeroHeader extends StatelessWidget {
                       Flexible(
                         child: Text(
                           pet!.name,
-                          style: AppTextStyles.headlineLarge.copyWith(
-                            fontSize: 26,
-                            fontWeight: FontWeight.w800,
+                          style: AppTextStyles.displayLarge.copyWith(
+                            color: AppColors.textPrimary,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       if (isActive) ...[
-                        const SizedBox(width: AppSpacing.xs),
-                        const Icon(
-                          FluentIcons.checkmark_circle_24_filled,
-                          color: AppColors.primary,
-                          size: 20,
+                        const SizedBox(width: AppSpacing.sm),
+                        Container(
+                          padding: const EdgeInsets.all(3),
+                          decoration: const BoxDecoration(
+                            color: AppColors.primary,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            FluentIcons.checkmark_24_filled,
+                            color: AppColors.onPrimary,
+                            size: 16,
+                          ),
                         ),
                       ],
                     ],
                   ),
                   if (pet!.breedOrSpecies.isNotEmpty) ...[
-                    const SizedBox(height: 2),
+                    const SizedBox(height: AppSpacing.xs),
                     Text(
                       pet!.breedOrSpecies,
-                      style: AppTextStyles.bodyMedium.copyWith(
+                      style: AppTextStyles.bodyLarge.copyWith(
                         color: AppColors.textSecondary,
                       ),
                       maxLines: 1,
@@ -310,38 +345,36 @@ class _PetHeroHeader extends StatelessWidget {
                     ),
                   ],
                 ] else
-                  const _ShimmerText(width: 100, height: 26),
+                  const _ShimmerText(width: 140, height: 36),
+              ],
+            ),
+          ),
 
-                const SizedBox(height: AppSpacing.md),
-
-                // Action buttons.
-                Row(
-                  children: [
-                    _ActionButton(
-                      icon: FluentIcons.edit_24_regular,
-                      label: l10n.petDetailActionEdit,
-                      onTap: onEdit,
-                      isPrimary: true,
-                    ),
-                    const SizedBox(width: AppSpacing.sm),
-                    _ActionButton(
-                      icon: FluentIcons.calendar_add_24_regular,
-                      label: l10n.petDetailActionBook,
-                      onTap: () {},
-                    ),
-                    const SizedBox(width: AppSpacing.sm),
-                    _ActionButton(
-                      icon: FluentIcons.eye_24_regular,
-                      label: l10n.petDetailActionShare,
-                      onTap: () => context.push(AppRoutes.petVision),
-                    ),
-                    const SizedBox(width: AppSpacing.sm),
-                    _ActionButton(
-                      icon: FluentIcons.more_horizontal_24_regular,
-                      label: l10n.petDetailActionMore,
-                      onTap: () => _showMoreSheet(context),
-                    ),
-                  ],
+          // Action cards — pinned to the bottom, overlapping the image's curved
+          // cutout. Smaller squares with generous gaps.
+          PositionedDirectional(
+            start: AppSpacing.lg,
+            end: AppSpacing.lg,
+            bottom: AppRadius.lg + AppSpacing.md,
+            child: Row(
+              children: [
+                _ActionButton(
+                  icon: FluentIcons.edit_24_regular,
+                  label: l10n.petDetailActionEdit,
+                  onTap: onEdit,
+                  isPrimary: true,
+                ),
+                const SizedBox(width: AppSpacing.lg),
+                _ActionButton(
+                  icon: FluentIcons.eye_24_regular,
+                  label: l10n.petDetailActionShare,
+                  onTap: () => context.push(AppRoutes.petVision),
+                ),
+                const SizedBox(width: AppSpacing.lg),
+                _ActionButton(
+                  icon: FluentIcons.more_horizontal_24_regular,
+                  label: l10n.petDetailActionMore,
+                  onTap: () => _showMoreSheet(context),
                 ),
               ],
             ),
@@ -433,12 +466,23 @@ class _PetTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return ColoredBox(
-      color: AppColors.surface,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TabBar(
+    return Transform.translate(
+      // Pull the white sheet up over the header's bottom edge — same gesture as
+      // the home screen's content sheet over the hero.
+      offset: const Offset(0, -AppRadius.lg),
+      child: Container(
+        decoration: const BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(AppRadius.lg + 4),
+          ),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: AppSpacing.sm),
+            TabBar(
             controller: controller,
             labelColor: AppColors.primary,
             unselectedLabelColor: AppColors.textSecondary,
@@ -468,8 +512,9 @@ class _PetTabBar extends StatelessWidget {
               ),
             ],
           ),
-          const Divider(height: 1, thickness: 1, color: AppColors.divider),
-        ],
+            const Divider(height: 1, thickness: 1, color: AppColors.divider),
+          ],
+        ),
       ),
     );
   }
@@ -811,38 +856,48 @@ class _ActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bg = isPrimary ? AppColors.primary : AppColors.surface;
-    final fg = isPrimary ? AppColors.onPrimary : AppColors.textSecondary;
+    final iconColor = isPrimary ? AppColors.onPrimary : AppColors.textSecondary;
+    final labelColor = isPrimary ? AppColors.onPrimary : AppColors.textSecondary;
 
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: bg,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.textPrimary.withValues(alpha: 0.08),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
+    return Material(
+      color: bg,
+      borderRadius: AppRadius.mdAll,
+      elevation: 0,
+      shadowColor: AppColors.textPrimary.withValues(alpha: 0.08),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: AppRadius.mdAll,
+        child: Container(
+          width: 64,
+          height: 64,
+          decoration: BoxDecoration(
+            borderRadius: AppRadius.mdAll,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.textPrimary.withValues(alpha: 0.06),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 22, color: iconColor),
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyles.labelSmall.copyWith(
+                  color: labelColor,
+                  letterSpacing: 0,
                 ),
-              ],
-            ),
-            child: Icon(icon, size: 22, color: fg),
+              ),
+            ],
           ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            label,
-            style: AppTextStyles.labelSmall.copyWith(
-              color: AppColors.textSecondary,
-              letterSpacing: 0,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

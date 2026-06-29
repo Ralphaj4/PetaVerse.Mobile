@@ -9,22 +9,44 @@ import '../theme/app_colors.dart';
 
 const double _navBarHeight = 64;
 
+/// Inset of the floating nav bar from the screen edges.
+const double _navBarMargin = 16;
+
+/// Vertical space the floating nav bar occupies above the system safe area
+/// (its height + bottom margin). Shell pages with `extendBody: true` content
+/// should add this — plus the safe-area bottom inset — to their bottom padding
+/// so nothing scrolls underneath the bar. See [floatingNavBarClearance].
+const double kFloatingNavBarExtent = _navBarHeight + _navBarMargin;
+
+/// Total bottom padding a shell page needs so its content clears the floating
+/// nav bar: the bar's extent plus the device's safe-area bottom inset.
+double floatingNavBarClearance(BuildContext context) =>
+    kFloatingNavBarExtent + MediaQuery.paddingOf(context).bottom;
+
+/// Corner radius of the floating nav bar.
+const double _navBarRadius = 28;
+
 const double _fabSize = 68;
 
-/// How far the center paw button sinks below its centerFloat position so
-/// it visually overlaps the bottom navigation bar.
-const double _fabOverlap = 55;
-
-/// centerFloat shifted down so the FAB renders on top of the bottom bar
-/// (FABs always paint above the bottomNavigationBar in the Scaffold).
+/// Centers the paw FAB horizontally and parks it straddling the TOP edge of the
+/// floating nav bar, so it overlaps the bar regardless of the safe-area inset.
 class _OverlappingCenterFabLocation extends FloatingActionButtonLocation {
   const _OverlappingCenterFabLocation();
 
   @override
   Offset getOffset(ScaffoldPrelayoutGeometry scaffoldGeometry) {
-    final base =
-        FloatingActionButtonLocation.centerFloat.getOffset(scaffoldGeometry);
-    return Offset(base.dx, base.dy + _fabOverlap);
+    final dx = (scaffoldGeometry.scaffoldSize.width -
+            scaffoldGeometry.floatingActionButtonSize.width) /
+        2;
+    // Top edge of the floating bar, measured from the top of the scaffold.
+    final barTop = scaffoldGeometry.scaffoldSize.height -
+        scaffoldGeometry.minViewPadding.bottom -
+        _navBarMargin -
+        _navBarHeight;
+    // Center the FAB on that edge.
+    final dy =
+        barTop - scaffoldGeometry.floatingActionButtonSize.height / 2;
+    return Offset(dx, dy);
   }
 }
 
@@ -67,42 +89,66 @@ class AppShell extends ConsumerWidget {
         ),
       ),
       floatingActionButtonLocation: const _OverlappingCenterFabLocation(),
-      bottomNavigationBar: BottomAppBar(
-        color: AppColors.surface,
-        height: _navBarHeight,
-        padding: EdgeInsets.zero,
-        child: Row(
-          children: [
-            _NavItem(
-              icon: FluentIcons.home_24_regular,
-              selectedIcon: FluentIcons.home_24_filled,
-              label: l10n.navHome,
-              isSelected: navigationShell.currentIndex == 0,
-              onTap: () => goBranch(0),
+      // Transparent host so the visible bar can float with margins; the rounded
+      // white surface lives inside.
+      extendBody: true,
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+            _navBarMargin,
+            0,
+            _navBarMargin,
+            _navBarMargin,
+          ),
+          child: Container(
+            height: _navBarHeight,
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(_navBarRadius),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.textPrimary.withValues(alpha: 0.12),
+                  blurRadius: 24,
+                  offset: const Offset(0, 8),
+                ),
+              ],
             ),
-            _NavItem(
-              icon: FluentIcons.people_community_24_regular,
-              selectedIcon: FluentIcons.people_community_24_filled,
-              label: l10n.navCommunity,
-              isSelected: navigationShell.currentIndex == 1,
-              onTap: () => goBranch(1),
+            child: Row(
+              children: [
+                _NavItem(
+                  icon: FluentIcons.home_24_regular,
+                  selectedIcon: FluentIcons.home_24_filled,
+                  label: l10n.navHome,
+                  isSelected: navigationShell.currentIndex == 0,
+                  onTap: () => goBranch(0),
+                ),
+                _NavItem(
+                  icon: FluentIcons.people_community_24_regular,
+                  selectedIcon: FluentIcons.people_community_24_filled,
+                  label: l10n.navCommunity,
+                  isSelected: navigationShell.currentIndex == 1,
+                  onTap: () => goBranch(1),
+                ),
+                const Spacer(),
+                _NavItem(
+                  icon: FluentIcons.stethoscope_24_regular,
+                  selectedIcon: FluentIcons.stethoscope_24_filled,
+                  label: l10n.navCare,
+                  isSelected: navigationShell.currentIndex == 2,
+                  onTap: () => goBranch(2),
+                ),
+                _NavItem(
+                  icon: FluentIcons.person_24_regular,
+                  selectedIcon: FluentIcons.person_24_filled,
+                  label: l10n.navProfile,
+                  isSelected:
+                      navigationShell.currentIndex == _profileBranchIndex,
+                  onTap: () => goBranch(_profileBranchIndex),
+                ),
+              ],
             ),
-            const Spacer(),
-            _NavItem(
-              icon: FluentIcons.stethoscope_24_regular,
-              selectedIcon: FluentIcons.stethoscope_24_filled,
-              label: l10n.navCare,
-              isSelected: navigationShell.currentIndex == 2,
-              onTap: () => goBranch(2),
-            ),
-            _NavItem(
-              icon: FluentIcons.person_24_regular,
-              selectedIcon: FluentIcons.person_24_filled,
-              label: l10n.navProfile,
-              isSelected: navigationShell.currentIndex == _profileBranchIndex,
-              onTap: () => goBranch(_profileBranchIndex),
-            ),
-          ],
+          ),
         ),
       ),
     );

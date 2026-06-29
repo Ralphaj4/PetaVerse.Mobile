@@ -10,6 +10,8 @@
 	<string>PetaVerse needs access to your photo library</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>PetaVerse needs access to save photos to your library</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>PetaVerse uses your location to show nearby pets and places on the map</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
