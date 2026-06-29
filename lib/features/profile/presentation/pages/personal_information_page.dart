@@ -142,18 +142,19 @@ class _PersonalInformationPageState
     );
 
     // Re-fetch /me so the freshly uploaded avatar URL is reflected everywhere.
-    final ok = result.when(success: (_) => true, failure: (_) => false);
-    if (ok) {
+    final failure = result.failureOrNull;
+    if (failure == null) {
       await ref.read(userProvider.notifier).refresh();
     }
 
     if (!mounted) return;
     setState(() => _isUploadingAvatar = false);
 
-    if (ok) {
+    if (failure == null) {
       context.showSuccessSnackBar(context.l10n.photoUpdated);
     } else {
-      context.showErrorSnackBar(context.l10n.photoUploadFailed);
+      // Prefer the API message; falls back to a generic localized string.
+      context.showErrorSnackBar(failure.localizedMessage(context.l10n));
     }
   }
 

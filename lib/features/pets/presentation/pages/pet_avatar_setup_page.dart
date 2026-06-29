@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/app/router/app_router.dart';
+import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/network/dtos/media_dtos.dart';
 import '../../../../core/network/providers/media_datasource_provider.dart';
@@ -82,9 +83,11 @@ class _PetAvatarSetupPageState extends ConsumerState<PetAvatarSetupPage> {
       );
 
       if (!mounted) return;
-      uploadedUrl = result.when(success: (asset) => asset.url, failure: (_) => null);
-      if (uploadedUrl == null) {
-        context.showErrorSnackBar(context.l10n.photoUploadFailed);
+      uploadedUrl = result.valueOrNull?.url;
+      final failure = result.failureOrNull;
+      if (failure != null) {
+        // Prefer the API message; falls back to a generic localized string.
+        context.showErrorSnackBar(failure.localizedMessage(context.l10n));
       }
       setState(() => _isUploading = false);
     }

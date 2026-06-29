@@ -108,24 +108,19 @@ class ApiClient {
     }
   }
 
+  /// Extracts the server's human-facing error message from the body, or `''`
+  /// when none is present. We intentionally do NOT synthesize a technical
+  /// fallback (e.g. "Server error") here: an empty message lets the
+  /// presentation layer ([FailureL10n.localizedMessage]) fall back to a proper
+  /// localized string instead of showing a raw status line to the user.
   String _extractErrorMessage(dynamic body, int status) {
-    if (body is! Map<String, dynamic>) return 'Request failed with status $status';
-    // RFC 7807 ProblemDetails: detail > message > title > status-based fallback
+    if (body is! Map<String, dynamic>) return '';
+    // RFC 7807 ProblemDetails: detail > message > title.
     return body['detail'] as String? ??
         body['message'] as String? ??
         body['title'] as String? ??
-        _defaultErrorMessage(status);
+        '';
   }
-
-  String _defaultErrorMessage(int status) => switch (status) {
-        400 => 'Invalid request',
-        401 => 'Unauthorized',
-        403 => 'Forbidden',
-        404 => 'Not found',
-        422 => 'Validation failed',
-        >= 500 => 'Server error',
-        _ => 'Request failed',
-      };
 
   Map<String, String> _extractFieldErrors(dynamic body) {
     if (body is! Map<String, dynamic>) return const {};
