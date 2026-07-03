@@ -39,12 +39,13 @@ class UserDatasource implements IUserDatasource {
   @override
   Future<Result<UserDto>> updateProfile(UpdateProfileRequest request) async {
     try {
-      final response = await _apiClient.put(
+      // PUT returns only the edited fields (not a full user), so we ignore its
+      // body and refetch the authoritative profile via GET /users/me.
+      await _apiClient.put<Map<String, dynamic>>(
         ApiEndpoints.usersProfile,
-        data: request,
+        data: request.toJson(),
       );
-      final dto = UserDto.fromJson(response.data as Map<String, dynamic>);
-      return Result.success(dto);
+      return getProfile();
     } catch (e) {
       return Result.failure(_mapException(e));
     }

@@ -249,13 +249,183 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get lostFoundDetailTitle => 'Détails du signalement';
+
+  @override
+  String get reportReporter => 'Signalé par';
+
+  @override
+  String get reportViewOnMap => 'Voir sur la carte';
+
+  @override
   String get contactOwner => 'Contacter le Propriétaire';
+
+  @override
+  String get contactOwnerTitle => 'Contacter le propriétaire';
+
+  @override
+  String contactOwnerSubtitle(String petName) {
+    return 'Prenez contact au sujet de $petName.';
+  }
+
+  @override
+  String get contactCall => 'Appeler';
+
+  @override
+  String get contactCallSubtitle => 'Passer un appel téléphonique';
+
+  @override
+  String get contactWhatsApp => 'WhatsApp';
+
+  @override
+  String get contactWhatsAppSubtitle => 'Envoyer un message sur WhatsApp';
+
+  @override
+  String get contactNoPhone => 'Ce signalement n\'a pas de numéro de contact.';
+
+  @override
+  String get contactLaunchError =>
+      'Impossible d\'ouvrir l\'application. Veuillez réessayer.';
 
   @override
   String get viewDetails => 'Voir les Détails';
 
   @override
   String get reportLostPet => 'Signaler un Animal Perdu';
+
+  @override
+  String get reportLostPetTitle => 'Signaler un animal perdu';
+
+  @override
+  String get reportLostPetSubtitle =>
+      'Choisissez votre animal et où il a été vu pour la dernière fois.';
+
+  @override
+  String get reportSelectPet => 'Quel animal est perdu ?';
+
+  @override
+  String get reportSelectPetHint => 'Sélectionner un animal';
+
+  @override
+  String get reportNoPets =>
+      'Vous n\'avez aucun animal à signaler. Ajoutez d\'abord un animal.';
+
+  @override
+  String get reportDescription => 'Description';
+
+  @override
+  String get reportDescriptionHint =>
+      'Collier, signes distinctifs, comportement…';
+
+  @override
+  String get reportLastSeenAddress => 'Adresse de la dernière observation';
+
+  @override
+  String get reportLastSeenAddressHint => 'ex. Quartier Sunset, Park Ave';
+
+  @override
+  String get reportLocation => 'Dernier lieu connu';
+
+  @override
+  String get reportLocationHint => 'Touchez la carte pour placer un repère';
+
+  @override
+  String get reportLocationRequired => 'Touchez la carte pour définir le lieu';
+
+  @override
+  String get reportReward => 'Récompense (facultatif)';
+
+  @override
+  String get reportRewardLabel => 'Récompense';
+
+  @override
+  String get reportRewardHint => '0–999';
+
+  @override
+  String get reportRewardRange => 'La récompense doit être entre 0 et 999';
+
+  @override
+  String reportRewardBadge(int amount) {
+    return 'Récompense : \$$amount';
+  }
+
+  @override
+  String get reportSubmit => 'Continuer';
+
+  @override
+  String get reportHeaderSubtitle =>
+      'Aidez à réunir les animaux avec leur famille.';
+
+  @override
+  String get reportRewardHelper =>
+      'Offrir une récompense peut augmenter les chances de retrouvailles.';
+
+  @override
+  String get reportUseMyLocation => 'Utiliser ma position';
+
+  @override
+  String get reportCreatedSuccess => 'Signalement créé';
+
+  @override
+  String get deleteReportTitle => 'Supprimer le signalement ?';
+
+  @override
+  String deleteReportMessage(String petName) {
+    return 'Cela retire le signalement de $petName de la carte et des annonces. Cette action est irréversible.';
+  }
+
+  @override
+  String get deleteReportSuccess => 'Signalement supprimé';
+
+  @override
+  String get reportSpeciesUnresolved =>
+      'Impossible de déterminer l\'espèce de votre animal. Veuillez réessayer.';
+
+  @override
+  String get reportTitle => 'Signaler un animal';
+
+  @override
+  String get reportTypeLost => 'Perdu';
+
+  @override
+  String get reportTypeFound => 'Trouvé';
+
+  @override
+  String get reportLostSubtitle =>
+      'Choisissez votre animal et où il a été vu pour la dernière fois.';
+
+  @override
+  String get reportFoundSubtitle =>
+      'Décrivez l\'animal que vous avez trouvé et où vous l\'avez vu.';
+
+  @override
+  String get reportFoundName => 'Nom de l\'animal';
+
+  @override
+  String get reportFoundNameHint => 'Un nom ou surnom (ex. « chat roux »)';
+
+  @override
+  String get reportFoundSpecies => 'Espèce';
+
+  @override
+  String get reportFoundBreed => 'Race';
+
+  @override
+  String get reportFoundSelectSpeciesFirst =>
+      'Sélectionnez d\'abord une espèce';
+
+  @override
+  String get reportPhoto => 'Photo';
+
+  @override
+  String get reportPhotoHint => 'Ajoutez une photo nette de l\'animal';
+
+  @override
+  String get reportPhotoRemove => 'Supprimer la photo';
+
+  @override
+  String get reportPhotoRequired =>
+      'Une photo est requise pour les signalements trouvés';
 
   @override
   String get howToHelp => 'Comment Aider';
@@ -268,9 +438,44 @@ class AppLocalizationsFr extends AppLocalizations {
   String get becomeVolunteer => 'Devenir Bénévole';
 
   @override
+  String get alreadyVolunteer => 'Vous êtes bénévole';
+
+  @override
+  String get becameVolunteer => 'Vous êtes maintenant bénévole';
+
+  @override
+  String get leftVolunteer => 'Vous avez quitté les bénévoles';
+
+  @override
+  String get leaveVolunteerAction => 'Quitter';
+
+  @override
+  String get leaveVolunteerTitle => 'Quitter les bénévoles ?';
+
+  @override
+  String get leaveVolunteerMessage =>
+      'Vous ne recevrez plus d\'alertes lorsqu\'un animal perdu est signalé près de chez vous.';
+
+  @override
+  String get leaveVolunteerConfirm => 'Quitter';
+
+  @override
+  String get lostAndFoundNoAlerts =>
+      'Aucune alerte à proximité pour le moment.';
+
+  @override
   String activeVolunteers(int count) {
-    return '$count Bénévoles Actifs';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Bénévoles Actifs',
+      one: '1 Bénévole Actif',
+    );
+    return '$_temp0';
   }
+
+  @override
+  String get volunteerThankYou => 'Merci de faire la différence !';
 
   @override
   String get medicationsReminders => 'Médicaments & Rappels';
@@ -486,6 +691,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get close => 'Fermer';
+
+  @override
+  String get confirm => 'Confirmer';
 
   @override
   String get delete => 'Supprimer';
@@ -819,7 +1027,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get petAvatarSetupSubtitle =>
-      'Ajoutez une photo de votre animal. C\'est facultatif et vous pouvez la changer à tout moment.';
+      'Donnez un visage à votre animal sur son profil.';
+
+  @override
+  String get petAvatarSetupOptional => 'Facultatif — modifiable à tout moment.';
 
   @override
   String get petAvatarUploadHint => 'Télécharger une photo';

@@ -538,11 +538,77 @@ abstract class AppLocalizations {
   /// **'{n}h ago'**
   String timeAgo(int n);
 
+  /// No description provided for @lostFoundDetailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Details'**
+  String get lostFoundDetailTitle;
+
+  /// No description provided for @reportReporter.
+  ///
+  /// In en, this message translates to:
+  /// **'Reported by'**
+  String get reportReporter;
+
+  /// No description provided for @reportViewOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'View on map'**
+  String get reportViewOnMap;
+
   /// No description provided for @contactOwner.
   ///
   /// In en, this message translates to:
   /// **'Contact Owner'**
   String get contactOwner;
+
+  /// No description provided for @contactOwnerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Owner'**
+  String get contactOwnerTitle;
+
+  /// No description provided for @contactOwnerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach out about {petName}.'**
+  String contactOwnerSubtitle(String petName);
+
+  /// No description provided for @contactCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get contactCall;
+
+  /// No description provided for @contactCallSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a phone call'**
+  String get contactCallSubtitle;
+
+  /// No description provided for @contactWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get contactWhatsApp;
+
+  /// No description provided for @contactWhatsAppSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Message on WhatsApp'**
+  String get contactWhatsAppSubtitle;
+
+  /// No description provided for @contactNoPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'This report has no contact number.'**
+  String get contactNoPhone;
+
+  /// No description provided for @contactLaunchError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the app. Please try again.'**
+  String get contactLaunchError;
 
   /// No description provided for @viewDetails.
   ///
@@ -555,6 +621,246 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Report Lost Pet'**
   String get reportLostPet;
+
+  /// No description provided for @reportLostPetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a Lost Pet'**
+  String get reportLostPetTitle;
+
+  /// No description provided for @reportLostPetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick your pet and where it was last seen.'**
+  String get reportLostPetSubtitle;
+
+  /// No description provided for @reportSelectPet.
+  ///
+  /// In en, this message translates to:
+  /// **'Which pet is lost?'**
+  String get reportSelectPet;
+
+  /// No description provided for @reportSelectPetHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a pet'**
+  String get reportSelectPetHint;
+
+  /// No description provided for @reportNoPets.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no pets to report. Add a pet first.'**
+  String get reportNoPets;
+
+  /// No description provided for @reportDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get reportDescription;
+
+  /// No description provided for @reportDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Collar, distinguishing marks, behaviour…'**
+  String get reportDescriptionHint;
+
+  /// No description provided for @reportLastSeenAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Last seen address'**
+  String get reportLastSeenAddress;
+
+  /// No description provided for @reportLastSeenAddressHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Sunset District, Park Ave'**
+  String get reportLastSeenAddressHint;
+
+  /// No description provided for @reportLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Last seen location'**
+  String get reportLocation;
+
+  /// No description provided for @reportLocationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the map to drop a pin'**
+  String get reportLocationHint;
+
+  /// No description provided for @reportLocationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the map to set the location'**
+  String get reportLocationRequired;
+
+  /// No description provided for @reportReward.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward (optional)'**
+  String get reportReward;
+
+  /// No description provided for @reportRewardLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward'**
+  String get reportRewardLabel;
+
+  /// No description provided for @reportRewardHint.
+  ///
+  /// In en, this message translates to:
+  /// **'0–999'**
+  String get reportRewardHint;
+
+  /// No description provided for @reportRewardRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward must be between 0 and 999'**
+  String get reportRewardRange;
+
+  /// No description provided for @reportRewardBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward: \${amount}'**
+  String reportRewardBadge(int amount);
+
+  /// No description provided for @reportSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get reportSubmit;
+
+  /// No description provided for @reportHeaderSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Help reunite pets with their families.'**
+  String get reportHeaderSubtitle;
+
+  /// No description provided for @reportRewardHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Offering a reward can increase the chances of being reunited.'**
+  String get reportRewardHelper;
+
+  /// No description provided for @reportUseMyLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Use my location'**
+  String get reportUseMyLocation;
+
+  /// No description provided for @reportCreatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Report created'**
+  String get reportCreatedSuccess;
+
+  /// No description provided for @deleteReportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Report?'**
+  String get deleteReportTitle;
+
+  /// No description provided for @deleteReportMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This removes {petName}\'s report from the map and listings. This can\'t be undone.'**
+  String deleteReportMessage(String petName);
+
+  /// No description provided for @deleteReportSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Report deleted'**
+  String get deleteReportSuccess;
+
+  /// No description provided for @reportSpeciesUnresolved.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t determine your pet\'s species. Please try again.'**
+  String get reportSpeciesUnresolved;
+
+  /// No description provided for @reportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a Pet'**
+  String get reportTitle;
+
+  /// No description provided for @reportTypeLost.
+  ///
+  /// In en, this message translates to:
+  /// **'Lost'**
+  String get reportTypeLost;
+
+  /// No description provided for @reportTypeFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Found'**
+  String get reportTypeFound;
+
+  /// No description provided for @reportLostSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick your pet and where it was last seen.'**
+  String get reportLostSubtitle;
+
+  /// No description provided for @reportFoundSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the pet you found and where you saw it.'**
+  String get reportFoundSubtitle;
+
+  /// No description provided for @reportFoundName.
+  ///
+  /// In en, this message translates to:
+  /// **'Pet name'**
+  String get reportFoundName;
+
+  /// No description provided for @reportFoundNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A name or nickname (e.g. \"Ginger tabby\")'**
+  String get reportFoundNameHint;
+
+  /// No description provided for @reportFoundSpecies.
+  ///
+  /// In en, this message translates to:
+  /// **'Species'**
+  String get reportFoundSpecies;
+
+  /// No description provided for @reportFoundBreed.
+  ///
+  /// In en, this message translates to:
+  /// **'Breed'**
+  String get reportFoundBreed;
+
+  /// No description provided for @reportFoundSelectSpeciesFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a species first'**
+  String get reportFoundSelectSpeciesFirst;
+
+  /// No description provided for @reportPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get reportPhoto;
+
+  /// No description provided for @reportPhotoHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a clear photo of the pet'**
+  String get reportPhotoHint;
+
+  /// No description provided for @reportPhotoRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove photo'**
+  String get reportPhotoRemove;
+
+  /// No description provided for @reportPhotoRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'A photo is required for found reports'**
+  String get reportPhotoRequired;
 
   /// No description provided for @howToHelp.
   ///
@@ -574,11 +880,65 @@ abstract class AppLocalizations {
   /// **'Become a Volunteer'**
   String get becomeVolunteer;
 
+  /// No description provided for @alreadyVolunteer.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re a Volunteer'**
+  String get alreadyVolunteer;
+
+  /// No description provided for @becameVolunteer.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re now a volunteer'**
+  String get becameVolunteer;
+
+  /// No description provided for @leftVolunteer.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve left the volunteers'**
+  String get leftVolunteer;
+
+  /// No description provided for @leaveVolunteerAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get leaveVolunteerAction;
+
+  /// No description provided for @leaveVolunteerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Volunteers?'**
+  String get leaveVolunteerTitle;
+
+  /// No description provided for @leaveVolunteerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll stop receiving alerts when a lost pet is reported near you.'**
+  String get leaveVolunteerMessage;
+
+  /// No description provided for @leaveVolunteerConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get leaveVolunteerConfirm;
+
+  /// No description provided for @lostAndFoundNoAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'No alerts nearby right now.'**
+  String get lostAndFoundNoAlerts;
+
   /// No description provided for @activeVolunteers.
   ///
   /// In en, this message translates to:
-  /// **'{count} Active Volunteers'**
+  /// **'{count, plural, =1{1 Active Volunteer} other{{count} Active Volunteers}}'**
   String activeVolunteers(int count);
+
+  /// No description provided for @volunteerThankYou.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for making a difference!'**
+  String get volunteerThankYou;
 
   /// No description provided for @medicationsReminders.
   ///
@@ -969,6 +1329,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Close'**
   String get close;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
 
   /// No description provided for @delete.
   ///
@@ -1567,8 +1933,14 @@ abstract class AppLocalizations {
   /// No description provided for @petAvatarSetupSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Add a photo of your pet. This is optional and you can change it anytime.'**
+  /// **'Give your pet a face on their profile.'**
   String get petAvatarSetupSubtitle;
+
+  /// No description provided for @petAvatarSetupOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional — you can change it anytime.'**
+  String get petAvatarSetupOptional;
 
   /// No description provided for @petAvatarUploadHint.
   ///

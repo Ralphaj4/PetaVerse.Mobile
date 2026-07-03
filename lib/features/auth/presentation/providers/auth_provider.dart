@@ -186,12 +186,17 @@ class AuthNotifier extends _$AuthNotifier {
   /// after the await (the ref may be gone). Both repositories are read up
   /// front. The session-gate flip and any navigation are the caller's
   /// responsibility, driven from a stable ref.
-  Future<void> logout() {
+  Future<void> logout() async {
     final authRepository = ref.read(authRepositoryProvider);
     final userRepository = ref.read(userRepositoryProvider);
-    // Cache clear is best-effort and independent of the server revoke.
-    unawaited(userRepository.clearCache());
-    return authRepository.logout();
+    // Await BOTH local clears so they're durably written before logout is
+    // considered done — otherwise a user who kills the app immediately after
+    // tapping "log out" can relaunch with tokens/cache still present (skipping
+    // login and showing the previous user's data).
+    await Future.wait([
+      authRepository.logout(),
+      userRepository.clearCache(),
+    ]);
   }
 
   /// Runs a session-returning call; tokens are already persisted by the

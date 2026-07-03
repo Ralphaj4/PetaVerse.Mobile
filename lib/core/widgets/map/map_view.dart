@@ -27,6 +27,7 @@ class MapView extends StatefulWidget {
     this.showMyLocation = true,
     this.showRecenterButton = true,
     this.cluster = true,
+    this.onTap,
     super.key,
   });
 
@@ -50,6 +51,10 @@ class MapView extends StatefulWidget {
 
   /// Collapse overlapping pins into count bubbles that expand on zoom.
   final bool cluster;
+
+  /// Called with the tapped coordinate when the user taps the map. Used by the
+  /// location picker to drop/move a pin.
+  final void Function(LatLng point)? onTap;
 
   @override
   State<MapView> createState() => _MapViewState();
@@ -78,6 +83,17 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
     }
     if (widget.showMyLocation && _interactive) {
       _initLocation();
+    }
+  }
+
+  @override
+  void didUpdateWidget(MapView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Treat [center] as a live "move here" prop: when it changes (e.g. the
+    // caller dropped a pin), recenter the camera. flutter_map's initialCenter
+    // only applies on first build, so without this the map wouldn't follow.
+    if (widget.center != oldWidget.center) {
+      _moveTo(widget.center, _controller.camera.zoom);
     }
   }
 
@@ -152,6 +168,9 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
             interactionOptions: InteractionOptions(
               flags: _interactive ? InteractiveFlag.all : InteractiveFlag.none,
             ),
+            onTap: widget.onTap == null
+                ? null
+                : (_, point) => widget.onTap!(point),
           ),
           children: [
             TileLayer(

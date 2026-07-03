@@ -15,14 +15,17 @@ import 'alert_type_badge.dart';
 class PetAlertCard extends StatelessWidget {
   const PetAlertCard({
     required this.alert,
-    this.onContactOwner,
     this.onViewDetails,
+    this.onDelete,
     super.key,
   });
 
   final PetAlert alert;
-  final VoidCallback? onContactOwner;
   final VoidCallback? onViewDetails;
+
+  /// Delete action, shown instead of "View Details" when the user owns the
+  /// report ([PetAlert.isOwner]).
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +54,15 @@ class PetAlertCard extends StatelessWidget {
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(AppRadius.lg),
                 ),
-                child: AppCachedImage(
-                  imageUrl: alert.imageUrl,
-                  height: 180,
-                  width: double.infinity,
-                  borderRadius: BorderRadius.zero,
-                  semanticLabel: alert.petName,
+                child: Hero(
+                  tag: lostFoundHeroTag(alert.reportId),
+                  child: AppCachedImage(
+                    imageUrl: alert.imageUrl,
+                    height: 180,
+                    width: double.infinity,
+                    borderRadius: BorderRadius.zero,
+                    semanticLabel: alert.petName,
+                  ),
                 ),
               ),
               PositionedDirectional(
@@ -130,6 +136,12 @@ class PetAlertCard extends StatelessWidget {
                     ),
                   ],
                 ),
+                if (alert.reward != null) ...[
+                  const SizedBox(height: AppSpacing.sm),
+                  _RewardBadge(
+                    label: l10n.reportRewardBadge(alert.reward!),
+                  ),
+                ],
                 const SizedBox(height: AppSpacing.sm),
                 Text(
                   alert.description,
@@ -140,13 +152,58 @@ class PetAlertCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: AppSpacing.md),
-                _ActionButton(
-                  isLost: isLost,
-                  lostLabel: l10n.contactOwner,
-                  foundLabel: l10n.viewDetails,
-                  onPressed: isLost ? onContactOwner : onViewDetails,
-                ),
+                // Owner → Delete (can't act on your own report); otherwise the
+                // "View Details" action (contact happens inside details).
+                if (alert.isOwner)
+                  _ActionButton(
+                    label: l10n.delete,
+                    onPressed: onDelete,
+                    isDestructive: true,
+                  )
+                else
+                  _ActionButton(
+                    label: l10n.viewDetails,
+                    onPressed: onViewDetails,
+                  ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Small pill showing the reward offered for a lost pet.
+class _RewardBadge extends StatelessWidget {
+  const _RewardBadge({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.sm,
+        vertical: 4,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.primarySoft,
+        borderRadius: BorderRadius.circular(AppSpacing.sm),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            FluentIcons.gift_24_filled,
+            size: 14,
+            color: AppColors.primary,
+          ),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: AppTextStyles.labelMedium.copyWith(
+              color: AppColors.primaryDark,
             ),
           ),
         ],
@@ -157,34 +214,32 @@ class PetAlertCard extends StatelessWidget {
 
 class _ActionButton extends StatelessWidget {
   const _ActionButton({
-    required this.isLost,
-    required this.lostLabel,
-    required this.foundLabel,
+    required this.label,
     this.onPressed,
+    this.isDestructive = false,
   });
 
-  final bool isLost;
-  final String lostLabel;
-  final String foundLabel;
+  final String label;
   final VoidCallback? onPressed;
+  final bool isDestructive;
 
   @override
   Widget build(BuildContext context) {
+    final bg = isDestructive ? AppColors.error : AppColors.secondary;
+    final fg = isDestructive ? AppColors.onPrimary : AppColors.onSecondary;
     return SizedBox(
       width: double.infinity,
       child: FilledButton(
         onPressed: onPressed,
         style: FilledButton.styleFrom(
-          backgroundColor: AppColors.secondary,
-          foregroundColor: AppColors.onSecondary,
+          backgroundColor: bg,
+          foregroundColor: fg,
           shape: RoundedRectangleBorder(borderRadius: AppRadius.smAll),
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
         ),
         child: Text(
-          isLost ? lostLabel : foundLabel,
-          style: AppTextStyles.titleSmall.copyWith(
-            color: AppColors.onSecondary,
-          ),
+          label,
+          style: AppTextStyles.titleSmall.copyWith(color: fg),
         ),
       ),
     );

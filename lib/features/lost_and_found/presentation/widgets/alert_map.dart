@@ -6,41 +6,25 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/map/map_marker_data.dart';
 import '../../../../core/widgets/map/map_page.dart';
 import '../../../../core/widgets/map/map_view.dart';
-import '../models/pet_alert.dart';
 
 /// Inline Lost & Found map preview. Renders the shared [MapView] inside
 /// a Hero and overlays an expand button that opens the full-screen map.
 class AlertMap extends StatelessWidget {
   const AlertMap({
-    required this.alerts,
+    required this.markers,
     required this.center,
     required this.onExpand,
     this.heroTag = kMapHeroTag,
     super.key,
   });
 
-  final List<PetAlert> alerts;
+  final List<MapMarkerData> markers;
   final LatLng center;
   final VoidCallback onExpand;
   final Object heroTag;
 
-  /// Maps domain [PetAlert]s onto the shared, feature-agnostic markers.
-  static List<MapMarkerData> markersFor(List<PetAlert> alerts) => alerts
-      .map(
-        (a) => MapMarkerData(
-          id: a.id,
-          point: a.latLng,
-          label: a.petName,
-          color: a.type == AlertType.lost
-              ? AppColors.error
-              : AppColors.success,
-        ),
-      )
-      .toList();
-
   @override
   Widget build(BuildContext context) {
-    final markers = markersFor(alerts);
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: Stack(

@@ -16,6 +16,8 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../shared/widgets/ambient_decorations.dart';
+import '../../../../shared/widgets/app_button.dart';
 import '../../domain/entities/pet_ref.dart';
 import '../providers/create_pet_provider.dart';
 
@@ -114,142 +116,283 @@ class _PetAvatarSetupPageState extends ConsumerState<PetAvatarSetupPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final hasPhoto = _avatarFile != null;
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg,
-                    vertical: AppSpacing.xl,
+      backgroundColor: AppColors.background,
+      body: Stack(
+        children: [
+          const AmbientDecorations(),
+          SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.xl,
+                      vertical: AppSpacing.xl,
+                    ),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: AppSpacing.md),
+
+                        // ── sparkle accent + headline ──────────────────────
+                        const Icon(
+                          FluentIcons.sparkle_20_filled,
+                          color: AppColors.primary,
+                          size: 20,
+                        ),
+                        const SizedBox(height: AppSpacing.sm),
+                        Text(
+                          l10n.petAvatarSetupTitle,
+                          style: AppTextStyles.displayLarge.copyWith(
+                            fontSize: 28,
+                            height: 1.15,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: AppSpacing.sm),
+                        Text(
+                          l10n.petAvatarSetupSubtitle,
+                          style: AppTextStyles.bodyLarge.copyWith(
+                            color: AppColors.textSecondary,
+                            height: 1.5,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: AppSpacing.xxl),
+
+                        // ── tappable photo target on a soft blob ───────────
+                        _PhotoTarget(
+                          file: _avatarFile,
+                          uploadHint: l10n.petAvatarUploadHint,
+                          changeHint: l10n.changePhoto,
+                          onTap: _isUploading ? null : _showAvatarPicker,
+                        ),
+                        const SizedBox(height: AppSpacing.xxl),
+
+                        // ── reassurance chip ───────────────────────────────
+                        _InfoChip(label: l10n.petAvatarSetupOptional),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // ── footer actions ─────────────────────────────────────────
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.xl,
+                    AppSpacing.sm,
+                    AppSpacing.xl,
+                    AppSpacing.lg,
                   ),
                   child: Column(
                     children: [
-                      Container(
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.1),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          FluentIcons.animal_paw_print_24_filled,
-                          color: AppColors.primary,
-                          size: 48,
-                        ),
+                      AppButton(
+                        label: hasPhoto
+                            ? l10n.continueLabel
+                            : l10n.petAvatarUploadHint,
+                        icon: hasPhoto
+                            ? FluentIcons.checkmark_24_regular
+                            : FluentIcons.camera_add_24_regular,
+                        variant: AppButtonVariant.primary,
+                        isLoading: _isUploading,
+                        // No photo → the primary action is disabled; the user
+                        // uploads via the photo target or leaves via "Skip".
+                        onPressed: hasPhoto ? _continue : null,
                       ),
-                      const SizedBox(height: AppSpacing.xl),
-                      Text(
-                        l10n.petAvatarSetupTitle,
-                        style: AppTextStyles.headlineLarge,
-                        textAlign: TextAlign.center,
+                      const SizedBox(height: AppSpacing.xs),
+                      AppButton(
+                        label: l10n.skipForNow,
+                        variant: AppButtonVariant.text,
+                        onPressed: _isUploading ? null : _skip,
                       ),
-                      const SizedBox(height: AppSpacing.md),
-                      Text(
-                        l10n.petAvatarSetupSubtitle,
-                        style: AppTextStyles.bodyMedium
-                            .copyWith(color: AppColors.textSecondary),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: AppSpacing.xxl),
-                      GestureDetector(
-                        onTap: _showAvatarPicker,
-                        child: Container(
-                          width: 220,
-                          height: 220,
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// The large circular photo target: an empty prompt or the picked photo, seated
+/// on a soft organic blob so it echoes the pet-onboarding hero art.
+class _PhotoTarget extends StatelessWidget {
+  const _PhotoTarget({
+    required this.file,
+    required this.uploadHint,
+    required this.changeHint,
+    required this.onTap,
+  });
+
+  final File? file;
+  final String uploadHint;
+  final String changeHint;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final size = (MediaQuery.sizeOf(context).width * 0.6).clamp(200.0, 260.0);
+
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: SizedBox(
+        width: size,
+        height: size,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            // Soft organic blob behind the target.
+            Container(
+              width: size * 0.98,
+              height: size * 0.9,
+              decoration: const BoxDecoration(
+                color: AppColors.primarySoft,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(150),
+                  topRight: Radius.circular(130),
+                  bottomLeft: Radius.circular(120),
+                  bottomRight: Radius.circular(160),
+                ),
+              ),
+            ),
+
+            // Circular photo / prompt.
+            Container(
+              width: size * 0.78,
+              height: size * 0.78,
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: AppColors.primary.withValues(alpha: 0.35),
+                  width: 2,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.primary.withValues(alpha: 0.15),
+                    blurRadius: 24,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: file == null
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 64,
+                          height: 64,
                           decoration: BoxDecoration(
-                            color: AppColors.primary.withValues(alpha: 0.05),
+                            color: AppColors.primary.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppColors.primary.withValues(alpha: 0.3),
-                              width: 2,
-                            ),
                           ),
-                          clipBehavior: Clip.antiAlias,
-                          child: _avatarFile == null
-                              ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      FluentIcons.camera_add_24_regular,
-                                      color: AppColors.primary,
-                                      size: 44,
-                                    ),
-                                    const SizedBox(height: AppSpacing.md),
-                                    Text(
-                                      l10n.petAvatarUploadHint,
-                                      style: AppTextStyles.bodyMedium.copyWith(
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Image.file(_avatarFile!, fit: BoxFit.cover),
+                          child: const Icon(
+                            FluentIcons.camera_add_24_regular,
+                            color: AppColors.primary,
+                            size: 32,
+                          ),
+                        ),
+                        const SizedBox(height: AppSpacing.md),
+                        Text(
+                          uploadHint,
+                          style: AppTextStyles.titleSmall.copyWith(
+                            color: AppColors.primaryDark,
+                          ),
+                        ),
+                      ],
+                    )
+                  : Image.file(file!, fit: BoxFit.cover),
+            ),
+
+            // "Change" affordance once a photo is picked.
+            if (file != null)
+              PositionedDirectional(
+                bottom: size * 0.06,
+                end: size * 0.06,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.md,
+                    vertical: AppSpacing.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    borderRadius: AppRadius.smAll,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withValues(alpha: 0.35),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        FluentIcons.edit_16_regular,
+                        color: AppColors.onPrimary,
+                        size: 14,
+                      ),
+                      const SizedBox(width: AppSpacing.xs),
+                      Text(
+                        changeHint,
+                        style: AppTextStyles.labelMedium.copyWith(
+                          color: AppColors.onPrimary,
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.lg,
-                vertical: AppSpacing.xl,
-              ),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _isUploading ? null : _continue,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    disabledBackgroundColor: AppColors.divider,
-                    padding:
-                        const EdgeInsets.symmetric(vertical: AppSpacing.md),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: AppRadius.lgAll,
-                    ),
-                  ),
-                  child: _isUploading
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.white),
-                          ),
-                        )
-                      : Text(
-                          _avatarFile == null
-                              ? l10n.skipForNow
-                              : l10n.continueLabel,
-                          style: AppTextStyles.bodyMedium.copyWith(
-                            color: AppColors.onPrimary,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                ),
-              ),
-            ),
-            if (!_isUploading)
-              Padding(
-                padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                child: TextButton(
-                  onPressed: _avatarFile == null ? null : _skip,
-                  child: Text(
-                    l10n.skipForNow,
-                    style: AppTextStyles.bodyMedium
-                        .copyWith(color: AppColors.textSecondary),
-                  ),
-                ),
-              ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Small soft chip reinforcing that the photo is optional / editable later.
+class _InfoChip extends StatelessWidget {
+  const _InfoChip({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.sm,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.secondarySoft,
+        borderRadius: AppRadius.smAll,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            FluentIcons.info_16_regular,
+            color: AppColors.secondaryDark,
+            size: 16,
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          Flexible(
+            child: Text(
+              label,
+              style: AppTextStyles.bodySmall.copyWith(
+                color: AppColors.secondaryDark,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -264,34 +407,45 @@ class _PhotoSourceSheet extends StatelessWidget {
     final l10n = context.l10n;
     return Container(
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius:
             BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
       ),
       padding: const EdgeInsets.all(AppSpacing.lg),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: _SourceButton(
-                  icon: FluentIcons.camera_24_regular,
-                  label: l10n.camera,
-                  onTap: () => Navigator.pop(context, ImageSource.camera),
-                ),
+      child: SafeArea(
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                left: AppSpacing.xs,
+                bottom: AppSpacing.md,
               ),
-              const SizedBox(width: AppSpacing.lg),
-              Expanded(
-                child: _SourceButton(
-                  icon: FluentIcons.image_24_regular,
-                  label: l10n.gallery,
-                  onTap: () => Navigator.pop(context, ImageSource.gallery),
+              child: Text(l10n.changePhoto, style: AppTextStyles.titleSmall),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: _SourceButton(
+                    icon: FluentIcons.camera_24_regular,
+                    label: l10n.camera,
+                    onTap: () => Navigator.pop(context, ImageSource.camera),
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
+                const SizedBox(width: AppSpacing.lg),
+                Expanded(
+                  child: _SourceButton(
+                    icon: FluentIcons.image_24_regular,
+                    label: l10n.gallery,
+                    onTap: () => Navigator.pop(context, ImageSource.gallery),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -315,7 +469,7 @@ class _SourceButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(AppSpacing.lg),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.surface,
           borderRadius: AppRadius.mdAll,
           border: Border.all(color: AppColors.primary, width: 2),
         ),

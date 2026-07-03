@@ -191,14 +191,20 @@ class ProfilePage extends ConsumerWidget {
                     isDestructive: true,
                   );
                   if (!confirmed) return;
-                  // Flip the session gate FIRST, from this page's stable ref
-                  // (not the auto-disposed AuthNotifier, whose ref may be gone
-                  // after an await). The router's redirect reacts to the gate
-                  // change and sends us to /login, replacing the stack.
-                  ref.read(sessionProvider.notifier).setLoggedIn(false);
-                  // Best-effort token clear + server revoke; not awaited
-                  // (navigation is already driven by the gate flip above).
-                  unawaited(ref.read(authProvider.notifier).logout());
+                  // Clear all local session state FIRST and AWAIT it, so
+                  // nothing survives if the user kills the app right after:
+                  //   • pet cache + gate (reset), so the next launch can't
+                  //     hydrate the previous user's pets,
+                  //   • tokens + user cache (logout), so login isn't skipped.
+                  // Only then flip the session gate — the router's redirect
+                  // reacts to it and sends us to /login, replacing the stack.
+                  // Read providers up front (stable ref) before any await.
+                  final petsNotifier = ref.read(petsProvider.notifier);
+                  final authNotifier = ref.read(authProvider.notifier);
+                  final sessionNotifier = ref.read(sessionProvider.notifier);
+                  await petsNotifier.reset();
+                  await authNotifier.logout();
+                  sessionNotifier.setLoggedIn(false);
                 },
               ),
               const SizedBox(height: AppSpacing.lg),

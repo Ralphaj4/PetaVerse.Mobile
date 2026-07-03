@@ -36,8 +36,12 @@ abstract final class ApiEndpoints {
   static const String healthLogs = '/health-logs';
 
   // Lost & Found
-  static const String lostFoundReports = '/lost-found/reports';
-  static String lostFoundReport(String id) => '/lost-found/reports/$id';
+  static const String lostFoundDashboard = '/lost-found/dashboard';
+  static const String lostFoundListings = '/lost-found/listings';
+  static String lostFoundListing(int id) => '/lost-found/listings/$id';
+  static String lostFoundListingResolve(int id) =>
+      '/lost-found/listings/$id/resolve';
+  static const String lostFoundVolunteer = '/lost-found/volunteer';
 
   // AI Assistant
   static const String aiChat = '/ai/chat';
@@ -55,4 +59,7 @@ abstract final class ApiEndpoints {
   static const String mediaUploadUrl = '/media/upload-url';
   static String mediaConfirm(String assetId) => '/media/$assetId/confirm';
   static String media(String assetId) => '/media/$assetId';
+
+  // Geocoding (reverse: coordinates → street address)
+  static const String geocodeReverse = '/geocode/reverse';
 }

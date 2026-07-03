@@ -248,13 +248,175 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get lostFoundDetailTitle => 'تفاصيل البلاغ';
+
+  @override
+  String get reportReporter => 'أبلغ عنه';
+
+  @override
+  String get reportViewOnMap => 'عرض على الخريطة';
+
+  @override
   String get contactOwner => 'تواصل مع المالك';
+
+  @override
+  String get contactOwnerTitle => 'تواصل مع المالك';
+
+  @override
+  String contactOwnerSubtitle(String petName) {
+    return 'تواصل بشأن $petName.';
+  }
+
+  @override
+  String get contactCall => 'اتصال';
+
+  @override
+  String get contactCallSubtitle => 'بدء مكالمة هاتفية';
+
+  @override
+  String get contactWhatsApp => 'واتساب';
+
+  @override
+  String get contactWhatsAppSubtitle => 'المراسلة عبر واتساب';
+
+  @override
+  String get contactNoPhone => 'لا يوجد رقم تواصل لهذا البلاغ.';
+
+  @override
+  String get contactLaunchError => 'تعذّر فتح التطبيق. يرجى المحاولة مرة أخرى.';
 
   @override
   String get viewDetails => 'عرض التفاصيل';
 
   @override
   String get reportLostPet => 'الإبلاغ عن حيوان مفقود';
+
+  @override
+  String get reportLostPetTitle => 'الإبلاغ عن حيوان مفقود';
+
+  @override
+  String get reportLostPetSubtitle => 'اختر حيوانك ومكان آخر مشاهدة له.';
+
+  @override
+  String get reportSelectPet => 'أي حيوان مفقود؟';
+
+  @override
+  String get reportSelectPetHint => 'اختر حيواناً';
+
+  @override
+  String get reportNoPets =>
+      'ليس لديك حيوانات للإبلاغ عنها. أضف حيواناً أولاً.';
+
+  @override
+  String get reportDescription => 'الوصف';
+
+  @override
+  String get reportDescriptionHint => 'الطوق، علامات مميزة، السلوك…';
+
+  @override
+  String get reportLastSeenAddress => 'عنوان آخر مشاهدة';
+
+  @override
+  String get reportLastSeenAddressHint => 'مثال: حي صن ست، شارع بارك';
+
+  @override
+  String get reportLocation => 'آخر موقع معروف';
+
+  @override
+  String get reportLocationHint => 'انقر على الخريطة لوضع علامة';
+
+  @override
+  String get reportLocationRequired => 'انقر على الخريطة لتحديد الموقع';
+
+  @override
+  String get reportReward => 'المكافأة (اختياري)';
+
+  @override
+  String get reportRewardLabel => 'المكافأة';
+
+  @override
+  String get reportRewardHint => '0–999';
+
+  @override
+  String get reportRewardRange => 'يجب أن تكون المكافأة بين 0 و 999';
+
+  @override
+  String reportRewardBadge(int amount) {
+    return 'المكافأة: \$$amount';
+  }
+
+  @override
+  String get reportSubmit => 'متابعة';
+
+  @override
+  String get reportHeaderSubtitle => 'ساعد في لمّ شمل الحيوانات مع عائلاتها.';
+
+  @override
+  String get reportRewardHelper => 'تقديم مكافأة قد يزيد من فرص لمّ الشمل.';
+
+  @override
+  String get reportUseMyLocation => 'استخدام موقعي';
+
+  @override
+  String get reportCreatedSuccess => 'تم إنشاء البلاغ';
+
+  @override
+  String get deleteReportTitle => 'حذف البلاغ؟';
+
+  @override
+  String deleteReportMessage(String petName) {
+    return 'سيؤدي هذا إلى إزالة بلاغ $petName من الخريطة والقوائم. لا يمكن التراجع عن هذا الإجراء.';
+  }
+
+  @override
+  String get deleteReportSuccess => 'تم حذف البلاغ';
+
+  @override
+  String get reportSpeciesUnresolved =>
+      'تعذر تحديد نوع حيوانك. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get reportTitle => 'الإبلاغ عن حيوان';
+
+  @override
+  String get reportTypeLost => 'مفقود';
+
+  @override
+  String get reportTypeFound => 'موجود';
+
+  @override
+  String get reportLostSubtitle => 'اختر حيوانك ومكان آخر مشاهدة له.';
+
+  @override
+  String get reportFoundSubtitle =>
+      'صف الحيوان الذي وجدته والمكان الذي رأيته فيه.';
+
+  @override
+  String get reportFoundName => 'اسم الحيوان';
+
+  @override
+  String get reportFoundNameHint => 'اسم أو لقب (مثال: «قط برتقالي»)';
+
+  @override
+  String get reportFoundSpecies => 'النوع';
+
+  @override
+  String get reportFoundBreed => 'السلالة';
+
+  @override
+  String get reportFoundSelectSpeciesFirst => 'اختر النوع أولاً';
+
+  @override
+  String get reportPhoto => 'صورة';
+
+  @override
+  String get reportPhotoHint => 'أضف صورة واضحة للحيوان';
+
+  @override
+  String get reportPhotoRemove => 'إزالة الصورة';
+
+  @override
+  String get reportPhotoRequired => 'الصورة مطلوبة لبلاغات العثور';
 
   @override
   String get howToHelp => 'كيف تساعد؟';
@@ -267,9 +429,43 @@ class AppLocalizationsAr extends AppLocalizations {
   String get becomeVolunteer => 'كن متطوعاً';
 
   @override
+  String get alreadyVolunteer => 'أنت متطوع';
+
+  @override
+  String get becameVolunteer => 'أنت الآن متطوع';
+
+  @override
+  String get leftVolunteer => 'لقد غادرت فريق المتطوعين';
+
+  @override
+  String get leaveVolunteerAction => 'مغادرة';
+
+  @override
+  String get leaveVolunteerTitle => 'مغادرة فريق المتطوعين؟';
+
+  @override
+  String get leaveVolunteerMessage =>
+      'لن تتلقى تنبيهات بعد الآن عند الإبلاغ عن حيوان مفقود بالقرب منك.';
+
+  @override
+  String get leaveVolunteerConfirm => 'مغادرة';
+
+  @override
+  String get lostAndFoundNoAlerts => 'لا توجد تنبيهات قريبة حالياً.';
+
+  @override
   String activeVolunteers(int count) {
-    return '$count متطوع نشط';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count متطوعين نشطين',
+      one: 'متطوع نشط واحد',
+    );
+    return '$_temp0';
   }
+
+  @override
+  String get volunteerThankYou => 'شكراً لك على إحداث فرق!';
 
   @override
   String get medicationsReminders => 'الأدوية والتذكيرات';
@@ -486,6 +682,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get close => 'إغلاق';
+
+  @override
+  String get confirm => 'تأكيد';
 
   @override
   String get delete => 'حذف';
@@ -813,7 +1012,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get petAvatarSetupSubtitle =>
-      'أضف صورة لحيوانك الأليف. هذا اختياري ويمكنك تغييره في أي وقت.';
+      'امنح حيوانك الأليف صورة في ملفه الشخصي.';
+
+  @override
+  String get petAvatarSetupOptional => 'اختياري — يمكنك تغييره في أي وقت.';
 
   @override
   String get petAvatarUploadHint => 'تحميل صورة';

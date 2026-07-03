@@ -10,7 +10,10 @@ import '../../../features/auth/presentation/pages/otp_verification_page.dart';
 import '../../../features/auth/presentation/pages/register_page.dart';
 import '../../../features/assistant/presentation/pages/assistant_page.dart';
 import '../../../features/home/presentation/pages/home_page.dart';
+import '../../../features/lost_and_found/presentation/models/pet_alert.dart';
+import '../../../features/lost_and_found/presentation/pages/lost_and_found_detail_page.dart';
 import '../../../features/lost_and_found/presentation/pages/lost_and_found_page.dart';
+import '../../../features/lost_and_found/presentation/pages/report_lost_pet_page.dart';
 import '../../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../../features/pets/domain/entities/pet_ref.dart';
 import '../../../features/pets/presentation/pages/create_pet_page.dart';
@@ -66,6 +69,8 @@ abstract final class AppRoutes {
   static const String services = '/services';
   static const String assistant = '/assistant';
   static const String lostAndFound = '/lost-and-found';
+  static const String reportLostPet = '/lost-and-found/report';
+  static const String lostFoundDetail = '/lost-and-found/listing/:id';
   static const String map = '/map';
   static const String petVision = '/pet-vision';
   static const String sandbox = '/sandbox';
@@ -457,6 +462,30 @@ GoRouter appRouter(Ref ref) {
               key: state.pageKey,
               child: const LostAndFoundPage(),
             ),
+      ),
+      GoRoute(
+        path: AppRoutes.reportLostPet,
+        name: 'reportLostPet',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+              key: state.pageKey,
+              child: const ReportLostPetPage(),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.lostFoundDetail,
+        name: 'lostFoundDetail',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          // The tapped alert (when navigated from a card) seeds the header and
+          // powers the shared Hero while the full report loads.
+          final initial = state.extra as PetAlert?;
+          return AppTransitionPage(
+            key: state.pageKey,
+            child: LostFoundDetailPage(reportId: id, initialAlert: initial),
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.map,

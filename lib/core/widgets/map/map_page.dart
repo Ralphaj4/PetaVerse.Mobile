@@ -77,16 +77,19 @@ class MapPage extends StatelessWidget {
                         tooltip: context.l10n.close,
                       ),
                       const SizedBox(width: AppSpacing.md),
-                      Expanded(
+                      // A pill that hugs the title and matches the back
+                      // button's height, so the two sit level and the bar
+                      // doesn't stretch awkwardly across the screen.
+                      Flexible(
                         child: Container(
+                          height: 44,
                           padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.md,
-                            vertical: AppSpacing.sm,
+                            horizontal: AppSpacing.lg,
                           ),
+                          alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: AppColors.surface,
-                            borderRadius:
-                                BorderRadius.circular(AppSpacing.md),
+                            borderRadius: BorderRadius.circular(50),
                             boxShadow: [
                               BoxShadow(
                                 color: AppColors.textPrimary
@@ -99,6 +102,7 @@ class MapPage extends StatelessWidget {
                           child: Text(
                             args.title,
                             style: AppTextStyles.titleSmall,
+                            textAlign: TextAlign.center,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -136,6 +140,13 @@ class _CircleButton extends StatelessWidget {
       child: IconButton(
         onPressed: onTap,
         tooltip: tooltip,
+        // Fixed 44×44 so it lines up with the title pill's height.
+        style: IconButton.styleFrom(
+          fixedSize: const Size(44, 44),
+          minimumSize: const Size(44, 44),
+        ),
+        padding: EdgeInsets.zero,
+        constraints: const BoxConstraints(minWidth: 44, minHeight: 44),
         icon: Icon(icon, color: AppColors.textPrimary),
       ),
     );

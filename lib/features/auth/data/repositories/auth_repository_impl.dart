@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
@@ -115,15 +117,15 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Result<void>> logout() async {
-    // Best-effort server revoke; local tokens are cleared regardless.
-    try {
-      final refresh = await _secureStorage.readRefreshToken();
-      if (refresh != null && refresh.isNotEmpty) {
-        await _remote.revoke(refresh);
-      }
-    } on AppException {
-      // Ignore — we still clear locally below.
+    // Best-effort server revoke — fire-and-forget so a slow/failing network
+    // call never delays (or blocks) the local token clear, which is what
+    // actually logs the user out on-device.
+    final refresh = await _secureStorage.readRefreshToken();
+    if (refresh != null && refresh.isNotEmpty) {
+      unawaited(_remote.revoke(refresh).catchError((_) {}));
     }
+    // Local token clear is awaited and durable — this is the source of truth
+    // for [hasSession] on the next launch.
     await _secureStorage.clearTokens();
     return const Result.success(null);
   }

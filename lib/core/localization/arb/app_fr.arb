@@ -96,7 +96,7 @@
   "addRecord": "Ajouter un Dossier",
   "lostAndFound": "Animaux Perdus",
   "lostAndFoundDashboard": "Tableau de Bord Animaux Perdus",
-  "lostAndFoundSubtitle": "{count} alertes actives dans un rayon de 5 miles",
+  "lostAndFoundSubtitle": "{count} alertes actives dans un rayon de 10 km",
   "@lostAndFoundSubtitle": {
     "placeholders": {
       "count": { "type": "int" }
@@ -115,18 +115,89 @@
       "n": { "type": "int" }
     }
   },
+  "lostFoundDetailTitle": "Détails du signalement",
+  "reportReporter": "Signalé par",
+  "reportViewOnMap": "Voir sur la carte",
   "contactOwner": "Contacter le Propriétaire",
+  "contactOwnerTitle": "Contacter le propriétaire",
+  "contactOwnerSubtitle": "Prenez contact au sujet de {petName}.",
+  "@contactOwnerSubtitle": {
+    "placeholders": {
+      "petName": { "type": "String" }
+    }
+  },
+  "contactCall": "Appeler",
+  "contactCallSubtitle": "Passer un appel téléphonique",
+  "contactWhatsApp": "WhatsApp",
+  "contactWhatsAppSubtitle": "Envoyer un message sur WhatsApp",
+  "contactNoPhone": "Ce signalement n'a pas de numéro de contact.",
+  "contactLaunchError": "Impossible d'ouvrir l'application. Veuillez réessayer.",
   "viewDetails": "Voir les Détails",
   "reportLostPet": "Signaler un Animal Perdu",
+  "reportLostPetTitle": "Signaler un animal perdu",
+  "reportLostPetSubtitle": "Choisissez votre animal et où il a été vu pour la dernière fois.",
+  "reportSelectPet": "Quel animal est perdu ?",
+  "reportSelectPetHint": "Sélectionner un animal",
+  "reportNoPets": "Vous n'avez aucun animal à signaler. Ajoutez d'abord un animal.",
+  "reportDescription": "Description",
+  "reportDescriptionHint": "Collier, signes distinctifs, comportement…",
+  "reportLastSeenAddress": "Adresse de la dernière observation",
+  "reportLastSeenAddressHint": "ex. Quartier Sunset, Park Ave",
+  "reportLocation": "Dernier lieu connu",
+  "reportLocationHint": "Touchez la carte pour placer un repère",
+  "reportLocationRequired": "Touchez la carte pour définir le lieu",
+  "reportReward": "Récompense (facultatif)",
+  "reportRewardLabel": "Récompense",
+  "reportRewardHint": "0–999",
+  "reportRewardRange": "La récompense doit être entre 0 et 999",
+  "reportRewardBadge": "Récompense : ${amount}",
+  "@reportRewardBadge": {
+    "placeholders": { "amount": { "type": "int" } }
+  },
+  "reportSubmit": "Continuer",
+  "reportHeaderSubtitle": "Aidez à réunir les animaux avec leur famille.",
+  "reportRewardHelper": "Offrir une récompense peut augmenter les chances de retrouvailles.",
+  "reportUseMyLocation": "Utiliser ma position",
+  "reportCreatedSuccess": "Signalement créé",
+  "deleteReportTitle": "Supprimer le signalement ?",
+  "deleteReportMessage": "Cela retire le signalement de {petName} de la carte et des annonces. Cette action est irréversible.",
+  "@deleteReportMessage": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "deleteReportSuccess": "Signalement supprimé",
+  "reportSpeciesUnresolved": "Impossible de déterminer l'espèce de votre animal. Veuillez réessayer.",
+  "reportTitle": "Signaler un animal",
+  "reportTypeLost": "Perdu",
+  "reportTypeFound": "Trouvé",
+  "reportLostSubtitle": "Choisissez votre animal et où il a été vu pour la dernière fois.",
+  "reportFoundSubtitle": "Décrivez l'animal que vous avez trouvé et où vous l'avez vu.",
+  "reportFoundName": "Nom de l'animal",
+  "reportFoundNameHint": "Un nom ou surnom (ex. « chat roux »)",
+  "reportFoundSpecies": "Espèce",
+  "reportFoundBreed": "Race",
+  "reportFoundSelectSpeciesFirst": "Sélectionnez d'abord une espèce",
+  "reportPhoto": "Photo",
+  "reportPhotoHint": "Ajoutez une photo nette de l'animal",
+  "reportPhotoRemove": "Supprimer la photo",
+  "reportPhotoRequired": "Une photo est requise pour les signalements trouvés",
   "howToHelp": "Comment Aider",
   "howToHelpBody": "Rejoignez notre équipe de bénévoles pour être alerté quand un animal est signalé près de chez vous.",
   "becomeVolunteer": "Devenir Bénévole",
-  "activeVolunteers": "{count} Bénévoles Actifs",
+  "alreadyVolunteer": "Vous êtes bénévole",
+  "becameVolunteer": "Vous êtes maintenant bénévole",
+  "leftVolunteer": "Vous avez quitté les bénévoles",
+  "leaveVolunteerAction": "Quitter",
+  "leaveVolunteerTitle": "Quitter les bénévoles ?",
+  "leaveVolunteerMessage": "Vous ne recevrez plus d'alertes lorsqu'un animal perdu est signalé près de chez vous.",
+  "leaveVolunteerConfirm": "Quitter",
+  "lostAndFoundNoAlerts": "Aucune alerte à proximité pour le moment.",
+  "activeVolunteers": "{count, plural, =1{1 Bénévole Actif} other{{count} Bénévoles Actifs}}",
   "@activeVolunteers": {
     "placeholders": {
       "count": { "type": "int" }
     }
   },
+  "volunteerThankYou": "Merci de faire la différence !",
   "medicationsReminders": "Médicaments & Rappels",
   "healthTracker": "Suivi Santé",
   "notifications": "Notifications",
@@ -219,6 +290,7 @@
   "save": "Enregistrer",
   "cancel": "Annuler",
   "close": "Fermer",
+  "confirm": "Confirmer",
   "delete": "Supprimer",
   "comingSoon": "Bientôt disponible",
   "errorTitle": "Une erreur est survenue",
@@ -343,6 +415,7 @@
   "skipForNow": "Ignorer pour l'instant",
   "continueLabel": "Continuer",
   "petAvatarSetupTitle": "Ajouter une photo",
-  "petAvatarSetupSubtitle": "Ajoutez une photo de votre animal. C'est facultatif et vous pouvez la changer à tout moment.",
+  "petAvatarSetupSubtitle": "Donnez un visage à votre animal sur son profil.",
+  "petAvatarSetupOptional": "Facultatif — modifiable à tout moment.",
   "petAvatarUploadHint": "Télécharger une photo"
 }

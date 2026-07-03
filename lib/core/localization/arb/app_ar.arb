@@ -96,7 +96,7 @@
   "addRecord": "إضافة سجل",
   "lostAndFound": "الحيوانات المفقودة",
   "lostAndFoundDashboard": "لوحة الحيوانات المفقودة",
-  "lostAndFoundSubtitle": "{count} تنبيه في دائرة 5 أميال",
+  "lostAndFoundSubtitle": "{count} تنبيه في دائرة 10 كم",
   "@lostAndFoundSubtitle": {
     "placeholders": {
       "count": { "type": "int" }
@@ -115,18 +115,89 @@
       "n": { "type": "int" }
     }
   },
+  "lostFoundDetailTitle": "تفاصيل البلاغ",
+  "reportReporter": "أبلغ عنه",
+  "reportViewOnMap": "عرض على الخريطة",
   "contactOwner": "تواصل مع المالك",
+  "contactOwnerTitle": "تواصل مع المالك",
+  "contactOwnerSubtitle": "تواصل بشأن {petName}.",
+  "@contactOwnerSubtitle": {
+    "placeholders": {
+      "petName": { "type": "String" }
+    }
+  },
+  "contactCall": "اتصال",
+  "contactCallSubtitle": "بدء مكالمة هاتفية",
+  "contactWhatsApp": "واتساب",
+  "contactWhatsAppSubtitle": "المراسلة عبر واتساب",
+  "contactNoPhone": "لا يوجد رقم تواصل لهذا البلاغ.",
+  "contactLaunchError": "تعذّر فتح التطبيق. يرجى المحاولة مرة أخرى.",
   "viewDetails": "عرض التفاصيل",
   "reportLostPet": "الإبلاغ عن حيوان مفقود",
+  "reportLostPetTitle": "الإبلاغ عن حيوان مفقود",
+  "reportLostPetSubtitle": "اختر حيوانك ومكان آخر مشاهدة له.",
+  "reportSelectPet": "أي حيوان مفقود؟",
+  "reportSelectPetHint": "اختر حيواناً",
+  "reportNoPets": "ليس لديك حيوانات للإبلاغ عنها. أضف حيواناً أولاً.",
+  "reportDescription": "الوصف",
+  "reportDescriptionHint": "الطوق، علامات مميزة، السلوك…",
+  "reportLastSeenAddress": "عنوان آخر مشاهدة",
+  "reportLastSeenAddressHint": "مثال: حي صن ست، شارع بارك",
+  "reportLocation": "آخر موقع معروف",
+  "reportLocationHint": "انقر على الخريطة لوضع علامة",
+  "reportLocationRequired": "انقر على الخريطة لتحديد الموقع",
+  "reportReward": "المكافأة (اختياري)",
+  "reportRewardLabel": "المكافأة",
+  "reportRewardHint": "0–999",
+  "reportRewardRange": "يجب أن تكون المكافأة بين 0 و 999",
+  "reportRewardBadge": "المكافأة: ${amount}",
+  "@reportRewardBadge": {
+    "placeholders": { "amount": { "type": "int" } }
+  },
+  "reportSubmit": "متابعة",
+  "reportHeaderSubtitle": "ساعد في لمّ شمل الحيوانات مع عائلاتها.",
+  "reportRewardHelper": "تقديم مكافأة قد يزيد من فرص لمّ الشمل.",
+  "reportUseMyLocation": "استخدام موقعي",
+  "reportCreatedSuccess": "تم إنشاء البلاغ",
+  "deleteReportTitle": "حذف البلاغ؟",
+  "deleteReportMessage": "سيؤدي هذا إلى إزالة بلاغ {petName} من الخريطة والقوائم. لا يمكن التراجع عن هذا الإجراء.",
+  "@deleteReportMessage": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "deleteReportSuccess": "تم حذف البلاغ",
+  "reportSpeciesUnresolved": "تعذر تحديد نوع حيوانك. يرجى المحاولة مرة أخرى.",
+  "reportTitle": "الإبلاغ عن حيوان",
+  "reportTypeLost": "مفقود",
+  "reportTypeFound": "موجود",
+  "reportLostSubtitle": "اختر حيوانك ومكان آخر مشاهدة له.",
+  "reportFoundSubtitle": "صف الحيوان الذي وجدته والمكان الذي رأيته فيه.",
+  "reportFoundName": "اسم الحيوان",
+  "reportFoundNameHint": "اسم أو لقب (مثال: «قط برتقالي»)",
+  "reportFoundSpecies": "النوع",
+  "reportFoundBreed": "السلالة",
+  "reportFoundSelectSpeciesFirst": "اختر النوع أولاً",
+  "reportPhoto": "صورة",
+  "reportPhotoHint": "أضف صورة واضحة للحيوان",
+  "reportPhotoRemove": "إزالة الصورة",
+  "reportPhotoRequired": "الصورة مطلوبة لبلاغات العثور",
   "howToHelp": "كيف تساعد؟",
   "howToHelpBody": "انضم إلى فريق المتطوعين وابقَ على اطلاع بالحيوانات المفقودة في محيطك.",
   "becomeVolunteer": "كن متطوعاً",
-  "activeVolunteers": "{count} متطوع نشط",
+  "alreadyVolunteer": "أنت متطوع",
+  "becameVolunteer": "أنت الآن متطوع",
+  "leftVolunteer": "لقد غادرت فريق المتطوعين",
+  "leaveVolunteerAction": "مغادرة",
+  "leaveVolunteerTitle": "مغادرة فريق المتطوعين؟",
+  "leaveVolunteerMessage": "لن تتلقى تنبيهات بعد الآن عند الإبلاغ عن حيوان مفقود بالقرب منك.",
+  "leaveVolunteerConfirm": "مغادرة",
+  "lostAndFoundNoAlerts": "لا توجد تنبيهات قريبة حالياً.",
+  "activeVolunteers": "{count, plural, =1{متطوع نشط واحد} other{{count} متطوعين نشطين}}",
   "@activeVolunteers": {
     "placeholders": {
       "count": { "type": "int" }
     }
   },
+  "volunteerThankYou": "شكراً لك على إحداث فرق!",
   "medicationsReminders": "الأدوية والتذكيرات",
   "healthTracker": "متتبع الصحة",
   "notifications": "الإشعارات",
@@ -219,6 +290,7 @@
   "save": "حفظ",
   "cancel": "إلغاء",
   "close": "إغلاق",
+  "confirm": "تأكيد",
   "delete": "حذف",
   "comingSoon": "قريباً",
   "errorTitle": "حدث خطأ ما",
@@ -343,6 +415,7 @@
   "skipForNow": "تخطٍ الآن",
   "continueLabel": "متابعة",
   "petAvatarSetupTitle": "إضافة صورة",
-  "petAvatarSetupSubtitle": "أضف صورة لحيوانك الأليف. هذا اختياري ويمكنك تغييره في أي وقت.",
+  "petAvatarSetupSubtitle": "امنح حيوانك الأليف صورة في ملفه الشخصي.",
+  "petAvatarSetupOptional": "اختياري — يمكنك تغييره في أي وقت.",
   "petAvatarUploadHint": "تحميل صورة"
 }

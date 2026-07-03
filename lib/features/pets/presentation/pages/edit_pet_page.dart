@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -5,14 +7,19 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
+import '../../../../core/network/dtos/media_dtos.dart';
+import '../../../../core/network/providers/media_datasource_provider.dart';
+import '../../../../core/services/media_upload_service.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/app_dropdown_field.dart';
 import '../../../../shared/widgets/app_snack_bar.dart';
@@ -36,6 +43,47 @@ class EditPetPage extends ConsumerStatefulWidget {
 class _EditPetPageState extends ConsumerState<EditPetPage> {
   final _formKey = GlobalKey<FormBuilderState>();
   int? _speciesId;
+  bool _isUploadingAvatar = false;
+
+  /// Opens a Camera / Gallery sheet, uploads the chosen image as this pet's
+  /// avatar (petAvatar category, tied to [widget.petId]), then refreshes the
+  /// pet providers so the new photo shows everywhere.
+  Future<void> _editAvatar() async {
+    final source = await showModalBottomSheet<ImageSource>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const _PhotoSourceSheet(),
+    );
+    if (source == null) return;
+
+    final picked =
+        await ImagePicker().pickImage(source: source, imageQuality: 90);
+    if (picked == null || !mounted) return;
+
+    setState(() => _isUploadingAvatar = true);
+
+    final uploadService = MediaUploadService(ref.read(mediaDatasourceProvider));
+    final result = await uploadService.uploadFile(
+      file: File(picked.path),
+      contentType: 'image/jpeg',
+      category: MediaCategory.petAvatar,
+      petId: widget.petId,
+      fileName: 'pet_avatar.jpg',
+    );
+
+    if (!mounted) return;
+    setState(() => _isUploadingAvatar = false);
+
+    final failure = result.failureOrNull;
+    if (failure == null) {
+      // Refresh so the new avatar URL is reflected on this page and elsewhere.
+      ref.invalidate(petDetailProvider(widget.petId));
+      ref.invalidate(petListProvider);
+      context.showSuccessSnackBar(context.l10n.photoUpdated);
+    } else {
+      context.showErrorSnackBar(failure.localizedMessage(context.l10n));
+    }
+  }
 
   Future<void> _submit(Pet pet) async {
     final form = _formKey.currentState!;
@@ -134,6 +182,8 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
                   species: species,
                   speciesId: _speciesId,
                   isSubmitting: isSubmitting,
+                  isUploadingAvatar: _isUploadingAvatar,
+                  onEditAvatar: _editAvatar,
                   onSpeciesChanged: (value) {
                     setState(() => _speciesId = value);
                   },
@@ -231,6 +281,8 @@ class _Form extends StatefulWidget {
     required this.species,
     required this.speciesId,
     required this.isSubmitting,
+    required this.isUploadingAvatar,
+    required this.onEditAvatar,
     required this.onSpeciesChanged,
     required this.onSubmit,
   });
@@ -240,6 +292,8 @@ class _Form extends StatefulWidget {
   final List<Species> species;
   final int? speciesId;
   final bool isSubmitting;
+  final bool isUploadingAvatar;
+  final VoidCallback onEditAvatar;
   final ValueChanged<int?> onSpeciesChanged;
   final VoidCallback onSubmit;
 
@@ -280,7 +334,12 @@ class _FormState extends State<_Form> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const _HeroAvatar(),
+            _HeroAvatar(
+              name: widget.pet.name,
+              imageUrl: widget.pet.avatarUrl,
+              isUploading: widget.isUploadingAvatar,
+              onEdit: widget.onEditAvatar,
+            ),
             const SizedBox(height: AppSpacing.md),
 
             // Pet name.
@@ -500,10 +559,22 @@ class _SectionDivider extends StatelessWidget {
   }
 }
 
-// ── Hero avatar ───────────────────────────────────────────────────────────────
+// ── Hero avatar (editable) ──────────────────────────────────────────────────
 
+/// The pet's round photo with a tappable camera badge to change it. Shows an
+/// upload spinner while a new image is being sent.
 class _HeroAvatar extends StatelessWidget {
-  const _HeroAvatar();
+  const _HeroAvatar({
+    required this.name,
+    required this.imageUrl,
+    required this.isUploading,
+    required this.onEdit,
+  });
+
+  final String name;
+  final String? imageUrl;
+  final bool isUploading;
+  final VoidCallback onEdit;
 
   @override
   Widget build(BuildContext context) {
@@ -512,39 +583,144 @@ class _HeroAvatar extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          Container(
-            width: 88,
-            height: 88,
-            decoration: const BoxDecoration(
-              color: AppColors.primarySoft,
-              shape: BoxShape.circle,
-            ),
-            alignment: Alignment.center,
-            child: const Icon(
-              FluentIcons.animal_paw_print_24_filled,
-              size: 40,
-              color: AppColors.primary,
-            ),
-          ),
-          const PositionedDirectional(
-            start: 100,
-            top: 16,
-            child: Icon(
-              FluentIcons.heart_20_filled,
-              size: 14,
-              color: AppColors.accentCoral,
-            ),
-          ),
-          const PositionedDirectional(
-            end: 100,
-            top: 36,
-            child: Icon(
-              FluentIcons.sparkle_20_filled,
-              size: 14,
-              color: AppColors.primary,
+          GestureDetector(
+            onTap: isUploading ? null : onEdit,
+            behavior: HitTestBehavior.opaque,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: 88,
+                  height: 88,
+                  decoration: const BoxDecoration(
+                    color: AppColors.primarySoft,
+                    shape: BoxShape.circle,
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  child: AppAvatar(name: name, imageUrl: imageUrl, radius: 44),
+                ),
+                if (isUploading)
+                  Container(
+                    width: 88,
+                    height: 88,
+                    decoration: BoxDecoration(
+                      color: AppColors.textPrimary.withValues(alpha: 0.35),
+                      shape: BoxShape.circle,
+                    ),
+                    alignment: Alignment.center,
+                    child: const SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(AppColors.onPrimary),
+                      ),
+                    ),
+                  ),
+                // Camera edit badge, bottom-trailing.
+                PositionedDirectional(
+                  end: 0,
+                  bottom: 0,
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: AppColors.surface, width: 2),
+                    ),
+                    child: const Icon(
+                      FluentIcons.camera_24_filled,
+                      size: 14,
+                      color: AppColors.onPrimary,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Camera / Gallery chooser returning the picked [ImageSource].
+class _PhotoSourceSheet extends StatelessWidget {
+  const _PhotoSourceSheet();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
+      ),
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: _SourceButton(
+                  icon: FluentIcons.camera_24_regular,
+                  label: l10n.camera,
+                  onTap: () => Navigator.pop(context, ImageSource.camera),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.lg),
+              Expanded(
+                child: _SourceButton(
+                  icon: FluentIcons.image_24_regular,
+                  label: l10n.gallery,
+                  onTap: () => Navigator.pop(context, ImageSource.gallery),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SourceButton extends StatelessWidget {
+  const _SourceButton({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: AppRadius.mdAll,
+          border: Border.all(color: AppColors.primary, width: 2),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: AppColors.primary, size: 32),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              label,
+              style:
+                  AppTextStyles.bodySmall.copyWith(fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
       ),
     );
   }

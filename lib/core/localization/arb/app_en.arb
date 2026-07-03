@@ -96,7 +96,7 @@
   "addRecord": "Add Record",
   "lostAndFound": "Lost & Found",
   "lostAndFoundDashboard": "Lost & Found Dashboard",
-  "lostAndFoundSubtitle": "{count} active alerts within 5 miles",
+  "lostAndFoundSubtitle": "{count} active alerts within 10 km",
   "@lostAndFoundSubtitle": {
     "placeholders": {
       "count": { "type": "int" }
@@ -115,18 +115,89 @@
       "n": { "type": "int" }
     }
   },
+  "lostFoundDetailTitle": "Report Details",
+  "reportReporter": "Reported by",
+  "reportViewOnMap": "View on map",
   "contactOwner": "Contact Owner",
+  "contactOwnerTitle": "Contact Owner",
+  "contactOwnerSubtitle": "Reach out about {petName}.",
+  "@contactOwnerSubtitle": {
+    "placeholders": {
+      "petName": { "type": "String" }
+    }
+  },
+  "contactCall": "Call",
+  "contactCallSubtitle": "Start a phone call",
+  "contactWhatsApp": "WhatsApp",
+  "contactWhatsAppSubtitle": "Message on WhatsApp",
+  "contactNoPhone": "This report has no contact number.",
+  "contactLaunchError": "Couldn't open the app. Please try again.",
   "viewDetails": "View Details",
   "reportLostPet": "Report Lost Pet",
+  "reportLostPetTitle": "Report a Lost Pet",
+  "reportLostPetSubtitle": "Pick your pet and where it was last seen.",
+  "reportSelectPet": "Which pet is lost?",
+  "reportSelectPetHint": "Select a pet",
+  "reportNoPets": "You have no pets to report. Add a pet first.",
+  "reportDescription": "Description",
+  "reportDescriptionHint": "Collar, distinguishing marks, behaviour…",
+  "reportLastSeenAddress": "Last seen address",
+  "reportLastSeenAddressHint": "e.g. Sunset District, Park Ave",
+  "reportLocation": "Last seen location",
+  "reportLocationHint": "Tap the map to drop a pin",
+  "reportLocationRequired": "Tap the map to set the location",
+  "reportReward": "Reward (optional)",
+  "reportRewardLabel": "Reward",
+  "reportRewardHint": "0–999",
+  "reportRewardRange": "Reward must be between 0 and 999",
+  "reportRewardBadge": "Reward: ${amount}",
+  "@reportRewardBadge": {
+    "placeholders": { "amount": { "type": "int" } }
+  },
+  "reportSubmit": "Continue",
+  "reportHeaderSubtitle": "Help reunite pets with their families.",
+  "reportRewardHelper": "Offering a reward can increase the chances of being reunited.",
+  "reportUseMyLocation": "Use my location",
+  "reportCreatedSuccess": "Report created",
+  "deleteReportTitle": "Delete Report?",
+  "deleteReportMessage": "This removes {petName}'s report from the map and listings. This can't be undone.",
+  "@deleteReportMessage": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "deleteReportSuccess": "Report deleted",
+  "reportSpeciesUnresolved": "Couldn't determine your pet's species. Please try again.",
+  "reportTitle": "Report a Pet",
+  "reportTypeLost": "Lost",
+  "reportTypeFound": "Found",
+  "reportLostSubtitle": "Pick your pet and where it was last seen.",
+  "reportFoundSubtitle": "Describe the pet you found and where you saw it.",
+  "reportFoundName": "Pet name",
+  "reportFoundNameHint": "A name or nickname (e.g. \"Ginger tabby\")",
+  "reportFoundSpecies": "Species",
+  "reportFoundBreed": "Breed",
+  "reportFoundSelectSpeciesFirst": "Select a species first",
+  "reportPhoto": "Photo",
+  "reportPhotoHint": "Add a clear photo of the pet",
+  "reportPhotoRemove": "Remove photo",
+  "reportPhotoRequired": "A photo is required for found reports",
   "howToHelp": "How to Help More",
   "howToHelpBody": "Join our Volunteer Search Team to get notified when a lost pet is reported near you.",
   "becomeVolunteer": "Become a Volunteer",
-  "activeVolunteers": "{count} Active Volunteers",
+  "alreadyVolunteer": "You're a Volunteer",
+  "becameVolunteer": "You're now a volunteer",
+  "leftVolunteer": "You've left the volunteers",
+  "leaveVolunteerAction": "Leave",
+  "leaveVolunteerTitle": "Leave Volunteers?",
+  "leaveVolunteerMessage": "You'll stop receiving alerts when a lost pet is reported near you.",
+  "leaveVolunteerConfirm": "Leave",
+  "lostAndFoundNoAlerts": "No alerts nearby right now.",
+  "activeVolunteers": "{count, plural, =1{1 Active Volunteer} other{{count} Active Volunteers}}",
   "@activeVolunteers": {
     "placeholders": {
       "count": { "type": "int" }
     }
   },
+  "volunteerThankYou": "Thank you for making a difference!",
   "medicationsReminders": "Medications & Reminders",
   "healthTracker": "Health Tracker",
   "notifications": "Notifications",
@@ -219,6 +290,7 @@
   "save": "Save",
   "cancel": "Cancel",
   "close": "Close",
+  "confirm": "Confirm",
   "delete": "Delete",
   "comingSoon": "Coming soon",
   "errorTitle": "Something went wrong",
@@ -343,6 +415,7 @@
   "skipForNow": "Skip for now",
   "continueLabel": "Continue",
   "petAvatarSetupTitle": "Add a Photo",
-  "petAvatarSetupSubtitle": "Add a photo of your pet. This is optional and you can change it anytime.",
+  "petAvatarSetupSubtitle": "Give your pet a face on their profile.",
+  "petAvatarSetupOptional": "Optional — you can change it anytime.",
   "petAvatarUploadHint": "Upload a photo"
 }

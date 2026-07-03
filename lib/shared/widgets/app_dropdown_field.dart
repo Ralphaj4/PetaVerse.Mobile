@@ -23,6 +23,7 @@ class AppDropdownField<T> extends StatelessWidget {
     this.enabled = true,
     this.hint,
     this.searchable = true,
+    this.leadingBuilder,
     super.key,
   });
 
@@ -36,6 +37,11 @@ class AppDropdownField<T> extends StatelessWidget {
   final String? hint;
   final bool searchable;
 
+  /// Optional leading visual (e.g. an avatar/thumbnail) shown before each
+  /// option's label — both in the picker sheet and the collapsed value. Return
+  /// null for an item with no media.
+  final Widget? Function(T value)? leadingBuilder;
+
   String _labelFor(T? value) {
     if (value == null) return '';
     for (final item in items) {
@@ -45,6 +51,17 @@ class AppDropdownField<T> extends StatelessWidget {
       }
     }
     return value.toString();
+  }
+
+  /// The collapsed-value leading widget (avatar + trailing gap), or null.
+  Widget? _leadingFor(T? value) {
+    if (value == null) return null;
+    final leading = leadingBuilder?.call(value);
+    if (leading == null) return null;
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(end: AppSpacing.sm),
+      child: leading,
+    );
   }
 
   void _openSheet(BuildContext context, FormFieldState<T> field) {
@@ -60,6 +77,7 @@ class AppDropdownField<T> extends StatelessWidget {
         selected: field.value,
         searchable: searchable,
         labelFor: _labelFor,
+        leadingBuilder: leadingBuilder,
         onSelect: (value) {
           field.didChange(value);
           onChanged?.call(value);
@@ -98,6 +116,7 @@ class AppDropdownField<T> extends StatelessWidget {
               // Value row.
               Row(
                 children: [
+                  if (hasValue) ?_leadingFor(field.value),
                   Expanded(
                     child: hasValue
                         ? Text(
@@ -152,6 +171,7 @@ class _PickerSheet<T> extends StatefulWidget {
     required this.onSelect,
     required this.labelFor,
     required this.searchable,
+    this.leadingBuilder,
   });
 
   final String label;
@@ -160,6 +180,7 @@ class _PickerSheet<T> extends StatefulWidget {
   final ValueChanged<T> onSelect;
   final String Function(T?) labelFor;
   final bool searchable;
+  final Widget? Function(T value)? leadingBuilder;
 
   @override
   State<_PickerSheet<T>> createState() => _PickerSheetState<T>();
@@ -193,6 +214,16 @@ class _PickerSheetState<T> extends State<_PickerSheet<T>> {
     _searchController.dispose();
     _scrollController.dispose();
     super.dispose();
+  }
+
+  /// The row's leading widget (avatar + trailing gap), or null.
+  Widget? _leadingFor(T value) {
+    final leading = widget.leadingBuilder?.call(value);
+    if (leading == null) return null;
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(end: AppSpacing.md),
+      child: leading,
+    );
   }
 
   List<DropdownMenuItem<T>> get _filtered {
@@ -319,6 +350,8 @@ class _PickerSheetState<T> extends State<_PickerSheet<T>> {
                           ),
                           child: Row(
                             children: [
+                              if (item.value != null)
+                                ?_leadingFor(item.value as T),
                               Expanded(
                                 child: DefaultTextStyle(
                                   style: AppTextStyles.bodyMedium.copyWith(
