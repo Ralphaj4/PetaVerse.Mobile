@@ -487,7 +487,7 @@ abstract class AppLocalizations {
   /// No description provided for @lostAndFoundSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'{count} active alerts within 5 miles'**
+  /// **'{count} active alerts within 10 km'**
   String lostAndFoundSubtitle(int count);
 
   /// No description provided for @liveMapView.

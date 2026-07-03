@@ -1,4 +1,3 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
@@ -13,19 +12,27 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: AppColors.primary,
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              FluentIcons.animal_paw_print_24_filled,
-              size: 72,
-              color: AppColors.onPrimary,
+            // Logo on a white badge so its teal mark reads on the orange bg.
+            Container(
+              padding: const EdgeInsets.all(AppSpacing.xl),
+              decoration: const BoxDecoration(
+                color: AppColors.surface,
+                shape: BoxShape.circle,
+              ),
+              child: Image.asset(
+                'assets/logo.png',
+                width: 96,
+                height: 96,
+              ),
             ),
-            SizedBox(height: AppSpacing.xl),
-            SizedBox(
+            const SizedBox(height: AppSpacing.xl),
+            const SizedBox(
               width: 28,
               height: 28,
               child: CircularProgressIndicator(

@@ -219,7 +219,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String lostAndFoundSubtitle(int count) {
-    return '$count active alerts within 5 miles';
+    return '$count active alerts within 10 km';
   }
 
   @override

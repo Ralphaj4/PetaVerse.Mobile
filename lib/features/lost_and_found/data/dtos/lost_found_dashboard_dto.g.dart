@@ -45,7 +45,7 @@ _LostFoundDashboardDto _$LostFoundDashboardDtoFromJson(
   Map<String, dynamic> json,
 ) => _LostFoundDashboardDto(
   activeAlertCount: (json['activeAlertCount'] as num?)?.toInt() ?? 0,
-  radiusMiles: (json['radiusMiles'] as num?)?.toDouble() ?? 5,
+  radiusKm: (json['radiusKm'] as num?)?.toDouble() ?? 10,
   mapPins:
       (json['mapPins'] as List<dynamic>?)
           ?.map((e) => MapPinDto.fromJson(e as Map<String, dynamic>))
@@ -67,7 +67,7 @@ Map<String, dynamic> _$LostFoundDashboardDtoToJson(
   _LostFoundDashboardDto instance,
 ) => <String, dynamic>{
   'activeAlertCount': instance.activeAlertCount,
-  'radiusMiles': instance.radiusMiles,
+  'radiusKm': instance.radiusKm,
   'mapPins': instance.mapPins,
   'recentAlerts': instance.recentAlerts,
   'volunteerInfo': instance.volunteerInfo,

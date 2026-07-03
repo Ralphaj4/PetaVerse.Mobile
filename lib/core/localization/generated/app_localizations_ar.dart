@@ -218,7 +218,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String lostAndFoundSubtitle(int count) {
-    return '$count تنبيه في دائرة 5 أميال';
+    return '$count تنبيه في دائرة 10 كم';
   }
 
   @override

@@ -1,0 +1,11 @@
+flutter_launcher_icons:
+  image_path: "assets/logo.png"
+  # White background so the teal logo reads on both light/dark home screens.
+  android: true
+  ios: true
+  # Android adaptive icon: teal logo centered on a white background layer.
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/logo.png"
+  # iOS forbids transparency — flatten onto white.
+  remove_alpha_ios: true
+  background_color_ios: "#FFFFFF"

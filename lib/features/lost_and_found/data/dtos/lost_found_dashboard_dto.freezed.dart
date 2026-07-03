@@ -553,7 +553,7 @@ as int,
 /// @nodoc
 mixin _$LostFoundDashboardDto {
 
- int get activeAlertCount; double get radiusMiles; List<MapPinDto> get mapPins; List<LostFoundReportDto> get recentAlerts; VolunteerInfoDto get volunteerInfo;
+ int get activeAlertCount; double get radiusKm; List<MapPinDto> get mapPins; List<LostFoundReportDto> get recentAlerts; VolunteerInfoDto get volunteerInfo;
 /// Create a copy of LostFoundDashboardDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -566,16 +566,16 @@ $LostFoundDashboardDtoCopyWith<LostFoundDashboardDto> get copyWith => _$LostFoun
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LostFoundDashboardDto&&(identical(other.activeAlertCount, activeAlertCount) || other.activeAlertCount == activeAlertCount)&&(identical(other.radiusMiles, radiusMiles) || other.radiusMiles == radiusMiles)&&const DeepCollectionEquality().equals(other.mapPins, mapPins)&&const DeepCollectionEquality().equals(other.recentAlerts, recentAlerts)&&(identical(other.volunteerInfo, volunteerInfo) || other.volunteerInfo == volunteerInfo));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LostFoundDashboardDto&&(identical(other.activeAlertCount, activeAlertCount) || other.activeAlertCount == activeAlertCount)&&(identical(other.radiusKm, radiusKm) || other.radiusKm == radiusKm)&&const DeepCollectionEquality().equals(other.mapPins, mapPins)&&const DeepCollectionEquality().equals(other.recentAlerts, recentAlerts)&&(identical(other.volunteerInfo, volunteerInfo) || other.volunteerInfo == volunteerInfo));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,activeAlertCount,radiusMiles,const DeepCollectionEquality().hash(mapPins),const DeepCollectionEquality().hash(recentAlerts),volunteerInfo);
+int get hashCode => Object.hash(runtimeType,activeAlertCount,radiusKm,const DeepCollectionEquality().hash(mapPins),const DeepCollectionEquality().hash(recentAlerts),volunteerInfo);
 
 @override
 String toString() {
-  return 'LostFoundDashboardDto(activeAlertCount: $activeAlertCount, radiusMiles: $radiusMiles, mapPins: $mapPins, recentAlerts: $recentAlerts, volunteerInfo: $volunteerInfo)';
+  return 'LostFoundDashboardDto(activeAlertCount: $activeAlertCount, radiusKm: $radiusKm, mapPins: $mapPins, recentAlerts: $recentAlerts, volunteerInfo: $volunteerInfo)';
 }
 
 
@@ -586,7 +586,7 @@ abstract mixin class $LostFoundDashboardDtoCopyWith<$Res>  {
   factory $LostFoundDashboardDtoCopyWith(LostFoundDashboardDto value, $Res Function(LostFoundDashboardDto) _then) = _$LostFoundDashboardDtoCopyWithImpl;
 @useResult
 $Res call({
- int activeAlertCount, double radiusMiles, List<MapPinDto> mapPins, List<LostFoundReportDto> recentAlerts, VolunteerInfoDto volunteerInfo
+ int activeAlertCount, double radiusKm, List<MapPinDto> mapPins, List<LostFoundReportDto> recentAlerts, VolunteerInfoDto volunteerInfo
 });
 
 
@@ -603,10 +603,10 @@ class _$LostFoundDashboardDtoCopyWithImpl<$Res>
 
 /// Create a copy of LostFoundDashboardDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? activeAlertCount = null,Object? radiusMiles = null,Object? mapPins = null,Object? recentAlerts = null,Object? volunteerInfo = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? activeAlertCount = null,Object? radiusKm = null,Object? mapPins = null,Object? recentAlerts = null,Object? volunteerInfo = null,}) {
   return _then(_self.copyWith(
 activeAlertCount: null == activeAlertCount ? _self.activeAlertCount : activeAlertCount // ignore: cast_nullable_to_non_nullable
-as int,radiusMiles: null == radiusMiles ? _self.radiusMiles : radiusMiles // ignore: cast_nullable_to_non_nullable
+as int,radiusKm: null == radiusKm ? _self.radiusKm : radiusKm // ignore: cast_nullable_to_non_nullable
 as double,mapPins: null == mapPins ? _self.mapPins : mapPins // ignore: cast_nullable_to_non_nullable
 as List<MapPinDto>,recentAlerts: null == recentAlerts ? _self.recentAlerts : recentAlerts // ignore: cast_nullable_to_non_nullable
 as List<LostFoundReportDto>,volunteerInfo: null == volunteerInfo ? _self.volunteerInfo : volunteerInfo // ignore: cast_nullable_to_non_nullable
@@ -704,10 +704,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int activeAlertCount,  double radiusMiles,  List<MapPinDto> mapPins,  List<LostFoundReportDto> recentAlerts,  VolunteerInfoDto volunteerInfo)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int activeAlertCount,  double radiusKm,  List<MapPinDto> mapPins,  List<LostFoundReportDto> recentAlerts,  VolunteerInfoDto volunteerInfo)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LostFoundDashboardDto() when $default != null:
-return $default(_that.activeAlertCount,_that.radiusMiles,_that.mapPins,_that.recentAlerts,_that.volunteerInfo);case _:
+return $default(_that.activeAlertCount,_that.radiusKm,_that.mapPins,_that.recentAlerts,_that.volunteerInfo);case _:
   return orElse();
 
 }
@@ -725,10 +725,10 @@ return $default(_that.activeAlertCount,_that.radiusMiles,_that.mapPins,_that.rec
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int activeAlertCount,  double radiusMiles,  List<MapPinDto> mapPins,  List<LostFoundReportDto> recentAlerts,  VolunteerInfoDto volunteerInfo)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int activeAlertCount,  double radiusKm,  List<MapPinDto> mapPins,  List<LostFoundReportDto> recentAlerts,  VolunteerInfoDto volunteerInfo)  $default,) {final _that = this;
 switch (_that) {
 case _LostFoundDashboardDto():
-return $default(_that.activeAlertCount,_that.radiusMiles,_that.mapPins,_that.recentAlerts,_that.volunteerInfo);case _:
+return $default(_that.activeAlertCount,_that.radiusKm,_that.mapPins,_that.recentAlerts,_that.volunteerInfo);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -745,10 +745,10 @@ return $default(_that.activeAlertCount,_that.radiusMiles,_that.mapPins,_that.rec
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int activeAlertCount,  double radiusMiles,  List<MapPinDto> mapPins,  List<LostFoundReportDto> recentAlerts,  VolunteerInfoDto volunteerInfo)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int activeAlertCount,  double radiusKm,  List<MapPinDto> mapPins,  List<LostFoundReportDto> recentAlerts,  VolunteerInfoDto volunteerInfo)?  $default,) {final _that = this;
 switch (_that) {
 case _LostFoundDashboardDto() when $default != null:
-return $default(_that.activeAlertCount,_that.radiusMiles,_that.mapPins,_that.recentAlerts,_that.volunteerInfo);case _:
+return $default(_that.activeAlertCount,_that.radiusKm,_that.mapPins,_that.recentAlerts,_that.volunteerInfo);case _:
   return null;
 
 }
@@ -760,11 +760,11 @@ return $default(_that.activeAlertCount,_that.radiusMiles,_that.mapPins,_that.rec
 @JsonSerializable()
 
 class _LostFoundDashboardDto extends LostFoundDashboardDto {
-  const _LostFoundDashboardDto({this.activeAlertCount = 0, this.radiusMiles = 5, final  List<MapPinDto> mapPins = const <MapPinDto>[], final  List<LostFoundReportDto> recentAlerts = const <LostFoundReportDto>[], this.volunteerInfo = const VolunteerInfoDto()}): _mapPins = mapPins,_recentAlerts = recentAlerts,super._();
+  const _LostFoundDashboardDto({this.activeAlertCount = 0, this.radiusKm = 10, final  List<MapPinDto> mapPins = const <MapPinDto>[], final  List<LostFoundReportDto> recentAlerts = const <LostFoundReportDto>[], this.volunteerInfo = const VolunteerInfoDto()}): _mapPins = mapPins,_recentAlerts = recentAlerts,super._();
   factory _LostFoundDashboardDto.fromJson(Map<String, dynamic> json) => _$LostFoundDashboardDtoFromJson(json);
 
 @override@JsonKey() final  int activeAlertCount;
-@override@JsonKey() final  double radiusMiles;
+@override@JsonKey() final  double radiusKm;
  final  List<MapPinDto> _mapPins;
 @override@JsonKey() List<MapPinDto> get mapPins {
   if (_mapPins is EqualUnmodifiableListView) return _mapPins;
@@ -794,16 +794,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LostFoundDashboardDto&&(identical(other.activeAlertCount, activeAlertCount) || other.activeAlertCount == activeAlertCount)&&(identical(other.radiusMiles, radiusMiles) || other.radiusMiles == radiusMiles)&&const DeepCollectionEquality().equals(other._mapPins, _mapPins)&&const DeepCollectionEquality().equals(other._recentAlerts, _recentAlerts)&&(identical(other.volunteerInfo, volunteerInfo) || other.volunteerInfo == volunteerInfo));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LostFoundDashboardDto&&(identical(other.activeAlertCount, activeAlertCount) || other.activeAlertCount == activeAlertCount)&&(identical(other.radiusKm, radiusKm) || other.radiusKm == radiusKm)&&const DeepCollectionEquality().equals(other._mapPins, _mapPins)&&const DeepCollectionEquality().equals(other._recentAlerts, _recentAlerts)&&(identical(other.volunteerInfo, volunteerInfo) || other.volunteerInfo == volunteerInfo));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,activeAlertCount,radiusMiles,const DeepCollectionEquality().hash(_mapPins),const DeepCollectionEquality().hash(_recentAlerts),volunteerInfo);
+int get hashCode => Object.hash(runtimeType,activeAlertCount,radiusKm,const DeepCollectionEquality().hash(_mapPins),const DeepCollectionEquality().hash(_recentAlerts),volunteerInfo);
 
 @override
 String toString() {
-  return 'LostFoundDashboardDto(activeAlertCount: $activeAlertCount, radiusMiles: $radiusMiles, mapPins: $mapPins, recentAlerts: $recentAlerts, volunteerInfo: $volunteerInfo)';
+  return 'LostFoundDashboardDto(activeAlertCount: $activeAlertCount, radiusKm: $radiusKm, mapPins: $mapPins, recentAlerts: $recentAlerts, volunteerInfo: $volunteerInfo)';
 }
 
 
@@ -814,7 +814,7 @@ abstract mixin class _$LostFoundDashboardDtoCopyWith<$Res> implements $LostFound
   factory _$LostFoundDashboardDtoCopyWith(_LostFoundDashboardDto value, $Res Function(_LostFoundDashboardDto) _then) = __$LostFoundDashboardDtoCopyWithImpl;
 @override @useResult
 $Res call({
- int activeAlertCount, double radiusMiles, List<MapPinDto> mapPins, List<LostFoundReportDto> recentAlerts, VolunteerInfoDto volunteerInfo
+ int activeAlertCount, double radiusKm, List<MapPinDto> mapPins, List<LostFoundReportDto> recentAlerts, VolunteerInfoDto volunteerInfo
 });
 
 
@@ -831,10 +831,10 @@ class __$LostFoundDashboardDtoCopyWithImpl<$Res>
 
 /// Create a copy of LostFoundDashboardDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? activeAlertCount = null,Object? radiusMiles = null,Object? mapPins = null,Object? recentAlerts = null,Object? volunteerInfo = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? activeAlertCount = null,Object? radiusKm = null,Object? mapPins = null,Object? recentAlerts = null,Object? volunteerInfo = null,}) {
   return _then(_LostFoundDashboardDto(
 activeAlertCount: null == activeAlertCount ? _self.activeAlertCount : activeAlertCount // ignore: cast_nullable_to_non_nullable
-as int,radiusMiles: null == radiusMiles ? _self.radiusMiles : radiusMiles // ignore: cast_nullable_to_non_nullable
+as int,radiusKm: null == radiusKm ? _self.radiusKm : radiusKm // ignore: cast_nullable_to_non_nullable
 as double,mapPins: null == mapPins ? _self._mapPins : mapPins // ignore: cast_nullable_to_non_nullable
 as List<MapPinDto>,recentAlerts: null == recentAlerts ? _self._recentAlerts : recentAlerts // ignore: cast_nullable_to_non_nullable
 as List<LostFoundReportDto>,volunteerInfo: null == volunteerInfo ? _self.volunteerInfo : volunteerInfo // ignore: cast_nullable_to_non_nullable

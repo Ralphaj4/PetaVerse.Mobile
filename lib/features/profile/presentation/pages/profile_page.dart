@@ -191,20 +191,22 @@ class ProfilePage extends ConsumerWidget {
                     isDestructive: true,
                   );
                   if (!confirmed) return;
-                  // Clear all local session state FIRST and AWAIT it, so
-                  // nothing survives if the user kills the app right after:
-                  //   • pet cache + gate (reset), so the next launch can't
-                  //     hydrate the previous user's pets,
-                  //   • tokens + user cache (logout), so login isn't skipped.
-                  // Only then flip the session gate — the router's redirect
-                  // reacts to it and sends us to /login, replacing the stack.
                   // Read providers up front (stable ref) before any await.
                   final petsNotifier = ref.read(petsProvider.notifier);
                   final authNotifier = ref.read(authProvider.notifier);
                   final sessionNotifier = ref.read(sessionProvider.notifier);
-                  await petsNotifier.reset();
-                  await authNotifier.logout();
+                  // 1) Flip the session gate FIRST — this is synchronous and
+                  // sends the router straight to /login (the auth gate wins
+                  // regardless of pet-gate readiness). Clearing pets first
+                  // would set pets.ready=false while still logged in, which
+                  // bounces the router to the splash and strands it there.
                   sessionNotifier.setLoggedIn(false);
+                  // 2) Then AWAIT the destructive local clears so nothing
+                  // survives if the app is killed right after logout:
+                  //   • tokens + user cache (login isn't skipped next launch),
+                  //   • pet cache + gate (no previous user's pets on relaunch).
+                  await authNotifier.logout();
+                  await petsNotifier.reset();
                 },
               ),
               const SizedBox(height: AppSpacing.lg),
