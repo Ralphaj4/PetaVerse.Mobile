@@ -15,6 +15,9 @@ abstract interface class IUserRepository {
     required String lastName,
     String? email,
     DateTime? dateOfBirth,
+    double? latitude,
+    double? longitude,
+    String? locationName,
   });
 
   /// Drops the cached profile. Called on logout.

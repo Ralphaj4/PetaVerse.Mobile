@@ -59,6 +59,9 @@ class UserNotifier extends _$UserNotifier {
     required String lastName,
     String? email,
     DateTime? dateOfBirth,
+    double? latitude,
+    double? longitude,
+    String? locationName,
   }) async {
     final usecase = ref.read(updateUserProfileUsecaseProvider);
     final result = await usecase(
@@ -66,6 +69,9 @@ class UserNotifier extends _$UserNotifier {
       lastName: lastName,
       email: email,
       dateOfBirth: dateOfBirth,
+      latitude: latitude,
+      longitude: longitude,
+      locationName: locationName,
     );
 
     return result.when(

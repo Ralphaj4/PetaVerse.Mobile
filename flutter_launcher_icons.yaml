@@ -1,11 +1,14 @@
 flutter_launcher_icons:
-  image_path: "assets/logo.png"
-  # White background so the teal logo reads on both light/dark home screens.
+  # Padded, square sources (see tool/gen_icon_sources.dart) so the teal logo
+  # sits ~65% of the canvas with margin — it no longer touches the icon edges
+  # and survives Android's adaptive-icon masking (circle/squircle crop).
+  image_path: "assets/logo_icon.png"
   android: true
   ios: true
-  # Android adaptive icon: teal logo centered on a white background layer.
+  # Android adaptive icon: teal logo (transparent foreground, already padded)
+  # centered on a white background layer.
   adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/logo.png"
+  adaptive_icon_foreground: "assets/logo_adaptive.png"
   # iOS forbids transparency — flatten onto white.
   remove_alpha_ios: true
   background_color_ios: "#FFFFFF"

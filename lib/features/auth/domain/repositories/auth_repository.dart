@@ -14,6 +14,9 @@ abstract interface class AuthRepository {
     required String lastName,
     required String mobileNumber,
     required String password,
+    required double latitude,
+    required double longitude,
+    required String locationName,
     String? email,
   });
 

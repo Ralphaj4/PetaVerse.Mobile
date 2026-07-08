@@ -5,9 +5,11 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/error_state_widget.dart';
+import '../../../../shared/widgets/shimmer.dart';
 import '../../../profile/presentation/widgets/pet_profile_card.dart';
 import '../../domain/entities/pet.dart';
 import '../providers/pet_list_provider.dart';
@@ -60,8 +62,7 @@ class SelectPetPage extends ConsumerWidget {
             ),
             Expanded(
               child: petsAsync.when(
-                loading: () =>
-                    const Center(child: CircularProgressIndicator()),
+                loading: () => const _SelectGridSkeleton(),
                 error: (e, _) => ErrorStateWidget(
                   failure: asFailure(e),
                   onRetry: () => ref.invalidate(petListProvider),
@@ -82,6 +83,68 @@ class SelectPetPage extends ConsumerWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// A 2×2 grid of pet-card skeletons shown while the pet list loads.
+class _SelectGridSkeleton extends StatelessWidget {
+  const _SelectGridSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer(
+      child: GridView.count(
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.lg,
+          AppSpacing.sm,
+          AppSpacing.lg,
+          AppSpacing.xl,
+        ),
+        crossAxisCount: 2,
+        mainAxisSpacing: AppSpacing.md,
+        crossAxisSpacing: AppSpacing.md,
+        childAspectRatio: 0.82,
+        children: const [
+          _SelectCardSkeleton(),
+          _SelectCardSkeleton(),
+          _SelectCardSkeleton(),
+          _SelectCardSkeleton(),
+        ],
+      ),
+    );
+  }
+}
+
+class _SelectCardSkeleton extends StatelessWidget {
+  const _SelectCardSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return const SkeletonCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: SkeletonBox(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(AppRadius.lg),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(AppSpacing.md),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SkeletonLine(width: 80, height: 14),
+                SizedBox(height: AppSpacing.sm),
+                SkeletonLine(width: 55, height: 11),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

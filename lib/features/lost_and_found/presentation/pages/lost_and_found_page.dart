@@ -17,6 +17,7 @@ import '../../../../core/widgets/map/map_marker_data.dart';
 import '../../../../core/widgets/map/map_page.dart';
 import '../../../../shared/widgets/app_confirm_dialog.dart';
 import '../../../../shared/widgets/error_state_widget.dart';
+import '../../../../shared/widgets/shimmer.dart';
 import '../../domain/entities/lost_found_dashboard.dart';
 import '../../domain/entities/lost_found_report.dart';
 import '../models/pet_alert.dart';
@@ -135,9 +136,7 @@ class _LostAndFoundPageState extends ConsumerState<LostAndFoundPage> {
         ),
         body: dashboardAsync.when(
           skipLoadingOnRefresh: true,
-          loading: () => const Center(
-            child: CircularProgressIndicator(color: AppColors.primary),
-          ),
+          loading: () => const _DashboardSkeleton(),
           error: (error, _) => ErrorStateWidget(
             failure: error is Failure ? error : const UnknownFailure(),
             onRetry: () =>
@@ -771,6 +770,79 @@ class _MapToggleHeader extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// First-load skeleton for the dashboard: a map block + a few alert cards,
+/// matching the real layout so nothing shifts when data arrives.
+class _DashboardSkeleton extends StatelessWidget {
+  const _DashboardSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer(
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.lg,
+          AppSpacing.lg,
+          AppSpacing.lg,
+          AppSpacing.xxl,
+        ),
+        children: [
+          // Map preview.
+          SkeletonBox(
+            height: 200,
+            borderRadius: AppRadius.lgAll,
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          // Section header line.
+          const SkeletonLine(width: 160, height: 16),
+          const SizedBox(height: AppSpacing.md),
+          // A few alert cards.
+          for (var i = 0; i < 3; i++) ...[
+            const _AlertCardSkeleton(),
+            const SizedBox(height: AppSpacing.md),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _AlertCardSkeleton extends StatelessWidget {
+  const _AlertCardSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return SkeletonCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Image.
+          const SkeletonBox(
+            height: 160,
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(AppRadius.lg),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SkeletonLine(width: 140, height: 16),
+                const SizedBox(height: AppSpacing.sm),
+                const SkeletonLine(width: 200, height: 12),
+                const SizedBox(height: AppSpacing.xs),
+                const SkeletonLine(width: 120, height: 12),
+                const SizedBox(height: AppSpacing.md),
+                SkeletonBox(height: 44, borderRadius: AppRadius.smAll),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

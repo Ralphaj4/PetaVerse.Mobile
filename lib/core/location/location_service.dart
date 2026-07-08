@@ -4,6 +4,11 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'location_service.g.dart';
 
+/// App-wide default map center used when device location is unavailable or
+/// denied (Beirut, Lebanon). Feature code (Lost & Found, the shared location
+/// picker, …) falls back to this so maps never open on a blank ocean.
+const LatLng kDefaultMapCenter = LatLng(33.8938, 35.5018);
+
 /// Thin wrapper over geolocator for one-shot position reads, with permission
 /// handling. Returns null when location is unavailable or denied — callers
 /// decide how to degrade (e.g. fall back to a default city center).

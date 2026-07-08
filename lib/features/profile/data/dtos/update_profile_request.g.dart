@@ -15,13 +15,19 @@ _UpdateProfileRequest _$UpdateProfileRequestFromJson(
   dateOfBirth: json['dateOfBirth'] == null
       ? null
       : DateTime.parse(json['dateOfBirth'] as String),
+  latitude: (json['latitude'] as num?)?.toDouble(),
+  longitude: (json['longitude'] as num?)?.toDouble(),
+  locationName: json['locationName'] as String?,
 );
 
 Map<String, dynamic> _$UpdateProfileRequestToJson(
   _UpdateProfileRequest instance,
 ) => <String, dynamic>{
-  'firstName': instance.firstName,
-  'lastName': instance.lastName,
-  'email': instance.email,
-  'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
+  'firstName': ?instance.firstName,
+  'lastName': ?instance.lastName,
+  'email': ?instance.email,
+  'dateOfBirth': ?instance.dateOfBirth?.toIso8601String(),
+  'latitude': ?instance.latitude,
+  'longitude': ?instance.longitude,
+  'locationName': ?instance.locationName,
 };

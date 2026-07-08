@@ -8,6 +8,7 @@ part of 'user_dto.dart';
 
 _UserDto _$UserDtoFromJson(Map<String, dynamic> json) => _UserDto(
   id: json['id'] as String,
+  userCode: json['userCode'] as String? ?? '',
   firstName: json['firstName'] as String,
   lastName: json['lastName'] as String,
   email: json['email'] as String?,
@@ -18,12 +19,16 @@ _UserDto _$UserDtoFromJson(Map<String, dynamic> json) => _UserDto(
       ? null
       : DateTime.parse(json['dateOfBirth'] as String),
   avatarUrl: json['avatarUrl'] as String?,
+  latitude: (json['latitude'] as num?)?.toDouble(),
+  longitude: (json['longitude'] as num?)?.toDouble(),
+  locationName: json['locationName'] as String?,
   roles: (json['roles'] as List<dynamic>).map((e) => e as String).toList(),
   createdAt: DateTime.parse(json['createdAt'] as String),
 );
 
 Map<String, dynamic> _$UserDtoToJson(_UserDto instance) => <String, dynamic>{
   'id': instance.id,
+  'userCode': instance.userCode,
   'firstName': instance.firstName,
   'lastName': instance.lastName,
   'email': instance.email,
@@ -32,6 +37,9 @@ Map<String, dynamic> _$UserDtoToJson(_UserDto instance) => <String, dynamic>{
   'mobileVerified': instance.mobileVerified,
   'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
   'avatarUrl': instance.avatarUrl,
+  'latitude': instance.latitude,
+  'longitude': instance.longitude,
+  'locationName': instance.locationName,
   'roles': instance.roles,
   'createdAt': instance.createdAt.toIso8601String(),
 };

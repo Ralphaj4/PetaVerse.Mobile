@@ -6,6 +6,7 @@ import '../errors/app_exception.dart';
 import '../storage/secure_storage_service.dart';
 import '../utils/logger_service.dart';
 import '../localization/culture_provider.dart';
+import 'auth_events.dart';
 import 'interceptors/auth_interceptor.dart';
 import 'interceptors/culture_interceptor.dart';
 import 'interceptors/logging_interceptor.dart';
@@ -23,6 +24,7 @@ class ApiClient {
     required SecureStorageService secureStorage,
     required LoggerService logger,
     required String Function() cultureCode,
+    required AuthEvents authEvents,
     Dio? dio,
   }) : _dio = dio ??
             Dio(
@@ -43,7 +45,12 @@ class ApiClient {
     );
     _dio.interceptors.addAll([
       CultureInterceptor(cultureCode),
-      AuthInterceptor(secureStorage: secureStorage, refreshDio: refreshDio),
+      AuthInterceptor(
+        secureStorage: secureStorage,
+        refreshDio: refreshDio,
+        authEvents: authEvents,
+        logger: logger,
+      ),
       RetryInterceptor(_dio),
       LoggingInterceptor(logger),
     ]);
@@ -130,11 +137,21 @@ class ApiClient {
   }
 }
 
+/// App-wide auth event bus. The [ApiClient]'s interceptor emits on it when a
+/// session dies; the session gate listens and redirects to login.
+@Riverpod(keepAlive: true)
+AuthEvents authEvents(Ref ref) {
+  final events = AuthEvents();
+  ref.onDispose(events.dispose);
+  return events;
+}
+
 @Riverpod(keepAlive: true)
 ApiClient apiClient(Ref ref) => ApiClient(
       secureStorage: ref.watch(secureStorageServiceProvider),
       logger: ref.watch(loggerServiceProvider),
       cultureCode: () => ref.read(cultureProvider).code,
+      authEvents: ref.watch(authEventsProvider),
     );
 
 @Riverpod(keepAlive: true)

@@ -17,6 +17,7 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/app_cached_image.dart';
 import '../../../../shared/widgets/app_confirm_dialog.dart';
+import '../../../../shared/widgets/shimmer.dart';
 import '../../domain/entities/pet.dart';
 import '../providers/delete_pet_provider.dart';
 import '../providers/pet_detail_provider.dart';
@@ -547,12 +548,7 @@ class _OverviewTab extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (detailAsync.isLoading && displayed == null)
-            const Center(
-              child: Padding(
-                padding: EdgeInsets.all(AppSpacing.xxl),
-                child: CircularProgressIndicator(),
-              ),
-            )
+            const _InfoSectionSkeleton()
           else if (displayed != null) ...[
             _InfoSection(pet: displayed!),
             const SizedBox(height: AppSpacing.md),
@@ -938,12 +934,58 @@ class _ShimmerText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: AppColors.divider,
+    return Shimmer(
+      child: SkeletonBox(
+        width: width,
+        height: height,
         borderRadius: BorderRadius.circular(AppRadius.sm),
+      ),
+    );
+  }
+}
+
+/// First-load skeleton for the overview info card: a header line + several
+/// icon-chip rows, mirroring [_InfoSection]'s layout.
+class _InfoSectionSkeleton extends StatelessWidget {
+  const _InfoSectionSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer(
+      child: SkeletonCard(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg,
+          vertical: AppSpacing.sm,
+        ),
+        child: Column(
+          children: [
+            for (var i = 0; i < 6; i++) ...[
+              if (i > 0)
+                const Divider(height: 1, color: AppColors.divider, indent: 52),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+                child: Row(
+                  children: [
+                    SkeletonBox(
+                      width: 40,
+                      height: 40,
+                      shape: BoxShape.circle,
+                    ),
+                    SizedBox(width: AppSpacing.md),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SkeletonLine(width: 90, height: 11),
+                        SizedBox(height: 6),
+                        SkeletonLine(width: 150, height: 13),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }

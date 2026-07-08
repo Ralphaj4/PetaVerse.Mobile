@@ -1,0 +1,15 @@
+flutter_native_splash:
+  # Branded launch screen: the teal logo centered on white, replacing the
+  # blank white window. Uses the padded splash source (tool/gen_icon_sources
+  # .dart) so the logo reads at a comfortable size on all screen sizes.
+  color: "#FFFFFF"
+  image: assets/logo_splash.png
+
+  android: true
+  ios: true
+
+  # Android 12+ uses a distinct splash API: the OS masks the icon into a
+  # circle, so reuse the already-padded splash image on a white background.
+  android_12:
+    color: "#FFFFFF"
+    image: assets/logo_splash.png

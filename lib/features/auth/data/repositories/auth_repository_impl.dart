@@ -27,6 +27,9 @@ class AuthRepositoryImpl implements AuthRepository {
     required String lastName,
     required String mobileNumber,
     required String password,
+    required double latitude,
+    required double longitude,
+    required String locationName,
     String? email,
   }) =>
       _guardOtp(() => _remote.register(
@@ -34,6 +37,9 @@ class AuthRepositoryImpl implements AuthRepository {
             lastName: lastName,
             mobileNumber: mobileNumber,
             password: password,
+            latitude: latitude,
+            longitude: longitude,
+            locationName: locationName,
             email: email,
           ));
 

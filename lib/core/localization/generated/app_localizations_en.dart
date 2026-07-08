@@ -992,6 +992,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileUpdated => 'Profile updated';
 
   @override
+  String get userId => 'User ID';
+
+  @override
+  String get userIdCopied => 'User ID copied';
+
+  @override
+  String get locationName => 'Location';
+
+  @override
+  String get locationNameHint => 'e.g. Beirut, Lebanon';
+
+  @override
+  String get locationNameTooLong => 'Location must be 200 characters or fewer';
+
+  @override
+  String get locationPickHint => 'Tap the map to drop a pin';
+
+  @override
+  String get locationRequired => 'Pick your location on the map';
+
+  @override
+  String get locationUseMine => 'Use my location';
+
+  @override
   String get changePhoto => 'Change Photo';
 
   @override

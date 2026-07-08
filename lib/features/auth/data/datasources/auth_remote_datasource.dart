@@ -17,6 +17,9 @@ class AuthRemoteDataSource {
     required String lastName,
     required String mobileNumber,
     required String password,
+    required double latitude,
+    required double longitude,
+    required String locationName,
     String? email,
   }) async {
     final json = await _client.post<Map<String, dynamic>>(
@@ -26,6 +29,9 @@ class AuthRemoteDataSource {
         'lastName': lastName,
         'mobileNumber': mobileNumber,
         'password': password,
+        'latitude': latitude,
+        'longitude': longitude,
+        'locationName': locationName,
         if (email != null && email.isNotEmpty) 'email': email,
       },
     );

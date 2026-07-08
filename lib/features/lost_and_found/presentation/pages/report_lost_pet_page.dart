@@ -10,8 +10,6 @@ import 'package:latlong2/latlong.dart';
 
 import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
-import '../../../../core/location/geocoding_service.dart';
-import '../../../../core/location/location_service.dart';
 import '../../../../core/network/dtos/media_dtos.dart';
 import '../../../../core/network/providers/media_datasource_provider.dart';
 import '../../../../core/services/media_upload_service.dart';
@@ -19,11 +17,10 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/widgets/map/map_marker_data.dart';
-import '../../../../core/widgets/map/map_view.dart';
 import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/app_dropdown_field.dart';
+import '../../../../shared/widgets/location_field.dart';
 import '../../../pets/domain/entities/pet.dart';
 import '../../../pets/presentation/providers/pet_list_provider.dart';
 import '../../../pets/presentation/providers/species_provider.dart';
@@ -64,14 +61,6 @@ class _ReportLostPetPageState extends ConsumerState<ReportLostPetPage> {
   // after the user tries to submit (like [_locationTouched]).
   bool _photoTouched = false;
 
-  // True while fetching the device location / reverse-geocoding.
-  bool _locating = false;
-
-  // The address value we last reverse-geocoded into the field, or null if the
-  // user has since edited (or never auto-filled). A new pin may overwrite an
-  // auto-filled value, but never one the user typed.
-  String? _autoFilledAddress;
-
   /// Switches report type and wipes everything type-specific so nothing leaks
   /// across the toggle. The Lost/Found layouts reuse form-field slots (e.g. the
   /// Lost-only reward text field sits where the address field was), so we must
@@ -86,7 +75,6 @@ class _ReportLostPetPageState extends ConsumerState<ReportLostPetPage> {
       _photoTouched = false;
       _location = null;
       _locationTouched = false;
-      _autoFilledAddress = null;
     });
     // Clear all form fields (description, address, reward, found name, etc.)
     // after the layout for the new type has been built.
@@ -347,33 +335,6 @@ class _ReportLostPetPageState extends ConsumerState<ReportLostPetPage> {
                     ),
                     const SizedBox(height: AppSpacing.lg),
 
-                    // ── Last-seen address ────────────────────────────────
-                    _FieldLabel(
-                      l10n.reportLastSeenAddress,
-                      icon: FluentIcons.location_24_regular,
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    _CardSurface(
-                      child: FormBuilderTextField(
-                        name: 'address',
-                        maxLength: 200,
-                        textCapitalization: TextCapitalization.sentences,
-                        decoration:
-                            _borderless(l10n.reportLastSeenAddressHint),
-                        validator: FormBuilderValidators.required(
-                          errorText: l10n.fieldRequired,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    _UseMyLocationButton(
-                      label: l10n.reportUseMyLocation,
-                      accent: accent,
-                      busy: _locating,
-                      onTap: _useMyLocation,
-                    ),
-                    const SizedBox(height: AppSpacing.lg),
-
                     // ── Reward (Lost only) ───────────────────────────────
                     if (_type == ReportType.lost) ...[
                       _FieldLabel(
@@ -425,25 +386,13 @@ class _ReportLostPetPageState extends ConsumerState<ReportLostPetPage> {
                       icon: FluentIcons.location_24_regular,
                     ),
                     const SizedBox(height: AppSpacing.sm),
-                    _LocationPicker(
-                      location: _location,
-                      hint: l10n.reportLocationHint,
+                    LocationField(
+                      addressFieldName: 'address',
                       accent: accent,
-                      // Tapping the map drops the pin and reverse-geocodes it,
-                      // same as the "use my location" button.
-                      onPicked: (p) {
-                        debugPrint('[geocode] map onPicked=$p');
-                        _applyLocation(p);
-                      },
+                      showValidationError: _locationTouched,
+                      onLocationChanged: (p) =>
+                          setState(() => _location = p),
                     ),
-                    if (_locationTouched && _location == null) ...[
-                      const SizedBox(height: AppSpacing.xs),
-                      Text(
-                        l10n.reportLocationRequired,
-                        style: AppTextStyles.bodySmall
-                            .copyWith(color: AppColors.error),
-                      ),
-                    ],
                   ],
                 ),
               ),
@@ -483,68 +432,6 @@ class _ReportLostPetPageState extends ConsumerState<ReportLostPetPage> {
     );
   }
 
-  /// Fetches the device's current position, then applies it as the pin +
-  /// address. Surfaces an error only when the location itself is unavailable.
-  Future<void> _useMyLocation() async {
-    debugPrint('[geocode] _useMyLocation tapped');
-    setState(() => _locating = true);
-    final here = await ref.read(locationServiceProvider).currentLatLng();
-    debugPrint('[geocode] currentLatLng=$here');
-    if (!mounted) return;
-    if (here == null) {
-      setState(() => _locating = false);
-      context.showErrorSnackBar(context.l10n.errorUnknown);
-      return;
-    }
-    await _applyLocation(here);
-  }
-
-  /// Sets the map pin to [point] and, when possible, fills the address field
-  /// by reverse-geocoding it. Called from both the "use my location" button
-  /// and a map tap.
-  ///
-  /// The pin is set regardless; the address is a best-effort convenience —
-  /// geocoding failures are silent (the user can still type). An address the
-  /// user *typed* is never overwritten, but one we previously auto-filled is
-  /// replaced so the field tracks the latest pin.
-  Future<void> _applyLocation(LatLng point) async {
-    debugPrint('[geocode] _applyLocation point=$point');
-    setState(() {
-      _location = point;
-      _locationTouched = true;
-      _locating = true;
-    });
-
-    final existing =
-        (_formKey.currentState?.fields['address']?.value as String?)?.trim();
-    // Fill when empty, or when the current value is one we auto-filled (the
-    // user hasn't taken over the field). Never clobber user-typed text.
-    final mayFill = existing == null ||
-        existing.isEmpty ||
-        (_autoFilledAddress != null && existing == _autoFilledAddress);
-    debugPrint('[geocode] existing="$existing" '
-        'autoFilled="$_autoFilledAddress" mayFill=$mayFill');
-
-    if (mayFill) {
-      debugPrint('[geocode] calling reverse('
-          '${point.latitude}, ${point.longitude})');
-      final result = await ref.read(geocodingServiceProvider).reverse(
-            latitude: point.latitude,
-            longitude: point.longitude,
-          );
-      debugPrint('[geocode] reverse result: '
-          'value=${result.valueOrNull} failure=${result.failureOrNull}');
-      final address = result.valueOrNull;
-      if (address != null && mounted) {
-        _autoFilledAddress = address;
-        _formKey.currentState?.fields['address']?.didChange(address);
-      }
-    } else {
-      debugPrint('[geocode] skipped (mayFill=false)');
-    }
-
-    if (mounted) setState(() => _locating = false);
-  }
 }
 
 /// Borderless input decoration so fields sit flush inside a [_CardSurface].
@@ -897,227 +784,6 @@ class _InlineError extends StatelessWidget {
       );
 }
 
-// ── Location picker (inline + full-screen) ────────────────────────────────────
-
-class _LocationPicker extends StatelessWidget {
-  const _LocationPicker({
-    required this.location,
-    required this.hint,
-    required this.accent,
-    required this.onPicked,
-  });
-
-  final LatLng? location;
-  final String hint;
-  final Color accent;
-  final void Function(LatLng) onPicked;
-
-  List<MapMarkerData> _markers() => location == null
-      ? const []
-      : [
-          MapMarkerData(
-            id: 'picked',
-            point: location!,
-            color: accent,
-            icon: FluentIcons.location_24_filled,
-          ),
-        ];
-
-  Future<void> _openFullScreen(BuildContext context) async {
-    final picked = await Navigator.of(context).push<LatLng>(
-      MaterialPageRoute(
-        builder: (_) => _FullScreenLocationPicker(initial: location),
-      ),
-    );
-    if (picked != null) onPicked(picked);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: AppRadius.lgAll,
-      child: SizedBox(
-        height: 220,
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: MapView(
-                center: location ?? kLostFoundFallbackCenter,
-                markers: _markers(),
-                cluster: false,
-                showRecenterButton: true,
-                onTap: onPicked,
-              ),
-            ),
-            PositionedDirectional(
-              top: AppSpacing.sm,
-              end: AppSpacing.sm,
-              child: Material(
-                color: AppColors.surface,
-                shape: const CircleBorder(),
-                elevation: 2,
-                child: InkWell(
-                  customBorder: const CircleBorder(),
-                  onTap: () => _openFullScreen(context),
-                  child: const Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Icon(
-                      FluentIcons.full_screen_maximize_24_regular,
-                      size: 18,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            // Center "tap to drop a pin" hint, until a location is chosen.
-            if (location == null)
-              Center(
-                child: IgnorePointer(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.md,
-                      vertical: AppSpacing.sm,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: BorderRadius.circular(50),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.textPrimary.withValues(alpha: 0.12),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(FluentIcons.location_24_filled,
-                            size: 18, color: accent),
-                        const SizedBox(width: AppSpacing.sm),
-                        Text(
-                          hint,
-                          style: AppTextStyles.labelMedium.copyWith(
-                            color: accent,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _FullScreenLocationPicker extends StatefulWidget {
-  const _FullScreenLocationPicker({this.initial});
-
-  final LatLng? initial;
-
-  @override
-  State<_FullScreenLocationPicker> createState() =>
-      _FullScreenLocationPickerState();
-}
-
-class _FullScreenLocationPickerState extends State<_FullScreenLocationPicker> {
-  late LatLng? _picked = widget.initial;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: MapView(
-              center: _picked ?? kLostFoundFallbackCenter,
-              zoom: 15,
-              markers: _picked == null
-                  ? const []
-                  : [
-                      MapMarkerData(
-                        id: 'picked',
-                        point: _picked!,
-                        color: AppColors.error,
-                        icon: FluentIcons.location_24_filled,
-                      ),
-                    ],
-              cluster: false,
-              showRecenterButton: true,
-              onTap: (p) => setState(() => _picked = p),
-            ),
-          ),
-          PositionedDirectional(
-            top: 0,
-            start: 0,
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.md),
-                child: Material(
-                  color: AppColors.surface,
-                  shape: const CircleBorder(),
-                  elevation: 2,
-                  child: IconButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    tooltip: l10n.close,
-                    icon: Icon(
-                      context.isRtl
-                          ? FluentIcons.arrow_right_24_regular
-                          : FluentIcons.arrow_left_24_regular,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          PositionedDirectional(
-            start: AppSpacing.lg,
-            end: AppSpacing.lg,
-            bottom: AppSpacing.lg,
-            child: SafeArea(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.md,
-                      vertical: AppSpacing.sm,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      borderRadius: AppRadius.smAll,
-                    ),
-                    child: Text(
-                      l10n.reportLocationHint,
-                      style: AppTextStyles.bodySmall,
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
-                  AppButton(
-                    label: l10n.confirm,
-                    icon: FluentIcons.checkmark_24_regular,
-                    variant: AppButtonVariant.primary,
-                    onPressed: _picked == null
-                        ? null
-                        : () => Navigator.of(context).pop(_picked),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 // ── Header ────────────────────────────────────────────────────────────────────
 
 class _Header extends StatelessWidget {
@@ -1229,64 +895,6 @@ class _RewardPrefix extends StatelessWidget {
               .copyWith(color: AppColors.textSecondary),
         ),
       );
-}
-
-/// The "use my location" crosshair button inside the address field.
-/// A distinct, obviously-tappable button that fills the address from the
-/// device's current location (reverse-geocoded). Sits below the address field.
-class _UseMyLocationButton extends StatelessWidget {
-  const _UseMyLocationButton({
-    required this.label,
-    required this.accent,
-    required this.busy,
-    required this.onTap,
-  });
-
-  final String label;
-  final Color accent;
-  final bool busy;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: accent.withValues(alpha: 0.1),
-      borderRadius: AppRadius.mdAll,
-      child: InkWell(
-        onTap: busy ? null : onTap,
-        borderRadius: AppRadius.mdAll,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
-            vertical: AppSpacing.md,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (busy)
-                SizedBox(
-                  width: 18,
-                  height: 18,
-                  child:
-                      CircularProgressIndicator(strokeWidth: 2, color: accent),
-                )
-              else
-                Icon(FluentIcons.my_location_24_filled,
-                    color: accent, size: 18),
-              const SizedBox(width: AppSpacing.sm),
-              Text(
-                label,
-                style: AppTextStyles.labelLarge.copyWith(
-                  color: accent,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 // ── Found: photo picker ───────────────────────────────────────────────────────

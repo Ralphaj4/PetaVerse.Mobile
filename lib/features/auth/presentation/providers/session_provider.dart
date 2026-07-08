@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/network/api_client.dart';
 import 'auth_repository_provider.dart';
 
 part 'session_provider.g.dart';
@@ -31,6 +34,17 @@ class SessionNotifier extends _$SessionNotifier {
 
   @override
   SessionState build() {
+    // Listen for unrecoverable auth failures from the network layer (the
+    // interceptor cleared the tokens because refresh failed/was refused). This
+    // is what flips the gate to logged-out mid-session so the router redirects
+    // to login — without it the tokens would be gone but the app would still
+    // believe it was signed in, stranding the user on 401s.
+    final sub =
+        ref.watch(authEventsProvider).onSessionExpired.listen((_) {
+      setLoggedIn(false);
+    });
+    ref.onDispose(sub.cancel);
+
     _load();
     return const SessionState(ready: false, loggedIn: false);
   }

@@ -987,7 +987,31 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileUpdated => 'تم تحديث الملف الشخصي';
 
   @override
-  String get changePhoto => 'تغيير الصورة';
+  String get userId => 'معرّف المستخدم';
+
+  @override
+  String get userIdCopied => 'تم نسخ معرّف المستخدم';
+
+  @override
+  String get locationName => 'الموقع';
+
+  @override
+  String get locationNameHint => 'مثال: بيروت، لبنان';
+
+  @override
+  String get locationNameTooLong => 'يجب ألا يتجاوز الموقع 200 حرف';
+
+  @override
+  String get locationPickHint => 'انقر على الخريطة لإسقاط دبوس';
+
+  @override
+  String get locationRequired => 'اختر موقعك على الخريطة';
+
+  @override
+  String get locationUseMine => 'استخدام موقعي';
+
+  @override
+  String get changePhoto => 'Change Photo';
 
   @override
   String get camera => 'الكاميرا';

@@ -1882,6 +1882,54 @@ abstract class AppLocalizations {
   /// **'Profile updated'**
   String get profileUpdated;
 
+  /// No description provided for @userId.
+  ///
+  /// In en, this message translates to:
+  /// **'User ID'**
+  String get userId;
+
+  /// No description provided for @userIdCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'User ID copied'**
+  String get userIdCopied;
+
+  /// No description provided for @locationName.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get locationName;
+
+  /// No description provided for @locationNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Beirut, Lebanon'**
+  String get locationNameHint;
+
+  /// No description provided for @locationNameTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Location must be 200 characters or fewer'**
+  String get locationNameTooLong;
+
+  /// No description provided for @locationPickHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the map to drop a pin'**
+  String get locationPickHint;
+
+  /// No description provided for @locationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick your location on the map'**
+  String get locationRequired;
+
+  /// No description provided for @locationUseMine.
+  ///
+  /// In en, this message translates to:
+  /// **'Use my location'**
+  String get locationUseMine;
+
   /// No description provided for @changePhoto.
   ///
   /// In en, this message translates to:

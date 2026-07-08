@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OtpDispatchDto {
 
- String get message; bool get requiresVerification; String? get devOtp;
+ String get message; bool get requiresVerification; String? get userCode; String? get devOtp;
 /// Create a copy of OtpDispatchDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $OtpDispatchDtoCopyWith<OtpDispatchDto> get copyWith => _$OtpDispatchDtoCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OtpDispatchDto&&(identical(other.message, message) || other.message == message)&&(identical(other.requiresVerification, requiresVerification) || other.requiresVerification == requiresVerification)&&(identical(other.devOtp, devOtp) || other.devOtp == devOtp));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OtpDispatchDto&&(identical(other.message, message) || other.message == message)&&(identical(other.requiresVerification, requiresVerification) || other.requiresVerification == requiresVerification)&&(identical(other.userCode, userCode) || other.userCode == userCode)&&(identical(other.devOtp, devOtp) || other.devOtp == devOtp));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,message,requiresVerification,devOtp);
+int get hashCode => Object.hash(runtimeType,message,requiresVerification,userCode,devOtp);
 
 @override
 String toString() {
-  return 'OtpDispatchDto(message: $message, requiresVerification: $requiresVerification, devOtp: $devOtp)';
+  return 'OtpDispatchDto(message: $message, requiresVerification: $requiresVerification, userCode: $userCode, devOtp: $devOtp)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $OtpDispatchDtoCopyWith<$Res>  {
   factory $OtpDispatchDtoCopyWith(OtpDispatchDto value, $Res Function(OtpDispatchDto) _then) = _$OtpDispatchDtoCopyWithImpl;
 @useResult
 $Res call({
- String message, bool requiresVerification, String? devOtp
+ String message, bool requiresVerification, String? userCode, String? devOtp
 });
 
 
@@ -65,11 +65,12 @@ class _$OtpDispatchDtoCopyWithImpl<$Res>
 
 /// Create a copy of OtpDispatchDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? message = null,Object? requiresVerification = null,Object? devOtp = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? message = null,Object? requiresVerification = null,Object? userCode = freezed,Object? devOtp = freezed,}) {
   return _then(_self.copyWith(
 message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,requiresVerification: null == requiresVerification ? _self.requiresVerification : requiresVerification // ignore: cast_nullable_to_non_nullable
-as bool,devOtp: freezed == devOtp ? _self.devOtp : devOtp // ignore: cast_nullable_to_non_nullable
+as bool,userCode: freezed == userCode ? _self.userCode : userCode // ignore: cast_nullable_to_non_nullable
+as String?,devOtp: freezed == devOtp ? _self.devOtp : devOtp // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -155,10 +156,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String message,  bool requiresVerification,  String? devOtp)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String message,  bool requiresVerification,  String? userCode,  String? devOtp)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OtpDispatchDto() when $default != null:
-return $default(_that.message,_that.requiresVerification,_that.devOtp);case _:
+return $default(_that.message,_that.requiresVerification,_that.userCode,_that.devOtp);case _:
   return orElse();
 
 }
@@ -176,10 +177,10 @@ return $default(_that.message,_that.requiresVerification,_that.devOtp);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String message,  bool requiresVerification,  String? devOtp)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String message,  bool requiresVerification,  String? userCode,  String? devOtp)  $default,) {final _that = this;
 switch (_that) {
 case _OtpDispatchDto():
-return $default(_that.message,_that.requiresVerification,_that.devOtp);case _:
+return $default(_that.message,_that.requiresVerification,_that.userCode,_that.devOtp);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +197,10 @@ return $default(_that.message,_that.requiresVerification,_that.devOtp);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String message,  bool requiresVerification,  String? devOtp)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String message,  bool requiresVerification,  String? userCode,  String? devOtp)?  $default,) {final _that = this;
 switch (_that) {
 case _OtpDispatchDto() when $default != null:
-return $default(_that.message,_that.requiresVerification,_that.devOtp);case _:
+return $default(_that.message,_that.requiresVerification,_that.userCode,_that.devOtp);case _:
   return null;
 
 }
@@ -211,11 +212,12 @@ return $default(_that.message,_that.requiresVerification,_that.devOtp);case _:
 @JsonSerializable()
 
 class _OtpDispatchDto implements OtpDispatchDto {
-  const _OtpDispatchDto({this.message = '', this.requiresVerification = false, this.devOtp});
+  const _OtpDispatchDto({this.message = '', this.requiresVerification = false, this.userCode, this.devOtp});
   factory _OtpDispatchDto.fromJson(Map<String, dynamic> json) => _$OtpDispatchDtoFromJson(json);
 
 @override@JsonKey() final  String message;
 @override@JsonKey() final  bool requiresVerification;
+@override final  String? userCode;
 @override final  String? devOtp;
 
 /// Create a copy of OtpDispatchDto
@@ -231,16 +233,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OtpDispatchDto&&(identical(other.message, message) || other.message == message)&&(identical(other.requiresVerification, requiresVerification) || other.requiresVerification == requiresVerification)&&(identical(other.devOtp, devOtp) || other.devOtp == devOtp));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OtpDispatchDto&&(identical(other.message, message) || other.message == message)&&(identical(other.requiresVerification, requiresVerification) || other.requiresVerification == requiresVerification)&&(identical(other.userCode, userCode) || other.userCode == userCode)&&(identical(other.devOtp, devOtp) || other.devOtp == devOtp));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,message,requiresVerification,devOtp);
+int get hashCode => Object.hash(runtimeType,message,requiresVerification,userCode,devOtp);
 
 @override
 String toString() {
-  return 'OtpDispatchDto(message: $message, requiresVerification: $requiresVerification, devOtp: $devOtp)';
+  return 'OtpDispatchDto(message: $message, requiresVerification: $requiresVerification, userCode: $userCode, devOtp: $devOtp)';
 }
 
 
@@ -251,7 +253,7 @@ abstract mixin class _$OtpDispatchDtoCopyWith<$Res> implements $OtpDispatchDtoCo
   factory _$OtpDispatchDtoCopyWith(_OtpDispatchDto value, $Res Function(_OtpDispatchDto) _then) = __$OtpDispatchDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String message, bool requiresVerification, String? devOtp
+ String message, bool requiresVerification, String? userCode, String? devOtp
 });
 
 
@@ -268,11 +270,12 @@ class __$OtpDispatchDtoCopyWithImpl<$Res>
 
 /// Create a copy of OtpDispatchDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? message = null,Object? requiresVerification = null,Object? devOtp = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? message = null,Object? requiresVerification = null,Object? userCode = freezed,Object? devOtp = freezed,}) {
   return _then(_OtpDispatchDto(
 message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,requiresVerification: null == requiresVerification ? _self.requiresVerification : requiresVerification // ignore: cast_nullable_to_non_nullable
-as bool,devOtp: freezed == devOtp ? _self.devOtp : devOtp // ignore: cast_nullable_to_non_nullable
+as bool,userCode: freezed == userCode ? _self.userCode : userCode // ignore: cast_nullable_to_non_nullable
+as String?,devOtp: freezed == devOtp ? _self.devOtp : devOtp // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }

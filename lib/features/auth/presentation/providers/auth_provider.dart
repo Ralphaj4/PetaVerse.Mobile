@@ -39,6 +39,9 @@ class AuthNotifier extends _$AuthNotifier {
     required String lastName,
     required String phone,
     required String password,
+    required double latitude,
+    required double longitude,
+    required String locationName,
     String? email,
   }) =>
       _runOtp(
@@ -47,6 +50,9 @@ class AuthNotifier extends _$AuthNotifier {
               lastName: lastName,
               mobileNumber: phone,
               password: password,
+              latitude: latitude,
+              longitude: longitude,
+              locationName: locationName,
               email: email,
             ),
       );

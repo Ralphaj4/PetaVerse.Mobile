@@ -12,6 +12,7 @@ abstract class OtpDispatchDto with _$OtpDispatchDto {
   const factory OtpDispatchDto({
     @Default('') String message,
     @Default(false) bool requiresVerification,
+    String? userCode,
     String? devOtp,
   }) = _OtpDispatchDto;
 

@@ -5,12 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
+import '../../../../shared/widgets/location_field.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/auth_layout.dart';
 import '../widgets/auth_submit_button.dart';
@@ -30,9 +33,16 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
+  // Set from the map pin. Required — validated alongside the form on submit.
+  LatLng? _location;
+  bool _locationTouched = false;
+
   Future<void> _submit() async {
+    setState(() => _locationTouched = true);
     final form = _formKey.currentState!;
-    if (!form.saveAndValidate()) return;
+    final formOk = form.saveAndValidate();
+    final location = _location;
+    if (!formOk || location == null) return;
 
     final notifier = ref.read(authProvider.notifier);
     final result = await notifier.register(
@@ -41,6 +51,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       email: form.value['email'] as String?,
       phone: _completePhone,
       password: form.value['password'] as String,
+      latitude: location.latitude,
+      longitude: location.longitude,
+      locationName: (form.value['locationName'] as String).trim(),
     );
     if (!mounted) return;
     if (result.ok) {
@@ -177,6 +190,20 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 if (value != password) return l10n.passwordsDoNotMatch;
                 return null;
               },
+            ),
+            const SizedBox(height: AppSpacing.xl),
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: Text(
+                l10n.locationName,
+                style: AppTextStyles.titleSmall,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            LocationField(
+              addressFieldName: 'locationName',
+              showValidationError: _locationTouched,
+              onLocationChanged: (p) => setState(() => _location = p),
             ),
             const SizedBox(height: AppSpacing.xxl),
             AuthSubmitButton(

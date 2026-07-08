@@ -61,12 +61,18 @@ class UserRepository implements IUserRepository {
     required String lastName,
     String? email,
     DateTime? dateOfBirth,
+    double? latitude,
+    double? longitude,
+    String? locationName,
   }) async {
     final request = UpdateProfileRequest(
       firstName: firstName,
       lastName: lastName,
       email: email,
       dateOfBirth: dateOfBirth,
+      latitude: latitude,
+      longitude: longitude,
+      locationName: locationName,
     );
     final result = await _remote.updateProfile(request);
     final dto = result.valueOrNull;

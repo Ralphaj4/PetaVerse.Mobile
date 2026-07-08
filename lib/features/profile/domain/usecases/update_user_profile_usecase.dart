@@ -12,11 +12,17 @@ class UpdateUserProfileUsecase {
     required String lastName,
     String? email,
     DateTime? dateOfBirth,
+    double? latitude,
+    double? longitude,
+    String? locationName,
   }) =>
       _repository.updateProfile(
         firstName: firstName,
         lastName: lastName,
         email: email,
         dateOfBirth: dateOfBirth,
+        latitude: latitude,
+        longitude: longitude,
+        locationName: locationName,
       );
 }

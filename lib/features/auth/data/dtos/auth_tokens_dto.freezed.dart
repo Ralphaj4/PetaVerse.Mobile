@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AuthTokensDto {
 
- String get accessToken; String get refreshToken; String get userId; List<String> get roles;
+ String get accessToken; String get refreshToken; String get userId; String? get userCode; List<String> get roles;
 /// Create a copy of AuthTokensDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $AuthTokensDtoCopyWith<AuthTokensDto> get copyWith => _$AuthTokensDtoCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthTokensDto&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.userId, userId) || other.userId == userId)&&const DeepCollectionEquality().equals(other.roles, roles));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthTokensDto&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.userCode, userCode) || other.userCode == userCode)&&const DeepCollectionEquality().equals(other.roles, roles));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,accessToken,refreshToken,userId,const DeepCollectionEquality().hash(roles));
+int get hashCode => Object.hash(runtimeType,accessToken,refreshToken,userId,userCode,const DeepCollectionEquality().hash(roles));
 
 @override
 String toString() {
-  return 'AuthTokensDto(accessToken: $accessToken, refreshToken: $refreshToken, userId: $userId, roles: $roles)';
+  return 'AuthTokensDto(accessToken: $accessToken, refreshToken: $refreshToken, userId: $userId, userCode: $userCode, roles: $roles)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $AuthTokensDtoCopyWith<$Res>  {
   factory $AuthTokensDtoCopyWith(AuthTokensDto value, $Res Function(AuthTokensDto) _then) = _$AuthTokensDtoCopyWithImpl;
 @useResult
 $Res call({
- String accessToken, String refreshToken, String userId, List<String> roles
+ String accessToken, String refreshToken, String userId, String? userCode, List<String> roles
 });
 
 
@@ -65,12 +65,13 @@ class _$AuthTokensDtoCopyWithImpl<$Res>
 
 /// Create a copy of AuthTokensDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? accessToken = null,Object? refreshToken = null,Object? userId = null,Object? roles = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? accessToken = null,Object? refreshToken = null,Object? userId = null,Object? userCode = freezed,Object? roles = null,}) {
   return _then(_self.copyWith(
 accessToken: null == accessToken ? _self.accessToken : accessToken // ignore: cast_nullable_to_non_nullable
 as String,refreshToken: null == refreshToken ? _self.refreshToken : refreshToken // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,roles: null == roles ? _self.roles : roles // ignore: cast_nullable_to_non_nullable
+as String,userCode: freezed == userCode ? _self.userCode : userCode // ignore: cast_nullable_to_non_nullable
+as String?,roles: null == roles ? _self.roles : roles // ignore: cast_nullable_to_non_nullable
 as List<String>,
   ));
 }
@@ -156,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String accessToken,  String refreshToken,  String userId,  List<String> roles)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String accessToken,  String refreshToken,  String userId,  String? userCode,  List<String> roles)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AuthTokensDto() when $default != null:
-return $default(_that.accessToken,_that.refreshToken,_that.userId,_that.roles);case _:
+return $default(_that.accessToken,_that.refreshToken,_that.userId,_that.userCode,_that.roles);case _:
   return orElse();
 
 }
@@ -177,10 +178,10 @@ return $default(_that.accessToken,_that.refreshToken,_that.userId,_that.roles);c
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String accessToken,  String refreshToken,  String userId,  List<String> roles)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String accessToken,  String refreshToken,  String userId,  String? userCode,  List<String> roles)  $default,) {final _that = this;
 switch (_that) {
 case _AuthTokensDto():
-return $default(_that.accessToken,_that.refreshToken,_that.userId,_that.roles);case _:
+return $default(_that.accessToken,_that.refreshToken,_that.userId,_that.userCode,_that.roles);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +198,10 @@ return $default(_that.accessToken,_that.refreshToken,_that.userId,_that.roles);c
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String accessToken,  String refreshToken,  String userId,  List<String> roles)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String accessToken,  String refreshToken,  String userId,  String? userCode,  List<String> roles)?  $default,) {final _that = this;
 switch (_that) {
 case _AuthTokensDto() when $default != null:
-return $default(_that.accessToken,_that.refreshToken,_that.userId,_that.roles);case _:
+return $default(_that.accessToken,_that.refreshToken,_that.userId,_that.userCode,_that.roles);case _:
   return null;
 
 }
@@ -212,12 +213,13 @@ return $default(_that.accessToken,_that.refreshToken,_that.userId,_that.roles);c
 @JsonSerializable()
 
 class _AuthTokensDto implements AuthTokensDto {
-  const _AuthTokensDto({required this.accessToken, required this.refreshToken, this.userId = '', final  List<String> roles = const <String>[]}): _roles = roles;
+  const _AuthTokensDto({required this.accessToken, required this.refreshToken, this.userId = '', this.userCode, final  List<String> roles = const <String>[]}): _roles = roles;
   factory _AuthTokensDto.fromJson(Map<String, dynamic> json) => _$AuthTokensDtoFromJson(json);
 
 @override final  String accessToken;
 @override final  String refreshToken;
 @override@JsonKey() final  String userId;
+@override final  String? userCode;
  final  List<String> _roles;
 @override@JsonKey() List<String> get roles {
   if (_roles is EqualUnmodifiableListView) return _roles;
@@ -239,16 +241,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthTokensDto&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.userId, userId) || other.userId == userId)&&const DeepCollectionEquality().equals(other._roles, _roles));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthTokensDto&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.userCode, userCode) || other.userCode == userCode)&&const DeepCollectionEquality().equals(other._roles, _roles));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,accessToken,refreshToken,userId,const DeepCollectionEquality().hash(_roles));
+int get hashCode => Object.hash(runtimeType,accessToken,refreshToken,userId,userCode,const DeepCollectionEquality().hash(_roles));
 
 @override
 String toString() {
-  return 'AuthTokensDto(accessToken: $accessToken, refreshToken: $refreshToken, userId: $userId, roles: $roles)';
+  return 'AuthTokensDto(accessToken: $accessToken, refreshToken: $refreshToken, userId: $userId, userCode: $userCode, roles: $roles)';
 }
 
 
@@ -259,7 +261,7 @@ abstract mixin class _$AuthTokensDtoCopyWith<$Res> implements $AuthTokensDtoCopy
   factory _$AuthTokensDtoCopyWith(_AuthTokensDto value, $Res Function(_AuthTokensDto) _then) = __$AuthTokensDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String accessToken, String refreshToken, String userId, List<String> roles
+ String accessToken, String refreshToken, String userId, String? userCode, List<String> roles
 });
 
 
@@ -276,12 +278,13 @@ class __$AuthTokensDtoCopyWithImpl<$Res>
 
 /// Create a copy of AuthTokensDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? accessToken = null,Object? refreshToken = null,Object? userId = null,Object? roles = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? accessToken = null,Object? refreshToken = null,Object? userId = null,Object? userCode = freezed,Object? roles = null,}) {
   return _then(_AuthTokensDto(
 accessToken: null == accessToken ? _self.accessToken : accessToken // ignore: cast_nullable_to_non_nullable
 as String,refreshToken: null == refreshToken ? _self.refreshToken : refreshToken // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as String,roles: null == roles ? _self._roles : roles // ignore: cast_nullable_to_non_nullable
+as String,userCode: freezed == userCode ? _self.userCode : userCode // ignore: cast_nullable_to_non_nullable
+as String?,roles: null == roles ? _self._roles : roles // ignore: cast_nullable_to_non_nullable
 as List<String>,
   ));
 }

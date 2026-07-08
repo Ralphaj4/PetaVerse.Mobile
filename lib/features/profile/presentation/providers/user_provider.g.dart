@@ -51,7 +51,7 @@ final class UserNotifierProvider
   UserNotifier create() => UserNotifier();
 }
 
-String _$userNotifierHash() => r'9859aec7dfe3aacb117b2163bf994fb86ee91557';
+String _$userNotifierHash() => r'3d0182148791b343639bcab05b09971218404fcd';
 
 /// Offline-first profile state.
 ///

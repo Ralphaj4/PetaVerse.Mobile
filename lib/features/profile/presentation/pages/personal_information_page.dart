@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/failure_l10n.dart';
@@ -20,6 +22,8 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_button.dart';
+import '../../../../shared/widgets/location_field.dart';
+import '../../../../shared/widgets/shimmer.dart';
 import '../../domain/entities/user.dart';
 import '../providers/user_provider.dart';
 
@@ -43,6 +47,9 @@ class _PersonalInformationPageState
   late final TextEditingController _lastNameController;
   late final TextEditingController _emailController;
   DateTime? _selectedDateOfBirth;
+  LatLng? _location;
+  String? _initialLocationName;
+  bool _locationTouched = false;
   bool _isUpdating = false;
   bool _isUploadingAvatar = false;
   bool _initialized = false;
@@ -72,6 +79,10 @@ class _PersonalInformationPageState
     _lastNameController.text = user.lastName;
     _emailController.text = user.email ?? '';
     _selectedDateOfBirth = user.dateOfBirth;
+    if (user.latitude != null && user.longitude != null) {
+      _location = LatLng(user.latitude!, user.longitude!);
+    }
+    _initialLocationName = user.locationName;
   }
 
   Future<void> _pickDate() async {
@@ -88,16 +99,24 @@ class _PersonalInformationPageState
   }
 
   Future<void> _submitUpdate() async {
-    if (!_formKey.currentState!.saveAndValidate()) return;
+    setState(() => _locationTouched = true);
+    final formOk = _formKey.currentState!.saveAndValidate();
+    final location = _location;
+    if (!formOk || location == null) return;
 
     setState(() => _isUpdating = true);
 
     final email = _emailController.text.trim();
+    final locationName =
+        (_formKey.currentState!.value['locationName'] as String?)?.trim();
     final failure = await ref.read(userProvider.notifier).updateProfile(
           firstName: _firstNameController.text.trim(),
           lastName: _lastNameController.text.trim(),
           email: email.isEmpty ? null : email,
           dateOfBirth: _selectedDateOfBirth,
+          latitude: location.latitude,
+          longitude: location.longitude,
+          locationName: locationName,
         );
 
     if (!mounted) return;
@@ -174,9 +193,7 @@ class _PersonalInformationPageState
       ),
       body: userAsync.when(
         skipLoadingOnRefresh: true,
-        loading: () => const Center(
-          child: CircularProgressIndicator(color: AppColors.primary),
-        ),
+        loading: () => const _PersonalInfoSkeleton(),
         error: (error, _) => _ErrorView(
           message: (error is Failure ? error : const UnknownFailure())
               .localizedMessage(l10n),
@@ -191,6 +208,10 @@ class _PersonalInformationPageState
             lastNameController: _lastNameController,
             emailController: _emailController,
             selectedDateOfBirth: _selectedDateOfBirth,
+            initialLocation: _location,
+            initialLocationName: _initialLocationName,
+            locationTouched: _locationTouched,
+            onLocationChanged: (p) => setState(() => _location = p),
             isUpdating: _isUpdating,
             isUploadingAvatar: _isUploadingAvatar,
             onPickDate: _pickDate,
@@ -213,6 +234,10 @@ class _Body extends StatelessWidget {
     required this.lastNameController,
     required this.emailController,
     required this.selectedDateOfBirth,
+    required this.initialLocation,
+    required this.initialLocationName,
+    required this.locationTouched,
+    required this.onLocationChanged,
     required this.isUpdating,
     required this.isUploadingAvatar,
     required this.onPickDate,
@@ -226,6 +251,10 @@ class _Body extends StatelessWidget {
   final TextEditingController lastNameController;
   final TextEditingController emailController;
   final DateTime? selectedDateOfBirth;
+  final LatLng? initialLocation;
+  final String? initialLocationName;
+  final bool locationTouched;
+  final ValueChanged<LatLng> onLocationChanged;
   final bool isUpdating;
   final bool isUploadingAvatar;
   final VoidCallback onPickDate;
@@ -318,6 +347,22 @@ class _Body extends StatelessWidget {
                 _MobileNumberField(
                   number: user.mobileNumber,
                   verified: user.mobileVerified,
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.lg),
+
+            // ── Location ───────────────────────────────────────────────
+            _SectionCard(
+              icon: FluentIcons.location_24_regular,
+              title: l10n.locationName,
+              children: [
+                LocationField(
+                  addressFieldName: 'locationName',
+                  initialLocation: initialLocation,
+                  initialLocationName: initialLocationName,
+                  showValidationError: locationTouched,
+                  onLocationChanged: onLocationChanged,
                 ),
               ],
             ),
@@ -436,14 +481,26 @@ class _ProfileHeaderCard extends StatelessWidget {
                     onEdit: onEditAvatar,
                   ),
                   const SizedBox(height: AppSpacing.lg),
-                  Text(
-                    fullName,
-                    style: AppTextStyles.headlineMedium.copyWith(
-                      color: AppColors.onPrimary,
-                    ),
-                    textAlign: TextAlign.center,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          fullName,
+                          style: AppTextStyles.headlineMedium.copyWith(
+                            color: AppColors.onPrimary,
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      if (user.mobileVerified) ...[
+                        const SizedBox(width: AppSpacing.sm),
+                        const _VerifiedBadge(),
+                      ],
+                    ],
                   ),
                   const SizedBox(height: AppSpacing.md),
                   Wrap(
@@ -456,17 +513,8 @@ class _ProfileHeaderCard extends StatelessWidget {
                           label: role,
                           icon: FluentIcons.person_24_regular,
                         ),
-                      _HeaderChip(
-                        label: user.mobileVerified
-                            ? l10n.verified
-                            : l10n.unverified,
-                        icon: user.mobileVerified
-                            ? FluentIcons.checkmark_circle_24_filled
-                            : FluentIcons.warning_24_filled,
-                        accent: user.mobileVerified
-                            ? AppColors.success
-                            : AppColors.warning,
-                      ),
+                      if (user.userCode.isNotEmpty)
+                        _UserCodeChip(code: user.userCode),
                     ],
                   ),
                 ],
@@ -558,6 +606,34 @@ class _EditableAvatar extends StatelessWidget {
   }
 }
 
+/// A small circular "verified" badge shown trailing the user's name — a green
+/// disc with a white check, ringed in white so it reads on the gradient header.
+class _VerifiedBadge extends StatelessWidget {
+  const _VerifiedBadge();
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      label: context.l10n.verified,
+      child: Container(
+        width: 22,
+        height: 22,
+        decoration: BoxDecoration(
+          color: AppColors.success,
+          shape: BoxShape.circle,
+          border: Border.all(color: AppColors.onPrimary, width: 1.5),
+        ),
+        alignment: Alignment.center,
+        child: const Icon(
+          FluentIcons.checkmark_16_filled,
+          size: 12,
+          color: AppColors.onPrimary,
+        ),
+      ),
+    );
+  }
+}
+
 /// A pill chip on a white surface — neutral by default, tinted by [accent]
 /// (e.g. green for "Verified").
 class _HeaderChip extends StatelessWidget {
@@ -594,6 +670,62 @@ class _HeaderChip extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// A tappable pill showing the user's public [code] (e.g. "#a1b2c3d4").
+/// Tapping copies it to the clipboard and confirms with a snackbar — handy
+/// for sharing an account reference with support or other users.
+class _UserCodeChip extends StatelessWidget {
+  const _UserCodeChip({required this.code});
+
+  final String code;
+
+  Future<void> _copy(BuildContext context) async {
+    final l10n = context.l10n;
+    await Clipboard.setData(ClipboardData(text: code));
+    if (context.mounted) context.showSuccessSnackBar(l10n.userIdCopied);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Semantics(
+      button: true,
+      label: '${l10n.userId}: $code',
+      child: Material(
+        color: AppColors.onPrimary,
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        child: InkWell(
+          onTap: () => _copy(context),
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.sm,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  FluentIcons.copy_24_regular,
+                  size: 16,
+                  color: AppColors.textPrimary,
+                ),
+                const SizedBox(width: AppSpacing.xs),
+                Text(
+                  '#$code',
+                  style: AppTextStyles.labelMedium.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -959,6 +1091,57 @@ class _InfoRow extends StatelessWidget {
 }
 
 // ── Error view ──────────────────────────────────────────────────────────
+
+/// First-load skeleton: the gradient header (avatar + name lines) and a couple
+/// of section cards with field rows.
+class _PersonalInfoSkeleton extends StatelessWidget {
+  const _PersonalInfoSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer(
+      child: ListView(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        children: [
+          // Header card.
+          const SkeletonCard(
+            padding: EdgeInsets.all(AppSpacing.xl),
+            child: Column(
+              children: [
+                SkeletonBox(width: 96, height: 96, shape: BoxShape.circle),
+                SizedBox(height: AppSpacing.md),
+                SkeletonLine(width: 160, height: 18),
+                SizedBox(height: AppSpacing.sm),
+                SkeletonLine(width: 100, height: 12),
+              ],
+            ),
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          // Two section cards, each with a title + a few field rows.
+          for (var s = 0; s < 2; s++) ...[
+            SkeletonCard(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SkeletonLine(width: 120, height: 14),
+                  const SizedBox(height: AppSpacing.lg),
+                  for (var f = 0; f < 3; f++) ...[
+                    const SkeletonLine(width: 70, height: 11),
+                    const SizedBox(height: AppSpacing.sm),
+                    SkeletonBox(height: 44, borderRadius: AppRadius.smAll),
+                    const SizedBox(height: AppSpacing.lg),
+                  ],
+                ],
+              ),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+          ],
+        ],
+      ),
+    );
+  }
+}
 
 class _ErrorView extends StatelessWidget {
   const _ErrorView({required this.message, required this.onRetry});

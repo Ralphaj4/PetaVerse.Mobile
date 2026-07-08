@@ -1001,6 +1001,31 @@ class AppLocalizationsFr extends AppLocalizations {
   String get profileUpdated => 'Profil mis à jour';
 
   @override
+  String get userId => 'Identifiant';
+
+  @override
+  String get userIdCopied => 'Identifiant copié';
+
+  @override
+  String get locationName => 'Localisation';
+
+  @override
+  String get locationNameHint => 'ex. Beyrouth, Liban';
+
+  @override
+  String get locationNameTooLong =>
+      'La localisation doit contenir 200 caractères ou moins';
+
+  @override
+  String get locationPickHint => 'Appuyez sur la carte pour placer un repère';
+
+  @override
+  String get locationRequired => 'Choisissez votre localisation sur la carte';
+
+  @override
+  String get locationUseMine => 'Utiliser ma position';
+
+  @override
   String get changePhoto => 'Changer la photo';
 
   @override

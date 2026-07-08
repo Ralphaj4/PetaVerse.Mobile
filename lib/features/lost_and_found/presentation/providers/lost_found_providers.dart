@@ -13,7 +13,10 @@ import '../../domain/repositories/lost_found_repository.dart';
 part 'lost_found_providers.g.dart';
 
 /// Default map center when device location is unavailable (Beirut).
-const LatLng kLostFoundFallbackCenter = LatLng(33.8938, 35.5018);
+///
+/// Aliases the app-wide [kDefaultMapCenter]; kept as a named constant so the
+/// existing Lost & Found call sites read clearly.
+const LatLng kLostFoundFallbackCenter = kDefaultMapCenter;
 
 @Riverpod(keepAlive: true)
 LostFoundRepository lostFoundRepository(Ref ref) => LostFoundRepositoryImpl(

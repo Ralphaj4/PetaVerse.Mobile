@@ -15,6 +15,7 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_confirm_dialog.dart';
+import '../../../../shared/widgets/shimmer.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/providers/session_provider.dart';
 import '../../../pets/presentation/providers/pet_list_provider.dart';
@@ -294,10 +295,7 @@ class _PetGrid extends ConsumerWidget {
 
     return petsAsync.when(
       skipLoadingOnRefresh: true,
-      loading: () => const SizedBox(
-        height: 140,
-        child: Center(child: CircularProgressIndicator()),
-      ),
+      loading: () => const _PetGridSkeleton(),
       error: (e, _) => _PetGridError(
         message: (e is Failure ? e : const UnknownFailure())
             .localizedMessage(context.l10n),
@@ -334,6 +332,56 @@ class _PetGrid extends ConsumerWidget {
           ],
         );
       },
+    );
+  }
+}
+
+/// Two side-by-side pet-card skeletons, matching the preview grid layout.
+class _PetGridSkeleton extends StatelessWidget {
+  const _PetGridSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Shimmer(
+      child: Row(
+        children: [
+          Expanded(child: _PetCardSkeleton()),
+          SizedBox(width: AppSpacing.md),
+          Expanded(child: _PetCardSkeleton()),
+        ],
+      ),
+    );
+  }
+}
+
+class _PetCardSkeleton extends StatelessWidget {
+  const _PetCardSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return const SkeletonCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SkeletonBox(
+            height: 110,
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(AppRadius.lg),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(AppSpacing.md),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SkeletonLine(width: 90, height: 14),
+                SizedBox(height: AppSpacing.sm),
+                SkeletonLine(width: 60, height: 11),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

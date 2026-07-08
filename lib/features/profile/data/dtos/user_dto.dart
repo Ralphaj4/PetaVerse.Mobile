@@ -9,6 +9,7 @@ part 'user_dto.g.dart';
 abstract class UserDto with _$UserDto {
   const factory UserDto({
     required String id,
+    @Default('') String userCode,
     required String firstName,
     required String lastName,
     String? email,
@@ -17,6 +18,9 @@ abstract class UserDto with _$UserDto {
     required bool mobileVerified,
     DateTime? dateOfBirth,
     String? avatarUrl,
+    double? latitude,
+    double? longitude,
+    String? locationName,
     required List<String> roles,
     required DateTime createdAt,
   }) = _UserDto;
@@ -28,6 +32,7 @@ abstract class UserDto with _$UserDto {
 
   User toEntity() => User(
         id: id,
+        userCode: userCode,
         firstName: firstName,
         lastName: lastName,
         email: email,
@@ -36,6 +41,9 @@ abstract class UserDto with _$UserDto {
         mobileVerified: mobileVerified,
         dateOfBirth: dateOfBirth,
         avatarUrl: avatarUrl,
+        latitude: latitude,
+        longitude: longitude,
+        locationName: locationName,
         roles: roles,
         createdAt: createdAt,
       );

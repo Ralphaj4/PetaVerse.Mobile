@@ -16,6 +16,7 @@ import '../../../../core/widgets/map/map_page.dart';
 import '../../../../core/widgets/map/map_view.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/app_cached_image.dart';
+import '../../../../shared/widgets/shimmer.dart';
 import '../../domain/entities/lost_found_report.dart';
 import '../models/pet_alert.dart';
 import '../providers/lost_found_providers.dart';
@@ -72,6 +73,10 @@ class LostFoundDetailPage extends ConsumerWidget {
                   _Body(
                     view: view,
                     isError: isError,
+                    // Skeleton only when we have nothing to show yet (no seed).
+                    isLoading: async.isLoading &&
+                        async.value == null &&
+                        initialAlert == null,
                     onRetry: () => ref.invalidate(reportDetailProvider(reportId)),
                     onViewOnMap: () => _viewOnMap(context, view),
                     onContact: () => _contactOwner(context, view),
@@ -254,6 +259,7 @@ class _Body extends StatelessWidget {
   const _Body({
     required this.view,
     required this.isError,
+    required this.isLoading,
     required this.onRetry,
     required this.onViewOnMap,
     required this.onContact,
@@ -261,6 +267,10 @@ class _Body extends StatelessWidget {
 
   final _DetailView view;
   final bool isError;
+
+  /// True when the report is still loading and there's no seed to show — the
+  /// info card + map render as skeletons instead of empty rows.
+  final bool isLoading;
   final VoidCallback onRetry;
   final VoidCallback onViewOnMap;
   final VoidCallback onContact;
@@ -290,36 +300,51 @@ class _Body extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AlertTypeBadge(
-            type: view.type,
-            label: isLost ? l10n.badgeLost : l10n.badgeFound,
-          ),
-          const SizedBox(height: AppSpacing.md),
-
-          // Name on the left, breed pill trailing on the right.
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Text(
-                  view.petName,
-                  style: AppTextStyles.displayLarge,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
+          if (isLoading) ...[
+            const Shimmer(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SkeletonBox(width: 84, height: 26, borderRadius: null),
+                  SizedBox(height: AppSpacing.md),
+                  SkeletonLine(width: 200, height: 32),
+                ],
               ),
-              if (view.breed.isNotEmpty) ...[
-                const SizedBox(width: AppSpacing.md),
-                _BreedPill(label: view.breed),
+            ),
+          ] else ...[
+            AlertTypeBadge(
+              type: view.type,
+              label: isLost ? l10n.badgeLost : l10n.badgeFound,
+            ),
+            const SizedBox(height: AppSpacing.md),
+
+            // Name on the left, breed pill trailing on the right.
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    view.petName,
+                    style: AppTextStyles.displayLarge,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                if (view.breed.isNotEmpty) ...[
+                  const SizedBox(width: AppSpacing.md),
+                  _BreedPill(label: view.breed),
+                ],
               ],
-            ],
-          ),
+            ),
+          ],
 
           const SizedBox(height: AppSpacing.lg),
 
           // Error banner (data failed and no seed) → retry.
           if (isError)
             _ErrorNotice(message: l10n.errorUnknown, onRetry: onRetry)
+          else if (isLoading)
+            const _DetailBodySkeleton()
           else ...[
             // Grouped info card: description / address / reporter / reward.
             _InfoCard(
@@ -364,7 +389,7 @@ class _Body extends StatelessWidget {
           const SizedBox(height: AppSpacing.xl),
 
           // Primary action: contact the person who posted the report.
-          if (!isError)
+          if (!isError && !isLoading)
             AppButton(
               label: l10n.contactOwner,
               icon: FluentIcons.person_call_24_regular,
@@ -438,6 +463,58 @@ class _BreedPill extends StatelessWidget {
 }
 
 /// White card grouping several [_InfoRow]s separated by dividers.
+/// Skeleton for the detail body (info card rows + map) when the report is
+/// loading and there's no seed to display.
+class _DetailBodySkeleton extends StatelessWidget {
+  const _DetailBodySkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SkeletonCard(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.lg,
+              vertical: AppSpacing.xs,
+            ),
+            child: Column(
+              children: [
+                for (var i = 0; i < 3; i++) ...[
+                  if (i > 0)
+                    const Divider(
+                        height: 1, color: AppColors.divider, indent: 52),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+                    child: Row(
+                      children: [
+                        SkeletonBox(
+                            width: 40, height: 40, shape: BoxShape.circle),
+                        SizedBox(width: AppSpacing.md),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SkeletonLine(width: 100, height: 12),
+                            SizedBox(height: 6),
+                            SkeletonLine(width: 170, height: 13),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          SkeletonBox(height: 160, borderRadius: AppRadius.lgAll),
+        ],
+      ),
+    );
+  }
+}
+
 class _InfoCard extends StatelessWidget {
   const _InfoCard({required this.rows});
 

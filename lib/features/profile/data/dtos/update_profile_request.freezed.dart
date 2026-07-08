@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UpdateProfileRequest {
 
- String? get firstName; String? get lastName; String? get email; DateTime? get dateOfBirth;
+ String? get firstName; String? get lastName; String? get email; DateTime? get dateOfBirth; double? get latitude; double? get longitude; String? get locationName;
 /// Create a copy of UpdateProfileRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UpdateProfileRequestCopyWith<UpdateProfileRequest> get copyWith => _$UpdateProf
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateProfileRequest&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.email, email) || other.email == email)&&(identical(other.dateOfBirth, dateOfBirth) || other.dateOfBirth == dateOfBirth));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateProfileRequest&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.email, email) || other.email == email)&&(identical(other.dateOfBirth, dateOfBirth) || other.dateOfBirth == dateOfBirth)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.locationName, locationName) || other.locationName == locationName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,firstName,lastName,email,dateOfBirth);
+int get hashCode => Object.hash(runtimeType,firstName,lastName,email,dateOfBirth,latitude,longitude,locationName);
 
 @override
 String toString() {
-  return 'UpdateProfileRequest(firstName: $firstName, lastName: $lastName, email: $email, dateOfBirth: $dateOfBirth)';
+  return 'UpdateProfileRequest(firstName: $firstName, lastName: $lastName, email: $email, dateOfBirth: $dateOfBirth, latitude: $latitude, longitude: $longitude, locationName: $locationName)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UpdateProfileRequestCopyWith<$Res>  {
   factory $UpdateProfileRequestCopyWith(UpdateProfileRequest value, $Res Function(UpdateProfileRequest) _then) = _$UpdateProfileRequestCopyWithImpl;
 @useResult
 $Res call({
- String? firstName, String? lastName, String? email, DateTime? dateOfBirth
+ String? firstName, String? lastName, String? email, DateTime? dateOfBirth, double? latitude, double? longitude, String? locationName
 });
 
 
@@ -65,13 +65,16 @@ class _$UpdateProfileRequestCopyWithImpl<$Res>
 
 /// Create a copy of UpdateProfileRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? firstName = freezed,Object? lastName = freezed,Object? email = freezed,Object? dateOfBirth = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? firstName = freezed,Object? lastName = freezed,Object? email = freezed,Object? dateOfBirth = freezed,Object? latitude = freezed,Object? longitude = freezed,Object? locationName = freezed,}) {
   return _then(_self.copyWith(
 firstName: freezed == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
 as String?,lastName: freezed == lastName ? _self.lastName : lastName // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,dateOfBirth: freezed == dateOfBirth ? _self.dateOfBirth : dateOfBirth // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
+as double?,longitude: freezed == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
+as double?,locationName: freezed == locationName ? _self.locationName : locationName // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -156,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? firstName,  String? lastName,  String? email,  DateTime? dateOfBirth)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? firstName,  String? lastName,  String? email,  DateTime? dateOfBirth,  double? latitude,  double? longitude,  String? locationName)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UpdateProfileRequest() when $default != null:
-return $default(_that.firstName,_that.lastName,_that.email,_that.dateOfBirth);case _:
+return $default(_that.firstName,_that.lastName,_that.email,_that.dateOfBirth,_that.latitude,_that.longitude,_that.locationName);case _:
   return orElse();
 
 }
@@ -177,10 +180,10 @@ return $default(_that.firstName,_that.lastName,_that.email,_that.dateOfBirth);ca
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? firstName,  String? lastName,  String? email,  DateTime? dateOfBirth)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? firstName,  String? lastName,  String? email,  DateTime? dateOfBirth,  double? latitude,  double? longitude,  String? locationName)  $default,) {final _that = this;
 switch (_that) {
 case _UpdateProfileRequest():
-return $default(_that.firstName,_that.lastName,_that.email,_that.dateOfBirth);case _:
+return $default(_that.firstName,_that.lastName,_that.email,_that.dateOfBirth,_that.latitude,_that.longitude,_that.locationName);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +200,10 @@ return $default(_that.firstName,_that.lastName,_that.email,_that.dateOfBirth);ca
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? firstName,  String? lastName,  String? email,  DateTime? dateOfBirth)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? firstName,  String? lastName,  String? email,  DateTime? dateOfBirth,  double? latitude,  double? longitude,  String? locationName)?  $default,) {final _that = this;
 switch (_that) {
 case _UpdateProfileRequest() when $default != null:
-return $default(_that.firstName,_that.lastName,_that.email,_that.dateOfBirth);case _:
+return $default(_that.firstName,_that.lastName,_that.email,_that.dateOfBirth,_that.latitude,_that.longitude,_that.locationName);case _:
   return null;
 
 }
@@ -209,16 +212,19 @@ return $default(_that.firstName,_that.lastName,_that.email,_that.dateOfBirth);ca
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(includeIfNull: false)
 class _UpdateProfileRequest implements UpdateProfileRequest {
-  const _UpdateProfileRequest({this.firstName, this.lastName, this.email, this.dateOfBirth});
+  const _UpdateProfileRequest({this.firstName, this.lastName, this.email, this.dateOfBirth, this.latitude, this.longitude, this.locationName});
   factory _UpdateProfileRequest.fromJson(Map<String, dynamic> json) => _$UpdateProfileRequestFromJson(json);
 
 @override final  String? firstName;
 @override final  String? lastName;
 @override final  String? email;
 @override final  DateTime? dateOfBirth;
+@override final  double? latitude;
+@override final  double? longitude;
+@override final  String? locationName;
 
 /// Create a copy of UpdateProfileRequest
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +239,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdateProfileRequest&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.email, email) || other.email == email)&&(identical(other.dateOfBirth, dateOfBirth) || other.dateOfBirth == dateOfBirth));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdateProfileRequest&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.email, email) || other.email == email)&&(identical(other.dateOfBirth, dateOfBirth) || other.dateOfBirth == dateOfBirth)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.locationName, locationName) || other.locationName == locationName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,firstName,lastName,email,dateOfBirth);
+int get hashCode => Object.hash(runtimeType,firstName,lastName,email,dateOfBirth,latitude,longitude,locationName);
 
 @override
 String toString() {
-  return 'UpdateProfileRequest(firstName: $firstName, lastName: $lastName, email: $email, dateOfBirth: $dateOfBirth)';
+  return 'UpdateProfileRequest(firstName: $firstName, lastName: $lastName, email: $email, dateOfBirth: $dateOfBirth, latitude: $latitude, longitude: $longitude, locationName: $locationName)';
 }
 
 
@@ -253,7 +259,7 @@ abstract mixin class _$UpdateProfileRequestCopyWith<$Res> implements $UpdateProf
   factory _$UpdateProfileRequestCopyWith(_UpdateProfileRequest value, $Res Function(_UpdateProfileRequest) _then) = __$UpdateProfileRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String? firstName, String? lastName, String? email, DateTime? dateOfBirth
+ String? firstName, String? lastName, String? email, DateTime? dateOfBirth, double? latitude, double? longitude, String? locationName
 });
 
 
@@ -270,13 +276,16 @@ class __$UpdateProfileRequestCopyWithImpl<$Res>
 
 /// Create a copy of UpdateProfileRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? firstName = freezed,Object? lastName = freezed,Object? email = freezed,Object? dateOfBirth = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? firstName = freezed,Object? lastName = freezed,Object? email = freezed,Object? dateOfBirth = freezed,Object? latitude = freezed,Object? longitude = freezed,Object? locationName = freezed,}) {
   return _then(_UpdateProfileRequest(
 firstName: freezed == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
 as String?,lastName: freezed == lastName ? _self.lastName : lastName // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String?,dateOfBirth: freezed == dateOfBirth ? _self.dateOfBirth : dateOfBirth // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
+as double?,longitude: freezed == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
+as double?,locationName: freezed == locationName ? _self.locationName : locationName // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
