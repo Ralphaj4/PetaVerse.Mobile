@@ -18,6 +18,8 @@ import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/app_cached_image.dart';
 import '../../../../shared/widgets/app_confirm_dialog.dart';
 import '../../../../shared/widgets/shimmer.dart';
+import '../../../co_ownership/presentation/providers/co_ownership_providers.dart';
+import '../../../profile/presentation/providers/user_provider.dart';
 import '../../domain/entities/pet.dart';
 import '../providers/delete_pet_provider.dart';
 import '../providers/pet_detail_provider.dart';
@@ -82,6 +84,41 @@ class _PetDetailPageState extends ConsumerState<PetDetailPage>
     }
   }
 
+  /// Co-owner leaves the pet (removes their own ownership link). Only reachable
+  /// when the current user is a co-owner (not the primary owner).
+  Future<void> _confirmLeave(BuildContext context) async {
+    final l10n = context.l10n;
+    final myId = ref.read(userProvider).value?.id;
+    if (myId == null) return;
+
+    final confirmed = await AppConfirmDialog.show(
+      context,
+      icon: FluentIcons.sign_out_24_regular,
+      title: l10n.coOwnerLeaveTitle,
+      message: l10n.coOwnerLeaveMessage,
+      confirmLabel: l10n.coOwnerLeaveConfirm,
+      cancelLabel: l10n.cancel,
+      isDestructive: true,
+    );
+    if (!confirmed || !context.mounted) return;
+
+    final result = await ref.read(coOwnershipRepositoryProvider).removeOwner(
+          petId: widget.petId,
+          userId: myId,
+        );
+    if (!context.mounted) return;
+    result.when(
+      success: (_) {
+        ref.invalidate(petListProvider);
+        context.pop();
+        ref.read(petsProvider.notifier).removePet(widget.petId);
+        ref.read(petsProvider.notifier).reconcile();
+        context.showSuccessSnackBar(l10n.coOwnerLeftSuccess);
+      },
+      failure: (f) => context.showErrorSnackBar(f.localizedMessage(l10n)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final detailAsync = ref.watch(petDetailProvider(widget.petId));
@@ -108,6 +145,11 @@ class _PetDetailPageState extends ConsumerState<PetDetailPage>
             isActive: isActive,
             isDeleting: isDeleting,
             onEdit: () => context.push(AppRoutes.editPetPath(widget.petId)),
+            onAddCoOwner: () => context.push(
+              AppRoutes.inviteCoOwnerPath(widget.petId),
+              extra: displayed?.name,
+            ),
+            onLeavePet: () => _confirmLeave(context),
             onDelete: displayed != null
                 ? () => _confirmDelete(context, displayed)
                 : null,
@@ -171,6 +213,8 @@ class _PetHeroHeader extends StatelessWidget {
     required this.isActive,
     required this.isDeleting,
     required this.onEdit,
+    required this.onAddCoOwner,
+    required this.onLeavePet,
     required this.onDelete,
   });
 
@@ -179,6 +223,8 @@ class _PetHeroHeader extends StatelessWidget {
   final bool isActive;
   final bool isDeleting;
   final VoidCallback onEdit;
+  final VoidCallback onAddCoOwner;
+  final VoidCallback onLeavePet;
   final VoidCallback? onDelete;
 
   @override
@@ -435,7 +481,37 @@ class _PetHeroHeader extends StatelessWidget {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              if (onDelete != null)
+              // Inviting co-owners is a primary-owner-only action.
+              if (pet?.isPrimaryOwner ?? false)
+                ListTile(
+                  leading: const Icon(FluentIcons.person_add_24_regular,
+                      color: AppColors.textPrimary),
+                  title: Text(
+                    l10n.inviteCoOwnerTitle,
+                    style: AppTextStyles.bodyMedium,
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    onAddCoOwner();
+                  },
+                ),
+              // A co-owner (non-primary) can leave the co-ownership.
+              if (pet != null && !pet!.isPrimaryOwner)
+                ListTile(
+                  leading: const Icon(FluentIcons.sign_out_24_regular,
+                      color: AppColors.error),
+                  title: Text(
+                    l10n.coOwnerLeavePetAction,
+                    style: AppTextStyles.bodyMedium
+                        .copyWith(color: AppColors.error),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    onLeavePet();
+                  },
+                ),
+              // Deleting the pet is a primary-owner-only action.
+              if ((pet?.isPrimaryOwner ?? false) && onDelete != null)
                 ListTile(
                   leading: const Icon(FluentIcons.delete_24_regular,
                       color: AppColors.error),

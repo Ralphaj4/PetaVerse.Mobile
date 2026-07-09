@@ -18,6 +18,7 @@ import '../../../../shared/widgets/app_confirm_dialog.dart';
 import '../../../../shared/widgets/shimmer.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/providers/session_provider.dart';
+import '../../../co_ownership/presentation/providers/co_ownership_providers.dart';
 import '../../../pets/presentation/providers/pet_list_provider.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
 import '../../../pets/presentation/widgets/pet_card_grid.dart';
@@ -28,16 +29,32 @@ import '../widgets/settings_tile.dart';
 
 /// Profile tab. Data is mocked until the user/pets backend is wired;
 /// the layout and widgets are final.
-class ProfilePage extends ConsumerWidget {
+class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends ConsumerState<ProfilePage> {
+  @override
+  void initState() {
+    super.initState();
+    // Refresh incoming co-owner invites when the tab mounts so the badge is
+    // current (the provider is keepAlive and won't refetch on its own).
+    Future.microtask(() => ref.invalidate(incomingInvitesProvider));
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = context.l10n;
     final user = ref.watch(userProvider).value;
     final userName = user == null
         ? ''
         : '${user.firstName} ${user.lastName}'.trim();
+    // Live count of incoming co-owner invites (same source as onboarding).
+    final pendingInvites =
+        ref.watch(incomingInvitesProvider).value?.length ?? 0;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -89,6 +106,17 @@ class ProfilePage extends ConsumerWidget {
                 label: l10n.personalInformation,
                 onTap: () => context.push(AppRoutes.personalInformation),
               ),
+              // Pet Invitations — shown only when there are pending invites.
+              if (pendingInvites > 0) ...[
+                const SizedBox(height: AppSpacing.sm),
+                SettingsTile(
+                  icon: FluentIcons.people_team_24_regular,
+                  iconColor: AppColors.secondary,
+                  label: l10n.coOwnerInvitationsTitle,
+                  badgeCount: pendingInvites,
+                  onTap: () => context.push(AppRoutes.coOwnerInvitations),
+                ),
+              ],
               const SizedBox(height: AppSpacing.sm),
               SettingsTile(
                 icon: FluentIcons.wallet_24_regular,

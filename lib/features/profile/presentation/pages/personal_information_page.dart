@@ -410,7 +410,6 @@ class _ProfileHeaderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     final fullName = '${user.firstName} ${user.lastName}'.trim();
     final role = user.roles.isNotEmpty ? user.roles.first : null;
 
@@ -634,18 +633,16 @@ class _VerifiedBadge extends StatelessWidget {
   }
 }
 
-/// A pill chip on a white surface — neutral by default, tinted by [accent]
-/// (e.g. green for "Verified").
+/// A neutral pill chip on a white surface (e.g. the role tag).
 class _HeaderChip extends StatelessWidget {
-  const _HeaderChip({required this.label, this.icon, this.accent});
+  const _HeaderChip({required this.label, this.icon});
 
   final String label;
   final IconData? icon;
-  final Color? accent;
 
   @override
   Widget build(BuildContext context) {
-    final fg = accent ?? AppColors.textPrimary;
+    const fg = AppColors.textPrimary;
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,

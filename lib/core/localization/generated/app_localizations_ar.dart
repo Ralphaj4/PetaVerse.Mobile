@@ -993,6 +993,146 @@ class AppLocalizationsAr extends AppLocalizations {
   String get userIdCopied => 'تم نسخ معرّف المستخدم';
 
   @override
+  String get profileTagCopied => 'تم نسخ وسم الملف الشخصي';
+
+  @override
+  String get onboardingCoOwnTitle => 'هل تريد المشاركة في ملكية حيوان أليف؟';
+
+  @override
+  String get onboardingCoOwnBody => 'اطلب دعوة باستخدام وسم ملفك الشخصي:';
+
+  @override
+  String get onboardingViewInvites => 'عرض الدعوات';
+
+  @override
+  String onboardingViewInvitesCount(int count) {
+    return 'عرض الدعوات ($count)';
+  }
+
+  @override
+  String get inviteCoOwnerTitle => 'دعوة مالك مشارك';
+
+  @override
+  String inviteCoOwnerSubtitle(String petName) {
+    return 'ابحث بوسم الملف الشخصي لدعوة شخص للمشاركة في ملكية $petName.';
+  }
+
+  @override
+  String get inviteCoOwnerSearchHint => 'أدخل وسم ملف شخصي (مثال: a1b2c3d4)';
+
+  @override
+  String get inviteCoOwnerSearchIdle =>
+      'أدخل وسم ملف شخصي كاملاً للعثور على شخص';
+
+  @override
+  String get inviteCoOwnerSearchEmpty => 'لم يتم العثور على مستخدم بهذا الوسم.';
+
+  @override
+  String get inviteCoOwnerInvite => 'دعوة';
+
+  @override
+  String get inviteCoOwnerAlreadyInvited => 'تمت الدعوة';
+
+  @override
+  String get inviteCoOwnerSent => 'تم إرسال الدعوة';
+
+  @override
+  String get inviteCoOwnerSentTitle => 'الدعوات المُرسَلة';
+
+  @override
+  String get inviteCoOwnerNoneSent => 'لم تقم بدعوة أي شخص بعد.';
+
+  @override
+  String get inviteCoOwnerCancel => 'إلغاء الدعوة';
+
+  @override
+  String get inviteCoOwnerCancelled => 'تم إلغاء الدعوة';
+
+  @override
+  String get coOwnerCurrentTitle => 'المالكون المشاركون الحاليون';
+
+  @override
+  String get coOwnerPrimaryBadge => 'المالك';
+
+  @override
+  String coOwnerYou(String name) {
+    return '$name (أنت)';
+  }
+
+  @override
+  String get coOwnerRemoveAction => 'إزالة المالك المشارك';
+
+  @override
+  String get coOwnerLeaveAction => 'مغادرة';
+
+  @override
+  String get coOwnerLeavePetAction => 'مغادرة الملكية المشتركة';
+
+  @override
+  String get coOwnerRemoveTitle => 'إزالة المالك المشارك؟';
+
+  @override
+  String coOwnerRemoveMessage(String name) {
+    return 'سيفقد $name إمكانية الوصول إلى هذا الحيوان. لا يمكن التراجع عن هذا الإجراء.';
+  }
+
+  @override
+  String get coOwnerRemoveConfirm => 'إزالة';
+
+  @override
+  String get coOwnerRemovedSuccess => 'تمت إزالة المالك المشارك';
+
+  @override
+  String get coOwnerLeaveTitle => 'مغادرة هذا الحيوان؟';
+
+  @override
+  String get coOwnerLeaveMessage =>
+      'ستفقد إمكانية الوصول إلى هذا الحيوان. يمكن للمالك دعوتك مرة أخرى لاحقًا.';
+
+  @override
+  String get coOwnerLeaveConfirm => 'مغادرة';
+
+  @override
+  String get coOwnerLeftSuccess => 'لقد غادرت الحيوان';
+
+  @override
+  String get coOwnerInvitationsTitle => 'دعوات الحيوانات الأليفة';
+
+  @override
+  String get coOwnerInvitationsEmpty => 'ليس لديك دعوات معلّقة.';
+
+  @override
+  String coOwnerInvitedBy(String name) {
+    return 'دعوة من $name';
+  }
+
+  @override
+  String get coOwnerAccept => 'قبول';
+
+  @override
+  String get coOwnerDecline => 'رفض';
+
+  @override
+  String coOwnerAccepted(String petName) {
+    return 'أصبحت الآن مالكًا مشاركًا لـ $petName';
+  }
+
+  @override
+  String get coOwnerDeclined => 'تم رفض الدعوة';
+
+  @override
+  String get statusPending => 'قيد الانتظار';
+
+  @override
+  String get statusAccepted => 'مقبولة';
+
+  @override
+  String get statusDeclined => 'مرفوضة';
+
+  @override
+  String get statusCancelled => 'ملغاة';
+
+  @override
   String get locationName => 'الموقع';
 
   @override
@@ -1011,7 +1151,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get locationUseMine => 'استخدام موقعي';
 
   @override
-  String get changePhoto => 'Change Photo';
+  String get changePhoto => 'تغيير الصورة';
 
   @override
   String get camera => 'الكاميرا';

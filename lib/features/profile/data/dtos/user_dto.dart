@@ -21,6 +21,7 @@ abstract class UserDto with _$UserDto {
     double? latitude,
     double? longitude,
     String? locationName,
+    @Default(0) int pendingCoOwnerInvitesCount,
     required List<String> roles,
     required DateTime createdAt,
   }) = _UserDto;
@@ -44,6 +45,7 @@ abstract class UserDto with _$UserDto {
         latitude: latitude,
         longitude: longitude,
         locationName: locationName,
+        pendingCoOwnerInvitesCount: pendingCoOwnerInvitesCount,
         roles: roles,
         createdAt: createdAt,
       );

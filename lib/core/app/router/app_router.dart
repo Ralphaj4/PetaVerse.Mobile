@@ -14,6 +14,8 @@ import '../../../features/lost_and_found/presentation/models/pet_alert.dart';
 import '../../../features/lost_and_found/presentation/pages/lost_and_found_detail_page.dart';
 import '../../../features/lost_and_found/presentation/pages/lost_and_found_page.dart';
 import '../../../features/lost_and_found/presentation/pages/report_lost_pet_page.dart';
+import '../../../features/co_ownership/presentation/pages/co_owner_invitations_page.dart';
+import '../../../features/co_ownership/presentation/pages/invite_co_owner_page.dart';
 import '../../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../../features/pets/domain/entities/pet_ref.dart';
 import '../../../features/pets/presentation/pages/create_pet_page.dart';
@@ -60,6 +62,9 @@ abstract final class AppRoutes {
   static const String petDetail = '/pet-detail/:id';
   static String editPetPath(int id) => '/edit-pet/$id';
   static const String editPet = '/edit-pet/:id';
+  static String inviteCoOwnerPath(int id) => '/pet-detail/$id/invite-co-owner';
+  static const String inviteCoOwner = '/pet-detail/:id/invite-co-owner';
+  static const String coOwnerInvitations = '/co-owner-invitations';
   static const String home = '/home';
   static const String community = '/community';
   static const String care = '/care';
@@ -141,10 +146,14 @@ GoRouter appRouter(Ref ref) {
       // follows create-pet (before the gate is committed), so it must be
       // allowed too — match on the prefix since it carries a :id segment.
       final onPetAvatarSetup = location.startsWith('/pet-avatar-setup/');
+      // A pet-less user may also open their co-owner invitations from the
+      // onboarding gate (accepting one is how they get their first pet).
+      final onCoOwnerInvitations = location == AppRoutes.coOwnerInvitations;
       final onPetCreation = onPetOnboarding ||
           location == AppRoutes.createPet ||
           onAvatarSetup ||
-          onPetAvatarSetup;
+          onPetAvatarSetup ||
+          onCoOwnerInvitations;
 
       // The post-auth landing for a logged-in user. The pet gate must resolve
       // BEFORE we ever allow /home — otherwise home flashes for a frame before
@@ -306,7 +315,8 @@ GoRouter appRouter(Ref ref) {
         parentNavigatorKey: _rootNavigatorKey,
         pageBuilder: (context, state) => AppTransitionPage(
               key: state.pageKey,
-              child: const CreatePetPage(),
+              // `extra == true` when pushed from the first-pet onboarding flow.
+              child: CreatePetPage(isOnboarding: state.extra == true),
             ),
       ),
       GoRoute(
@@ -363,6 +373,28 @@ GoRouter appRouter(Ref ref) {
             child: EditPetPage(petId: id),
           );
         },
+      ),
+      GoRoute(
+        path: AppRoutes.inviteCoOwner,
+        name: 'inviteCoOwner',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          final petName = state.extra as String?;
+          return AppTransitionPage(
+            key: state.pageKey,
+            child: InviteCoOwnerPage(petId: id, petName: petName),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.coOwnerInvitations,
+        name: 'coOwnerInvitations',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+              key: state.pageKey,
+              child: const CoOwnerInvitationsPage(),
+            ),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>

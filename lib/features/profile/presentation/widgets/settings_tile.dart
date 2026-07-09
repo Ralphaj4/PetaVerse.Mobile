@@ -15,6 +15,7 @@ class SettingsTile extends StatelessWidget {
     required this.iconColor,
     required this.label,
     this.statusLabel,
+    this.badgeCount,
     this.onTap,
     super.key,
   });
@@ -26,13 +27,22 @@ class SettingsTile extends StatelessWidget {
   /// Optional pill on the trailing side before the chevron (e.g. "On").
   final String? statusLabel;
 
+  /// Optional red count badge before the chevron (e.g. pending invites).
+  /// Shown only when non-null and > 0.
+  final int? badgeCount;
+
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
+    final badge = (badgeCount != null && badgeCount! > 0) ? badgeCount : null;
     return Semantics(
       button: true,
-      label: statusLabel == null ? label : '$label, $statusLabel',
+      label: [
+        label,
+        if (badge != null) '$badge',
+        ?statusLabel,
+      ].join(', '),
       child: Material(
         color: AppColors.surface,
         borderRadius: AppRadius.mdAll,
@@ -61,6 +71,10 @@ class SettingsTile extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                if (badgeCount != null && badgeCount! > 0) ...[
+                  _CountBadge(count: badgeCount!),
+                  const SizedBox(width: AppSpacing.sm),
+                ],
                 if (statusLabel != null) ...[
                   _StatusPill(label: statusLabel!),
                   const SizedBox(width: AppSpacing.sm),
@@ -73,6 +87,35 @@ class SettingsTile extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Small red count badge shown before the chevron.
+class _CountBadge extends StatelessWidget {
+  const _CountBadge({required this.count});
+
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: const BoxConstraints(minWidth: 20),
+      height: 20,
+      padding: const EdgeInsets.symmetric(horizontal: 6),
+      decoration: BoxDecoration(
+        color: AppColors.error,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        '$count',
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 12,
+          fontWeight: FontWeight.w700,
         ),
       ),
     );

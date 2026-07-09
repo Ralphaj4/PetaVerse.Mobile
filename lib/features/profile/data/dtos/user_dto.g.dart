@@ -22,6 +22,8 @@ _UserDto _$UserDtoFromJson(Map<String, dynamic> json) => _UserDto(
   latitude: (json['latitude'] as num?)?.toDouble(),
   longitude: (json['longitude'] as num?)?.toDouble(),
   locationName: json['locationName'] as String?,
+  pendingCoOwnerInvitesCount:
+      (json['pendingCoOwnerInvitesCount'] as num?)?.toInt() ?? 0,
   roles: (json['roles'] as List<dynamic>).map((e) => e as String).toList(),
   createdAt: DateTime.parse(json['createdAt'] as String),
 );
@@ -40,6 +42,7 @@ Map<String, dynamic> _$UserDtoToJson(_UserDto instance) => <String, dynamic>{
   'latitude': instance.latitude,
   'longitude': instance.longitude,
   'locationName': instance.locationName,
+  'pendingCoOwnerInvitesCount': instance.pendingCoOwnerInvitesCount,
   'roles': instance.roles,
   'createdAt': instance.createdAt.toIso8601String(),
 };

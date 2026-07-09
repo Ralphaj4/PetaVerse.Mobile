@@ -409,6 +409,66 @@
   "profileUpdated": "Profile updated",
   "userId": "User ID",
   "userIdCopied": "User ID copied",
+  "profileTagCopied": "Profile tag copied",
+  "onboardingCoOwnTitle": "Want to co-own a pet?",
+  "onboardingCoOwnBody": "Get invited using your profile tag:",
+  "onboardingViewInvites": "View invitations",
+  "onboardingViewInvitesCount": "View invitations ({count})",
+  "@onboardingViewInvitesCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "inviteCoOwnerTitle": "Invite Co-Owner",
+  "inviteCoOwnerSubtitle": "Search by profile tag to invite someone to co-own {petName}.",
+  "@inviteCoOwnerSubtitle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "inviteCoOwnerSearchHint": "Enter a profile tag (e.g. a1b2c3d4)",
+  "inviteCoOwnerSearchIdle": "Enter a full profile tag to find someone",
+  "inviteCoOwnerSearchEmpty": "No user found with that tag.",
+  "inviteCoOwnerInvite": "Invite",
+  "inviteCoOwnerAlreadyInvited": "Invited",
+  "inviteCoOwnerSent": "Invitation sent",
+  "inviteCoOwnerSentTitle": "Invitations sent",
+  "inviteCoOwnerNoneSent": "You haven't invited anyone yet.",
+  "inviteCoOwnerCancel": "Cancel invitation",
+  "inviteCoOwnerCancelled": "Invitation cancelled",
+  "coOwnerCurrentTitle": "Current co-owners",
+  "coOwnerPrimaryBadge": "Owner",
+  "coOwnerYou": "{name} (You)",
+  "@coOwnerYou": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "coOwnerRemoveAction": "Remove co-owner",
+  "coOwnerLeaveAction": "Leave",
+  "coOwnerLeavePetAction": "Leave Co-Ownership",
+  "coOwnerRemoveTitle": "Remove co-owner?",
+  "coOwnerRemoveMessage": "{name} will lose access to this pet. This can't be undone.",
+  "@coOwnerRemoveMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "coOwnerRemoveConfirm": "Remove",
+  "coOwnerRemovedSuccess": "Co-owner removed",
+  "coOwnerLeaveTitle": "Leave this pet?",
+  "coOwnerLeaveMessage": "You'll lose access to this pet. The owner can invite you again later.",
+  "coOwnerLeaveConfirm": "Leave",
+  "coOwnerLeftSuccess": "You've left the pet",
+  "coOwnerInvitationsTitle": "Pet Invitations",
+  "coOwnerInvitationsEmpty": "You have no pending invitations.",
+  "coOwnerInvitedBy": "Invited by {name}",
+  "@coOwnerInvitedBy": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "coOwnerAccept": "Accept",
+  "coOwnerDecline": "Decline",
+  "coOwnerAccepted": "You're now a co-owner of {petName}",
+  "@coOwnerAccepted": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "coOwnerDeclined": "Invitation declined",
+  "statusPending": "Pending",
+  "statusAccepted": "Accepted",
+  "statusDeclined": "Declined",
+  "statusCancelled": "Cancelled",
   "locationName": "Location",
   "locationNameHint": "e.g. Beirut, Lebanon",
   "locationNameTooLong": "Location must be 200 characters or fewer",

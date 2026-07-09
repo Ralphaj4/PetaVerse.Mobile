@@ -1007,6 +1007,150 @@ class AppLocalizationsFr extends AppLocalizations {
   String get userIdCopied => 'Identifiant copié';
 
   @override
+  String get profileTagCopied => 'Étiquette de profil copiée';
+
+  @override
+  String get onboardingCoOwnTitle => 'Vous voulez co-adopter un animal ?';
+
+  @override
+  String get onboardingCoOwnBody =>
+      'Faites-vous inviter avec votre étiquette de profil :';
+
+  @override
+  String get onboardingViewInvites => 'Voir les invitations';
+
+  @override
+  String onboardingViewInvitesCount(int count) {
+    return 'Voir les invitations ($count)';
+  }
+
+  @override
+  String get inviteCoOwnerTitle => 'Inviter un co-propriétaire';
+
+  @override
+  String inviteCoOwnerSubtitle(String petName) {
+    return 'Recherchez par étiquette de profil pour inviter quelqu\'un à co-adopter $petName.';
+  }
+
+  @override
+  String get inviteCoOwnerSearchHint =>
+      'Saisissez une étiquette de profil (ex. a1b2c3d4)';
+
+  @override
+  String get inviteCoOwnerSearchIdle =>
+      'Saisissez une étiquette de profil complète pour trouver quelqu\'un';
+
+  @override
+  String get inviteCoOwnerSearchEmpty =>
+      'Aucun utilisateur trouvé avec cette étiquette.';
+
+  @override
+  String get inviteCoOwnerInvite => 'Inviter';
+
+  @override
+  String get inviteCoOwnerAlreadyInvited => 'Invité';
+
+  @override
+  String get inviteCoOwnerSent => 'Invitation envoyée';
+
+  @override
+  String get inviteCoOwnerSentTitle => 'Invitations envoyées';
+
+  @override
+  String get inviteCoOwnerNoneSent => 'Vous n\'avez encore invité personne.';
+
+  @override
+  String get inviteCoOwnerCancel => 'Annuler l\'invitation';
+
+  @override
+  String get inviteCoOwnerCancelled => 'Invitation annulée';
+
+  @override
+  String get coOwnerCurrentTitle => 'Copropriétaires actuels';
+
+  @override
+  String get coOwnerPrimaryBadge => 'Propriétaire';
+
+  @override
+  String coOwnerYou(String name) {
+    return '$name (Vous)';
+  }
+
+  @override
+  String get coOwnerRemoveAction => 'Retirer le copropriétaire';
+
+  @override
+  String get coOwnerLeaveAction => 'Quitter';
+
+  @override
+  String get coOwnerLeavePetAction => 'Quitter la copropriété';
+
+  @override
+  String get coOwnerRemoveTitle => 'Retirer le copropriétaire ?';
+
+  @override
+  String coOwnerRemoveMessage(String name) {
+    return '$name perdra l\'accès à cet animal. Cette action est irréversible.';
+  }
+
+  @override
+  String get coOwnerRemoveConfirm => 'Retirer';
+
+  @override
+  String get coOwnerRemovedSuccess => 'Copropriétaire retiré';
+
+  @override
+  String get coOwnerLeaveTitle => 'Quitter cet animal ?';
+
+  @override
+  String get coOwnerLeaveMessage =>
+      'Vous perdrez l\'accès à cet animal. Le propriétaire pourra vous réinviter plus tard.';
+
+  @override
+  String get coOwnerLeaveConfirm => 'Quitter';
+
+  @override
+  String get coOwnerLeftSuccess => 'Vous avez quitté l\'animal';
+
+  @override
+  String get coOwnerInvitationsTitle => 'Invitations';
+
+  @override
+  String get coOwnerInvitationsEmpty =>
+      'Vous n\'avez aucune invitation en attente.';
+
+  @override
+  String coOwnerInvitedBy(String name) {
+    return 'Invité par $name';
+  }
+
+  @override
+  String get coOwnerAccept => 'Accepter';
+
+  @override
+  String get coOwnerDecline => 'Refuser';
+
+  @override
+  String coOwnerAccepted(String petName) {
+    return 'Vous êtes maintenant co-propriétaire de $petName';
+  }
+
+  @override
+  String get coOwnerDeclined => 'Invitation refusée';
+
+  @override
+  String get statusPending => 'En attente';
+
+  @override
+  String get statusAccepted => 'Acceptée';
+
+  @override
+  String get statusDeclined => 'Refusée';
+
+  @override
+  String get statusCancelled => 'Annulée';
+
+  @override
   String get locationName => 'Localisation';
 
   @override

@@ -1894,6 +1894,258 @@ abstract class AppLocalizations {
   /// **'User ID copied'**
   String get userIdCopied;
 
+  /// No description provided for @profileTagCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile tag copied'**
+  String get profileTagCopied;
+
+  /// No description provided for @onboardingCoOwnTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Want to co-own a pet?'**
+  String get onboardingCoOwnTitle;
+
+  /// No description provided for @onboardingCoOwnBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Get invited using your profile tag:'**
+  String get onboardingCoOwnBody;
+
+  /// No description provided for @onboardingViewInvites.
+  ///
+  /// In en, this message translates to:
+  /// **'View invitations'**
+  String get onboardingViewInvites;
+
+  /// No description provided for @onboardingViewInvitesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'View invitations ({count})'**
+  String onboardingViewInvitesCount(int count);
+
+  /// No description provided for @inviteCoOwnerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite Co-Owner'**
+  String get inviteCoOwnerTitle;
+
+  /// No description provided for @inviteCoOwnerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by profile tag to invite someone to co-own {petName}.'**
+  String inviteCoOwnerSubtitle(String petName);
+
+  /// No description provided for @inviteCoOwnerSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a profile tag (e.g. a1b2c3d4)'**
+  String get inviteCoOwnerSearchHint;
+
+  /// No description provided for @inviteCoOwnerSearchIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a full profile tag to find someone'**
+  String get inviteCoOwnerSearchIdle;
+
+  /// No description provided for @inviteCoOwnerSearchEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No user found with that tag.'**
+  String get inviteCoOwnerSearchEmpty;
+
+  /// No description provided for @inviteCoOwnerInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite'**
+  String get inviteCoOwnerInvite;
+
+  /// No description provided for @inviteCoOwnerAlreadyInvited.
+  ///
+  /// In en, this message translates to:
+  /// **'Invited'**
+  String get inviteCoOwnerAlreadyInvited;
+
+  /// No description provided for @inviteCoOwnerSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation sent'**
+  String get inviteCoOwnerSent;
+
+  /// No description provided for @inviteCoOwnerSentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitations sent'**
+  String get inviteCoOwnerSentTitle;
+
+  /// No description provided for @inviteCoOwnerNoneSent.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t invited anyone yet.'**
+  String get inviteCoOwnerNoneSent;
+
+  /// No description provided for @inviteCoOwnerCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel invitation'**
+  String get inviteCoOwnerCancel;
+
+  /// No description provided for @inviteCoOwnerCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation cancelled'**
+  String get inviteCoOwnerCancelled;
+
+  /// No description provided for @coOwnerCurrentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Current co-owners'**
+  String get coOwnerCurrentTitle;
+
+  /// No description provided for @coOwnerPrimaryBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get coOwnerPrimaryBadge;
+
+  /// No description provided for @coOwnerYou.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} (You)'**
+  String coOwnerYou(String name);
+
+  /// No description provided for @coOwnerRemoveAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove co-owner'**
+  String get coOwnerRemoveAction;
+
+  /// No description provided for @coOwnerLeaveAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get coOwnerLeaveAction;
+
+  /// No description provided for @coOwnerLeavePetAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Co-Ownership'**
+  String get coOwnerLeavePetAction;
+
+  /// No description provided for @coOwnerRemoveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove co-owner?'**
+  String get coOwnerRemoveTitle;
+
+  /// No description provided for @coOwnerRemoveMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} will lose access to this pet. This can\'t be undone.'**
+  String coOwnerRemoveMessage(String name);
+
+  /// No description provided for @coOwnerRemoveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get coOwnerRemoveConfirm;
+
+  /// No description provided for @coOwnerRemovedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Co-owner removed'**
+  String get coOwnerRemovedSuccess;
+
+  /// No description provided for @coOwnerLeaveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave this pet?'**
+  String get coOwnerLeaveTitle;
+
+  /// No description provided for @coOwnerLeaveMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll lose access to this pet. The owner can invite you again later.'**
+  String get coOwnerLeaveMessage;
+
+  /// No description provided for @coOwnerLeaveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get coOwnerLeaveConfirm;
+
+  /// No description provided for @coOwnerLeftSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve left the pet'**
+  String get coOwnerLeftSuccess;
+
+  /// No description provided for @coOwnerInvitationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pet Invitations'**
+  String get coOwnerInvitationsTitle;
+
+  /// No description provided for @coOwnerInvitationsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no pending invitations.'**
+  String get coOwnerInvitationsEmpty;
+
+  /// No description provided for @coOwnerInvitedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Invited by {name}'**
+  String coOwnerInvitedBy(String name);
+
+  /// No description provided for @coOwnerAccept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get coOwnerAccept;
+
+  /// No description provided for @coOwnerDecline.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get coOwnerDecline;
+
+  /// No description provided for @coOwnerAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re now a co-owner of {petName}'**
+  String coOwnerAccepted(String petName);
+
+  /// No description provided for @coOwnerDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitation declined'**
+  String get coOwnerDeclined;
+
+  /// No description provided for @statusPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get statusPending;
+
+  /// No description provided for @statusAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get statusAccepted;
+
+  /// No description provided for @statusDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Declined'**
+  String get statusDeclined;
+
+  /// No description provided for @statusCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get statusCancelled;
+
   /// No description provided for @locationName.
   ///
   /// In en, this message translates to:

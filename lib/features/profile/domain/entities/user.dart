@@ -15,6 +15,10 @@ class User {
   final double? latitude;
   final double? longitude;
   final String? locationName;
+
+  /// Number of pending co-ownership invitations addressed to this user. Drives
+  /// the "View invitations" affordance (e.g. on the pet-onboarding gate).
+  final int pendingCoOwnerInvitesCount;
   final List<String> roles;
   final DateTime createdAt;
 
@@ -32,6 +36,7 @@ class User {
     this.latitude,
     this.longitude,
     this.locationName,
+    this.pendingCoOwnerInvitesCount = 0,
     required this.roles,
     required this.createdAt,
   });

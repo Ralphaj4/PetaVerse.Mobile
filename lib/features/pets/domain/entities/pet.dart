@@ -18,6 +18,7 @@ class Pet {
     this.sterilizationDate,
     this.createdAt,
     this.avatarUrl,
+    this.isPrimaryOwner = true,
   });
 
   final int id;
@@ -36,6 +37,10 @@ class Pet {
 
   /// Public CDN URL of the pet's avatar, or null when none is set.
   final String? avatarUrl;
+
+  /// True when the requesting user is this pet's primary owner (creator);
+  /// false for a co-owner. Gates primary-only actions (e.g. Invite Co-Owner).
+  final bool isPrimaryOwner;
 
   /// Whole years since [dateOfBirth], floored, never negative.
   int get ageInYears {

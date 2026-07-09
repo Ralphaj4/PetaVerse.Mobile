@@ -14,10 +14,28 @@ abstract final class ApiEndpoints {
   // Users
   static const String usersMe = '/users/me';
   static const String usersProfile = '/users/profile';
+  static const String userLookup = '/users/lookup';
+
+  // Co-ownership invitations (invitee side, under /users/me)
+  static const String myCoOwnerInvites = '/users/me/co-owner-invites';
+  static String acceptCoOwnerInvite(int id) =>
+      '/users/me/co-owner-invites/$id/accept';
+  static String declineCoOwnerInvite(int id) =>
+      '/users/me/co-owner-invites/$id/decline';
 
   // Pets
   static const String pets = '/pets';
   static String pet(String id) => '/pets/$id';
+
+  // Co-ownership invitations (owner side, under a pet)
+  static String petCoOwnerInvites(int petId) => '/pets/$petId/co-owner-invites';
+  static String cancelCoOwnerInvite(int petId, int id) =>
+      '/pets/$petId/co-owner-invites/$id/cancel';
+
+  // Pet owners (primary owner + accepted co-owners)
+  static String petOwners(int petId) => '/pets/$petId/owners';
+  static String petOwner(int petId, String userId) =>
+      '/pets/$petId/owners/$userId';
 
   // Species / breeds (lookup data for the create-pet form)
   static const String species = '/species';

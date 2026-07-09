@@ -28,6 +28,9 @@ abstract class PetDto with _$PetDto {
     DateTime? createdAt,
     // Public CDN URL of the pet's avatar, or null when none is set/confirmed.
     String? avatarUrl,
+    // True when the requesting user is this pet's primary owner (creator);
+    // false for a co-owner. Gates primary-only UI (e.g. Invite Co-Owner).
+    @Default(true) bool isPrimaryOwner,
   }) = _PetDto;
 
   const PetDto._();
@@ -53,6 +56,7 @@ abstract class PetDto with _$PetDto {
         sterilizationDate: sterilizationDate,
         createdAt: createdAt,
         avatarUrl: avatarUrl,
+        isPrimaryOwner: isPrimaryOwner,
       );
 
   /// Slim identity for the routing gate / current-pet pointer, carrying the

@@ -409,6 +409,66 @@
   "profileUpdated": "Profil mis à jour",
   "userId": "Identifiant",
   "userIdCopied": "Identifiant copié",
+  "profileTagCopied": "Étiquette de profil copiée",
+  "onboardingCoOwnTitle": "Vous voulez co-adopter un animal ?",
+  "onboardingCoOwnBody": "Faites-vous inviter avec votre étiquette de profil :",
+  "onboardingViewInvites": "Voir les invitations",
+  "onboardingViewInvitesCount": "Voir les invitations ({count})",
+  "@onboardingViewInvitesCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "inviteCoOwnerTitle": "Inviter un co-propriétaire",
+  "inviteCoOwnerSubtitle": "Recherchez par étiquette de profil pour inviter quelqu'un à co-adopter {petName}.",
+  "@inviteCoOwnerSubtitle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "inviteCoOwnerSearchHint": "Saisissez une étiquette de profil (ex. a1b2c3d4)",
+  "inviteCoOwnerSearchIdle": "Saisissez une étiquette de profil complète pour trouver quelqu'un",
+  "inviteCoOwnerSearchEmpty": "Aucun utilisateur trouvé avec cette étiquette.",
+  "inviteCoOwnerInvite": "Inviter",
+  "inviteCoOwnerAlreadyInvited": "Invité",
+  "inviteCoOwnerSent": "Invitation envoyée",
+  "inviteCoOwnerSentTitle": "Invitations envoyées",
+  "inviteCoOwnerNoneSent": "Vous n'avez encore invité personne.",
+  "inviteCoOwnerCancel": "Annuler l'invitation",
+  "inviteCoOwnerCancelled": "Invitation annulée",
+  "coOwnerCurrentTitle": "Copropriétaires actuels",
+  "coOwnerPrimaryBadge": "Propriétaire",
+  "coOwnerYou": "{name} (Vous)",
+  "@coOwnerYou": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "coOwnerRemoveAction": "Retirer le copropriétaire",
+  "coOwnerLeaveAction": "Quitter",
+  "coOwnerLeavePetAction": "Quitter la copropriété",
+  "coOwnerRemoveTitle": "Retirer le copropriétaire ?",
+  "coOwnerRemoveMessage": "{name} perdra l'accès à cet animal. Cette action est irréversible.",
+  "@coOwnerRemoveMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "coOwnerRemoveConfirm": "Retirer",
+  "coOwnerRemovedSuccess": "Copropriétaire retiré",
+  "coOwnerLeaveTitle": "Quitter cet animal ?",
+  "coOwnerLeaveMessage": "Vous perdrez l'accès à cet animal. Le propriétaire pourra vous réinviter plus tard.",
+  "coOwnerLeaveConfirm": "Quitter",
+  "coOwnerLeftSuccess": "Vous avez quitté l'animal",
+  "coOwnerInvitationsTitle": "Invitations",
+  "coOwnerInvitationsEmpty": "Vous n'avez aucune invitation en attente.",
+  "coOwnerInvitedBy": "Invité par {name}",
+  "@coOwnerInvitedBy": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "coOwnerAccept": "Accepter",
+  "coOwnerDecline": "Refuser",
+  "coOwnerAccepted": "Vous êtes maintenant co-propriétaire de {petName}",
+  "@coOwnerAccepted": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "coOwnerDeclined": "Invitation refusée",
+  "statusPending": "En attente",
+  "statusAccepted": "Acceptée",
+  "statusDeclined": "Refusée",
+  "statusCancelled": "Annulée",
   "locationName": "Localisation",
   "locationNameHint": "ex. Beyrouth, Liban",
   "locationNameTooLong": "La localisation doit contenir 200 caractères ou moins",

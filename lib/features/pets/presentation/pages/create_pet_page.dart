@@ -28,7 +28,12 @@ import '../providers/species_provider.dart';
 /// gender). On success the pet gate is refreshed: from onboarding the router
 /// advances to home; from a pushed entry it pops back.
 class CreatePetPage extends ConsumerStatefulWidget {
-  const CreatePetPage({super.key});
+  const CreatePetPage({this.isOnboarding = false, super.key});
+
+  /// True when reached from the first-pet onboarding flow (vs. "add another
+  /// pet" from the profile). Drives the post-create navigation: onboarding
+  /// continues to the avatar-setup step; otherwise we pop back to the caller.
+  final bool isOnboarding;
 
   @override
   ConsumerState<CreatePetPage> createState() => _CreatePetPageState();
@@ -72,10 +77,10 @@ class _CreatePetPageState extends ConsumerState<CreatePetPage> {
     if (!mounted) return;
 
     if (petRef != null) {
-      // Onboarding flow (first pet, nothing to pop back to): continue to the
-      // pet avatar setup step, mirroring user onboarding. That page commits the
-      // pet to the gate after the photo step, so we DON'T commit here.
-      if (!context.canPop()) {
+      // Onboarding flow (first pet): continue to the pet avatar setup step,
+      // mirroring user onboarding. That page commits the pet to the gate after
+      // the photo step, so we DON'T commit here.
+      if (widget.isOnboarding) {
         context.go(
           AppRoutes.petAvatarSetupPath(petRef.id),
           extra: petRef,
