@@ -1203,4 +1203,183 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get petAvatarUploadHint => 'Télécharger une photo';
+
+  @override
+  String get clear => 'Effacer';
+
+  @override
+  String get providersNearby => 'Prestataires à proximité';
+
+  @override
+  String providerCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count prestataires trouvés',
+      one: '1 prestataire trouvé',
+      zero: 'Aucun prestataire trouvé',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get providerSearchHint =>
+      'Rechercher vétérinaires, toilettage, magasins…';
+
+  @override
+  String get providerSort => 'Trier';
+
+  @override
+  String get providerSortBy => 'Trier par';
+
+  @override
+  String get sortDistance => 'Distance';
+
+  @override
+  String get sortRating => 'Note';
+
+  @override
+  String get sortOpenNow => 'Ouvert';
+
+  @override
+  String get sortMostReviewed => 'Plus d\'avis';
+
+  @override
+  String get providerShowList => 'Afficher la liste';
+
+  @override
+  String get providerShowMap => 'Afficher la carte';
+
+  @override
+  String get providerMyLocation => 'Ma position';
+
+  @override
+  String get providerOpen => 'Ouvert';
+
+  @override
+  String get providerClosed => 'Fermé';
+
+  @override
+  String get providerCall => 'Appeler';
+
+  @override
+  String get providerDirections => 'Itinéraire';
+
+  @override
+  String get providerCallFailed =>
+      'Impossible de lancer l\'appel. Aucun numéro disponible.';
+
+  @override
+  String get providerDirectionsFailed => 'Impossible d\'ouvrir l\'itinéraire.';
+
+  @override
+  String get providerNoResultsTitle => 'Aucun prestataire trouvé';
+
+  @override
+  String get providerNoResultsNearby =>
+      'Nous n\'avons trouvé aucune entreprise pour animaux près de vous pour l\'instant.';
+
+  @override
+  String get providerNoResultsFiltered =>
+      'Aucun prestataire ne correspond à vos filtres. Essayez d\'ajuster votre recherche ou la catégorie.';
+
+  @override
+  String get providerClearFilters => 'Effacer les filtres';
+
+  @override
+  String get providerOfflineTitle => 'Vous êtes hors ligne';
+
+  @override
+  String get providerOfflineMessage =>
+      'Vérifiez votre connexion et réessayez pour voir les prestataires à proximité.';
+
+  @override
+  String get providerErrorTitle => 'Une erreur est survenue';
+
+  @override
+  String get providerErrorMessage =>
+      'Impossible de charger les prestataires pour le moment. Veuillez réessayer.';
+
+  @override
+  String get providerLocationDeniedTitle => 'Localisation désactivée';
+
+  @override
+  String get providerLocationDeniedMessage =>
+      'Activez la localisation pour découvrir les services pour animaux autour de vous.';
+
+  @override
+  String get providerEnableLocation => 'Activer la localisation';
+
+  @override
+  String distanceMeters(int meters) {
+    return '$meters m';
+  }
+
+  @override
+  String distanceKm(String km) {
+    return '$km km';
+  }
+
+  @override
+  String ratingLabel(String rating) {
+    return 'Noté $rating';
+  }
+
+  @override
+  String ratingWithReviews(String rating, int count) {
+    return 'Noté $rating sur $count avis';
+  }
+
+  @override
+  String reviewCountShort(int count) {
+    return '($count)';
+  }
+
+  @override
+  String get badgeVerified => 'Vérifié';
+
+  @override
+  String get badgeEmergency => 'Urgence';
+
+  @override
+  String get badge24_7 => '24/7';
+
+  @override
+  String get badgeMobile => 'Mobile';
+
+  @override
+  String get categoryAll => 'Tous';
+
+  @override
+  String get categoryVeterinary => 'Vétérinaire';
+
+  @override
+  String get categoryGrooming => 'Toilettage';
+
+  @override
+  String get categoryPetShop => 'Animaleries';
+
+  @override
+  String get categoryBoarding => 'Pension';
+
+  @override
+  String get categoryTraining => 'Dressage';
+
+  @override
+  String get categoryPetSitting => 'Garde';
+
+  @override
+  String get categoryWalking => 'Promenade';
+
+  @override
+  String get categoryAdoption => 'Adoption';
+
+  @override
+  String get categoryShelter => 'Refuges';
+
+  @override
+  String get categoryEmergency => 'Urgence';
+
+  @override
+  String get categoryPharmacy => 'Pharmacie';
 }

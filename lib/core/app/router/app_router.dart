@@ -29,6 +29,7 @@ import '../../../features/pets/presentation/pages/select_pet_page.dart';
 import '../../../features/pet_vision/presentation/pages/pet_vision_page.dart';
 import '../../../features/profile/presentation/pages/profile_page.dart';
 import '../../../features/profile/presentation/pages/personal_information_page.dart';
+import '../../../features/service_providers/presentation/pages/service_providers_page.dart';
 import '../../../features/profile/presentation/pages/change_language_page.dart';
 import '../../../features/auth/presentation/providers/session_provider.dart';
 import '../../../features/onboarding/presentation/providers/onboarding_provider.dart';
@@ -432,7 +433,7 @@ GoRouter appRouter(Ref ref) {
                 name: 'care',
                 pageBuilder: (context, state) => AppTransitionPage(
                       key: state.pageKey,
-                      child: const ComingSoonPage(title: 'PawCare'),
+                      child: const ServiceProvidersPage(),
                     ),
               ),
             ],

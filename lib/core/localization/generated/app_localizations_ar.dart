@@ -1183,4 +1183,182 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get petAvatarUploadHint => 'تحميل صورة';
+
+  @override
+  String get clear => 'مسح';
+
+  @override
+  String get providersNearby => 'مزوّدون قريبون';
+
+  @override
+  String providerCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count مزوّدين',
+      one: 'مزوّد واحد',
+      zero: 'لم يتم العثور على مزوّدين',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get providerSearchHint => 'ابحث عن بيطري، تجميل، متاجر…';
+
+  @override
+  String get providerSort => 'ترتيب';
+
+  @override
+  String get providerSortBy => 'ترتيب حسب';
+
+  @override
+  String get sortDistance => 'المسافة';
+
+  @override
+  String get sortRating => 'التقييم';
+
+  @override
+  String get sortOpenNow => 'مفتوح الآن';
+
+  @override
+  String get sortMostReviewed => 'الأكثر تقييماً';
+
+  @override
+  String get providerShowList => 'عرض القائمة';
+
+  @override
+  String get providerShowMap => 'عرض الخريطة';
+
+  @override
+  String get providerMyLocation => 'موقعي';
+
+  @override
+  String get providerOpen => 'مفتوح';
+
+  @override
+  String get providerClosed => 'مغلق';
+
+  @override
+  String get providerCall => 'اتصال';
+
+  @override
+  String get providerDirections => 'الاتجاهات';
+
+  @override
+  String get providerCallFailed =>
+      'تعذّر إجراء الاتصال. لا يوجد رقم هاتف متاح.';
+
+  @override
+  String get providerDirectionsFailed => 'تعذّر فتح الاتجاهات.';
+
+  @override
+  String get providerNoResultsTitle => 'لا يوجد مزوّدون';
+
+  @override
+  String get providerNoResultsNearby =>
+      'لم نعثر على أي أعمال متعلقة بالحيوانات قريبة منك بعد.';
+
+  @override
+  String get providerNoResultsFiltered =>
+      'لا يوجد مزوّدون يطابقون عوامل التصفية. جرّب تعديل بحثك أو الفئة.';
+
+  @override
+  String get providerClearFilters => 'مسح عوامل التصفية';
+
+  @override
+  String get providerOfflineTitle => 'أنت غير متصل';
+
+  @override
+  String get providerOfflineMessage =>
+      'تحقق من اتصالك وحاول مرة أخرى لرؤية المزوّدين القريبين.';
+
+  @override
+  String get providerErrorTitle => 'حدث خطأ ما';
+
+  @override
+  String get providerErrorMessage =>
+      'تعذّر تحميل المزوّدين حالياً. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get providerLocationDeniedTitle => 'الموقع مُعطّل';
+
+  @override
+  String get providerLocationDeniedMessage =>
+      'فعّل الموقع لاكتشاف خدمات الحيوانات من حولك.';
+
+  @override
+  String get providerEnableLocation => 'تفعيل الموقع';
+
+  @override
+  String distanceMeters(int meters) {
+    return '$meters م';
+  }
+
+  @override
+  String distanceKm(String km) {
+    return '$km كم';
+  }
+
+  @override
+  String ratingLabel(String rating) {
+    return 'التقييم $rating';
+  }
+
+  @override
+  String ratingWithReviews(String rating, int count) {
+    return 'التقييم $rating من $count مراجعة';
+  }
+
+  @override
+  String reviewCountShort(int count) {
+    return '($count)';
+  }
+
+  @override
+  String get badgeVerified => 'موثّق';
+
+  @override
+  String get badgeEmergency => 'طوارئ';
+
+  @override
+  String get badge24_7 => '24/7';
+
+  @override
+  String get badgeMobile => 'متنقّل';
+
+  @override
+  String get categoryAll => 'الكل';
+
+  @override
+  String get categoryVeterinary => 'بيطري';
+
+  @override
+  String get categoryGrooming => 'تجميل';
+
+  @override
+  String get categoryPetShop => 'متاجر';
+
+  @override
+  String get categoryBoarding => 'إقامة';
+
+  @override
+  String get categoryTraining => 'تدريب';
+
+  @override
+  String get categoryPetSitting => 'رعاية';
+
+  @override
+  String get categoryWalking => 'تمشية';
+
+  @override
+  String get categoryAdoption => 'تبنّي';
+
+  @override
+  String get categoryShelter => 'ملاجئ';
+
+  @override
+  String get categoryEmergency => 'طوارئ';
+
+  @override
+  String get categoryPharmacy => 'صيدلية';
 }

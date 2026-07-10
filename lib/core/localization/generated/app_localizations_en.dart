@@ -1188,4 +1188,182 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get petAvatarUploadHint => 'Upload a photo';
+
+  @override
+  String get clear => 'Clear';
+
+  @override
+  String get providersNearby => 'Nearby Providers';
+
+  @override
+  String providerCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count providers found',
+      one: '1 provider found',
+      zero: 'No providers found',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get providerSearchHint => 'Search vets, groomers, shops…';
+
+  @override
+  String get providerSort => 'Sort';
+
+  @override
+  String get providerSortBy => 'Sort by';
+
+  @override
+  String get sortDistance => 'Distance';
+
+  @override
+  String get sortRating => 'Rating';
+
+  @override
+  String get sortOpenNow => 'Open now';
+
+  @override
+  String get sortMostReviewed => 'Most reviewed';
+
+  @override
+  String get providerShowList => 'Show list';
+
+  @override
+  String get providerShowMap => 'Show map';
+
+  @override
+  String get providerMyLocation => 'My location';
+
+  @override
+  String get providerOpen => 'Open';
+
+  @override
+  String get providerClosed => 'Closed';
+
+  @override
+  String get providerCall => 'Call';
+
+  @override
+  String get providerDirections => 'Directions';
+
+  @override
+  String get providerCallFailed =>
+      'Couldn\'t start a call. No phone number available.';
+
+  @override
+  String get providerDirectionsFailed => 'Couldn\'t open directions.';
+
+  @override
+  String get providerNoResultsTitle => 'No providers found';
+
+  @override
+  String get providerNoResultsNearby =>
+      'We couldn\'t find any pet businesses near you yet.';
+
+  @override
+  String get providerNoResultsFiltered =>
+      'No providers match your filters. Try adjusting your search or category.';
+
+  @override
+  String get providerClearFilters => 'Clear filters';
+
+  @override
+  String get providerOfflineTitle => 'You\'re offline';
+
+  @override
+  String get providerOfflineMessage =>
+      'Check your connection and try again to see nearby providers.';
+
+  @override
+  String get providerErrorTitle => 'Something went wrong';
+
+  @override
+  String get providerErrorMessage =>
+      'We couldn\'t load providers right now. Please try again.';
+
+  @override
+  String get providerLocationDeniedTitle => 'Location is off';
+
+  @override
+  String get providerLocationDeniedMessage =>
+      'Turn on location to discover pet services around you.';
+
+  @override
+  String get providerEnableLocation => 'Enable location';
+
+  @override
+  String distanceMeters(int meters) {
+    return '$meters m';
+  }
+
+  @override
+  String distanceKm(String km) {
+    return '$km km';
+  }
+
+  @override
+  String ratingLabel(String rating) {
+    return 'Rated $rating';
+  }
+
+  @override
+  String ratingWithReviews(String rating, int count) {
+    return 'Rated $rating from $count reviews';
+  }
+
+  @override
+  String reviewCountShort(int count) {
+    return '($count)';
+  }
+
+  @override
+  String get badgeVerified => 'Verified';
+
+  @override
+  String get badgeEmergency => 'Emergency';
+
+  @override
+  String get badge24_7 => '24/7';
+
+  @override
+  String get badgeMobile => 'Mobile';
+
+  @override
+  String get categoryAll => 'All';
+
+  @override
+  String get categoryVeterinary => 'Veterinary';
+
+  @override
+  String get categoryGrooming => 'Grooming';
+
+  @override
+  String get categoryPetShop => 'Pet Shops';
+
+  @override
+  String get categoryBoarding => 'Boarding';
+
+  @override
+  String get categoryTraining => 'Training';
+
+  @override
+  String get categoryPetSitting => 'Pet Sitting';
+
+  @override
+  String get categoryWalking => 'Walking';
+
+  @override
+  String get categoryAdoption => 'Adoption';
+
+  @override
+  String get categoryShelter => 'Shelters';
+
+  @override
+  String get categoryEmergency => 'Emergency';
+
+  @override
+  String get categoryPharmacy => 'Pharmacy';
 }

@@ -2247,6 +2247,312 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Upload a photo'**
   String get petAvatarUploadHint;
+
+  /// No description provided for @clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clear;
+
+  /// No description provided for @providersNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby Providers'**
+  String get providersNearby;
+
+  /// No description provided for @providerCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No providers found} =1{1 provider found} other{{count} providers found}}'**
+  String providerCount(int count);
+
+  /// No description provided for @providerSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search vets, groomers, shops…'**
+  String get providerSearchHint;
+
+  /// No description provided for @providerSort.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort'**
+  String get providerSort;
+
+  /// No description provided for @providerSortBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get providerSortBy;
+
+  /// No description provided for @sortDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance'**
+  String get sortDistance;
+
+  /// No description provided for @sortRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get sortRating;
+
+  /// No description provided for @sortOpenNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Open now'**
+  String get sortOpenNow;
+
+  /// No description provided for @sortMostReviewed.
+  ///
+  /// In en, this message translates to:
+  /// **'Most reviewed'**
+  String get sortMostReviewed;
+
+  /// No description provided for @providerShowList.
+  ///
+  /// In en, this message translates to:
+  /// **'Show list'**
+  String get providerShowList;
+
+  /// No description provided for @providerShowMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Show map'**
+  String get providerShowMap;
+
+  /// No description provided for @providerMyLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'My location'**
+  String get providerMyLocation;
+
+  /// No description provided for @providerOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get providerOpen;
+
+  /// No description provided for @providerClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get providerClosed;
+
+  /// No description provided for @providerCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get providerCall;
+
+  /// No description provided for @providerDirections.
+  ///
+  /// In en, this message translates to:
+  /// **'Directions'**
+  String get providerDirections;
+
+  /// No description provided for @providerCallFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t start a call. No phone number available.'**
+  String get providerCallFailed;
+
+  /// No description provided for @providerDirectionsFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open directions.'**
+  String get providerDirectionsFailed;
+
+  /// No description provided for @providerNoResultsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No providers found'**
+  String get providerNoResultsTitle;
+
+  /// No description provided for @providerNoResultsNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t find any pet businesses near you yet.'**
+  String get providerNoResultsNearby;
+
+  /// No description provided for @providerNoResultsFiltered.
+  ///
+  /// In en, this message translates to:
+  /// **'No providers match your filters. Try adjusting your search or category.'**
+  String get providerNoResultsFiltered;
+
+  /// No description provided for @providerClearFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get providerClearFilters;
+
+  /// No description provided for @providerOfflineTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re offline'**
+  String get providerOfflineTitle;
+
+  /// No description provided for @providerOfflineMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your connection and try again to see nearby providers.'**
+  String get providerOfflineMessage;
+
+  /// No description provided for @providerErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get providerErrorTitle;
+
+  /// No description provided for @providerErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load providers right now. Please try again.'**
+  String get providerErrorMessage;
+
+  /// No description provided for @providerLocationDeniedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location is off'**
+  String get providerLocationDeniedTitle;
+
+  /// No description provided for @providerLocationDeniedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on location to discover pet services around you.'**
+  String get providerLocationDeniedMessage;
+
+  /// No description provided for @providerEnableLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable location'**
+  String get providerEnableLocation;
+
+  /// No description provided for @distanceMeters.
+  ///
+  /// In en, this message translates to:
+  /// **'{meters} m'**
+  String distanceMeters(int meters);
+
+  /// No description provided for @distanceKm.
+  ///
+  /// In en, this message translates to:
+  /// **'{km} km'**
+  String distanceKm(String km);
+
+  /// No description provided for @ratingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rated {rating}'**
+  String ratingLabel(String rating);
+
+  /// No description provided for @ratingWithReviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Rated {rating} from {count} reviews'**
+  String ratingWithReviews(String rating, int count);
+
+  /// No description provided for @reviewCountShort.
+  ///
+  /// In en, this message translates to:
+  /// **'({count})'**
+  String reviewCountShort(int count);
+
+  /// No description provided for @badgeVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get badgeVerified;
+
+  /// No description provided for @badgeEmergency.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency'**
+  String get badgeEmergency;
+
+  /// No description provided for @badge24_7.
+  ///
+  /// In en, this message translates to:
+  /// **'24/7'**
+  String get badge24_7;
+
+  /// No description provided for @badgeMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile'**
+  String get badgeMobile;
+
+  /// No description provided for @categoryAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get categoryAll;
+
+  /// No description provided for @categoryVeterinary.
+  ///
+  /// In en, this message translates to:
+  /// **'Veterinary'**
+  String get categoryVeterinary;
+
+  /// No description provided for @categoryGrooming.
+  ///
+  /// In en, this message translates to:
+  /// **'Grooming'**
+  String get categoryGrooming;
+
+  /// No description provided for @categoryPetShop.
+  ///
+  /// In en, this message translates to:
+  /// **'Pet Shops'**
+  String get categoryPetShop;
+
+  /// No description provided for @categoryBoarding.
+  ///
+  /// In en, this message translates to:
+  /// **'Boarding'**
+  String get categoryBoarding;
+
+  /// No description provided for @categoryTraining.
+  ///
+  /// In en, this message translates to:
+  /// **'Training'**
+  String get categoryTraining;
+
+  /// No description provided for @categoryPetSitting.
+  ///
+  /// In en, this message translates to:
+  /// **'Pet Sitting'**
+  String get categoryPetSitting;
+
+  /// No description provided for @categoryWalking.
+  ///
+  /// In en, this message translates to:
+  /// **'Walking'**
+  String get categoryWalking;
+
+  /// No description provided for @categoryAdoption.
+  ///
+  /// In en, this message translates to:
+  /// **'Adoption'**
+  String get categoryAdoption;
+
+  /// No description provided for @categoryShelter.
+  ///
+  /// In en, this message translates to:
+  /// **'Shelters'**
+  String get categoryShelter;
+
+  /// No description provided for @categoryEmergency.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency'**
+  String get categoryEmergency;
+
+  /// No description provided for @categoryPharmacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Pharmacy'**
+  String get categoryPharmacy;
 }
 
 class _AppLocalizationsDelegate

@@ -485,5 +485,78 @@
   "petAvatarSetupTitle": "Add a Photo",
   "petAvatarSetupSubtitle": "Give your pet a face on their profile.",
   "petAvatarSetupOptional": "Optional — you can change it anytime.",
-  "petAvatarUploadHint": "Upload a photo"
+  "petAvatarUploadHint": "Upload a photo",
+
+  "clear": "Clear",
+  "providersNearby": "Nearby Providers",
+  "providerCount": "{count, plural, =0{No providers found} =1{1 provider found} other{{count} providers found}}",
+  "@providerCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "providerSearchHint": "Search vets, groomers, shops…",
+  "providerSort": "Sort",
+  "providerSortBy": "Sort by",
+  "sortDistance": "Distance",
+  "sortRating": "Rating",
+  "sortOpenNow": "Open now",
+  "sortMostReviewed": "Most reviewed",
+  "providerShowList": "Show list",
+  "providerShowMap": "Show map",
+  "providerMyLocation": "My location",
+  "providerOpen": "Open",
+  "providerClosed": "Closed",
+  "providerCall": "Call",
+  "providerDirections": "Directions",
+  "providerCallFailed": "Couldn't start a call. No phone number available.",
+  "providerDirectionsFailed": "Couldn't open directions.",
+  "providerNoResultsTitle": "No providers found",
+  "providerNoResultsNearby": "We couldn't find any pet businesses near you yet.",
+  "providerNoResultsFiltered": "No providers match your filters. Try adjusting your search or category.",
+  "providerClearFilters": "Clear filters",
+  "providerOfflineTitle": "You're offline",
+  "providerOfflineMessage": "Check your connection and try again to see nearby providers.",
+  "providerErrorTitle": "Something went wrong",
+  "providerErrorMessage": "We couldn't load providers right now. Please try again.",
+  "providerLocationDeniedTitle": "Location is off",
+  "providerLocationDeniedMessage": "Turn on location to discover pet services around you.",
+  "providerEnableLocation": "Enable location",
+  "distanceMeters": "{meters} m",
+  "@distanceMeters": {
+    "placeholders": { "meters": { "type": "int" } }
+  },
+  "distanceKm": "{km} km",
+  "@distanceKm": {
+    "placeholders": { "km": { "type": "String" } }
+  },
+  "ratingLabel": "Rated {rating}",
+  "@ratingLabel": {
+    "placeholders": { "rating": { "type": "String" } }
+  },
+  "ratingWithReviews": "Rated {rating} from {count} reviews",
+  "@ratingWithReviews": {
+    "placeholders": {
+      "rating": { "type": "String" },
+      "count": { "type": "int" }
+    }
+  },
+  "reviewCountShort": "({count})",
+  "@reviewCountShort": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "badgeVerified": "Verified",
+  "badgeEmergency": "Emergency",
+  "badge24_7": "24/7",
+  "badgeMobile": "Mobile",
+  "categoryAll": "All",
+  "categoryVeterinary": "Veterinary",
+  "categoryGrooming": "Grooming",
+  "categoryPetShop": "Pet Shops",
+  "categoryBoarding": "Boarding",
+  "categoryTraining": "Training",
+  "categoryPetSitting": "Pet Sitting",
+  "categoryWalking": "Walking",
+  "categoryAdoption": "Adoption",
+  "categoryShelter": "Shelters",
+  "categoryEmergency": "Emergency",
+  "categoryPharmacy": "Pharmacy"
 }
