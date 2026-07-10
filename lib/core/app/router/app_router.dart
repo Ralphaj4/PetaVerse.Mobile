@@ -16,6 +16,7 @@ import '../../../features/lost_and_found/presentation/pages/lost_and_found_page.
 import '../../../features/lost_and_found/presentation/pages/report_lost_pet_page.dart';
 import '../../../features/co_ownership/presentation/pages/co_owner_invitations_page.dart';
 import '../../../features/co_ownership/presentation/pages/invite_co_owner_page.dart';
+import '../../../features/community/presentation/pages/pawhub_page.dart';
 import '../../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../../features/pets/domain/entities/pet_ref.dart';
 import '../../../features/pets/presentation/pages/create_pet_page.dart';
@@ -419,7 +420,7 @@ GoRouter appRouter(Ref ref) {
                 name: 'community',
                 pageBuilder: (context, state) => AppTransitionPage(
                       key: state.pageKey,
-                      child: const ComingSoonPage(title: 'PawHub'),
+                      child: const PawHubPage(),
                     ),
               ),
             ],

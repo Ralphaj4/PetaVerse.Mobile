@@ -4,7 +4,6 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/app/app_shell.dart';
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/localization/generated/app_localizations.dart';
@@ -60,11 +59,11 @@ class HomePage extends ConsumerWidget {
                     top: Radius.circular(AppRadius.lg + 4),
                   ),
                 ),
-                padding: EdgeInsets.fromLTRB(
+                padding: const EdgeInsets.fromLTRB(
                   AppSpacing.lg,
                   AppSpacing.xl,
                   AppSpacing.lg,
-                  AppSpacing.xl + floatingNavBarClearance(context) / 1.5,
+                  AppSpacing.xl,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
