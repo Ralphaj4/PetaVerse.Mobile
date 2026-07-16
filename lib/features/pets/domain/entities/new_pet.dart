@@ -12,7 +12,8 @@ class NewPet {
     this.breedId,
     required this.dateOfBirth,
     required this.gender,
-    this.pelage,
+    this.sizeId,
+    this.coatColorId,
     this.microchipNumber,
     this.microchipLocation,
     this.sterilizationStatus,
@@ -25,8 +26,11 @@ class NewPet {
   final DateTime dateOfBirth;
   final String gender;
 
-  /// Coat / fur color description.
-  final String? pelage;
+  /// FK into the PetSizes lookup, or null to leave the size unspecified.
+  final int? sizeId;
+
+  /// FK into the CoatColors lookup, or null to leave the coat color unspecified.
+  final int? coatColorId;
 
   /// ISO microchip number.
   final String? microchipNumber;
@@ -34,7 +38,8 @@ class NewPet {
   /// Body location where the chip was implanted.
   final String? microchipLocation;
 
-  /// One of: Intact, Neutered, Spayed, Unknown.
+  /// One of: NotSterilized, Sterilized, Unknown (exact case-insensitive names;
+  /// the backend 400s on anything else). Null = not provided.
   final String? sterilizationStatus;
 
   /// Date of the sterilization procedure, if applicable.

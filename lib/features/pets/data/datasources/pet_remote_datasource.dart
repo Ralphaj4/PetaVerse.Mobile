@@ -2,8 +2,10 @@ import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_endpoints.dart';
 import '../../domain/entities/new_pet.dart';
 import '../dtos/breed_dto.dart';
+import '../dtos/coat_color_dto.dart';
 import '../dtos/create_pet_response_dto.dart';
 import '../dtos/pet_dto.dart';
+import '../dtos/pet_size_dto.dart';
 import '../dtos/species_dto.dart';
 
 /// Remote pet data source. Talks to the API exclusively through
@@ -34,7 +36,8 @@ class PetRemoteDataSource {
         'breedId': pet.breedId,
         'dateOfBirth': pet.dateOfBirth.toUtc().toIso8601String(),
         'gender': pet.gender,
-        if (pet.pelage != null) 'pelage': pet.pelage,
+        if (pet.sizeId != null) 'sizeId': pet.sizeId,
+        if (pet.coatColorId != null) 'coatColorId': pet.coatColorId,
         if (pet.microchipNumber != null) 'microchipNumber': pet.microchipNumber,
         if (pet.microchipLocation != null) 'microchipLocation': pet.microchipLocation,
         if (pet.sterilizationStatus != null) 'sterilizationStatus': pet.sterilizationStatus,
@@ -63,7 +66,10 @@ class PetRemoteDataSource {
         'breedId': pet.breedId,
         'dateOfBirth': pet.dateOfBirth.toUtc().toIso8601String(),
         'gender': pet.gender,
-        if (pet.pelage != null) 'pelage': pet.pelage,
+        // Always sent (even as null) so the user can clear a previously-set
+        // size / coat color back to "not specified" on a PUT.
+        'sizeId': pet.sizeId,
+        'coatColorId': pet.coatColorId,
         if (pet.microchipNumber != null) 'microchipNumber': pet.microchipNumber,
         if (pet.microchipLocation != null)
           'microchipLocation': pet.microchipLocation,
@@ -97,6 +103,22 @@ class PetRemoteDataSource {
     );
     return data
         .map((e) => BreedDto.fromJson(e as Map<String, dynamic>))
+        .toList(growable: false);
+  }
+
+  /// GET /api/pet-attributes/sizes → array of `{id, name}`.
+  Future<List<PetSizeDto>> getPetSizes() async {
+    final data = await _client.get<List<dynamic>>(ApiEndpoints.petSizes);
+    return data
+        .map((e) => PetSizeDto.fromJson(e as Map<String, dynamic>))
+        .toList(growable: false);
+  }
+
+  /// GET /api/pet-attributes/coat-colors → array of `{id, name}`.
+  Future<List<CoatColorDto>> getCoatColors() async {
+    final data = await _client.get<List<dynamic>>(ApiEndpoints.coatColors);
+    return data
+        .map((e) => CoatColorDto.fromJson(e as Map<String, dynamic>))
         .toList(growable: false);
   }
 }

@@ -177,6 +177,14 @@ class _QuickActionsRow extends StatelessWidget {
         ),
         Expanded(
           child: QuickActionButton(
+            icon: FluentIcons.heart_24_regular,
+            color: AppColors.primary,
+            label: l10n.adoptionTitle,
+            onTap: () => context.push(AppRoutes.adoptionBoard),
+          ),
+        ),
+        Expanded(
+          child: QuickActionButton(
             icon: FluentIcons.pill_24_regular,
             color: AppColors.accentCoral,
             label: l10n.medicationsReminders,

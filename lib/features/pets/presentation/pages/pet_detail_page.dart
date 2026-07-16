@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
+import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -655,6 +656,25 @@ class _OverviewTab extends ConsumerWidget {
   }
 }
 
+/// Localizes the sterilization wire token. Legacy records may still carry the
+/// old four-value vocabulary (Intact / Neutered / Spayed), so those are folded
+/// into the current labels; any unrecognized value falls back to itself.
+String _sterilizationLabel(AppLocalizations l10n, String status) {
+  switch (status) {
+    case 'Sterilized':
+    case 'Neutered':
+    case 'Spayed':
+      return l10n.sterilizationStatusSterilized;
+    case 'NotSterilized':
+    case 'Intact':
+      return l10n.sterilizationStatusNotSterilized;
+    case 'Unknown':
+      return l10n.sterilizationStatusUnknown;
+    default:
+      return status;
+  }
+}
+
 // ── Info section (rows) ───────────────────────────────────────────────────────
 
 class _InfoSection extends StatelessWidget {
@@ -709,11 +729,17 @@ class _InfoSection extends StatelessWidget {
               ),
             ),
           ),
-          if (pet.pelage != null)
+          if (pet.sizeName != null)
+            _InfoRow(
+              icon: FluentIcons.ruler_24_regular,
+              label: l10n.petDetailSize,
+              value: pet.sizeName!,
+            ),
+          if (pet.coatColorName != null)
             _InfoRow(
               icon: FluentIcons.color_24_regular,
-              label: l10n.petDetailPelage,
-              value: pet.pelage!,
+              label: l10n.petDetailCoatColor,
+              value: pet.coatColorName!,
             ),
           if (pet.microchipNumber != null)
             _InfoRow(
@@ -745,7 +771,7 @@ class _InfoSection extends StatelessWidget {
             _InfoRow(
               icon: FluentIcons.heart_pulse_24_regular,
               label: l10n.petDetailSterilization,
-              value: pet.sterilizationStatus!,
+              value: _sterilizationLabel(l10n, pet.sterilizationStatus!),
             ),
           if (pet.createdAt != null)
             _InfoRow(

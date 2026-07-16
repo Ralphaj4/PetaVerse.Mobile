@@ -3,6 +3,7 @@
   "appTitle": "PetaVerse",
   "navHome": "Home",
   "navCommunity": "PawHub",
+  "communityTabFeed": "Feed",
   "navCare": "PawCare",
   "navProfile": "Profile",
   "aiAssistant": "AI Assistant",
@@ -333,7 +334,8 @@
   "petDetailGender": "Gender",
   "petDetailDateOfBirth": "Date of Birth",
   "petDetailBreed": "Breed",
-  "petDetailPelage": "Coat",
+  "petDetailSize": "Size",
+  "petDetailCoatColor": "Coat Color",
   "petDetailMicrochip": "Microchip",
   "petDetailMicrochipLocation": "Location",
   "petDetailSterilization": "Sterilization",
@@ -350,13 +352,14 @@
   },
   "createPetAdditionalInfo": "Additional Information",
   "createPetAdditionalInfoSubtitle": "Optional — you can fill these in later",
-  "createPetPelage": "Coat / Fur Color",
+  "createPetSize": "Size",
+  "createPetCoatColor": "Coat / Fur Color",
+  "createPetNotSpecified": "Not specified",
   "createPetMicrochipNumber": "Microchip Number",
   "createPetMicrochipLocation": "Microchip Location",
   "createPetSterilizationStatus": "Sterilization Status",
-  "sterilizationStatusIntact": "Intact",
-  "sterilizationStatusNeutered": "Neutered",
-  "sterilizationStatusSpayed": "Spayed",
+  "sterilizationStatusNotSterilized": "Not Sterilized",
+  "sterilizationStatusSterilized": "Sterilized",
   "sterilizationStatusUnknown": "Unknown",
   "createPetSterilizationDate": "Sterilization Date",
   "editPetTitle": "Edit Pet",
@@ -558,5 +561,208 @@
   "categoryAdoption": "Adoption",
   "categoryShelter": "Shelters",
   "categoryEmergency": "Emergency",
-  "categoryPharmacy": "Pharmacy"
+  "categoryPharmacy": "Pharmacy",
+
+  "adoptionTitle": "Adoption",
+  "adoptionSubtitle": "{count, plural, =0{No pets available} =1{1 pet looking for a home} other{{count} pets looking for a home}}",
+  "@adoptionSubtitle": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "adoptionListAPet": "List a pet",
+  "adoptionSearchHint": "Search by name, breed, or area",
+  "adoptionFilterAll": "All",
+  "adoptionSpeciesDog": "Dog",
+  "adoptionSpeciesCat": "Cat",
+  "adoptionSpeciesBird": "Bird",
+  "adoptionSpeciesRabbit": "Rabbit",
+  "adoptionSpeciesOther": "Other",
+  "adoptionSexMale": "Male",
+  "adoptionSexFemale": "Female",
+  "adoptionAgeMonths": "{months, plural, =0{Newborn} =1{1 month} other{{months} months}}",
+  "@adoptionAgeMonths": {
+    "placeholders": { "months": { "type": "int" } }
+  },
+  "adoptionAgeYears": "{years, plural, =1{1 year} other{{years} years}}",
+  "@adoptionAgeYears": {
+    "placeholders": { "years": { "type": "int" } }
+  },
+  "adoptionStatusAvailable": "Available",
+  "adoptionStatusPending": "Pending",
+  "adoptionStatusAdopted": "Adopted",
+  "adoptionStatusUnavailable": "Unavailable",
+  "adoptionPostedDaysAgo": "{days, plural, =1{1 day ago} other{{days} days ago}}",
+  "@adoptionPostedDaysAgo": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+  "adoptionPostedHoursAgo": "{hours, plural, =0{Just now} =1{1 hour ago} other{{hours} hours ago}}",
+  "@adoptionPostedHoursAgo": {
+    "placeholders": { "hours": { "type": "int" } }
+  },
+  "adoptionTraitVaccinated": "Vaccinated",
+  "adoptionTraitNeutered": "Neutered",
+  "adoptionTraitGoodWithKids": "Good with kids",
+  "adoptionApply": "Apply to adopt",
+  "adoptionApplied": "Applied",
+  "adoptionManageCount": "{count, plural, =0{Manage listing} =1{Manage · 1 applicant} other{Manage · {count} applicants}}",
+  "@adoptionManageCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "adoptionManageTitle": "Applicants",
+  "adoptionManageSubtitle": "{count, plural, =0{No applicants yet} =1{1 person wants to adopt {petName}} other{{count} people want to adopt {petName}}}",
+  "@adoptionManageSubtitle": {
+    "placeholders": {
+      "count": { "type": "int" },
+      "petName": { "type": "String" }
+    }
+  },
+  "adoptionManageEmptyTitle": "No applicants yet",
+  "adoptionManageEmptyMessage": "When someone applies to adopt {petName}, they'll show up here.",
+  "@adoptionManageEmptyMessage": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "adoptionApplicantApplied": "Applied {ago}",
+  "@adoptionApplicantApplied": {
+    "placeholders": { "ago": { "type": "String" } }
+  },
+  "adoptionApprove": "Approve",
+  "adoptionReject": "Reject",
+  "adoptionRequestStatusPending": "Pending review",
+  "adoptionRequestStatusApproved": "Approved",
+  "adoptionRequestStatusRejected": "Rejected",
+  "adoptionRequestStatusCancelled": "Withdrawn",
+  "adoptionRequestStatusCompleted": "Adopted",
+  "adoptionRequestStatusExpired": "Expired",
+  "adoptionAwaitingAdopter": "Waiting for them to accept",
+  "adoptionOnePickHint": "You've already picked an applicant. Reject them to choose someone else.",
+  "adoptionReadyToComplete": "Ready to hand over",
+  "adoptionCompleteTransfer": "Complete transfer",
+  "adoptionApproveConfirmTitle": "Approve {name}?",
+  "@adoptionApproveConfirmTitle": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "adoptionApproveConfirmMessage": "They'll be asked to confirm they want {petName}. Ownership only transfers once you both confirm.",
+  "@adoptionApproveConfirmMessage": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "adoptionRejectConfirmTitle": "Reject {name}?",
+  "@adoptionRejectConfirmTitle": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "adoptionRejectConfirmMessage": "They'll be notified their application wasn't successful. This can't be undone.",
+  "adoptionCompleteConfirmTitle": "Give {petName} to {name}?",
+  "@adoptionCompleteConfirmTitle": {
+    "placeholders": {
+      "petName": { "type": "String" },
+      "name": { "type": "String" }
+    }
+  },
+  "adoptionCompleteConfirmMessage": "This transfers ownership permanently and can't be undone. {petName} and all their records will move to {name}.",
+  "@adoptionCompleteConfirmMessage": {
+    "placeholders": {
+      "petName": { "type": "String" },
+      "name": { "type": "String" }
+    }
+  },
+  "adoptionApproveSuccess": "{name} has been approved.",
+  "@adoptionApproveSuccess": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "adoptionRejectSuccess": "Application rejected.",
+  "adoptionDelete": "Delete listing",
+  "adoptionDeleteConfirmTitle": "Delete this listing?",
+  "adoptionDeleteConfirmMessage": "{petName}'s listing will be permanently removed. This can't be undone.",
+  "@adoptionDeleteConfirmMessage": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "adoptionDeleteConfirmMessageWithApplicants": "{petName}'s listing and {count, plural, one{# application} other{# applications}} will be permanently removed. This can't be undone.",
+  "@adoptionDeleteConfirmMessageWithApplicants": {
+    "placeholders": {
+      "petName": { "type": "String" },
+      "count": { "type": "int" }
+    }
+  },
+  "adoptionDeleteSuccess": "Listing deleted.",
+  "adoptionRehomeSuccessTitle": "{petName} has a new home!",
+  "@adoptionRehomeSuccessTitle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "adoptionRehomeSuccessMessage": "{petName} is now with {name}, along with all their records. Thank you for giving them a loving new home.",
+  "@adoptionRehomeSuccessMessage": {
+    "placeholders": {
+      "petName": { "type": "String" },
+      "name": { "type": "String" }
+    }
+  },
+  "adoptionRehomeSuccessDone": "Done",
+  "adoptionEmptyTitle": "No pets up for adoption",
+  "adoptionEmptyNearby": "There are no listings near you right now. Check back soon.",
+  "adoptionEmptyFiltered": "No listings match your filters. Try widening your search.",
+  "adoptionClearFilters": "Clear filters",
+  "adoptionAboutTitle": "About",
+  "adoptionPostedBy": "Posted by",
+  "adoptionFactSpecies": "Species",
+  "adoptionFactSex": "Sex",
+  "adoptionFactAge": "Age",
+  "adoptionFactSize": "Size",
+  "adoptionApplyConfirmTitle": "Apply to adopt {petName}?",
+  "@adoptionApplyConfirmTitle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "adoptionApplyConfirmMessage": "The current owner will review your request. If they approve, both of you confirm before ownership transfers.",
+  "adoptionApplySuccess": "Your application was sent to the owner.",
+  "adoptionTransferNote": "You'll both confirm before ownership transfers — nothing moves without your approval.",
+  "adoptionListTitle": "List a Pet",
+  "adoptionListSubtitle": "Find your pet a loving new home.",
+  "adoptionListWhichPet": "Which pet?",
+  "adoptionListSelectPet": "Select a pet",
+  "adoptionListSelectPetHint": "Choose one of your pets",
+  "adoptionListNoPets": "You don't have any pets to list yet.",
+  "adoptionListDescriptionHint": "Tell adopters about their personality, needs, and why you're rehoming them.",
+  "adoptionListTraits": "Traits",
+  "adoptionListLocation": "Pickup location",
+  "adoptionListTransferNote": "When someone applies, you review and approve them. Ownership transfers only after you both confirm — records travel with your pet.",
+  "adoptionListSubmit": "Post listing",
+  "adoptionListingCreated": "Your pet is now listed for adoption.",
+  "adoptionModeMyPet": "My pet",
+  "adoptionModeShelter": "Shelter / stray",
+  "adoptionShelterAnimalDetails": "Animal details",
+  "adoptionShelterName": "Name",
+  "adoptionShelterTransferNote": "No pet record needed. When someone adopts, a new pet profile is created for them with this photo and these details.",
+  "adoptionShelterBadge": "Shelter",
+  "adoptionMyTitle": "My Adoptions",
+  "adoptionMyTooltip": "My adoptions",
+  "adoptionMyRowHint": "Your listings & applications",
+  "adoptionMyTabListings": "My listings",
+  "adoptionMyTabApplications": "My applications",
+  "adoptionMyListingsEmptyTitle": "No listings yet",
+  "adoptionMyListingsEmptyMessage": "Pets you put up for adoption will appear here.",
+  "adoptionMyApplicationsEmptyTitle": "No applications yet",
+  "adoptionMyApplicationsEmptyMessage": "Pets you apply to adopt will appear here.",
+  "adoptionApplicationFrom": "From {name}",
+  "@adoptionApplicationFrom": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "adoptionAcceptCta": "I'll take them",
+  "adoptionAcceptHint": "You're approved! Confirm you want to adopt, then the owner completes the handover.",
+  "adoptionAwaitingHandover": "Waiting for the owner to hand over",
+  "adoptionAwaitingReview": "Waiting for the owner to review your application",
+  "adoptionCancelApplication": "Withdraw application",
+  "adoptionCancelConfirmTitle": "Withdraw your application?",
+  "adoptionCancelConfirmMessage": "You can apply again later while the listing is open.",
+  "adoptionAcceptSuccess": "You're confirmed. The owner will complete the handover.",
+  "adoptionCancelSuccess": "Your application was withdrawn.",
+  "adoptionWelcomeTitle": "{petName} is now yours!",
+  "@adoptionWelcomeTitle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "adoptionWelcomeMessage": "Welcome {petName} to the family. Their full profile and records are already in your account.",
+  "@adoptionWelcomeMessage": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "adoptionWelcomeViewPet": "View {petName}'s profile",
+  "@adoptionWelcomeViewPet": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "adoptionWelcomeDone": "Done",
+  "onboardingAdoptPrompt": "Looking to adopt a pet?"
 }

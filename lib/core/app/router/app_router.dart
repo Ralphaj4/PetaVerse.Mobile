@@ -14,9 +14,17 @@ import '../../../features/lost_and_found/presentation/models/pet_alert.dart';
 import '../../../features/lost_and_found/presentation/pages/lost_and_found_detail_page.dart';
 import '../../../features/lost_and_found/presentation/pages/lost_and_found_page.dart';
 import '../../../features/lost_and_found/presentation/pages/report_lost_pet_page.dart';
+import '../../../features/adoption/domain/entities/adoption_listing.dart';
+import '../../../features/adoption/presentation/pages/adoption_board_page.dart';
+import '../../../features/adoption/presentation/pages/adoption_listing_detail_page.dart';
+import '../../../features/adoption/presentation/pages/adoption_rehome_success_page.dart';
+import '../../../features/adoption/presentation/pages/adoption_welcome_page.dart';
+import '../../../features/adoption/presentation/pages/list_pet_for_adoption_page.dart';
+import '../../../features/adoption/presentation/pages/manage_applicants_page.dart';
+import '../../../features/adoption/presentation/pages/my_adoptions_page.dart';
 import '../../../features/co_ownership/presentation/pages/co_owner_invitations_page.dart';
 import '../../../features/co_ownership/presentation/pages/invite_co_owner_page.dart';
-import '../../../features/community/presentation/pages/pawhub_page.dart';
+import '../../../features/community/presentation/pages/community_hub_page.dart';
 import '../../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../../features/pets/domain/entities/pet_ref.dart';
 import '../../../features/pets/presentation/pages/create_pet_page.dart';
@@ -78,6 +86,16 @@ abstract final class AppRoutes {
   static const String lostAndFound = '/lost-and-found';
   static const String reportLostPet = '/lost-and-found/report';
   static const String lostFoundDetail = '/lost-and-found/listing/:id';
+  static const String adoptionBoard = '/adoption';
+  static const String listPetForAdoption = '/adoption/list-a-pet';
+  static const String adoptionDetail = '/adoption/listing/:id';
+  static String adoptionDetailPath(int id) => '/adoption/listing/$id';
+  static const String adoptionManage = '/adoption/listing/:id/applicants';
+  static String adoptionManagePath(int id) =>
+      '/adoption/listing/$id/applicants';
+  static const String adoptionRehomeSuccess = '/adoption/rehomed';
+  static const String adoptionMy = '/adoption/mine';
+  static const String adoptionWelcome = '/adoption/welcome';
   static const String map = '/map';
   static const String petVision = '/pet-vision';
   static const String sandbox = '/sandbox';
@@ -151,11 +169,16 @@ GoRouter appRouter(Ref ref) {
       // A pet-less user may also open their co-owner invitations from the
       // onboarding gate (accepting one is how they get their first pet).
       final onCoOwnerInvitations = location == AppRoutes.coOwnerInvitations;
+      // A pet-less user may also browse the adoption board (and open a listing)
+      // from the onboarding gate — adopting is a way to get their first pet.
+      final onAdoption = location == AppRoutes.adoptionBoard ||
+          location.startsWith('/adoption/');
       final onPetCreation = onPetOnboarding ||
           location == AppRoutes.createPet ||
           onAvatarSetup ||
           onPetAvatarSetup ||
-          onCoOwnerInvitations;
+          onCoOwnerInvitations ||
+          onAdoption;
 
       // The post-auth landing for a logged-in user. The pet gate must resolve
       // BEFORE we ever allow /home — otherwise home flashes for a frame before
@@ -421,7 +444,7 @@ GoRouter appRouter(Ref ref) {
                 name: 'community',
                 pageBuilder: (context, state) => AppTransitionPage(
                       key: state.pageKey,
-                      child: const PawHubPage(),
+                      child: const CommunityHubPage(),
                     ),
               ),
             ],
@@ -520,6 +543,90 @@ GoRouter appRouter(Ref ref) {
             child: LostFoundDetailPage(reportId: id, initialAlert: initial),
           );
         },
+      ),
+      GoRoute(
+        path: AppRoutes.adoptionBoard,
+        name: 'adoptionBoard',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+              key: state.pageKey,
+              child: const AdoptionBoardPage(),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.listPetForAdoption,
+        name: 'listPetForAdoption',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppSlideUpTransitionPage(
+              key: state.pageKey,
+              child: const ListPetForAdoptionPage(),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.adoptionDetail,
+        name: 'adoptionDetail',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          // The tapped listing (when navigated from a card) seeds the header
+          // and powers the shared Hero while the full listing loads.
+          final initial = state.extra as AdoptionListing?;
+          return AppTransitionPage(
+            key: state.pageKey,
+            child: AdoptionListingDetailPage(
+              listingId: id,
+              initialListing: initial,
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.adoptionManage,
+        name: 'adoptionManage',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final id = int.parse(state.pathParameters['id']!);
+          // The tapped listing (from the detail screen) seeds the pet header.
+          final initial = state.extra as AdoptionListing?;
+          return AppTransitionPage(
+            key: state.pageKey,
+            child: ManageApplicantsPage(
+              listingId: id,
+              initialListing: initial,
+            ),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.adoptionRehomeSuccess,
+        name: 'adoptionRehomeSuccess',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppFadeTransitionPage(
+              key: state.pageKey,
+              child: AdoptionRehomeSuccessPage(
+                args: state.extra! as AdoptionRehomeSuccessArgs,
+              ),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.adoptionMy,
+        name: 'adoptionMy',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+              key: state.pageKey,
+              child: const MyAdoptionsPage(),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.adoptionWelcome,
+        name: 'adoptionWelcome',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppFadeTransitionPage(
+              key: state.pageKey,
+              child: AdoptionWelcomePage(
+                args: state.extra! as AdoptionWelcomeArgs,
+              ),
+            ),
       ),
       GoRoute(
         path: AppRoutes.map,

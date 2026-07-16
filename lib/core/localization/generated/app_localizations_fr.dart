@@ -18,6 +18,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get navCommunity => 'Communauté';
 
   @override
+  String get communityTabFeed => 'Fil';
+
+  @override
   String get navCare => 'PawCare';
 
   @override
@@ -818,7 +821,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get petDetailBreed => 'Race';
 
   @override
-  String get petDetailPelage => 'Pelage';
+  String get petDetailSize => 'Taille';
+
+  @override
+  String get petDetailCoatColor => 'Couleur du pelage';
 
   @override
   String get petDetailMicrochip => 'Micropuce';
@@ -856,7 +862,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Facultatif — vous pouvez compléter plus tard';
 
   @override
-  String get createPetPelage => 'Couleur du pelage';
+  String get createPetSize => 'Taille';
+
+  @override
+  String get createPetCoatColor => 'Couleur du pelage';
+
+  @override
+  String get createPetNotSpecified => 'Non spécifié';
 
   @override
   String get createPetMicrochipNumber => 'Numéro de micropuce';
@@ -868,13 +880,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get createPetSterilizationStatus => 'Statut de stérilisation';
 
   @override
-  String get sterilizationStatusIntact => 'Intact(e)';
+  String get sterilizationStatusNotSterilized => 'Non stérilisé';
 
   @override
-  String get sterilizationStatusNeutered => 'Castré';
-
-  @override
-  String get sterilizationStatusSpayed => 'Stérilisée';
+  String get sterilizationStatusSterilized => 'Stérilisé';
 
   @override
   String get sterilizationStatusUnknown => 'Inconnu';
@@ -1382,4 +1391,470 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get categoryPharmacy => 'Pharmacie';
+
+  @override
+  String get adoptionTitle => 'Adoption';
+
+  @override
+  String adoptionSubtitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count animaux cherchent un foyer',
+      one: '1 animal cherche un foyer',
+      zero: 'Aucun animal disponible',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get adoptionListAPet => 'Proposer';
+
+  @override
+  String get adoptionSearchHint => 'Rechercher par nom, race ou zone';
+
+  @override
+  String get adoptionFilterAll => 'Tous';
+
+  @override
+  String get adoptionSpeciesDog => 'Chien';
+
+  @override
+  String get adoptionSpeciesCat => 'Chat';
+
+  @override
+  String get adoptionSpeciesBird => 'Oiseau';
+
+  @override
+  String get adoptionSpeciesRabbit => 'Lapin';
+
+  @override
+  String get adoptionSpeciesOther => 'Autre';
+
+  @override
+  String get adoptionSexMale => 'Mâle';
+
+  @override
+  String get adoptionSexFemale => 'Femelle';
+
+  @override
+  String adoptionAgeMonths(int months) {
+    String _temp0 = intl.Intl.pluralLogic(
+      months,
+      locale: localeName,
+      other: '$months mois',
+      one: '1 mois',
+      zero: 'Nouveau-né',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String adoptionAgeYears(int years) {
+    String _temp0 = intl.Intl.pluralLogic(
+      years,
+      locale: localeName,
+      other: '$years ans',
+      one: '1 an',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get adoptionStatusAvailable => 'Disponible';
+
+  @override
+  String get adoptionStatusPending => 'En attente';
+
+  @override
+  String get adoptionStatusAdopted => 'Adopté';
+
+  @override
+  String get adoptionStatusUnavailable => 'Indisponible';
+
+  @override
+  String adoptionPostedDaysAgo(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'Il y a $days jours',
+      one: 'Il y a 1 jour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String adoptionPostedHoursAgo(int hours) {
+    String _temp0 = intl.Intl.pluralLogic(
+      hours,
+      locale: localeName,
+      other: 'Il y a $hours heures',
+      one: 'Il y a 1 heure',
+      zero: 'À l\'instant',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get adoptionTraitVaccinated => 'Vacciné';
+
+  @override
+  String get adoptionTraitNeutered => 'Stérilisé';
+
+  @override
+  String get adoptionTraitGoodWithKids => 'Aime les enfants';
+
+  @override
+  String get adoptionApply => 'Demander à adopter';
+
+  @override
+  String get adoptionApplied => 'Demande envoyée';
+
+  @override
+  String adoptionManageCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Gérer · $count candidats',
+      one: 'Gérer · 1 candidat',
+      zero: 'Gérer l\'annonce',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get adoptionManageTitle => 'Candidats';
+
+  @override
+  String adoptionManageSubtitle(int count, String petName) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count personnes souhaitent adopter $petName',
+      one: '1 personne souhaite adopter $petName',
+      zero: 'Aucun candidat pour l\'instant',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get adoptionManageEmptyTitle => 'Aucun candidat pour l\'instant';
+
+  @override
+  String adoptionManageEmptyMessage(String petName) {
+    return 'Lorsqu\'une personne postule pour adopter $petName, elle apparaîtra ici.';
+  }
+
+  @override
+  String adoptionApplicantApplied(String ago) {
+    return 'Candidature $ago';
+  }
+
+  @override
+  String get adoptionApprove => 'Approuver';
+
+  @override
+  String get adoptionReject => 'Refuser';
+
+  @override
+  String get adoptionRequestStatusPending => 'En attente';
+
+  @override
+  String get adoptionRequestStatusApproved => 'Approuvé';
+
+  @override
+  String get adoptionRequestStatusRejected => 'Refusé';
+
+  @override
+  String get adoptionRequestStatusCancelled => 'Retiré';
+
+  @override
+  String get adoptionRequestStatusCompleted => 'Adopté';
+
+  @override
+  String get adoptionRequestStatusExpired => 'Expiré';
+
+  @override
+  String get adoptionAwaitingAdopter => 'En attente de sa confirmation';
+
+  @override
+  String get adoptionOnePickHint =>
+      'Vous avez déjà choisi un candidat. Refusez-le pour en choisir un autre.';
+
+  @override
+  String get adoptionReadyToComplete => 'Prêt pour la remise';
+
+  @override
+  String get adoptionCompleteTransfer => 'Finaliser le transfert';
+
+  @override
+  String adoptionApproveConfirmTitle(String name) {
+    return 'Approuver $name ?';
+  }
+
+  @override
+  String adoptionApproveConfirmMessage(String petName) {
+    return 'Il lui sera demandé de confirmer qu\'elle souhaite $petName. La propriété n\'est transférée qu\'après votre double confirmation.';
+  }
+
+  @override
+  String adoptionRejectConfirmTitle(String name) {
+    return 'Refuser $name ?';
+  }
+
+  @override
+  String get adoptionRejectConfirmMessage =>
+      'Elle sera informée que sa candidature n\'a pas été retenue. Cette action est irréversible.';
+
+  @override
+  String adoptionCompleteConfirmTitle(String petName, String name) {
+    return 'Donner $petName à $name ?';
+  }
+
+  @override
+  String adoptionCompleteConfirmMessage(String petName, String name) {
+    return 'Ceci transfère la propriété de façon permanente et irréversible. $petName et tous ses dossiers seront transférés à $name.';
+  }
+
+  @override
+  String adoptionApproveSuccess(String name) {
+    return '$name a été approuvé.';
+  }
+
+  @override
+  String get adoptionRejectSuccess => 'Candidature refusée.';
+
+  @override
+  String get adoptionDelete => 'Supprimer l\'annonce';
+
+  @override
+  String get adoptionDeleteConfirmTitle => 'Supprimer cette annonce ?';
+
+  @override
+  String adoptionDeleteConfirmMessage(String petName) {
+    return 'L\'annonce de $petName sera définitivement supprimée. Cette action est irréversible.';
+  }
+
+  @override
+  String adoptionDeleteConfirmMessageWithApplicants(String petName, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '# candidatures',
+      one: '# candidature',
+    );
+    return 'L\'annonce de $petName et $_temp0 seront définitivement supprimées. Cette action est irréversible.';
+  }
+
+  @override
+  String get adoptionDeleteSuccess => 'Annonce supprimée.';
+
+  @override
+  String adoptionRehomeSuccessTitle(String petName) {
+    return '$petName a un nouveau foyer !';
+  }
+
+  @override
+  String adoptionRehomeSuccessMessage(String petName, String name) {
+    return '$petName est désormais avec $name, avec tous ses dossiers. Merci de lui avoir offert un nouveau foyer aimant.';
+  }
+
+  @override
+  String get adoptionRehomeSuccessDone => 'Terminé';
+
+  @override
+  String get adoptionEmptyTitle => 'Aucun animal à adopter';
+
+  @override
+  String get adoptionEmptyNearby =>
+      'Aucune annonce près de chez vous pour le moment. Revenez bientôt.';
+
+  @override
+  String get adoptionEmptyFiltered =>
+      'Aucune annonce ne correspond à vos filtres. Élargissez votre recherche.';
+
+  @override
+  String get adoptionClearFilters => 'Effacer les filtres';
+
+  @override
+  String get adoptionAboutTitle => 'À propos';
+
+  @override
+  String get adoptionPostedBy => 'Publié par';
+
+  @override
+  String get adoptionFactSpecies => 'Espèce';
+
+  @override
+  String get adoptionFactSex => 'Sexe';
+
+  @override
+  String get adoptionFactAge => 'Âge';
+
+  @override
+  String get adoptionFactSize => 'Taille';
+
+  @override
+  String adoptionApplyConfirmTitle(String petName) {
+    return 'Demander à adopter $petName ?';
+  }
+
+  @override
+  String get adoptionApplyConfirmMessage =>
+      'Le propriétaire examinera votre demande. S\'il accepte, vous confirmez tous les deux avant le transfert de propriété.';
+
+  @override
+  String get adoptionApplySuccess =>
+      'Votre demande a été envoyée au propriétaire.';
+
+  @override
+  String get adoptionTransferNote =>
+      'Vous confirmerez tous les deux avant le transfert — rien ne change sans votre accord.';
+
+  @override
+  String get adoptionListTitle => 'Proposer un animal';
+
+  @override
+  String get adoptionListSubtitle =>
+      'Trouvez un nouveau foyer aimant à votre animal.';
+
+  @override
+  String get adoptionListWhichPet => 'Quel animal ?';
+
+  @override
+  String get adoptionListSelectPet => 'Sélectionner un animal';
+
+  @override
+  String get adoptionListSelectPetHint => 'Choisissez l\'un de vos animaux';
+
+  @override
+  String get adoptionListNoPets =>
+      'Vous n\'avez encore aucun animal à proposer.';
+
+  @override
+  String get adoptionListDescriptionHint =>
+      'Parlez aux adoptants de son caractère, de ses besoins et de la raison du placement.';
+
+  @override
+  String get adoptionListTraits => 'Caractéristiques';
+
+  @override
+  String get adoptionListLocation => 'Lieu de remise';
+
+  @override
+  String get adoptionListTransferNote =>
+      'Lorsqu\'une personne postule, vous l\'examinez et l\'approuvez. La propriété n\'est transférée qu\'après confirmation des deux parties — les dossiers suivent votre animal.';
+
+  @override
+  String get adoptionListSubmit => 'Publier l\'annonce';
+
+  @override
+  String get adoptionListingCreated =>
+      'Votre animal est maintenant proposé à l\'adoption.';
+
+  @override
+  String get adoptionModeMyPet => 'Mon animal';
+
+  @override
+  String get adoptionModeShelter => 'Refuge / errant';
+
+  @override
+  String get adoptionShelterAnimalDetails => 'Détails de l\'animal';
+
+  @override
+  String get adoptionShelterName => 'Nom';
+
+  @override
+  String get adoptionShelterTransferNote =>
+      'Aucune fiche animal requise. Lors de l\'adoption, un nouveau profil est créé pour l\'adoptant avec cette photo et ces détails.';
+
+  @override
+  String get adoptionShelterBadge => 'Refuge';
+
+  @override
+  String get adoptionMyTitle => 'Mes adoptions';
+
+  @override
+  String get adoptionMyTooltip => 'Mes adoptions';
+
+  @override
+  String get adoptionMyRowHint => 'Vos annonces et candidatures';
+
+  @override
+  String get adoptionMyTabListings => 'Mes annonces';
+
+  @override
+  String get adoptionMyTabApplications => 'Mes candidatures';
+
+  @override
+  String get adoptionMyListingsEmptyTitle => 'Aucune annonce';
+
+  @override
+  String get adoptionMyListingsEmptyMessage =>
+      'Les animaux que vous proposez à l\'adoption apparaîtront ici.';
+
+  @override
+  String get adoptionMyApplicationsEmptyTitle => 'Aucune candidature';
+
+  @override
+  String get adoptionMyApplicationsEmptyMessage =>
+      'Les animaux que vous demandez à adopter apparaîtront ici.';
+
+  @override
+  String adoptionApplicationFrom(String name) {
+    return 'De $name';
+  }
+
+  @override
+  String get adoptionAcceptCta => 'Je le prends';
+
+  @override
+  String get adoptionAcceptHint =>
+      'Vous êtes approuvé ! Confirmez l\'adoption, puis le propriétaire finalise la remise.';
+
+  @override
+  String get adoptionAwaitingHandover =>
+      'En attente de la remise par le propriétaire';
+
+  @override
+  String get adoptionAwaitingReview =>
+      'En attente de l\'examen de votre candidature';
+
+  @override
+  String get adoptionCancelApplication => 'Retirer la candidature';
+
+  @override
+  String get adoptionCancelConfirmTitle => 'Retirer votre candidature ?';
+
+  @override
+  String get adoptionCancelConfirmMessage =>
+      'Vous pourrez postuler à nouveau tant que l\'annonce est ouverte.';
+
+  @override
+  String get adoptionAcceptSuccess =>
+      'C\'est confirmé. Le propriétaire finalisera la remise.';
+
+  @override
+  String get adoptionCancelSuccess => 'Votre candidature a été retirée.';
+
+  @override
+  String adoptionWelcomeTitle(String petName) {
+    return '$petName est à vous !';
+  }
+
+  @override
+  String adoptionWelcomeMessage(String petName) {
+    return 'Bienvenue à $petName dans la famille. Son profil complet et ses dossiers sont déjà dans votre compte.';
+  }
+
+  @override
+  String adoptionWelcomeViewPet(String petName) {
+    return 'Voir le profil de $petName';
+  }
+
+  @override
+  String get adoptionWelcomeDone => 'Terminé';
+
+  @override
+  String get onboardingAdoptPrompt => 'Vous cherchez à adopter ?';
 }

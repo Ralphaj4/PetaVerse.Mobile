@@ -20,6 +20,8 @@ enum MediaCategory {
   petDocument,
   @JsonValue(5)
   petReport,
+  @JsonValue(6)
+  adoptionListingPhoto,
 }
 
 @freezed

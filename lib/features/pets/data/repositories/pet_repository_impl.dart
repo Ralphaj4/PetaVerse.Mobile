@@ -2,9 +2,11 @@ import '../../../../core/errors/app_exception.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
 import '../../domain/entities/breed.dart';
+import '../../domain/entities/coat_color.dart';
 import '../../domain/entities/new_pet.dart';
 import '../../domain/entities/pet.dart';
 import '../../domain/entities/pet_ref.dart';
+import '../../domain/entities/pet_size.dart';
 import '../../domain/entities/species.dart';
 import '../../domain/repositories/pet_repository.dart';
 import '../datasources/pet_local_datasource.dart';
@@ -45,6 +47,12 @@ class PetRepositoryImpl implements PetRepository {
       return Result.success(refs);
     } on AppException catch (e) {
       return Result.failure(_mapFailure(e));
+    } catch (e) {
+      // A non-AppException here means the response parsed unexpectedly (e.g. a
+      // shape mismatch: /pets returned an object instead of an array, or a
+      // field type changed). Surface it as a retryable failure with the real
+      // detail instead of letting it escape and hang the routing gate.
+      return Result.failure(UnknownFailure(message: e.toString()));
     }
   }
 
@@ -133,6 +141,26 @@ class PetRepositoryImpl implements PetRepository {
   Future<Result<List<Breed>>> getBreeds(int speciesId) async {
     try {
       final dtos = await _remote.getBreeds(speciesId);
+      return Result.success(dtos.map((d) => d.toEntity()).toList());
+    } on AppException catch (e) {
+      return Result.failure(_mapFailure(e));
+    }
+  }
+
+  @override
+  Future<Result<List<PetSize>>> getPetSizes() async {
+    try {
+      final dtos = await _remote.getPetSizes();
+      return Result.success(dtos.map((d) => d.toEntity()).toList());
+    } on AppException catch (e) {
+      return Result.failure(_mapFailure(e));
+    }
+  }
+
+  @override
+  Future<Result<List<CoatColor>>> getCoatColors() async {
+    try {
+      final dtos = await _remote.getCoatColors();
       return Result.success(dtos.map((d) => d.toEntity()).toList());
     } on AppException catch (e) {
       return Result.failure(_mapFailure(e));

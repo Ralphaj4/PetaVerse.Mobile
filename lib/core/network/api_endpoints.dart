@@ -44,6 +44,10 @@ abstract final class ApiEndpoints {
   static String speciesVisionByName(String speciesName) =>
       '/species/vision/$speciesName';
   static const String speciesVisionAll = '/species/vision';
+
+  // Pet attribute lookups (size / coat color for the create-pet form)
+  static const String petSizes = '/pet-attributes/sizes';
+  static const String coatColors = '/pet-attributes/coat-colors';
   static String petMedicalRecords(String petId) =>
       '/pets/$petId/medical-records';
   static String petVaccinations(String petId) => '/pets/$petId/vaccinations';
@@ -60,6 +64,34 @@ abstract final class ApiEndpoints {
   static String lostFoundListingResolve(int id) =>
       '/lost-found/listings/$id/resolve';
   static const String lostFoundVolunteer = '/lost-found/volunteer';
+
+  // Adoption — board / discovery
+  static const String adoptionListings = '/adoption/listings';
+  static String adoptionListing(int id) => '/adoption/listings/$id';
+
+  // Adoption — lister side (under a listing)
+  static String adoptionListingRequests(int listingId) =>
+      '/adoption/listings/$listingId/requests';
+  static String approveAdoptionRequest(int listingId, int reqId) =>
+      '/adoption/listings/$listingId/requests/$reqId/approve';
+  static String rejectAdoptionRequest(int listingId, int reqId) =>
+      '/adoption/listings/$listingId/requests/$reqId/reject';
+  // Owner triggers the irreversible transfer (enabled only once the adopter has
+  // accepted) → 200 PetResponse.
+  static String completeAdoptionRequest(int listingId, int reqId) =>
+      '/adoption/listings/$listingId/requests/$reqId/complete';
+  static String withdrawAdoptionListing(int id) =>
+      '/adoption/listings/$id/withdraw';
+
+  // Adoption — "my stuff" under /users/me
+  static const String myAdoptionListings = '/users/me/adoption-listings';
+  static const String myAdoptionRequests = '/users/me/adoption-requests';
+  static String cancelMyAdoptionRequest(int reqId) =>
+      '/users/me/adoption-requests/$reqId/cancel';
+  // Adopter opts in to an approved request ("I'll take it") — records consent,
+  // does NOT transfer → 200 updated MyAdoptionRequest.
+  static String acceptMyAdoptionRequest(int reqId) =>
+      '/users/me/adoption-requests/$reqId/accept';
 
   // AI Assistant
   static const String aiChat = '/ai/chat';

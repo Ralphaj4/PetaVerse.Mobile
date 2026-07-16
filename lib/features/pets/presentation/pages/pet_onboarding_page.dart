@@ -207,14 +207,23 @@ class _AddFirstPetState extends ConsumerState<_AddFirstPet> {
                   ),
                   const SizedBox(height: AppSpacing.xl),
 
+                  // ── adopt escape hatch ───────────────────────────────
+                  // A pet-less first-timer's most common intent: get a pet by
+                  // adopting one — so it leads over the co-own section.
+                  _AdoptPill(
+                    onTap: () => context.push(AppRoutes.adoptionBoard),
+                  ),
+
                   // ── animated co-own section ──────────────────────────
-                  if (tag != null && tag.isNotEmpty)
+                  if (tag != null && tag.isNotEmpty) ...[
+                    const SizedBox(height: AppSpacing.md),
                     _CoOwnSection(
                       tag: tag,
                       pendingInvites: pendingInvites,
                       onViewInvites: () =>
                           context.push(AppRoutes.coOwnerInvitations),
                     ),
+                  ],
                 ],
               ),
             ),
@@ -489,6 +498,50 @@ class _ViewInvitesButton extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Quiet pill inviting a pet-less user to browse the adoption board. Styled in
+/// the soft brand-orange to sit as a peer of the (teal) co-own section without
+/// competing with the primary "Add my pet" CTA.
+class _AdoptPill extends StatelessWidget {
+  const _AdoptPill({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Material(
+      color: AppColors.primarySoft,
+      borderRadius: BorderRadius.circular(50),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(50),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.sm,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(FluentIcons.heart_24_filled,
+                  size: 18, color: AppColors.primaryDark),
+              const SizedBox(width: AppSpacing.sm),
+              Text(
+                l10n.onboardingAdoptPrompt,
+                style: AppTextStyles.labelLarge
+                    .copyWith(color: AppColors.primaryDark),
+              ),
+              const SizedBox(width: AppSpacing.xs),
+              const Icon(FluentIcons.chevron_right_24_regular,
+                  size: 18, color: AppColors.primaryDark),
             ],
           ),
         ),

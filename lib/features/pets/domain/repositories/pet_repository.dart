@@ -1,8 +1,10 @@
 import '../../../../core/errors/result.dart';
 import '../entities/breed.dart';
+import '../entities/coat_color.dart';
 import '../entities/new_pet.dart';
 import '../entities/pet.dart';
 import '../entities/pet_ref.dart';
+import '../entities/pet_size.dart';
 import '../entities/species.dart';
 
 /// Contract for pet data against the PetsApp API.
@@ -54,6 +56,12 @@ abstract interface class PetRepository {
 
   /// The breeds of [speciesId], for the breed dropdown.
   Future<Result<List<Breed>>> getBreeds(int speciesId);
+
+  /// All pet sizes, for the create-pet size picker.
+  Future<Result<List<PetSize>>> getPetSizes();
+
+  /// All coat colors, for the create-pet coat-color picker.
+  Future<Result<List<CoatColor>>> getCoatColors();
 
   /// The persisted active pet id, or null on first launch / after logout.
   Future<int?> cachedCurrentPetId();

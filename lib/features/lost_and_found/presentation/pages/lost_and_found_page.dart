@@ -27,7 +27,12 @@ import '../widgets/filter_chip_row.dart';
 import '../widgets/pet_alert_card.dart';
 
 class LostAndFoundPage extends ConsumerStatefulWidget {
-  const LostAndFoundPage({super.key});
+  const LostAndFoundPage({this.embedded = false, super.key});
+
+  /// When true (inside the Community hub) the page renders without its own
+  /// AppBar — the hub supplies the shared header — surfacing the count + Report
+  /// action as an inline header row instead.
+  final bool embedded;
 
   @override
   ConsumerState<LostAndFoundPage> createState() => _LostAndFoundPageState();
@@ -89,6 +94,56 @@ class _LostAndFoundPageState extends ConsumerState<LostAndFoundPage> {
     final dashboardAsync = ref.watch(lostFoundDashboardProvider);
     final filter = ref.watch(lostFoundFilterProvider);
 
+    final body = dashboardAsync.when(
+      skipLoadingOnRefresh: true,
+      loading: () => const _DashboardSkeleton(),
+      error: (error, _) => ErrorStateWidget(
+        failure: error is Failure ? error : const UnknownFailure(),
+        onRetry: () => ref.invalidate(lostFoundDashboardProvider),
+      ),
+      data: (dashboard) {
+        final volunteer = _volunteerOverride ?? dashboard.volunteerInfo;
+        return _DashboardBody(
+          dashboard: dashboard,
+          volunteer: volunteer,
+          filter: _toUiFilter(filter),
+          mapExpanded: _mapExpanded,
+          onToggleMap: () => setState(() => _mapExpanded = !_mapExpanded),
+          onFilterChanged: (f) {
+            // A filter change refetches the dashboard, whose volunteer
+            // status is then authoritative — drop the optimistic override.
+            setState(() => _volunteerOverride = null);
+            ref
+                .read(lostFoundFilterProvider.notifier)
+                .setFilter(_toProviderFilter(f));
+          },
+          markers: _markersFromPins(dashboard.mapPins),
+          center: _centerFor(dashboard.mapPins),
+          onExpandMap: () => _openFullMap(dashboard),
+          onBecomeVolunteer: _join,
+          onLeaveVolunteer: () => _confirmLeaveVolunteer(volunteer),
+          onDeleteReport: (alert) => _confirmDeleteReport(context, alert),
+          onViewDetails: _openDetails,
+        );
+      },
+    );
+
+    // Embedded in the Community hub: no AppBar (the hub owns the header); the
+    // count + Report action become an inline header row above the body.
+    if (widget.embedded) {
+      return Column(
+        children: [
+          _EmbeddedHeader(
+            subtitle: l10n.lostAndFoundSubtitle(
+              dashboardAsync.value?.activeAlertCount ?? 0,
+            ),
+            onReport: () => context.push(AppRoutes.reportLostPet),
+          ),
+          Expanded(child: body),
+        ],
+      );
+    }
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
@@ -134,40 +189,7 @@ class _LostAndFoundPageState extends ConsumerState<LostAndFoundPage> {
             ),
           ],
         ),
-        body: dashboardAsync.when(
-          skipLoadingOnRefresh: true,
-          loading: () => const _DashboardSkeleton(),
-          error: (error, _) => ErrorStateWidget(
-            failure: error is Failure ? error : const UnknownFailure(),
-            onRetry: () =>
-                ref.invalidate(lostFoundDashboardProvider),
-          ),
-          data: (dashboard) {
-            final volunteer = _volunteerOverride ?? dashboard.volunteerInfo;
-            return _DashboardBody(
-              dashboard: dashboard,
-              volunteer: volunteer,
-              filter: _toUiFilter(filter),
-              mapExpanded: _mapExpanded,
-              onToggleMap: () => setState(() => _mapExpanded = !_mapExpanded),
-              onFilterChanged: (f) {
-                // A filter change refetches the dashboard, whose volunteer
-                // status is then authoritative — drop the optimistic override.
-                setState(() => _volunteerOverride = null);
-                ref
-                    .read(lostFoundFilterProvider.notifier)
-                    .setFilter(_toProviderFilter(f));
-              },
-              markers: _markersFromPins(dashboard.mapPins),
-              center: _centerFor(dashboard.mapPins),
-              onExpandMap: () => _openFullMap(dashboard),
-              onBecomeVolunteer: _join,
-              onLeaveVolunteer: () => _confirmLeaveVolunteer(volunteer),
-              onDeleteReport: (alert) => _confirmDeleteReport(context, alert),
-              onViewDetails: _openDetails,
-            );
-          },
-        ),
+        body: body,
       ),
     );
   }
@@ -273,6 +295,58 @@ class _LostAndFoundPageState extends ConsumerState<LostAndFoundPage> {
     context.push(
       AppRoutes.lostFoundDetail.replaceFirst(':id', '${alert.reportId}'),
       extra: alert,
+    );
+  }
+}
+
+/// Inline header shown in embedded (hub) mode: the active-alert subtitle plus a
+/// compact "Report" action, replacing the standalone AppBar.
+class _EmbeddedHeader extends StatelessWidget {
+  const _EmbeddedHeader({required this.subtitle, required this.onReport});
+
+  final String subtitle;
+  final VoidCallback onReport;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.lg,
+        AppSpacing.md,
+        AppSpacing.lg,
+        0,
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              subtitle,
+              style: AppTextStyles.bodySmall,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          FilledButton.icon(
+            onPressed: onReport,
+            icon: const Icon(FluentIcons.add_24_regular, size: 18),
+            label: Text(l10n.reportLostPet),
+            style: FilledButton.styleFrom(
+              backgroundColor: AppColors.error,
+              foregroundColor: AppColors.onPrimary,
+              textStyle: AppTextStyles.labelMedium,
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.md,
+                vertical: AppSpacing.sm,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppSpacing.sm),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

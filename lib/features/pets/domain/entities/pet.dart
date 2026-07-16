@@ -11,7 +11,10 @@ class Pet {
     this.breedId,
     this.breedName,
     this.speciesName,
-    this.pelage,
+    this.sizeId,
+    this.sizeName,
+    this.coatColorId,
+    this.coatColorName,
     this.microchipNumber,
     this.microchipLocation,
     this.sterilizationStatus,
@@ -28,7 +31,21 @@ class Pet {
   final int? breedId;
   final String? breedName;
   final String? speciesName;
-  final String? pelage;
+
+  /// FK into the PetSizes lookup, or null when the size isn't specified.
+  final int? sizeId;
+
+  /// Display name of the pet's size (e.g. "Medium"), carried on PetResponse so
+  /// rendering needs no lookup call. Null when unset.
+  final String? sizeName;
+
+  /// FK into the CoatColors lookup, or null when the coat color isn't specified.
+  final int? coatColorId;
+
+  /// Display name of the pet's coat color (e.g. "Golden"), carried on
+  /// PetResponse so rendering needs no lookup call. Null when unset.
+  final String? coatColorName;
+
   final String? microchipNumber;
   final String? microchipLocation;
   final String? sterilizationStatus;

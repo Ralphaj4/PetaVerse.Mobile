@@ -55,7 +55,16 @@ class _CreatePetPageState extends ConsumerState<CreatePetPage> {
       return (v != null && v.isNotEmpty) ? v : null;
     }
 
-    final sterilizationStatus = values['sterilizationStatus'] as String?;
+    // Empty string is the "Not specified" sentinel from the dropdown → null.
+    final sterilizationStatus = trimOrNull('sterilizationStatus');
+
+    // Size / coat color use a sentinel 0 for the "Not specified" option, since
+    // the picker can't select a null value; 0 maps back to a null FK (the
+    // lookups are 1-based, so 0 is never a real id).
+    int? nullIfUnset(String key) {
+      final v = values[key] as int?;
+      return (v == null || v == 0) ? null : v;
+    }
 
     final newPet = NewPet(
       name: (values['name'] as String).trim(),
@@ -63,13 +72,15 @@ class _CreatePetPageState extends ConsumerState<CreatePetPage> {
       breedId: values['breedId'] as int?,
       dateOfBirth: values['dateOfBirth'] as DateTime,
       gender: values['gender'] as String,
-      pelage: trimOrNull('pelage'),
+      sizeId: nullIfUnset('sizeId'),
+      coatColorId: nullIfUnset('coatColorId'),
       microchipNumber: trimOrNull('microchipNumber'),
       microchipLocation: trimOrNull('microchipLocation'),
       sterilizationStatus: sterilizationStatus,
-      sterilizationDate: sterilizationStatus == 'Intact' || sterilizationStatus == null
-          ? null
-          : values['sterilizationDate'] as DateTime?,
+      // A procedure date only makes sense when the pet is sterilized.
+      sterilizationDate: sterilizationStatus == 'Sterilized'
+          ? values['sterilizationDate'] as DateTime?
+          : null,
     );
 
     final notifier = ref.read(createPetProvider.notifier);
@@ -285,8 +296,7 @@ class _FormState extends State<_Form> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final showSterilizationDate =
-        _sterilizationStatus != null && _sterilizationStatus != 'Intact';
+    final showSterilizationDate = _sterilizationStatus == 'Sterilized';
 
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(
@@ -380,16 +390,12 @@ class _FormState extends State<_Form> {
             ),
             const SizedBox(height: AppSpacing.md),
 
-            // Pelage.
-            _FieldCard(
-              icon: FluentIcons.color_24_regular,
-              child: FormBuilderTextField(
-                name: 'pelage',
-                textCapitalization: TextCapitalization.sentences,
-                style: AppTextStyles.titleMedium,
-                decoration: _cardInput(label: l10n.createPetPelage),
-              ),
-            ),
+            // Size.
+            const _SizeCard(),
+            const SizedBox(height: AppSpacing.md),
+
+            // Coat color.
+            const _CoatColorCard(),
             const SizedBox(height: AppSpacing.md),
 
             // // Microchip number.
@@ -424,14 +430,14 @@ class _FormState extends State<_Form> {
                 label: l10n.createPetSterilizationStatus,
                 items: [
                   DropdownMenuItem(
-                      value: 'Intact',
-                      child: Text(l10n.sterilizationStatusIntact)),
+                      value: '',
+                      child: Text(l10n.createPetNotSpecified)),
                   DropdownMenuItem(
-                      value: 'Neutered',
-                      child: Text(l10n.sterilizationStatusNeutered)),
+                      value: 'NotSterilized',
+                      child: Text(l10n.sterilizationStatusNotSterilized)),
                   DropdownMenuItem(
-                      value: 'Spayed',
-                      child: Text(l10n.sterilizationStatusSpayed)),
+                      value: 'Sterilized',
+                      child: Text(l10n.sterilizationStatusSterilized)),
                   DropdownMenuItem(
                       value: 'Unknown',
                       child: Text(l10n.sterilizationStatusUnknown)),
@@ -727,6 +733,87 @@ class _BreedCardState extends ConsumerState<_BreedCard> {
           ),
         );
       },
+    );
+  }
+}
+
+// ── Size card ─────────────────────────────────────────────────────────────
+
+/// Optional size dropdown, backed by [petSizesListProvider]. Includes a
+/// leading "Not specified" (sentinel 0) option so the FK can stay null.
+class _SizeCard extends ConsumerWidget {
+  const _SizeCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final sizesAsync = ref.watch(petSizesListProvider);
+
+    return sizesAsync.when(
+      loading: () => _FieldCard(
+        icon: FluentIcons.ruler_24_regular,
+        child: _BreedLoadingField(label: l10n.createPetSize),
+      ),
+      error: (e, _) => _FieldCard(
+        icon: FluentIcons.ruler_24_regular,
+        child: _BreedErrorField(
+          label: l10n.createPetSize,
+          error: asFailure(e).localizedMessage(l10n),
+        ),
+      ),
+      data: (sizes) => _FieldCard(
+        icon: FluentIcons.ruler_24_regular,
+        child: AppDropdownField<int>(
+          name: 'sizeId',
+          label: l10n.createPetSize,
+          searchable: false,
+          items: [
+            DropdownMenuItem(value: 0, child: Text(l10n.createPetNotSpecified)),
+            for (final s in sizes)
+              DropdownMenuItem(value: s.id, child: Text(s.displayName)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── Coat color card ─────────────────────────────────────────────────────────
+
+/// Optional coat-color dropdown, backed by [coatColorsListProvider]. Includes a
+/// leading "Not specified" (sentinel 0) option so the FK can stay null.
+class _CoatColorCard extends ConsumerWidget {
+  const _CoatColorCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final colorsAsync = ref.watch(coatColorsListProvider);
+
+    return colorsAsync.when(
+      loading: () => _FieldCard(
+        icon: FluentIcons.color_24_regular,
+        child: _BreedLoadingField(label: l10n.createPetCoatColor),
+      ),
+      error: (e, _) => _FieldCard(
+        icon: FluentIcons.color_24_regular,
+        child: _BreedErrorField(
+          label: l10n.createPetCoatColor,
+          error: asFailure(e).localizedMessage(l10n),
+        ),
+      ),
+      data: (colors) => _FieldCard(
+        icon: FluentIcons.color_24_regular,
+        child: AppDropdownField<int>(
+          name: 'coatColorId',
+          label: l10n.createPetCoatColor,
+          items: [
+            DropdownMenuItem(value: 0, child: Text(l10n.createPetNotSpecified)),
+            for (final c in colors)
+              DropdownMenuItem(value: c.id, child: Text(c.displayName)),
+          ],
+        ),
+      ),
     );
   }
 }

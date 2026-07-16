@@ -140,3 +140,91 @@ final class BreedsListFamily extends $Family
   @override
   String toString() => r'breedsListProvider';
 }
+
+/// All pet sizes for the create-pet size picker.
+
+@ProviderFor(petSizesList)
+final petSizesListProvider = PetSizesListProvider._();
+
+/// All pet sizes for the create-pet size picker.
+
+final class PetSizesListProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<PetSize>>,
+          List<PetSize>,
+          FutureOr<List<PetSize>>
+        >
+    with $FutureModifier<List<PetSize>>, $FutureProvider<List<PetSize>> {
+  /// All pet sizes for the create-pet size picker.
+  PetSizesListProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'petSizesListProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$petSizesListHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<PetSize>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<PetSize>> create(Ref ref) {
+    return petSizesList(ref);
+  }
+}
+
+String _$petSizesListHash() => r'4cb08144b4cee1bc1f1aa18bf69d5b9f5ae05f4f';
+
+/// All coat colors for the create-pet coat-color picker.
+
+@ProviderFor(coatColorsList)
+final coatColorsListProvider = CoatColorsListProvider._();
+
+/// All coat colors for the create-pet coat-color picker.
+
+final class CoatColorsListProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<CoatColor>>,
+          List<CoatColor>,
+          FutureOr<List<CoatColor>>
+        >
+    with $FutureModifier<List<CoatColor>>, $FutureProvider<List<CoatColor>> {
+  /// All coat colors for the create-pet coat-color picker.
+  CoatColorsListProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'coatColorsListProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$coatColorsListHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<CoatColor>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<CoatColor>> create(Ref ref) {
+    return coatColorsList(ref);
+  }
+}
+
+String _$coatColorsListHash() => r'cbf46bbd75384dd8bab422ab990e964354a206d0';
