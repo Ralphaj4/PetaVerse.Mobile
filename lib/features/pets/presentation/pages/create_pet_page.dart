@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,7 +18,6 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/app_dropdown_field.dart';
-import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../domain/entities/new_pet.dart';
 import '../../domain/entities/species.dart';
 import '../providers/create_pet_provider.dart';
@@ -25,15 +26,11 @@ import '../providers/species_provider.dart';
 /// Shared create-pet form, reached from pet onboarding and the profile tab.
 ///
 /// Asks only the required fields (name, species → breed, date of birth,
-/// gender). On success the pet gate is refreshed: from onboarding the router
-/// advances to home; from a pushed entry it pops back.
+/// gender). On success the form advances to the avatar-setup step (for both
+/// entry points), which uploads the optional photo and commits the pet to the
+/// routing gate.
 class CreatePetPage extends ConsumerStatefulWidget {
-  const CreatePetPage({this.isOnboarding = false, super.key});
-
-  /// True when reached from the first-pet onboarding flow (vs. "add another
-  /// pet" from the profile). Drives the post-create navigation: onboarding
-  /// continues to the avatar-setup step; otherwise we pop back to the caller.
-  final bool isOnboarding;
+  const CreatePetPage({super.key});
 
   @override
   ConsumerState<CreatePetPage> createState() => _CreatePetPageState();
@@ -88,31 +85,15 @@ class _CreatePetPageState extends ConsumerState<CreatePetPage> {
     if (!mounted) return;
 
     if (petRef != null) {
-      // Onboarding flow (first pet): continue to the pet avatar setup step,
-      // mirroring user onboarding. That page commits the pet to the gate after
-      // the photo step, so we DON'T commit here.
-      if (widget.isOnboarding) {
-        context.go(
+      // Both entry points (onboarding and profile "add pet") continue to the
+      // avatar-setup step. That page commits the pet to the gate after the
+      // photo step, so we DON'T commit here.
+      unawaited(
+        context.push(
           AppRoutes.petAvatarSetupPath(petRef.id),
           extra: petRef,
-        );
-        return;
-      }
-
-      // Pushed entry (e.g. "add another pet" from profile): pop back and commit
-      // immediately — there's no avatar step in this path. Capture messenger +
-      // message before navigating (page is about to leave).
-      final messenger = ScaffoldMessenger.of(context);
-      final message = context.l10n.createPetSuccess(newPet.name);
-
-      context.pop();
-
-      // Now safe to update the gate — navigation has already committed.
-      notifier.commitCreated(petRef);
-
-      messenger
-        ..hideCurrentSnackBar()
-        ..showSnackBar(AppSnackBar.buildSuccess(message));
+        ),
+      );
     } else {
       final failure = notifier.lastFailure;
       if (failure != null) {

@@ -344,12 +344,18 @@
   "@petDetailAge": {
     "placeholders": { "years": { "type": "int" } }
   },
+  "petDetailAgeMonths": "{months, plural, =0{أقل من شهر} one{شهر واحد} two{شهران} few{{months} أشهر} many{{months} شهرًا} other{{months} شهر}}",
+  "@petDetailAgeMonths": {
+    "placeholders": { "months": { "type": "int" } }
+  },
   "viewAllPets": "عرض جميع الحيوانات ({count})",
   "@viewAllPets": {
     "placeholders": {
       "count": { "type": "int" }
     }
   },
+  "viewAll": "عرض الكل",
+  "@viewAll": {},
   "createPetAdditionalInfo": "معلومات إضافية",
   "createPetAdditionalInfoSubtitle": "اختياري — يمكنك إضافتها لاحقاً",
   "createPetSize": "الحجم",
@@ -387,6 +393,100 @@
   },
   "petDetailProfileCompleteSubtitle": "ملف حيوانك الأليف مكتمل والمعلومات محدَّثة.",
   "microchipCopied": "تم نسخ رقم الرقاقة",
+  "healthWeightTitle": "الوزن",
+  "healthWeightAdd": "إضافة وزن",
+  "healthWeightEmpty": "لم يُسجَّل أي وزن بعد. تتبَّع وزن حيوانك الأليف بمرور الوقت.",
+  "healthWeightSteady": "ثابت",
+  "healthWeightLastRecorded": "آخر تسجيل {date}",
+  "@healthWeightLastRecorded": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "healthMedicationsTitle": "الأدوية",
+  "healthMedicationsAdd": "إضافة دواء",
+  "healthMedicationsEmpty": "لا توجد أدوية فعّالة. أضِف تذكيرات للبقاء على الموعد.",
+  "healthMedicationsMarkGiven": "تحديد كمُعطى",
+  "healthMedicationsGivenConfirmed": "تم تحديد {name} كمُعطى",
+  "@healthMedicationsGivenConfirmed": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "healthMedicationsOverdue": "متأخر",
+  "healthMedicationsDueToday": "اليوم",
+  "healthMedicationsDueInDays": "خلال {days} يوم",
+  "@healthMedicationsDueInDays": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+  "healthVaccinationsTitle": "اللقاحات",
+  "healthVaccinationsAdd": "إضافة لقاح",
+  "healthVaccinationsEmpty": "لم تُسجَّل أي لقاحات بعد.",
+  "healthVaccinationsGivenOn": "أُعطي في {date}",
+  "@healthVaccinationsGivenOn": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "healthVaccinationsNextDue": "مستحق في {date}",
+  "@healthVaccinationsNextDue": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "healthVaccinationsDue": "مستحق",
+  "healthFrequencyDaily": "يوميًا",
+  "healthFrequencyWeekly": "أسبوعيًا",
+  "healthFrequencyBiweekly": "كل أسبوعين",
+  "healthFrequencyMonthly": "شهريًا",
+  "healthFrequencyQuarterly": "كل ثلاثة أشهر",
+  "petDetailSectionDetails": "تفاصيل الحيوان",
+  "petDetailSectionHealth": "البيانات الصحية",
+  "healthWeightValueLabel": "الوزن",
+  "healthWeightValueHint": "مثال: 12.4",
+  "healthWeightDateLabel": "تاريخ التسجيل",
+  "healthWeightInvalid": "أدخل وزناً صالحاً",
+  "healthWeightAddedSuccess": "تم تسجيل الوزن",
+  "healthWeightAllReadings": "كل القياسات",
+  "healthWeightDeleteTitle": "حذف هذا القياس؟",
+  "healthWeightDeleteMessage": "سيتم حذف سجل الوزن هذا نهائيًا.",
+  "healthWeightDeleteSuccess": "تم حذف سجل الوزن",
+  "healthFrequencyEveryNDays": "كل {days} يوم",
+  "@healthFrequencyEveryNDays": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+  "healthFrequencyCustomLabel": "مخصّص",
+  "healthFrequencyDaysSuffix": "يوم",
+  "searchHint": "بحث",
+  "searchNoResults": "لا توجد نتائج",
+  "healthNotesLabel": "ملاحظات (اختياري)",
+  "healthNotesHint": "أي شيء يستحق التذكّر",
+  "healthMedicationsNameLabel": "الدواء",
+  "healthMedicationsNameHint": "مثال: أبوكيل",
+  "healthMedicationsNameRequired": "اختر أو أدخل دواءً",
+  "healthMedicationsPickHint": "اختر دواءً",
+  "healthMedicationsUseCustom": "إدخال اسم مخصّص",
+  "healthMedicationsUseList": "الاختيار من القائمة",
+  "healthMedicationsFrequencyLabel": "التكرار",
+  "healthMedicationsStartDateLabel": "تاريخ البدء",
+  "healthMedicationsAddedSuccess": "تمت إضافة الدواء",
+  "healthMedicationsEditFrequency": "التكرار",
+  "healthMedicationsFrequencyUpdated": "تم تحديث التكرار",
+  "healthVaccinationsNameLabel": "اللقاح",
+  "healthVaccinationsNameRequired": "اختر لقاحاً",
+  "healthVaccinationsPickHint": "اختر لقاحاً",
+  "healthVaccinationsAdministeredLabel": "تاريخ الإعطاء",
+  "healthVaccinationsNextDueLabel": "الجرعة المعزّزة القادمة (اختياري)",
+  "healthVaccinationsNoBooster": "لا توجد جرعة معزّزة مجدولة",
+  "healthVaccinationsVetLabel": "الطبيب البيطري (اختياري)",
+  "healthVaccinationsVetHint": "مثال: د. سميث",
+  "healthVaccinationsAddedSuccess": "تمت إضافة التطعيم",
+  "healthMedicationsDeleteTitle": "حذف هذا الدواء؟",
+  "@healthMedicationsDeleteTitle": {},
+  "healthMedicationsDeleteMessage": "سيتم حذف {name} نهائيًا.",
+  "@healthMedicationsDeleteMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "healthMedicationsDeleteSuccess": "تم حذف الدواء",
+  "@healthMedicationsDeleteSuccess": {},
+  "healthVaccinationsDeleteTitle": "حذف هذا التطعيم؟",
+  "healthVaccinationsDeleteMessage": "سيتم حذف سجل {name} نهائيًا.",
+  "@healthVaccinationsDeleteMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "healthVaccinationsDeleteSuccess": "تم حذف التطعيم",
   "photoSavedToGallery": "تم حفظ الصورة في المعرض",
   "couldNotSavePhoto": "تعذر حفظ الصورة",
   "didYouKnow": "هل تعلم؟",
@@ -665,5 +765,60 @@
   "adoptionWelcomeMessage": "مرحبًا بـ {petName} في العائلة. ملفه الكامل وسجلاته موجودة بالفعل في حسابك.",
   "adoptionWelcomeViewPet": "عرض ملف {petName}",
   "adoptionWelcomeDone": "تم",
-  "onboardingAdoptPrompt": "هل تبحث عن التبنّي؟"
+  "onboardingAdoptPrompt": "هل تبحث عن التبنّي؟",
+
+  "walkStartTitle": "ابدأ نزهة",
+  "@walkStartTitle": {},
+  "walkStartSubtitle": "تتبع نشاط {petName}",
+  "@walkStartSubtitle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "walkStartButton": "ابدأ",
+  "@walkStartButton": {},
+  "walkActiveTitle": "نزهة مع {petName}",
+  "@walkActiveTitle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "walkStopButton": "إيقاف",
+  "@walkStopButton": {},
+  "walkStatDuration": "المدة",
+  "@walkStatDuration": {},
+  "walkStatDistance": "المسافة",
+  "@walkStatDistance": {},
+  "walkStatSpeed": "متوسط السرعة",
+  "@walkStatSpeed": {},
+  "walkNoLocation": "الموقع غير متاح — مؤقت فقط",
+  "@walkNoLocation": {},
+  "walkHistoryTitle": "سجل النزهات",
+  "@walkHistoryTitle": {},
+  "walkHistoryEmpty": "لم يتم تسجيل أي نزهة بعد.\nابدأ من الشاشة الرئيسية.",
+  "@walkHistoryEmpty": {},
+  "walkDeleteTitle": "حذف هذه النزهة؟",
+  "@walkDeleteTitle": {},
+  "walkDeleteMessage": "سيتم حذف هذا السجل نهائيًا.",
+  "@walkDeleteMessage": {},
+  "walkDeleteSuccess": "تم حذف النزهة",
+  "@walkDeleteSuccess": {},
+  "walkDeleteTooOld": "لا يمكن حذف النزهات الأقدم من يومين",
+  "@walkDeleteTooOld": {},
+  "reminderMedicationDose": "دواء · {petName}",
+  "@reminderMedicationDose": {
+    "placeholders": { "petName": {} }
+  },
+  "reminderVaccinationBooster": "جرعة تطعيم معززة · {petName}",
+  "@reminderVaccinationBooster": {
+    "placeholders": { "petName": {} }
+  },
+  "reminderDueToday": "مستحق اليوم",
+  "@reminderDueToday": {},
+  "reminderOverdue": "متأخر",
+  "@reminderOverdue": {},
+  "reminderDueInDays": "خلال {days} يوم",
+  "@reminderDueInDays": {
+    "placeholders": { "days": {} }
+  },
+  "dateToday": "اليوم",
+  "@dateToday": {},
+  "dateYesterday": "أمس",
+  "@dateYesterday": {}
 }

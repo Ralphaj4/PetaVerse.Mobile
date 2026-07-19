@@ -11,9 +11,13 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/section_header.dart';
+import '../../../activity/presentation/widgets/walk_banner.dart';
+import '../../../pawcare/domain/entities/health_reminder.dart';
+import '../../../pawcare/presentation/providers/pawcare_providers.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
 import '../../../profile/presentation/providers/user_provider.dart';
 import '../widgets/appointment_card.dart';
+import '../widgets/health_reminder_card.dart';
 import '../widgets/home_hero_banner.dart';
 import '../widgets/pet_stat_card.dart';
 import '../widgets/quick_action_button.dart';
@@ -70,16 +74,17 @@ class HomePage extends ConsumerWidget {
                   children: [
                     _StatsRow(l10n: l10n),
                     const SizedBox(height: AppSpacing.xl),
+                    if (currentPet != null &&
+                        currentPet.supportsActivityTracking) ...[
+                      WalkBanner(
+                        petId: currentPet.id,
+                        petName: petName,
+                      ),
+                      const SizedBox(height: AppSpacing.xl),
+                    ],
                     SectionHeader(title: l10n.upcoming, onSeeAll: () {}),
                     const SizedBox(height: AppSpacing.sm),
-                    AppointmentCard(
-                      monthLabel: 'May',
-                      dayLabel: '24',
-                      title: 'Vet Check-up',
-                      subtitle: '10:30 AM • Dr. Sophia Williams',
-                      location: 'Pet Care Center',
-                      onTap: () {},
-                    ),
+                    const _UpcomingSection(),
                     const SizedBox(height: AppSpacing.xl),
                     SectionHeader(title: l10n.quickActions),
                     const SizedBox(height: AppSpacing.md),
@@ -91,6 +96,46 @@ class HomePage extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// The "Upcoming" section body: cached health reminders (medication doses +
+/// vaccination boosters), soonest first. Falls back to a placeholder
+/// appointment card while there are none cached (the real home feed lands with
+/// the backend later).
+class _UpcomingSection extends ConsumerWidget {
+  const _UpcomingSection();
+
+  /// How many reminders to show inline before the "See all" affordance.
+  static const int _maxShown = 3;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final remindersAsync = ref.watch(upcomingHealthRemindersProvider);
+
+    final reminders = remindersAsync.value ?? const <HealthReminder>[];
+    if (reminders.isEmpty) {
+      // No cached reminders yet — keep the section populated with the sample
+      // appointment until the home backend feed exists.
+      return AppointmentCard(
+        monthLabel: 'May',
+        dayLabel: '24',
+        title: 'Vet Check-up',
+        subtitle: '10:30 AM • Dr. Sophia Williams',
+        location: 'Pet Care Center',
+        onTap: () {},
+      );
+    }
+
+    final shown = reminders.take(_maxShown).toList(growable: false);
+    return Column(
+      children: [
+        for (var i = 0; i < shown.length; i++) ...[
+          if (i > 0) const SizedBox(height: AppSpacing.sm),
+          HealthReminderCard(reminder: shown[i]),
+        ],
+      ],
     );
   }
 }

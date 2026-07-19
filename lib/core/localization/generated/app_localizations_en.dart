@@ -841,9 +841,24 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String petDetailAgeMonths(int months) {
+    String _temp0 = intl.Intl.pluralLogic(
+      months,
+      locale: localeName,
+      other: '$months months old',
+      one: '1 month old',
+      zero: 'Less than a month old',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String viewAllPets(int count) {
     return 'View all $count pets';
   }
+
+  @override
+  String get viewAll => 'View all';
 
   @override
   String get createPetAdditionalInfo => 'Additional Information';
@@ -943,6 +958,229 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get microchipCopied => 'Microchip number copied';
+
+  @override
+  String get healthWeightTitle => 'Weight';
+
+  @override
+  String get healthWeightAdd => 'Add weight';
+
+  @override
+  String get healthWeightEmpty =>
+      'No weight recorded yet. Track your pet\'s weight over time.';
+
+  @override
+  String get healthWeightSteady => 'Steady';
+
+  @override
+  String healthWeightLastRecorded(String date) {
+    return 'Last recorded $date';
+  }
+
+  @override
+  String get healthMedicationsTitle => 'Medications';
+
+  @override
+  String get healthMedicationsAdd => 'Add medication';
+
+  @override
+  String get healthMedicationsEmpty =>
+      'No active medications. Add reminders to stay on schedule.';
+
+  @override
+  String get healthMedicationsMarkGiven => 'Mark as given';
+
+  @override
+  String healthMedicationsGivenConfirmed(String name) {
+    return 'Marked $name as given';
+  }
+
+  @override
+  String get healthMedicationsOverdue => 'Overdue';
+
+  @override
+  String get healthMedicationsDueToday => 'Today';
+
+  @override
+  String healthMedicationsDueInDays(int days) {
+    return 'In ${days}d';
+  }
+
+  @override
+  String get healthVaccinationsTitle => 'Vaccinations';
+
+  @override
+  String get healthVaccinationsAdd => 'Add vaccination';
+
+  @override
+  String get healthVaccinationsEmpty => 'No vaccinations recorded yet.';
+
+  @override
+  String healthVaccinationsGivenOn(String date) {
+    return 'Given $date';
+  }
+
+  @override
+  String healthVaccinationsNextDue(String date) {
+    return 'Due $date';
+  }
+
+  @override
+  String get healthVaccinationsDue => 'Due';
+
+  @override
+  String get healthFrequencyDaily => 'Daily';
+
+  @override
+  String get healthFrequencyWeekly => 'Weekly';
+
+  @override
+  String get healthFrequencyBiweekly => 'Every 2 weeks';
+
+  @override
+  String get healthFrequencyMonthly => 'Monthly';
+
+  @override
+  String get healthFrequencyQuarterly => 'Every 3 months';
+
+  @override
+  String get petDetailSectionDetails => 'Pet Details';
+
+  @override
+  String get petDetailSectionHealth => 'Health data';
+
+  @override
+  String get healthWeightValueLabel => 'Weight';
+
+  @override
+  String get healthWeightValueHint => 'e.g. 12.4';
+
+  @override
+  String get healthWeightDateLabel => 'Date recorded';
+
+  @override
+  String get healthWeightInvalid => 'Enter a valid weight';
+
+  @override
+  String get healthWeightAddedSuccess => 'Weight recorded';
+
+  @override
+  String get healthWeightAllReadings => 'All readings';
+
+  @override
+  String get healthWeightDeleteTitle => 'Delete this reading?';
+
+  @override
+  String get healthWeightDeleteMessage =>
+      'This weight record will be permanently removed.';
+
+  @override
+  String get healthWeightDeleteSuccess => 'Weight record deleted';
+
+  @override
+  String healthFrequencyEveryNDays(int days) {
+    return 'Every $days days';
+  }
+
+  @override
+  String get healthFrequencyCustomLabel => 'Custom';
+
+  @override
+  String get healthFrequencyDaysSuffix => 'days';
+
+  @override
+  String get searchHint => 'Search';
+
+  @override
+  String get searchNoResults => 'No results';
+
+  @override
+  String get healthNotesLabel => 'Notes (optional)';
+
+  @override
+  String get healthNotesHint => 'Anything worth remembering';
+
+  @override
+  String get healthMedicationsNameLabel => 'Medication';
+
+  @override
+  String get healthMedicationsNameHint => 'e.g. Apoquel';
+
+  @override
+  String get healthMedicationsNameRequired => 'Choose or enter a medication';
+
+  @override
+  String get healthMedicationsPickHint => 'Choose a medication';
+
+  @override
+  String get healthMedicationsUseCustom => 'Enter a custom name';
+
+  @override
+  String get healthMedicationsUseList => 'Choose from the list';
+
+  @override
+  String get healthMedicationsFrequencyLabel => 'Frequency';
+
+  @override
+  String get healthMedicationsStartDateLabel => 'Start date';
+
+  @override
+  String get healthMedicationsAddedSuccess => 'Medication added';
+
+  @override
+  String get healthMedicationsEditFrequency => 'Frequency';
+
+  @override
+  String get healthMedicationsFrequencyUpdated => 'Frequency updated';
+
+  @override
+  String get healthVaccinationsNameLabel => 'Vaccine';
+
+  @override
+  String get healthVaccinationsNameRequired => 'Choose a vaccine';
+
+  @override
+  String get healthVaccinationsPickHint => 'Choose a vaccine';
+
+  @override
+  String get healthVaccinationsAdministeredLabel => 'Date administered';
+
+  @override
+  String get healthVaccinationsNextDueLabel => 'Next booster (optional)';
+
+  @override
+  String get healthVaccinationsNoBooster => 'No booster scheduled';
+
+  @override
+  String get healthVaccinationsVetLabel => 'Vet (optional)';
+
+  @override
+  String get healthVaccinationsVetHint => 'e.g. Dr. Smith';
+
+  @override
+  String get healthVaccinationsAddedSuccess => 'Vaccination added';
+
+  @override
+  String get healthMedicationsDeleteTitle => 'Delete this medication?';
+
+  @override
+  String healthMedicationsDeleteMessage(String name) {
+    return '$name will be permanently removed.';
+  }
+
+  @override
+  String get healthMedicationsDeleteSuccess => 'Medication deleted';
+
+  @override
+  String get healthVaccinationsDeleteTitle => 'Delete this vaccination?';
+
+  @override
+  String healthVaccinationsDeleteMessage(String name) {
+    return '$name\'s record will be permanently removed.';
+  }
+
+  @override
+  String get healthVaccinationsDeleteSuccess => 'Vaccination deleted';
 
   @override
   String get photoSavedToGallery => 'Photo saved to gallery';
@@ -1836,4 +2074,82 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingAdoptPrompt => 'Looking to adopt a pet?';
+
+  @override
+  String get walkStartTitle => 'Start a walk';
+
+  @override
+  String walkStartSubtitle(String petName) {
+    return 'Track $petName\'s activity';
+  }
+
+  @override
+  String get walkStartButton => 'Go';
+
+  @override
+  String walkActiveTitle(String petName) {
+    return 'Walking with $petName';
+  }
+
+  @override
+  String get walkStopButton => 'Stop';
+
+  @override
+  String get walkStatDuration => 'Duration';
+
+  @override
+  String get walkStatDistance => 'Distance';
+
+  @override
+  String get walkStatSpeed => 'Avg Speed';
+
+  @override
+  String get walkNoLocation => 'Location unavailable — showing timer only';
+
+  @override
+  String get walkHistoryTitle => 'Walk History';
+
+  @override
+  String get walkHistoryEmpty =>
+      'No walks recorded yet.\nStart a walk from the home screen.';
+
+  @override
+  String get walkDeleteTitle => 'Delete this walk?';
+
+  @override
+  String get walkDeleteMessage =>
+      'This walk record will be permanently removed.';
+
+  @override
+  String get walkDeleteSuccess => 'Walk deleted';
+
+  @override
+  String get walkDeleteTooOld => 'Walks older than 2 days can\'t be deleted';
+
+  @override
+  String reminderMedicationDose(Object petName) {
+    return 'Medication · $petName';
+  }
+
+  @override
+  String reminderVaccinationBooster(Object petName) {
+    return 'Vaccination booster · $petName';
+  }
+
+  @override
+  String get reminderDueToday => 'Due today';
+
+  @override
+  String get reminderOverdue => 'Overdue';
+
+  @override
+  String reminderDueInDays(Object days) {
+    return 'Due in ${days}d';
+  }
+
+  @override
+  String get dateToday => 'Today';
+
+  @override
+  String get dateYesterday => 'Yesterday';
 }

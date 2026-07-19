@@ -236,9 +236,9 @@ class _AddFirstPetState extends ConsumerState<_AddFirstPet> {
             icon: FluentIcons.add_24_regular,
             variant: AppButtonVariant.primary,
             // Push (not go) so the create-pet form stacks over onboarding and
-            // its back button returns here. `extra: true` marks the onboarding
-            // flow so the form continues to the avatar step on success.
-            onPressed: () => context.push(AppRoutes.createPet, extra: true),
+            // its back button returns here. On success the form advances to the
+            // avatar-setup step, which commits the pet to the gate.
+            onPressed: () => context.push(AppRoutes.createPet),
           ),
           const SizedBox(height: AppSpacing.sm),
           // ── logout under the primary CTA ─────────────────────────────

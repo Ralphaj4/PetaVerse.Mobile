@@ -7,6 +7,7 @@ import 'core/app/app.dart';
 import 'core/localization/culture_provider.dart';
 import 'core/storage/hive_service.dart';
 import 'core/utils/logger_service.dart';
+import 'features/activity/data/local/walk_foreground_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +35,7 @@ Future<void> main() async {
   };
 
   await HiveService.init();
+  WalkForegroundService.init();
 
   // Hydrate the saved culture before the first frame so the locale and the
   // `X-Culture` request header are correct from the start (no flicker).

@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
+import '../../../pawcare/presentation/providers/pawcare_providers.dart';
 import '../../../profile/data/providers/user_repository_provider.dart';
 import '../../../profile/presentation/providers/user_usecases_provider.dart';
 import '../../domain/entities/auth_session.dart';
@@ -195,13 +196,15 @@ class AuthNotifier extends _$AuthNotifier {
   Future<void> logout() async {
     final authRepository = ref.read(authRepositoryProvider);
     final userRepository = ref.read(userRepositoryProvider);
-    // Await BOTH local clears so they're durably written before logout is
+    final reminderCache = ref.read(healthReminderCacheProvider);
+    // Await the local clears so they're durably written before logout is
     // considered done — otherwise a user who kills the app immediately after
     // tapping "log out" can relaunch with tokens/cache still present (skipping
     // login and showing the previous user's data).
     await Future.wait([
       authRepository.logout(),
       userRepository.clearCache(),
+      reminderCache.clear(),
     ]);
   }
 

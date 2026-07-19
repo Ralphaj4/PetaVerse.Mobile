@@ -1606,11 +1606,23 @@ abstract class AppLocalizations {
   /// **'{years, plural, =1{1 year old} other{{years} years old}}'**
   String petDetailAge(int years);
 
+  /// No description provided for @petDetailAgeMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'{months, plural, =0{Less than a month old} =1{1 month old} other{{months} months old}}'**
+  String petDetailAgeMonths(int months);
+
   /// No description provided for @viewAllPets.
   ///
   /// In en, this message translates to:
   /// **'View all {count} pets'**
   String viewAllPets(int count);
+
+  /// No description provided for @viewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View all'**
+  String get viewAll;
 
   /// No description provided for @createPetAdditionalInfo.
   ///
@@ -1797,6 +1809,414 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Microchip number copied'**
   String get microchipCopied;
+
+  /// No description provided for @healthWeightTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get healthWeightTitle;
+
+  /// No description provided for @healthWeightAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add weight'**
+  String get healthWeightAdd;
+
+  /// No description provided for @healthWeightEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No weight recorded yet. Track your pet\'s weight over time.'**
+  String get healthWeightEmpty;
+
+  /// No description provided for @healthWeightSteady.
+  ///
+  /// In en, this message translates to:
+  /// **'Steady'**
+  String get healthWeightSteady;
+
+  /// No description provided for @healthWeightLastRecorded.
+  ///
+  /// In en, this message translates to:
+  /// **'Last recorded {date}'**
+  String healthWeightLastRecorded(String date);
+
+  /// No description provided for @healthMedicationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Medications'**
+  String get healthMedicationsTitle;
+
+  /// No description provided for @healthMedicationsAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add medication'**
+  String get healthMedicationsAdd;
+
+  /// No description provided for @healthMedicationsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No active medications. Add reminders to stay on schedule.'**
+  String get healthMedicationsEmpty;
+
+  /// No description provided for @healthMedicationsMarkGiven.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as given'**
+  String get healthMedicationsMarkGiven;
+
+  /// No description provided for @healthMedicationsGivenConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked {name} as given'**
+  String healthMedicationsGivenConfirmed(String name);
+
+  /// No description provided for @healthMedicationsOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get healthMedicationsOverdue;
+
+  /// No description provided for @healthMedicationsDueToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get healthMedicationsDueToday;
+
+  /// No description provided for @healthMedicationsDueInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'In {days}d'**
+  String healthMedicationsDueInDays(int days);
+
+  /// No description provided for @healthVaccinationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vaccinations'**
+  String get healthVaccinationsTitle;
+
+  /// No description provided for @healthVaccinationsAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add vaccination'**
+  String get healthVaccinationsAdd;
+
+  /// No description provided for @healthVaccinationsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No vaccinations recorded yet.'**
+  String get healthVaccinationsEmpty;
+
+  /// No description provided for @healthVaccinationsGivenOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Given {date}'**
+  String healthVaccinationsGivenOn(String date);
+
+  /// No description provided for @healthVaccinationsNextDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Due {date}'**
+  String healthVaccinationsNextDue(String date);
+
+  /// No description provided for @healthVaccinationsDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Due'**
+  String get healthVaccinationsDue;
+
+  /// No description provided for @healthFrequencyDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get healthFrequencyDaily;
+
+  /// No description provided for @healthFrequencyWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get healthFrequencyWeekly;
+
+  /// No description provided for @healthFrequencyBiweekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Every 2 weeks'**
+  String get healthFrequencyBiweekly;
+
+  /// No description provided for @healthFrequencyMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get healthFrequencyMonthly;
+
+  /// No description provided for @healthFrequencyQuarterly.
+  ///
+  /// In en, this message translates to:
+  /// **'Every 3 months'**
+  String get healthFrequencyQuarterly;
+
+  /// No description provided for @petDetailSectionDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Pet Details'**
+  String get petDetailSectionDetails;
+
+  /// No description provided for @petDetailSectionHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Health data'**
+  String get petDetailSectionHealth;
+
+  /// No description provided for @healthWeightValueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get healthWeightValueLabel;
+
+  /// No description provided for @healthWeightValueHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 12.4'**
+  String get healthWeightValueHint;
+
+  /// No description provided for @healthWeightDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date recorded'**
+  String get healthWeightDateLabel;
+
+  /// No description provided for @healthWeightInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid weight'**
+  String get healthWeightInvalid;
+
+  /// No description provided for @healthWeightAddedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight recorded'**
+  String get healthWeightAddedSuccess;
+
+  /// No description provided for @healthWeightAllReadings.
+  ///
+  /// In en, this message translates to:
+  /// **'All readings'**
+  String get healthWeightAllReadings;
+
+  /// No description provided for @healthWeightDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this reading?'**
+  String get healthWeightDeleteTitle;
+
+  /// No description provided for @healthWeightDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This weight record will be permanently removed.'**
+  String get healthWeightDeleteMessage;
+
+  /// No description provided for @healthWeightDeleteSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight record deleted'**
+  String get healthWeightDeleteSuccess;
+
+  /// No description provided for @healthFrequencyEveryNDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Every {days} days'**
+  String healthFrequencyEveryNDays(int days);
+
+  /// No description provided for @healthFrequencyCustomLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get healthFrequencyCustomLabel;
+
+  /// No description provided for @healthFrequencyDaysSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get healthFrequencyDaysSuffix;
+
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get searchHint;
+
+  /// No description provided for @searchNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No results'**
+  String get searchNoResults;
+
+  /// No description provided for @healthNotesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes (optional)'**
+  String get healthNotesLabel;
+
+  /// No description provided for @healthNotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Anything worth remembering'**
+  String get healthNotesHint;
+
+  /// No description provided for @healthMedicationsNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Medication'**
+  String get healthMedicationsNameLabel;
+
+  /// No description provided for @healthMedicationsNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Apoquel'**
+  String get healthMedicationsNameHint;
+
+  /// No description provided for @healthMedicationsNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose or enter a medication'**
+  String get healthMedicationsNameRequired;
+
+  /// No description provided for @healthMedicationsPickHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a medication'**
+  String get healthMedicationsPickHint;
+
+  /// No description provided for @healthMedicationsUseCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a custom name'**
+  String get healthMedicationsUseCustom;
+
+  /// No description provided for @healthMedicationsUseList.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from the list'**
+  String get healthMedicationsUseList;
+
+  /// No description provided for @healthMedicationsFrequencyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency'**
+  String get healthMedicationsFrequencyLabel;
+
+  /// No description provided for @healthMedicationsStartDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Start date'**
+  String get healthMedicationsStartDateLabel;
+
+  /// No description provided for @healthMedicationsAddedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Medication added'**
+  String get healthMedicationsAddedSuccess;
+
+  /// No description provided for @healthMedicationsEditFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency'**
+  String get healthMedicationsEditFrequency;
+
+  /// No description provided for @healthMedicationsFrequencyUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Frequency updated'**
+  String get healthMedicationsFrequencyUpdated;
+
+  /// No description provided for @healthVaccinationsNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Vaccine'**
+  String get healthVaccinationsNameLabel;
+
+  /// No description provided for @healthVaccinationsNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a vaccine'**
+  String get healthVaccinationsNameRequired;
+
+  /// No description provided for @healthVaccinationsPickHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a vaccine'**
+  String get healthVaccinationsPickHint;
+
+  /// No description provided for @healthVaccinationsAdministeredLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date administered'**
+  String get healthVaccinationsAdministeredLabel;
+
+  /// No description provided for @healthVaccinationsNextDueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Next booster (optional)'**
+  String get healthVaccinationsNextDueLabel;
+
+  /// No description provided for @healthVaccinationsNoBooster.
+  ///
+  /// In en, this message translates to:
+  /// **'No booster scheduled'**
+  String get healthVaccinationsNoBooster;
+
+  /// No description provided for @healthVaccinationsVetLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Vet (optional)'**
+  String get healthVaccinationsVetLabel;
+
+  /// No description provided for @healthVaccinationsVetHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Dr. Smith'**
+  String get healthVaccinationsVetHint;
+
+  /// No description provided for @healthVaccinationsAddedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Vaccination added'**
+  String get healthVaccinationsAddedSuccess;
+
+  /// No description provided for @healthMedicationsDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this medication?'**
+  String get healthMedicationsDeleteTitle;
+
+  /// No description provided for @healthMedicationsDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} will be permanently removed.'**
+  String healthMedicationsDeleteMessage(String name);
+
+  /// No description provided for @healthMedicationsDeleteSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Medication deleted'**
+  String get healthMedicationsDeleteSuccess;
+
+  /// No description provided for @healthVaccinationsDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this vaccination?'**
+  String get healthVaccinationsDeleteTitle;
+
+  /// No description provided for @healthVaccinationsDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s record will be permanently removed.'**
+  String healthVaccinationsDeleteMessage(String name);
+
+  /// No description provided for @healthVaccinationsDeleteSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Vaccination deleted'**
+  String get healthVaccinationsDeleteSuccess;
 
   /// No description provided for @photoSavedToGallery.
   ///
@@ -3261,6 +3681,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Looking to adopt a pet?'**
   String get onboardingAdoptPrompt;
+
+  /// No description provided for @walkStartTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a walk'**
+  String get walkStartTitle;
+
+  /// No description provided for @walkStartSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track {petName}\'s activity'**
+  String walkStartSubtitle(String petName);
+
+  /// No description provided for @walkStartButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Go'**
+  String get walkStartButton;
+
+  /// No description provided for @walkActiveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Walking with {petName}'**
+  String walkActiveTitle(String petName);
+
+  /// No description provided for @walkStopButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get walkStopButton;
+
+  /// No description provided for @walkStatDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get walkStatDuration;
+
+  /// No description provided for @walkStatDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance'**
+  String get walkStatDistance;
+
+  /// No description provided for @walkStatSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg Speed'**
+  String get walkStatSpeed;
+
+  /// No description provided for @walkNoLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location unavailable — showing timer only'**
+  String get walkNoLocation;
+
+  /// No description provided for @walkHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Walk History'**
+  String get walkHistoryTitle;
+
+  /// No description provided for @walkHistoryEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No walks recorded yet.\nStart a walk from the home screen.'**
+  String get walkHistoryEmpty;
+
+  /// No description provided for @walkDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this walk?'**
+  String get walkDeleteTitle;
+
+  /// No description provided for @walkDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This walk record will be permanently removed.'**
+  String get walkDeleteMessage;
+
+  /// No description provided for @walkDeleteSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Walk deleted'**
+  String get walkDeleteSuccess;
+
+  /// No description provided for @walkDeleteTooOld.
+  ///
+  /// In en, this message translates to:
+  /// **'Walks older than 2 days can\'t be deleted'**
+  String get walkDeleteTooOld;
+
+  /// No description provided for @reminderMedicationDose.
+  ///
+  /// In en, this message translates to:
+  /// **'Medication · {petName}'**
+  String reminderMedicationDose(Object petName);
+
+  /// No description provided for @reminderVaccinationBooster.
+  ///
+  /// In en, this message translates to:
+  /// **'Vaccination booster · {petName}'**
+  String reminderVaccinationBooster(Object petName);
+
+  /// No description provided for @reminderDueToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Due today'**
+  String get reminderDueToday;
+
+  /// No description provided for @reminderOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get reminderOverdue;
+
+  /// No description provided for @reminderDueInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Due in {days}d'**
+  String reminderDueInDays(Object days);
+
+  /// No description provided for @dateToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get dateToday;
+
+  /// No description provided for @dateYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get dateYesterday;
 }
 
 class _AppLocalizationsDelegate

@@ -344,12 +344,18 @@
   "@petDetailAge": {
     "placeholders": { "years": { "type": "int" } }
   },
+  "petDetailAgeMonths": "{months, plural, =0{Less than a month old} =1{1 month old} other{{months} months old}}",
+  "@petDetailAgeMonths": {
+    "placeholders": { "months": { "type": "int" } }
+  },
   "viewAllPets": "View all {count} pets",
   "@viewAllPets": {
     "placeholders": {
       "count": { "type": "int" }
     }
   },
+  "viewAll": "View all",
+  "@viewAll": {},
   "createPetAdditionalInfo": "Additional Information",
   "createPetAdditionalInfoSubtitle": "Optional — you can fill these in later",
   "createPetSize": "Size",
@@ -387,6 +393,100 @@
   },
   "petDetailProfileCompleteSubtitle": "Your pet profile is complete and information is up to date.",
   "microchipCopied": "Microchip number copied",
+  "healthWeightTitle": "Weight",
+  "healthWeightAdd": "Add weight",
+  "healthWeightEmpty": "No weight recorded yet. Track your pet's weight over time.",
+  "healthWeightSteady": "Steady",
+  "healthWeightLastRecorded": "Last recorded {date}",
+  "@healthWeightLastRecorded": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "healthMedicationsTitle": "Medications",
+  "healthMedicationsAdd": "Add medication",
+  "healthMedicationsEmpty": "No active medications. Add reminders to stay on schedule.",
+  "healthMedicationsMarkGiven": "Mark as given",
+  "healthMedicationsGivenConfirmed": "Marked {name} as given",
+  "@healthMedicationsGivenConfirmed": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "healthMedicationsOverdue": "Overdue",
+  "healthMedicationsDueToday": "Today",
+  "healthMedicationsDueInDays": "In {days}d",
+  "@healthMedicationsDueInDays": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+  "healthVaccinationsTitle": "Vaccinations",
+  "healthVaccinationsAdd": "Add vaccination",
+  "healthVaccinationsEmpty": "No vaccinations recorded yet.",
+  "healthVaccinationsGivenOn": "Given {date}",
+  "@healthVaccinationsGivenOn": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "healthVaccinationsNextDue": "Due {date}",
+  "@healthVaccinationsNextDue": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "healthVaccinationsDue": "Due",
+  "healthFrequencyDaily": "Daily",
+  "healthFrequencyWeekly": "Weekly",
+  "healthFrequencyBiweekly": "Every 2 weeks",
+  "healthFrequencyMonthly": "Monthly",
+  "healthFrequencyQuarterly": "Every 3 months",
+  "petDetailSectionDetails": "Pet Details",
+  "petDetailSectionHealth": "Health data",
+  "healthWeightValueLabel": "Weight",
+  "healthWeightValueHint": "e.g. 12.4",
+  "healthWeightDateLabel": "Date recorded",
+  "healthWeightInvalid": "Enter a valid weight",
+  "healthWeightAddedSuccess": "Weight recorded",
+  "healthWeightAllReadings": "All readings",
+  "healthWeightDeleteTitle": "Delete this reading?",
+  "healthWeightDeleteMessage": "This weight record will be permanently removed.",
+  "healthWeightDeleteSuccess": "Weight record deleted",
+  "healthFrequencyEveryNDays": "Every {days} days",
+  "@healthFrequencyEveryNDays": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+  "healthFrequencyCustomLabel": "Custom",
+  "healthFrequencyDaysSuffix": "days",
+  "searchHint": "Search",
+  "searchNoResults": "No results",
+  "healthNotesLabel": "Notes (optional)",
+  "healthNotesHint": "Anything worth remembering",
+  "healthMedicationsNameLabel": "Medication",
+  "healthMedicationsNameHint": "e.g. Apoquel",
+  "healthMedicationsNameRequired": "Choose or enter a medication",
+  "healthMedicationsPickHint": "Choose a medication",
+  "healthMedicationsUseCustom": "Enter a custom name",
+  "healthMedicationsUseList": "Choose from the list",
+  "healthMedicationsFrequencyLabel": "Frequency",
+  "healthMedicationsStartDateLabel": "Start date",
+  "healthMedicationsAddedSuccess": "Medication added",
+  "healthMedicationsEditFrequency": "Frequency",
+  "healthMedicationsFrequencyUpdated": "Frequency updated",
+  "healthVaccinationsNameLabel": "Vaccine",
+  "healthVaccinationsNameRequired": "Choose a vaccine",
+  "healthVaccinationsPickHint": "Choose a vaccine",
+  "healthVaccinationsAdministeredLabel": "Date administered",
+  "healthVaccinationsNextDueLabel": "Next booster (optional)",
+  "healthVaccinationsNoBooster": "No booster scheduled",
+  "healthVaccinationsVetLabel": "Vet (optional)",
+  "healthVaccinationsVetHint": "e.g. Dr. Smith",
+  "healthVaccinationsAddedSuccess": "Vaccination added",
+  "healthMedicationsDeleteTitle": "Delete this medication?",
+  "@healthMedicationsDeleteTitle": {},
+  "healthMedicationsDeleteMessage": "{name} will be permanently removed.",
+  "@healthMedicationsDeleteMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "healthMedicationsDeleteSuccess": "Medication deleted",
+  "@healthMedicationsDeleteSuccess": {},
+  "healthVaccinationsDeleteTitle": "Delete this vaccination?",
+  "healthVaccinationsDeleteMessage": "{name}'s record will be permanently removed.",
+  "@healthVaccinationsDeleteMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "healthVaccinationsDeleteSuccess": "Vaccination deleted",
   "photoSavedToGallery": "Photo saved to gallery",
   "couldNotSavePhoto": "Could not save photo",
   "didYouKnow": "Did you know?",
@@ -764,5 +864,60 @@
     "placeholders": { "petName": { "type": "String" } }
   },
   "adoptionWelcomeDone": "Done",
-  "onboardingAdoptPrompt": "Looking to adopt a pet?"
+  "onboardingAdoptPrompt": "Looking to adopt a pet?",
+
+  "walkStartTitle": "Start a walk",
+  "@walkStartTitle": {},
+  "walkStartSubtitle": "Track {petName}'s activity",
+  "@walkStartSubtitle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "walkStartButton": "Go",
+  "@walkStartButton": {},
+  "walkActiveTitle": "Walking with {petName}",
+  "@walkActiveTitle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "walkStopButton": "Stop",
+  "@walkStopButton": {},
+  "walkStatDuration": "Duration",
+  "@walkStatDuration": {},
+  "walkStatDistance": "Distance",
+  "@walkStatDistance": {},
+  "walkStatSpeed": "Avg Speed",
+  "@walkStatSpeed": {},
+  "walkNoLocation": "Location unavailable — showing timer only",
+  "@walkNoLocation": {},
+  "walkHistoryTitle": "Walk History",
+  "@walkHistoryTitle": {},
+  "walkHistoryEmpty": "No walks recorded yet.\nStart a walk from the home screen.",
+  "@walkHistoryEmpty": {},
+  "walkDeleteTitle": "Delete this walk?",
+  "@walkDeleteTitle": {},
+  "walkDeleteMessage": "This walk record will be permanently removed.",
+  "@walkDeleteMessage": {},
+  "walkDeleteSuccess": "Walk deleted",
+  "@walkDeleteSuccess": {},
+  "walkDeleteTooOld": "Walks older than 2 days can't be deleted",
+  "@walkDeleteTooOld": {},
+  "reminderMedicationDose": "Medication · {petName}",
+  "@reminderMedicationDose": {
+    "placeholders": { "petName": {} }
+  },
+  "reminderVaccinationBooster": "Vaccination booster · {petName}",
+  "@reminderVaccinationBooster": {
+    "placeholders": { "petName": {} }
+  },
+  "reminderDueToday": "Due today",
+  "@reminderDueToday": {},
+  "reminderOverdue": "Overdue",
+  "@reminderOverdue": {},
+  "reminderDueInDays": "Due in {days}d",
+  "@reminderDueInDays": {
+    "placeholders": { "days": {} }
+  },
+  "dateToday": "Today",
+  "@dateToday": {},
+  "dateYesterday": "Yesterday",
+  "@dateYesterday": {}
 }

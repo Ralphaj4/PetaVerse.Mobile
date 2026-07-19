@@ -12,6 +12,8 @@ _CreatePetResponseDto _$CreatePetResponseDtoFromJson(
   id: (json['id'] as num).toInt(),
   name: json['name'] as String? ?? '',
   imagePath: json['imagePath'] as String? ?? '',
+  speciesSupportsActivityTracking:
+      json['speciesSupportsActivityTracking'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$CreatePetResponseDtoToJson(
@@ -20,4 +22,5 @@ Map<String, dynamic> _$CreatePetResponseDtoToJson(
   'id': instance.id,
   'name': instance.name,
   'imagePath': instance.imagePath,
+  'speciesSupportsActivityTracking': instance.speciesSupportsActivityTracking,
 };

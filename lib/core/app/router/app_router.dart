@@ -35,6 +35,13 @@ import '../../../features/pets/presentation/pages/pet_list_page.dart';
 import '../../../features/pets/presentation/pages/pet_onboarding_page.dart';
 import '../../../features/pets/presentation/pages/select_pet_page.dart';
 import '../../../features/pet_vision/presentation/pages/pet_vision_page.dart';
+import '../../../features/activity/presentation/pages/walk_history_page.dart';
+import '../../../features/pawcare/presentation/pages/add_medication_page.dart';
+import '../../../features/pawcare/presentation/pages/add_vaccination_page.dart';
+import '../../../features/pawcare/presentation/pages/add_weight_page.dart';
+import '../../../features/pawcare/presentation/pages/medications_list_page.dart';
+import '../../../features/pawcare/presentation/pages/vaccinations_list_page.dart';
+import '../../../features/pawcare/presentation/pages/weight_history_page.dart';
 import '../../../features/profile/presentation/pages/profile_page.dart';
 import '../../../features/profile/presentation/pages/personal_information_page.dart';
 import '../../../features/service_providers/presentation/pages/service_providers_page.dart';
@@ -99,6 +106,25 @@ abstract final class AppRoutes {
   static const String map = '/map';
   static const String petVision = '/pet-vision';
   static const String sandbox = '/sandbox';
+
+  // PawCare health (under a pet)
+  static String addWeightPath(int petId) => '/pet/$petId/weight/add';
+  static const String addWeight = '/pet/:id/weight/add';
+  static String weightHistoryPath(int petId) => '/pet/$petId/weight';
+  static const String weightHistory = '/pet/:id/weight';
+  static String addMedicationPath(int petId) => '/pet/$petId/medications/add';
+  static const String addMedication = '/pet/:id/medications/add';
+  static String medicationsPath(int petId) => '/pet/$petId/medications';
+  static const String medications = '/pet/:id/medications';
+  static String addVaccinationPath(int petId) =>
+      '/pet/$petId/vaccinations/add';
+  static const String addVaccination = '/pet/:id/vaccinations/add';
+  static String vaccinationsPath(int petId) => '/pet/$petId/vaccinations';
+  static const String vaccinations = '/pet/:id/vaccinations';
+
+  // Walk activity
+  static String walkHistoryPath(int petId) => '/pet/$petId/walks';
+  static const String walkHistory = '/pet/:id/walks';
 }
 
 /// The route a logged-in user should land on, given the RESOLVED pet gate.
@@ -340,8 +366,7 @@ GoRouter appRouter(Ref ref) {
         parentNavigatorKey: _rootNavigatorKey,
         pageBuilder: (context, state) => AppTransitionPage(
               key: state.pageKey,
-              // `extra == true` when pushed from the first-pet onboarding flow.
-              child: CreatePetPage(isOnboarding: state.extra == true),
+              child: const CreatePetPage(),
             ),
       ),
       GoRoute(
@@ -377,6 +402,72 @@ GoRouter appRouter(Ref ref) {
             child: PetDetailPage(petId: id),
           );
         },
+      ),
+
+      // ── PawCare health (under a pet) ──────────────────────────────────────
+      GoRoute(
+        path: AppRoutes.weightHistory,
+        name: 'weightHistory',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+          key: state.pageKey,
+          child: WeightHistoryPage(
+            petId: int.parse(state.pathParameters['id']!),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.addWeight,
+        name: 'addWeight',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppSlideUpTransitionPage(
+          key: state.pageKey,
+          child: AddWeightPage(petId: int.parse(state.pathParameters['id']!)),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.medications,
+        name: 'medications',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+          key: state.pageKey,
+          child: MedicationsListPage(
+            petId: int.parse(state.pathParameters['id']!),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.addMedication,
+        name: 'addMedication',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppSlideUpTransitionPage(
+          key: state.pageKey,
+          child: AddMedicationPage(
+            petId: int.parse(state.pathParameters['id']!),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.vaccinations,
+        name: 'vaccinations',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+          key: state.pageKey,
+          child: VaccinationsListPage(
+            petId: int.parse(state.pathParameters['id']!),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.addVaccination,
+        name: 'addVaccination',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppSlideUpTransitionPage(
+          key: state.pageKey,
+          child: AddVaccinationPage(
+            petId: int.parse(state.pathParameters['id']!),
+          ),
+        ),
       ),
       GoRoute(
         path: AppRoutes.petList,
@@ -654,6 +745,18 @@ GoRouter appRouter(Ref ref) {
               key: state.pageKey,
               child: const SandboxPage(),
             ),
+      ),
+      GoRoute(
+        path: AppRoutes.walkHistory,
+        name: 'walkHistory',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final petId = int.parse(state.pathParameters['id']!);
+          return AppTransitionPage(
+            key: state.pageKey,
+            child: WalkHistoryPage(petId: petId),
+          );
+        },
       ),
     ],
   );

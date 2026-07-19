@@ -36,6 +36,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Future<void> _submit() async {
     final form = _formKey.currentState!;
     if (!form.saveAndValidate()) return;
+    if (_completePhone.isEmpty) return;
 
     final notifier = ref.read(authProvider.notifier);
     final outcome = await notifier.login(

@@ -11,7 +11,16 @@
 		<key>NSPhotoLibraryAddUsageDescription</key>
 		<string>PetaVerse needs access to save photos to your library</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>PetaVerse uses your location to show nearby pets and places on the map</string>
+		<string>PetaVerse uses your location to track your pet's walk distance and speed</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>PetaVerse uses your location in the background to track your pet's walk when the app is minimized</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>PetaVerse uses your location in the background to track your pet's walk when the app is minimized</string>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>location</string>
+			<string>fetch</string>
+		</array>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>

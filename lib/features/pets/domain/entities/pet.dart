@@ -22,6 +22,7 @@ class Pet {
     this.createdAt,
     this.avatarUrl,
     this.isPrimaryOwner = true,
+    this.supportsActivityTracking = false,
   });
 
   final int id;
@@ -59,6 +60,10 @@ class Pet {
   /// false for a co-owner. Gates primary-only actions (e.g. Invite Co-Owner).
   final bool isPrimaryOwner;
 
+  /// True when the pet's species supports activity (walk) tracking. Gates the
+  /// walk banner / activity UI.
+  final bool supportsActivityTracking;
+
   /// Whole years since [dateOfBirth], floored, never negative.
   int get ageInYears {
     final now = DateTime.now();
@@ -68,6 +73,16 @@ class Pet {
       age--;
     }
     return age < 0 ? 0 : age;
+  }
+
+  /// Whole months since [dateOfBirth], floored, never negative. Used to show a
+  /// finer age for pets under a year old (where [ageInYears] is 0).
+  int get ageInMonths {
+    final now = DateTime.now();
+    var months = (now.year - dateOfBirth.year) * 12 +
+        (now.month - dateOfBirth.month);
+    if (now.day < dateOfBirth.day) months--;
+    return months < 0 ? 0 : months;
   }
 
   /// The breed name, falling back to the species, for compact subtitles.

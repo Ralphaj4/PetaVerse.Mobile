@@ -836,9 +836,27 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String petDetailAgeMonths(int months) {
+    String _temp0 = intl.Intl.pluralLogic(
+      months,
+      locale: localeName,
+      other: '$months شهر',
+      many: '$months شهرًا',
+      few: '$months أشهر',
+      two: 'شهران',
+      one: 'شهر واحد',
+      zero: 'أقل من شهر',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String viewAllPets(int count) {
     return 'عرض جميع الحيوانات ($count)';
   }
+
+  @override
+  String get viewAll => 'عرض الكل';
 
   @override
   String get createPetAdditionalInfo => 'معلومات إضافية';
@@ -938,6 +956,229 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get microchipCopied => 'تم نسخ رقم الرقاقة';
+
+  @override
+  String get healthWeightTitle => 'الوزن';
+
+  @override
+  String get healthWeightAdd => 'إضافة وزن';
+
+  @override
+  String get healthWeightEmpty =>
+      'لم يُسجَّل أي وزن بعد. تتبَّع وزن حيوانك الأليف بمرور الوقت.';
+
+  @override
+  String get healthWeightSteady => 'ثابت';
+
+  @override
+  String healthWeightLastRecorded(String date) {
+    return 'آخر تسجيل $date';
+  }
+
+  @override
+  String get healthMedicationsTitle => 'الأدوية';
+
+  @override
+  String get healthMedicationsAdd => 'إضافة دواء';
+
+  @override
+  String get healthMedicationsEmpty =>
+      'لا توجد أدوية فعّالة. أضِف تذكيرات للبقاء على الموعد.';
+
+  @override
+  String get healthMedicationsMarkGiven => 'تحديد كمُعطى';
+
+  @override
+  String healthMedicationsGivenConfirmed(String name) {
+    return 'تم تحديد $name كمُعطى';
+  }
+
+  @override
+  String get healthMedicationsOverdue => 'متأخر';
+
+  @override
+  String get healthMedicationsDueToday => 'اليوم';
+
+  @override
+  String healthMedicationsDueInDays(int days) {
+    return 'خلال $days يوم';
+  }
+
+  @override
+  String get healthVaccinationsTitle => 'اللقاحات';
+
+  @override
+  String get healthVaccinationsAdd => 'إضافة لقاح';
+
+  @override
+  String get healthVaccinationsEmpty => 'لم تُسجَّل أي لقاحات بعد.';
+
+  @override
+  String healthVaccinationsGivenOn(String date) {
+    return 'أُعطي في $date';
+  }
+
+  @override
+  String healthVaccinationsNextDue(String date) {
+    return 'مستحق في $date';
+  }
+
+  @override
+  String get healthVaccinationsDue => 'مستحق';
+
+  @override
+  String get healthFrequencyDaily => 'يوميًا';
+
+  @override
+  String get healthFrequencyWeekly => 'أسبوعيًا';
+
+  @override
+  String get healthFrequencyBiweekly => 'كل أسبوعين';
+
+  @override
+  String get healthFrequencyMonthly => 'شهريًا';
+
+  @override
+  String get healthFrequencyQuarterly => 'كل ثلاثة أشهر';
+
+  @override
+  String get petDetailSectionDetails => 'تفاصيل الحيوان';
+
+  @override
+  String get petDetailSectionHealth => 'البيانات الصحية';
+
+  @override
+  String get healthWeightValueLabel => 'الوزن';
+
+  @override
+  String get healthWeightValueHint => 'مثال: 12.4';
+
+  @override
+  String get healthWeightDateLabel => 'تاريخ التسجيل';
+
+  @override
+  String get healthWeightInvalid => 'أدخل وزناً صالحاً';
+
+  @override
+  String get healthWeightAddedSuccess => 'تم تسجيل الوزن';
+
+  @override
+  String get healthWeightAllReadings => 'كل القياسات';
+
+  @override
+  String get healthWeightDeleteTitle => 'حذف هذا القياس؟';
+
+  @override
+  String get healthWeightDeleteMessage => 'سيتم حذف سجل الوزن هذا نهائيًا.';
+
+  @override
+  String get healthWeightDeleteSuccess => 'تم حذف سجل الوزن';
+
+  @override
+  String healthFrequencyEveryNDays(int days) {
+    return 'كل $days يوم';
+  }
+
+  @override
+  String get healthFrequencyCustomLabel => 'مخصّص';
+
+  @override
+  String get healthFrequencyDaysSuffix => 'يوم';
+
+  @override
+  String get searchHint => 'بحث';
+
+  @override
+  String get searchNoResults => 'لا توجد نتائج';
+
+  @override
+  String get healthNotesLabel => 'ملاحظات (اختياري)';
+
+  @override
+  String get healthNotesHint => 'أي شيء يستحق التذكّر';
+
+  @override
+  String get healthMedicationsNameLabel => 'الدواء';
+
+  @override
+  String get healthMedicationsNameHint => 'مثال: أبوكيل';
+
+  @override
+  String get healthMedicationsNameRequired => 'اختر أو أدخل دواءً';
+
+  @override
+  String get healthMedicationsPickHint => 'اختر دواءً';
+
+  @override
+  String get healthMedicationsUseCustom => 'إدخال اسم مخصّص';
+
+  @override
+  String get healthMedicationsUseList => 'الاختيار من القائمة';
+
+  @override
+  String get healthMedicationsFrequencyLabel => 'التكرار';
+
+  @override
+  String get healthMedicationsStartDateLabel => 'تاريخ البدء';
+
+  @override
+  String get healthMedicationsAddedSuccess => 'تمت إضافة الدواء';
+
+  @override
+  String get healthMedicationsEditFrequency => 'التكرار';
+
+  @override
+  String get healthMedicationsFrequencyUpdated => 'تم تحديث التكرار';
+
+  @override
+  String get healthVaccinationsNameLabel => 'اللقاح';
+
+  @override
+  String get healthVaccinationsNameRequired => 'اختر لقاحاً';
+
+  @override
+  String get healthVaccinationsPickHint => 'اختر لقاحاً';
+
+  @override
+  String get healthVaccinationsAdministeredLabel => 'تاريخ الإعطاء';
+
+  @override
+  String get healthVaccinationsNextDueLabel =>
+      'الجرعة المعزّزة القادمة (اختياري)';
+
+  @override
+  String get healthVaccinationsNoBooster => 'لا توجد جرعة معزّزة مجدولة';
+
+  @override
+  String get healthVaccinationsVetLabel => 'الطبيب البيطري (اختياري)';
+
+  @override
+  String get healthVaccinationsVetHint => 'مثال: د. سميث';
+
+  @override
+  String get healthVaccinationsAddedSuccess => 'تمت إضافة التطعيم';
+
+  @override
+  String get healthMedicationsDeleteTitle => 'حذف هذا الدواء؟';
+
+  @override
+  String healthMedicationsDeleteMessage(String name) {
+    return 'سيتم حذف $name نهائيًا.';
+  }
+
+  @override
+  String get healthMedicationsDeleteSuccess => 'تم حذف الدواء';
+
+  @override
+  String get healthVaccinationsDeleteTitle => 'حذف هذا التطعيم؟';
+
+  @override
+  String healthVaccinationsDeleteMessage(String name) {
+    return 'سيتم حذف سجل $name نهائيًا.';
+  }
+
+  @override
+  String get healthVaccinationsDeleteSuccess => 'تم حذف التطعيم';
 
   @override
   String get photoSavedToGallery => 'تم حفظ الصورة في المعرض';
@@ -1854,4 +2095,81 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingAdoptPrompt => 'هل تبحث عن التبنّي؟';
+
+  @override
+  String get walkStartTitle => 'ابدأ نزهة';
+
+  @override
+  String walkStartSubtitle(String petName) {
+    return 'تتبع نشاط $petName';
+  }
+
+  @override
+  String get walkStartButton => 'ابدأ';
+
+  @override
+  String walkActiveTitle(String petName) {
+    return 'نزهة مع $petName';
+  }
+
+  @override
+  String get walkStopButton => 'إيقاف';
+
+  @override
+  String get walkStatDuration => 'المدة';
+
+  @override
+  String get walkStatDistance => 'المسافة';
+
+  @override
+  String get walkStatSpeed => 'متوسط السرعة';
+
+  @override
+  String get walkNoLocation => 'الموقع غير متاح — مؤقت فقط';
+
+  @override
+  String get walkHistoryTitle => 'سجل النزهات';
+
+  @override
+  String get walkHistoryEmpty =>
+      'لم يتم تسجيل أي نزهة بعد.\nابدأ من الشاشة الرئيسية.';
+
+  @override
+  String get walkDeleteTitle => 'حذف هذه النزهة؟';
+
+  @override
+  String get walkDeleteMessage => 'سيتم حذف هذا السجل نهائيًا.';
+
+  @override
+  String get walkDeleteSuccess => 'تم حذف النزهة';
+
+  @override
+  String get walkDeleteTooOld => 'لا يمكن حذف النزهات الأقدم من يومين';
+
+  @override
+  String reminderMedicationDose(Object petName) {
+    return 'دواء · $petName';
+  }
+
+  @override
+  String reminderVaccinationBooster(Object petName) {
+    return 'جرعة تطعيم معززة · $petName';
+  }
+
+  @override
+  String get reminderDueToday => 'مستحق اليوم';
+
+  @override
+  String get reminderOverdue => 'متأخر';
+
+  @override
+  String reminderDueInDays(Object days) {
+    return 'خلال $days يوم';
+  }
+
+  @override
+  String get dateToday => 'اليوم';
+
+  @override
+  String get dateYesterday => 'أمس';
 }

@@ -95,22 +95,27 @@ class _PetAvatarSetupPageState extends ConsumerState<PetAvatarSetupPage> {
     }
 
     if (!mounted) return;
-    _commitAndGoHome(uploadedUrl);
+    _commitAndExit(uploadedUrl);
   }
 
-  void _skip() => _commitAndGoHome(null);
+  void _skip() => _commitAndExit(null);
 
   /// Commits the created pet to the routing gate (carrying the uploaded photo
-  /// so it shows immediately), then navigates home. Navigation happens before
-  /// commit so the gate's redirect can't race the pending nav.
-  void _commitAndGoHome(String? imageUrl) {
+  /// so it shows immediately), then lands on home for both entry points.
+  ///
+  /// A single declarative `go(home)` replaces the whole create-pet stack in one
+  /// step. We avoid chained pops / raw Navigator here: mixing those with
+  /// go_router desynced its page list and it restored the popped page, which
+  /// reopened this screen on skip. Commit first so the gate already knows the
+  /// pet before home renders (home selects/shows it immediately).
+  void _commitAndExit(String? imageUrl) {
     final ref0 = widget.petRef;
-    context.go(AppRoutes.home);
     if (ref0 != null) {
       ref.read(createPetProvider.notifier).commitCreated(
             PetRef(id: ref0.id, name: ref0.name, imagePath: imageUrl),
           );
     }
+    context.go(AppRoutes.home);
   }
 
   @override

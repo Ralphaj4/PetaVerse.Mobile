@@ -20,6 +20,7 @@ import '../../../../shared/widgets/app_cached_image.dart';
 import '../../../../shared/widgets/app_confirm_dialog.dart';
 import '../../../../shared/widgets/shimmer.dart';
 import '../../../co_ownership/presentation/providers/co_ownership_providers.dart';
+import '../../../pawcare/presentation/widgets/health_dashboard.dart';
 import '../../../profile/presentation/providers/user_provider.dart';
 import '../../domain/entities/pet.dart';
 import '../providers/delete_pet_provider.dart';
@@ -39,22 +40,7 @@ class PetDetailPage extends ConsumerStatefulWidget {
   ConsumerState<PetDetailPage> createState() => _PetDetailPageState();
 }
 
-class _PetDetailPageState extends ConsumerState<PetDetailPage>
-    with SingleTickerProviderStateMixin {
-  late final TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 4, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
+class _PetDetailPageState extends ConsumerState<PetDetailPage> {
   Future<void> _confirmDelete(BuildContext context, Pet pet) async {
     final l10n = context.l10n;
     final confirmed = await AppConfirmDialog.show(
@@ -136,69 +122,61 @@ class _PetDetailPageState extends ConsumerState<PetDetailPage>
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: Column(
+      body: Stack(
         children: [
-          // Header (scrolls away — wrapped in a scrollable via the overview tab
-          // owning its own SingleChildScrollView).
-          _PetHeroHeader(
-            petId: widget.petId,
-            pet: displayed,
-            isActive: isActive,
-            isDeleting: isDeleting,
-            onEdit: () => context.push(AppRoutes.editPetPath(widget.petId)),
-            onAddCoOwner: () => context.push(
-              AppRoutes.inviteCoOwnerPath(widget.petId),
-              extra: displayed?.name,
-            ),
-            onLeavePet: () => _confirmLeave(context),
-            onDelete: displayed != null
-                ? () => _confirmDelete(context, displayed)
-                : null,
-          ),
-
-          // Pinned tab bar.
-          _PetTabBar(controller: _tabController),
-
-          // Tab content.
-          Expanded(
-            child: Stack(
+          // Single scrolling column: hero header → info + health dashboard.
+          SingleChildScrollView(
+            child: Column(
               children: [
-                TabBarView(
-                  controller: _tabController,
-                  children: [
-                    _OverviewTab(
-                      petId: widget.petId,
-                      displayed: displayed,
-                      detailAsync: detailAsync,
-                    ),
-                    const _ComingSoonTab(
-                        icon: FluentIcons.heart_pulse_24_regular),
-                    const _ComingSoonTab(
-                        icon: FluentIcons.clipboard_24_regular),
-                    const _ComingSoonTab(
-                        icon: FluentIcons.history_24_regular),
-                  ],
+                _PetHeroHeader(
+                  petId: widget.petId,
+                  pet: displayed,
+                  isActive: isActive,
+                  isDeleting: isDeleting,
+                  onEdit: () =>
+                      context.push(AppRoutes.editPetPath(widget.petId)),
+                  onAddCoOwner: () => context.push(
+                    AppRoutes.inviteCoOwnerPath(widget.petId),
+                    extra: displayed?.name,
+                  ),
+                  onLeavePet: () => _confirmLeave(context),
+                  onDelete: displayed != null
+                      ? () => _confirmDelete(context, displayed)
+                      : null,
                 ),
 
-                // ── Set as Active sticky button ─────────────────────────
-                if (!isActive && displayed != null)
-                  Positioned(
-                    left: AppSpacing.lg,
-                    right: AppSpacing.lg,
-                    bottom: MediaQuery.paddingOf(context).bottom +
-                        AppSpacing.lg,
-                    child: AppButton(
-                      label: context.l10n.petDetailSetActive,
-                      icon: FluentIcons.checkmark_circle_24_regular,
-                      variant: AppButtonVariant.primary,
-                      onPressed: () => ref
-                          .read(petsProvider.notifier)
-                          .selectPet(widget.petId),
-                    ),
+                // The white content sheet is pulled up over the header's
+                // bottom edge — same gesture the tab bar used to make.
+                Transform.translate(
+                  offset: const Offset(0, -AppRadius.lg),
+                  child: _PetContent(
+                    petId: widget.petId,
+                    displayed: displayed,
+                    detailAsync: detailAsync,
+                    // Room for the sticky button so nothing is hidden beneath.
+                    bottomInset: (isActive || displayed == null)
+                        ? MediaQuery.paddingOf(context).bottom + AppSpacing.lg
+                        : MediaQuery.paddingOf(context).bottom + 100,
                   ),
+                ),
               ],
             ),
           ),
+
+          // ── Set as Active sticky button ─────────────────────────────────
+          if (!isActive && displayed != null)
+            Positioned(
+              left: AppSpacing.lg,
+              right: AppSpacing.lg,
+              bottom: MediaQuery.paddingOf(context).bottom + AppSpacing.lg,
+              child: AppButton(
+                label: context.l10n.petDetailSetActive,
+                icon: FluentIcons.checkmark_circle_24_regular,
+                variant: AppButtonVariant.primary,
+                onPressed: () =>
+                    ref.read(petsProvider.notifier).selectPet(widget.petId),
+              ),
+            ),
         ],
       ),
     );
@@ -534,92 +512,41 @@ class _PetHeroHeader extends StatelessWidget {
   }
 }
 
-// ── Tab bar ───────────────────────────────────────────────────────────────────
+// ── Content sheet (below the header) ──────────────────────────────────────────
 
-class _PetTabBar extends StatelessWidget {
-  const _PetTabBar({required this.controller});
-
-  final TabController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return Transform.translate(
-      // Pull the white sheet up over the header's bottom edge — same gesture as
-      // the home screen's content sheet over the hero.
-      offset: const Offset(0, -AppRadius.lg),
-      child: Container(
-        decoration: const BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(AppRadius.lg + 4),
-          ),
-        ),
-        clipBehavior: Clip.antiAlias,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: AppSpacing.sm),
-            TabBar(
-            controller: controller,
-            labelColor: AppColors.primary,
-            unselectedLabelColor: AppColors.textSecondary,
-            indicatorColor: AppColors.primary,
-            indicatorWeight: 2,
-            indicatorSize: TabBarIndicatorSize.label,
-            labelStyle:
-                AppTextStyles.labelMedium.copyWith(fontWeight: FontWeight.w700),
-            unselectedLabelStyle: AppTextStyles.labelMedium,
-            tabs: [
-              Tab(
-                icon: const Icon(FluentIcons.animal_paw_print_24_regular,
-                    size: 20),
-                text: l10n.petDetailTabOverview,
-              ),
-              Tab(
-                icon: const Icon(FluentIcons.heart_pulse_24_regular, size: 20),
-                text: l10n.petDetailTabHealth,
-              ),
-              Tab(
-                icon: const Icon(FluentIcons.clipboard_24_regular, size: 20),
-                text: l10n.petDetailTabRecords,
-              ),
-              Tab(
-                icon: const Icon(FluentIcons.history_24_regular, size: 20),
-                text: l10n.petDetailTabTimeline,
-              ),
-            ],
-          ),
-            const Divider(height: 1, thickness: 1, color: AppColors.divider),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// ── Overview tab ─────────────────────────────────────────────────────────────
-
-class _OverviewTab extends ConsumerWidget {
-  const _OverviewTab({
+/// The white content sheet below the hero: the pet info card, the health
+/// dashboard (weight / medications / vaccinations), and the profile-complete
+/// card. Non-scrolling — the page owns the single scroll view.
+class _PetContent extends ConsumerWidget {
+  const _PetContent({
     required this.petId,
     required this.displayed,
     required this.detailAsync,
+    required this.bottomInset,
   });
 
   final int petId;
   final Pet? displayed;
   final AsyncValue<Pet?> detailAsync;
 
+  /// Bottom padding reserved for the sticky "Set as Active" button.
+  final double bottomInset;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SingleChildScrollView(
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppRadius.lg + 4),
+        ),
+      ),
       padding: EdgeInsets.fromLTRB(
         AppSpacing.lg,
+        AppSpacing.xl,
         AppSpacing.lg,
-        AppSpacing.lg,
-        // Extra bottom padding so content isn't hidden under the sticky button.
-        MediaQuery.paddingOf(context).bottom + 100,
+        bottomInset,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -627,28 +554,34 @@ class _OverviewTab extends ConsumerWidget {
           if (detailAsync.isLoading && displayed == null)
             const _InfoSectionSkeleton()
           else if (displayed != null) ...[
-            _InfoSection(pet: displayed!),
+            const SizedBox(height: AppSpacing.lg),
+            _SectionHeader(
+              icon: FluentIcons.info_24_regular,
+              title: context.l10n.petDetailSectionDetails,
+            ),
             const SizedBox(height: AppSpacing.md),
+            _InfoSection(pet: displayed!),
 
-            if (detailAsync.isLoading)
-              const Center(
-                child: SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-              ),
-
-            if (detailAsync.hasError && detailAsync.value == null)
+            if (detailAsync.hasError && detailAsync.value == null) ...[
+              const SizedBox(height: AppSpacing.md),
               _DetailError(
                 error: detailAsync.error!,
                 onRetry: () => ref.invalidate(petDetailProvider(petId)),
               ),
+            ],
 
+            const SizedBox(height: AppSpacing.xl),
+
+            _SectionHeader(
+              icon: FluentIcons.heart_pulse_24_regular,
+              title: context.l10n.petDetailSectionHealth,
+            ),
             const SizedBox(height: AppSpacing.md),
 
-            // "All set" profile completeness card.
-            _ProfileCompleteCard(pet: displayed!),
+            // Health dashboard: weight, medications, vaccinations.
+            HealthDashboard(petId: petId),
+            const SizedBox(height: AppSpacing.xl),
+
           ],
         ],
       ),
@@ -672,6 +605,40 @@ String _sterilizationLabel(AppLocalizations l10n, String status) {
       return l10n.sterilizationStatusUnknown;
     default:
       return status;
+  }
+}
+
+// ── Section header ────────────────────────────────────────────────────────────
+
+/// A titled divider between the two content sections ("Details" and "Health
+/// data"): a small accent icon chip + bold title, so the sheet reads as two
+/// distinct groups rather than one long stack of cards.
+class _SectionHeader extends StatelessWidget {
+  const _SectionHeader({required this.icon, required this.title});
+
+  final IconData icon;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(
+            color: AppColors.primarySoft,
+            borderRadius: BorderRadius.circular(AppRadius.sm),
+          ),
+          child: Icon(icon, size: 18, color: AppColors.primary),
+        ),
+        const SizedBox(width: AppSpacing.sm),
+        Text(
+          title,
+          style: AppTextStyles.titleLarge.copyWith(fontWeight: FontWeight.w700),
+        ),
+      ],
+    );
   }
 }
 
@@ -721,7 +688,10 @@ class _InfoSection extends StatelessWidget {
                 borderRadius: BorderRadius.circular(AppRadius.sm),
               ),
               child: Text(
-                l10n.petDetailAge(pet.ageInYears),
+                // Under a year old, show months instead of "0 years old".
+                pet.ageInYears == 0
+                    ? l10n.petDetailAgeMonths(pet.ageInMonths)
+                    : l10n.petDetailAge(pet.ageInYears),
                 style: AppTextStyles.labelSmall.copyWith(
                   color: AppColors.textSecondary,
                   letterSpacing: 0,
@@ -854,87 +824,6 @@ class _InfoRow extends StatelessWidget {
   }
 }
 
-// ── Profile complete card ────────────────────────────────────────────────────
-
-class _ProfileCompleteCard extends StatelessWidget {
-  const _ProfileCompleteCard({required this.pet});
-
-  final Pet pet;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      decoration: BoxDecoration(
-        color: AppColors.secondarySoft,
-        borderRadius: AppRadius.lgAll,
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              color: AppColors.secondary,
-              borderRadius: BorderRadius.circular(AppRadius.sm),
-            ),
-            child: const Icon(
-              FluentIcons.shield_checkmark_24_filled,
-              color: AppColors.onSecondary,
-              size: 26,
-            ),
-          ),
-          const SizedBox(width: AppSpacing.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.petDetailProfileCompleteTitle(pet.name),
-                  style: AppTextStyles.titleSmall,
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  l10n.petDetailProfileCompleteSubtitle,
-                  style: AppTextStyles.bodySmall,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// ── Coming soon tab ───────────────────────────────────────────────────────────
-
-class _ComingSoonTab extends StatelessWidget {
-  const _ComingSoonTab({required this.icon});
-
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 48, color: AppColors.divider),
-          const SizedBox(height: AppSpacing.md),
-          Text(
-            context.l10n.comingSoon,
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textTertiary,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 // ── Action button ─────────────────────────────────────────────────────────────
 

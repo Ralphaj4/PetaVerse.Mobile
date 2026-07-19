@@ -51,11 +51,31 @@ abstract final class ApiEndpoints {
   static String petMedicalRecords(String petId) =>
       '/pets/$petId/medical-records';
   static String petVaccinations(String petId) => '/pets/$petId/vaccinations';
+  static String petVaccination(int petId, int vaccinationId) =>
+      '/pets/$petId/vaccinations/$vaccinationId';
 
   // Health
   static const String reminders = '/reminders';
   static String reminder(String id) => '/reminders/$id';
   static const String healthLogs = '/health-logs';
+
+  // PawCare — weight (under a pet)
+  static String petWeight(int petId) => '/pets/$petId/weight';
+  static String petWeightLatest(int petId) => '/pets/$petId/weight/latest';
+  static String petWeightRecord(int petId, int weightId) =>
+      '/pets/$petId/weight/$weightId';
+
+  // PawCare — medications (under a pet)
+  static String petMedications(int petId) => '/pets/$petId/medications';
+  static String markMedicationGiven(int petId, int medId) =>
+      '/pets/$petId/medications/$medId/mark-given';
+  static String petMedication(int petId, int medId) =>
+      '/pets/$petId/medications/$medId';
+  static const String upcomingMedications = '/medications/upcoming';
+
+  // PawCare — lookups
+  static const String medicationLookups = '/lookups/medications';
+  static const String vaccineLookups = '/lookups/vaccines';
 
   // Lost & Found
   static const String lostFoundDashboard = '/lost-found/dashboard';
@@ -109,6 +129,11 @@ abstract final class ApiEndpoints {
   static const String mediaUploadUrl = '/media/upload-url';
   static String mediaConfirm(String assetId) => '/media/$assetId/confirm';
   static String media(String assetId) => '/media/$assetId';
+
+  // Walk activities (under a pet)
+  static String petActivities(int petId) => '/pets/$petId/activities';
+  static String petActivity(int petId, int activityId) =>
+      '/pets/$petId/activities/$activityId';
 
   // Geocoding (reverse: coordinates → street address)
   static const String geocodeReverse = '/geocode/reverse';

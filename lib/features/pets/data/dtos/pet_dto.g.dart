@@ -31,6 +31,8 @@ _PetDto _$PetDtoFromJson(Map<String, dynamic> json) => _PetDto(
       : DateTime.parse(json['createdAt'] as String),
   avatarUrl: json['avatarUrl'] as String?,
   isPrimaryOwner: json['isPrimaryOwner'] as bool? ?? true,
+  speciesSupportsActivityTracking:
+      json['speciesSupportsActivityTracking'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$PetDtoToJson(_PetDto instance) => <String, dynamic>{
@@ -52,4 +54,5 @@ Map<String, dynamic> _$PetDtoToJson(_PetDto instance) => <String, dynamic>{
   'createdAt': instance.createdAt?.toIso8601String(),
   'avatarUrl': instance.avatarUrl,
   'isPrimaryOwner': instance.isPrimaryOwner,
+  'speciesSupportsActivityTracking': instance.speciesSupportsActivityTracking,
 };

@@ -32,6 +32,8 @@ class PetLocalDataSource {
             id: m['id'] as int,
             name: (m['name'] as String?) ?? '',
             imagePath: m['imagePath'] as String?,
+            supportsActivityTracking:
+                (m['supportsActivityTracking'] as bool?) ?? false,
           ),
         )
         .toList(growable: false);
@@ -42,7 +44,12 @@ class PetLocalDataSource {
     await _hive.putJson(_box, _refsKey, {
       'refs': [
         for (final r in refs)
-          {'id': r.id, 'name': r.name, 'imagePath': r.imagePath},
+          {
+            'id': r.id,
+            'name': r.name,
+            'imagePath': r.imagePath,
+            'supportsActivityTracking': r.supportsActivityTracking,
+          },
       ],
     });
   }

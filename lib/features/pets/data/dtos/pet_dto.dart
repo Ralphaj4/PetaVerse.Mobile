@@ -34,6 +34,9 @@ abstract class PetDto with _$PetDto {
     // True when the requesting user is this pet's primary owner (creator);
     // false for a co-owner. Gates primary-only UI (e.g. Invite Co-Owner).
     @Default(true) bool isPrimaryOwner,
+    // True when the pet's species supports activity (walk) tracking.
+    // Gates the home-screen walk banner.
+    @Default(false) bool speciesSupportsActivityTracking,
   }) = _PetDto;
 
   const PetDto._();
@@ -63,6 +66,7 @@ abstract class PetDto with _$PetDto {
         createdAt: createdAt,
         avatarUrl: avatarUrl,
         isPrimaryOwner: isPrimaryOwner,
+        supportsActivityTracking: speciesSupportsActivityTracking,
       );
 
   /// Slim identity for the routing gate / current-pet pointer, carrying the
@@ -73,5 +77,6 @@ abstract class PetDto with _$PetDto {
         imagePath: (avatarUrl != null && avatarUrl!.isNotEmpty)
             ? avatarUrl
             : null,
+        supportsActivityTracking: speciesSupportsActivityTracking,
       );
 }

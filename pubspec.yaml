@@ -10,6 +10,7 @@ dependencies:
   cached_network_image: ^3.4.1
   camera: ^0.12.0+1
   collection: ^1.19.1
+  connectivity_plus: ^6.1.4
   dio: ^5.9.2
   fluentui_system_icons: ^1.1.273
   flutter:
@@ -45,6 +46,10 @@ dependencies:
   url_launcher: ^6.3.2
   uuid: ^4.5.3
   wolt_modal_sheet: ^0.11.0
+  sqflite: ^2.4.2
+  flutter_foreground_task: ^8.17.0
+  permission_handler: ^11.4.0
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:

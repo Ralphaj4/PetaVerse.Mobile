@@ -344,12 +344,18 @@
   "@petDetailAge": {
     "placeholders": { "years": { "type": "int" } }
   },
+  "petDetailAgeMonths": "{months, plural, =0{Moins d'un mois} =1{1 mois} other{{months} mois}}",
+  "@petDetailAgeMonths": {
+    "placeholders": { "months": { "type": "int" } }
+  },
   "viewAllPets": "Voir tous les {count} animaux",
   "@viewAllPets": {
     "placeholders": {
       "count": { "type": "int" }
     }
   },
+  "viewAll": "Voir tout",
+  "@viewAll": {},
   "createPetAdditionalInfo": "Informations supplémentaires",
   "createPetAdditionalInfoSubtitle": "Facultatif — vous pouvez compléter plus tard",
   "createPetSize": "Taille",
@@ -387,6 +393,100 @@
   },
   "petDetailProfileCompleteSubtitle": "Le profil de votre animal est complet et à jour.",
   "microchipCopied": "Numéro de micropuce copié",
+  "healthWeightTitle": "Poids",
+  "healthWeightAdd": "Ajouter un poids",
+  "healthWeightEmpty": "Aucun poids enregistré. Suivez le poids de votre animal au fil du temps.",
+  "healthWeightSteady": "Stable",
+  "healthWeightLastRecorded": "Dernier relevé le {date}",
+  "@healthWeightLastRecorded": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "healthMedicationsTitle": "Médicaments",
+  "healthMedicationsAdd": "Ajouter un médicament",
+  "healthMedicationsEmpty": "Aucun médicament actif. Ajoutez des rappels pour rester à jour.",
+  "healthMedicationsMarkGiven": "Marquer comme administré",
+  "healthMedicationsGivenConfirmed": "{name} marqué comme administré",
+  "@healthMedicationsGivenConfirmed": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "healthMedicationsOverdue": "En retard",
+  "healthMedicationsDueToday": "Aujourd'hui",
+  "healthMedicationsDueInDays": "Dans {days} j",
+  "@healthMedicationsDueInDays": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+  "healthVaccinationsTitle": "Vaccinations",
+  "healthVaccinationsAdd": "Ajouter une vaccination",
+  "healthVaccinationsEmpty": "Aucune vaccination enregistrée.",
+  "healthVaccinationsGivenOn": "Administré le {date}",
+  "@healthVaccinationsGivenOn": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "healthVaccinationsNextDue": "Échéance {date}",
+  "@healthVaccinationsNextDue": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "healthVaccinationsDue": "À faire",
+  "healthFrequencyDaily": "Quotidien",
+  "healthFrequencyWeekly": "Hebdomadaire",
+  "healthFrequencyBiweekly": "Toutes les 2 semaines",
+  "healthFrequencyMonthly": "Mensuel",
+  "healthFrequencyQuarterly": "Tous les 3 mois",
+  "petDetailSectionDetails": "Détails de l'animal",
+  "petDetailSectionHealth": "Données de santé",
+  "healthWeightValueLabel": "Poids",
+  "healthWeightValueHint": "ex. 12,4",
+  "healthWeightDateLabel": "Date d'enregistrement",
+  "healthWeightInvalid": "Saisissez un poids valide",
+  "healthWeightAddedSuccess": "Poids enregistré",
+  "healthWeightAllReadings": "Toutes les mesures",
+  "healthWeightDeleteTitle": "Supprimer cette mesure ?",
+  "healthWeightDeleteMessage": "Cette mesure de poids sera définitivement supprimée.",
+  "healthWeightDeleteSuccess": "Mesure de poids supprimée",
+  "healthFrequencyEveryNDays": "Tous les {days} jours",
+  "@healthFrequencyEveryNDays": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+  "healthFrequencyCustomLabel": "Personnalisé",
+  "healthFrequencyDaysSuffix": "jours",
+  "searchHint": "Rechercher",
+  "searchNoResults": "Aucun résultat",
+  "healthNotesLabel": "Notes (facultatif)",
+  "healthNotesHint": "Tout ce qui mérite d'être noté",
+  "healthMedicationsNameLabel": "Médicament",
+  "healthMedicationsNameHint": "ex. Apoquel",
+  "healthMedicationsNameRequired": "Choisissez ou saisissez un médicament",
+  "healthMedicationsPickHint": "Choisir un médicament",
+  "healthMedicationsUseCustom": "Saisir un nom personnalisé",
+  "healthMedicationsUseList": "Choisir dans la liste",
+  "healthMedicationsFrequencyLabel": "Fréquence",
+  "healthMedicationsStartDateLabel": "Date de début",
+  "healthMedicationsAddedSuccess": "Médicament ajouté",
+  "healthMedicationsEditFrequency": "Fréquence",
+  "healthMedicationsFrequencyUpdated": "Fréquence mise à jour",
+  "healthVaccinationsNameLabel": "Vaccin",
+  "healthVaccinationsNameRequired": "Choisissez un vaccin",
+  "healthVaccinationsPickHint": "Choisir un vaccin",
+  "healthVaccinationsAdministeredLabel": "Date d'administration",
+  "healthVaccinationsNextDueLabel": "Prochain rappel (facultatif)",
+  "healthVaccinationsNoBooster": "Aucun rappel prévu",
+  "healthVaccinationsVetLabel": "Vétérinaire (facultatif)",
+  "healthVaccinationsVetHint": "ex. Dr Smith",
+  "healthVaccinationsAddedSuccess": "Vaccination ajoutée",
+  "healthMedicationsDeleteTitle": "Supprimer ce médicament ?",
+  "@healthMedicationsDeleteTitle": {},
+  "healthMedicationsDeleteMessage": "{name} sera définitivement supprimé.",
+  "@healthMedicationsDeleteMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "healthMedicationsDeleteSuccess": "Médicament supprimé",
+  "@healthMedicationsDeleteSuccess": {},
+  "healthVaccinationsDeleteTitle": "Supprimer cette vaccination ?",
+  "healthVaccinationsDeleteMessage": "L'enregistrement de {name} sera définitivement supprimé.",
+  "@healthVaccinationsDeleteMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "healthVaccinationsDeleteSuccess": "Vaccination supprimée",
   "photoSavedToGallery": "Photo enregistrée dans la galerie",
   "couldNotSavePhoto": "Impossible d'enregistrer la photo",
   "didYouKnow": "Le saviez-vous?",
@@ -665,5 +765,60 @@
   "adoptionWelcomeMessage": "Bienvenue à {petName} dans la famille. Son profil complet et ses dossiers sont déjà dans votre compte.",
   "adoptionWelcomeViewPet": "Voir le profil de {petName}",
   "adoptionWelcomeDone": "Terminé",
-  "onboardingAdoptPrompt": "Vous cherchez à adopter ?"
+  "onboardingAdoptPrompt": "Vous cherchez à adopter ?",
+
+  "walkStartTitle": "Commencer une promenade",
+  "@walkStartTitle": {},
+  "walkStartSubtitle": "Suivre l'activité de {petName}",
+  "@walkStartSubtitle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "walkStartButton": "Démarrer",
+  "@walkStartButton": {},
+  "walkActiveTitle": "Promenade avec {petName}",
+  "@walkActiveTitle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "walkStopButton": "Arrêter",
+  "@walkStopButton": {},
+  "walkStatDuration": "Durée",
+  "@walkStatDuration": {},
+  "walkStatDistance": "Distance",
+  "@walkStatDistance": {},
+  "walkStatSpeed": "Vitesse moy.",
+  "@walkStatSpeed": {},
+  "walkNoLocation": "Localisation indisponible — minuterie uniquement",
+  "@walkNoLocation": {},
+  "walkHistoryTitle": "Historique des promenades",
+  "@walkHistoryTitle": {},
+  "walkHistoryEmpty": "Aucune promenade enregistrée.\nCommencez depuis l'accueil.",
+  "@walkHistoryEmpty": {},
+  "walkDeleteTitle": "Supprimer cette promenade ?",
+  "@walkDeleteTitle": {},
+  "walkDeleteMessage": "Cet enregistrement sera définitivement supprimé.",
+  "@walkDeleteMessage": {},
+  "walkDeleteSuccess": "Promenade supprimée",
+  "@walkDeleteSuccess": {},
+  "walkDeleteTooOld": "Les promenades de plus de 2 jours ne peuvent pas être supprimées",
+  "@walkDeleteTooOld": {},
+  "reminderMedicationDose": "Médicament · {petName}",
+  "@reminderMedicationDose": {
+    "placeholders": { "petName": {} }
+  },
+  "reminderVaccinationBooster": "Rappel de vaccin · {petName}",
+  "@reminderVaccinationBooster": {
+    "placeholders": { "petName": {} }
+  },
+  "reminderDueToday": "À faire aujourd'hui",
+  "@reminderDueToday": {},
+  "reminderOverdue": "En retard",
+  "@reminderOverdue": {},
+  "reminderDueInDays": "Dans {days}j",
+  "@reminderDueInDays": {
+    "placeholders": { "days": {} }
+  },
+  "dateToday": "Aujourd'hui",
+  "@dateToday": {},
+  "dateYesterday": "Hier",
+  "@dateYesterday": {}
 }

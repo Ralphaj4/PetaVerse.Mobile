@@ -5,11 +5,21 @@
 ///
 /// Domain layer — no Flutter or JSON imports.
 class PetRef {
-  const PetRef({required this.id, required this.name, this.imagePath});
+  const PetRef({
+    required this.id,
+    required this.name,
+    this.imagePath,
+    this.supportsActivityTracking = false,
+  });
 
   final int id;
   final String name;
 
   /// Path to the pet's image; null/empty until media support lands.
   final String? imagePath;
+
+  /// True when the pet's species supports activity (walk) tracking — gates
+  /// the home-screen walk banner. Mirrors PetResponse's
+  /// `speciesSupportsActivityTracking`.
+  final bool supportsActivityTracking;
 }
