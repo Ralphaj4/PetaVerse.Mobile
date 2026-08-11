@@ -727,6 +727,15 @@ class AppLocalizationsFr extends AppLocalizations {
       'Nos serveurs rencontrent un problème. Veuillez réessayer plus tard.';
 
   @override
+  String get errorRateLimit =>
+      'Vous allez trop vite. Veuillez ralentir et réessayer.';
+
+  @override
+  String errorRateLimitRetry(int seconds) {
+    return 'Trop de requêtes. Réessayez dans ${seconds}s.';
+  }
+
+  @override
   String get errorCache => 'Impossible de charger les données enregistrées.';
 
   @override
@@ -2176,4 +2185,558 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dateYesterday => 'Hier';
+
+  @override
+  String get pawHubSearchHint => 'Rechercher animaux, publications, #tags';
+
+  @override
+  String get pawHubFeedTabFollowing => 'Abonnements';
+
+  @override
+  String get pawHubFeedTabDiscover => 'Découvrir';
+
+  @override
+  String get pawHubNewPosts => 'Nouvelles publications';
+
+  @override
+  String get pawHubFeedEmptyTitle => 'Votre fil est un peu calme';
+
+  @override
+  String get pawHubFeedEmptyDescription =>
+      'Suivez des animaux et leurs moments apparaîtront ici 🐾';
+
+  @override
+  String get pawHubDiscoverPets => 'Découvrir des animaux';
+
+  @override
+  String get pawHubSuggestedPets => 'Animaux que vous pourriez aimer';
+
+  @override
+  String get pawHubLostPetNearby => 'ANIMAL PERDU À PROXIMITÉ';
+
+  @override
+  String get pawHubViewOnMap => 'Voir sur la carte';
+
+  @override
+  String get pawHubFollow => 'Suivre';
+
+  @override
+  String get pawHubFollowing => 'Abonné';
+
+  @override
+  String get pawHubCouldNotLoadFeed => 'Impossible de charger le fil';
+
+  @override
+  String get pawHubPostSaved => 'Enregistré';
+
+  @override
+  String get pawHubPostRemovedFromSaved => 'Retiré des enregistrements';
+
+  @override
+  String get pawHubLinkCopied => 'Lien copié';
+
+  @override
+  String get pawHubPostHidden => 'Publication masquée';
+
+  @override
+  String get pawHubPostReported => 'Signalé. Merci.';
+
+  @override
+  String pawHubBlockedUser(String name) {
+    return '$name bloqué(e)';
+  }
+
+  @override
+  String get pawHubPostDeleted => 'Publication supprimée';
+
+  @override
+  String get pawHubEditCaption => 'Modifier la légende';
+
+  @override
+  String get pawHubCaptionUpdated => 'Légende mise à jour';
+
+  @override
+  String pawHubFollowingPet(String name) {
+    return 'Vous suivez $name';
+  }
+
+  @override
+  String pawHubUnfollowedPet(String name) {
+    return 'Vous ne suivez plus $name';
+  }
+
+  @override
+  String get pawHubAddPetFirstToPost =>
+      'Ajoutez d\'abord un animal pour publier';
+
+  @override
+  String pawHubPostedAs(String name) {
+    return 'Publié en tant que $name 🐾';
+  }
+
+  @override
+  String get pawHubPostOptionSave => 'Enregistrer';
+
+  @override
+  String get pawHubPostOptionRemoveSaved => 'Retirer des enregistrements';
+
+  @override
+  String get pawHubPostOptionCopyLink => 'Copier le lien';
+
+  @override
+  String get pawHubPostOptionShareTo => 'Partager vers…';
+
+  @override
+  String get pawHubPostOptionEditPost => 'Modifier la publication';
+
+  @override
+  String get pawHubPostOptionDeletePost => 'Supprimer la publication';
+
+  @override
+  String get pawHubPostOptionHidePost => 'Masquer cette publication';
+
+  @override
+  String get pawHubPostOptionReport => 'Signaler';
+
+  @override
+  String pawHubPostOptionBlock(String name) {
+    return 'Bloquer $name';
+  }
+
+  @override
+  String get pawHubReportTitle => 'Pourquoi signalez-vous ceci ?';
+
+  @override
+  String get pawHubReportReasonCruelty => 'Cruauté envers les animaux';
+
+  @override
+  String get pawHubReportReasonSpam => 'Spam ou arnaque';
+
+  @override
+  String get pawHubReportReasonNudity => 'Nudité ou contenu sexuel';
+
+  @override
+  String get pawHubReportReasonHarassment => 'Harcèlement ou intimidation';
+
+  @override
+  String get pawHubReportReasonImpersonation =>
+      'Pas un vrai animal / usurpation';
+
+  @override
+  String get pawHubReportReasonOther => 'Autre chose';
+
+  @override
+  String get pawHubCommentsTitle => 'Commentaires';
+
+  @override
+  String get pawHubCommentAs => 'Commenter en tant que';
+
+  @override
+  String pawHubCommentHint(String name) {
+    return 'Ajouter un commentaire en tant que $name…';
+  }
+
+  @override
+  String pawHubReplyingTo(String name) {
+    return 'Réponse à $name';
+  }
+
+  @override
+  String get pawHubSortTop => 'Populaires';
+
+  @override
+  String get pawHubSortNewest => 'Récents';
+
+  @override
+  String get pawHubCommentReply => 'Répondre';
+
+  @override
+  String get pawHubNoCommentsYet => 'Pas encore de commentaires';
+
+  @override
+  String get pawHubFirstCommentEncouragement =>
+      'Soyez le premier à dire quelque chose 🐾';
+
+  @override
+  String get pawHubNotificationsTitle => 'Notifications';
+
+  @override
+  String get pawHubMarkAllRead => 'Tout marquer comme lu';
+
+  @override
+  String get pawHubPostLike => 'J\'aime';
+
+  @override
+  String get pawHubPostComment => 'Commenter';
+
+  @override
+  String get pawHubPostShare => 'Partager';
+
+  @override
+  String get pawHubPostSaveAction => 'Enregistrer';
+
+  @override
+  String get pawHubLikesCountPaw => 'patte';
+
+  @override
+  String get pawHubLikesCountPaws => 'pattes';
+
+  @override
+  String pawHubTaggedWith(String names) {
+    return 'avec $names';
+  }
+
+  @override
+  String get pawHubPostEdited => ' · Modifié';
+
+  @override
+  String pawHubViewAllComments(int count) {
+    return 'Voir les $count commentaires';
+  }
+
+  @override
+  String get pawHubNewPostTitle => 'Nouvelle publication';
+
+  @override
+  String get pawHubShare => 'Partager';
+
+  @override
+  String get pawHubPostingAs => 'Publier en tant que';
+
+  @override
+  String get pawHubCaptionHint =>
+      'Écrire une légende… ajoutez #hashtags et @mentions';
+
+  @override
+  String get pawHubTagPets => 'Taguer des animaux';
+
+  @override
+  String get pawHubAddLocation => 'Ajouter un lieu';
+
+  @override
+  String get pawHubVisibility => 'Visibilité';
+
+  @override
+  String get pawHubAddMedia => 'Ajouter';
+
+  @override
+  String get pawHubCoverPhoto => 'Couverture';
+
+  @override
+  String get pawHubDone => 'Terminé';
+
+  @override
+  String get pawHubAddPhotoRequired => 'Ajoutez au moins une photo';
+
+  @override
+  String get pawHubProfilePosts => 'Publications';
+
+  @override
+  String get pawHubProfileFollowers => 'Abonnés';
+
+  @override
+  String get pawHubProfileFollowing => 'Abonnements';
+
+  @override
+  String get pawHubProfileManagePet => 'Gérer l\'animal';
+
+  @override
+  String pawHubProfileSiblings(String name) {
+    return 'Frères et sœurs de $name';
+  }
+
+  @override
+  String pawHubProfileCaredForBy(String owner) {
+    return 'soigné par $owner';
+  }
+
+  @override
+  String get communitiesTitle => 'Communautés';
+
+  @override
+  String get communitiesEntryButton => 'Communautés';
+
+  @override
+  String get communitiesSearchHint => 'Rechercher des communautés';
+
+  @override
+  String get communitiesMyCommunities => 'Mes communautés';
+
+  @override
+  String get communitiesTabDiscover => 'Découvrir';
+
+  @override
+  String get communitiesTabMine => 'Mes communautés';
+
+  @override
+  String get communitiesMineEmptyTitle =>
+      'Vous n\'avez rejoint aucune communauté';
+
+  @override
+  String get communitiesMineEmptyDescription =>
+      'Explorez les communautés et rejoignez celles qui correspondent à votre animal 🐾';
+
+  @override
+  String get communitiesDiscoverRailTitle => 'Communautés à rejoindre';
+
+  @override
+  String get communitiesSeeAll => 'Voir tout';
+
+  @override
+  String get communitiesEmptyTitle => 'Aucune communauté pour l’instant';
+
+  @override
+  String get communitiesEmptyDescription =>
+      'Soyez le premier à en créer une pour votre meute 🐾';
+
+  @override
+  String communitiesSearchEmpty(String query) {
+    return 'Aucune communauté ne correspond à « $query »';
+  }
+
+  @override
+  String get communitiesCouldNotLoad => 'Impossible de charger les communautés';
+
+  @override
+  String get communitiesRetry => 'Réessayer';
+
+  @override
+  String get communitySortPopular => 'Populaires';
+
+  @override
+  String get communitySortNewest => 'Récentes';
+
+  @override
+  String get communitySortMostActive => 'Les plus actives';
+
+  @override
+  String get communityCategoryAll => 'Toutes';
+
+  @override
+  String get communityCategoryBreedClub => 'Club de race';
+
+  @override
+  String get communityCategoryShelterRescues => 'Refuges et sauvetages';
+
+  @override
+  String get communityCategoryBreeding => 'Élevage';
+
+  @override
+  String get communityCategorySpecialNeeds => 'Besoins spéciaux';
+
+  @override
+  String get communityCategoryActivity => 'Activité';
+
+  @override
+  String get communityCategoryHealth => 'Santé';
+
+  @override
+  String get communityCategoryOther => 'Autre';
+
+  @override
+  String get communityJoin => 'Rejoindre';
+
+  @override
+  String get communityJoined => 'Rejoint';
+
+  @override
+  String get communityLeave => 'Quitter';
+
+  @override
+  String get communityManage => 'Gérer';
+
+  @override
+  String get communityEditAvatar => 'Changer la photo de profil';
+
+  @override
+  String get communityEditBanner => 'Changer la photo de couverture';
+
+  @override
+  String get communityImagesUpdating => 'Mise à jour…';
+
+  @override
+  String get communityImagesUpdated => 'Photo mise à jour';
+
+  @override
+  String get communityImagesUpdateFailed =>
+      'Impossible de mettre à jour la photo. Réessayez.';
+
+  @override
+  String get communityLeadBadge => 'Chef';
+
+  @override
+  String communityMembersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count membres',
+      one: '1 membre',
+      zero: 'Aucun membre',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String communityPostsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count publications',
+      one: '1 publication',
+      zero: 'Aucune publication',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String communityLedBy(String name) {
+    return 'Dirigée par $name';
+  }
+
+  @override
+  String communityJoinedToast(String name) {
+    return 'Vous avez rejoint $name';
+  }
+
+  @override
+  String communityLeftToast(String name) {
+    return 'Vous avez quitté $name';
+  }
+
+  @override
+  String get communityDetailAbout => 'À propos';
+
+  @override
+  String get communityDetailMembers => 'Membres';
+
+  @override
+  String get communityStatPosts => 'Publications';
+
+  @override
+  String get communityLeaderLabel => 'Chef';
+
+  @override
+  String get communityDetailFeedEmptyTitle => 'Aucune publication';
+
+  @override
+  String get communityCreateFirstPost => 'Créer la première publication';
+
+  @override
+  String get communityDetailViewMembers => 'Voir tous les membres';
+
+  @override
+  String get communityDetailFeedEmpty =>
+      'Aucune publication — soyez le premier à partager';
+
+  @override
+  String get communityDetailJoinToPost => 'Rejoignez pour publier ici';
+
+  @override
+  String get communityLeaveConfirmTitle => 'Quitter la communauté ?';
+
+  @override
+  String communityLeaveConfirmMessage(String name) {
+    return 'Vous ne verrez plus les publications de $name.';
+  }
+
+  @override
+  String get communityDeleteConfirmTitle => 'Supprimer la communauté ?';
+
+  @override
+  String communityDeleteConfirmMessage(String name) {
+    return 'Cela supprime définitivement $name et toutes ses publications. Action irréversible.';
+  }
+
+  @override
+  String get communityDelete => 'Supprimer';
+
+  @override
+  String get communityDeletedToast => 'Communauté supprimée';
+
+  @override
+  String get communityCancel => 'Annuler';
+
+  @override
+  String get communityCreateTitle => 'Nouvelle communauté';
+
+  @override
+  String get communityCreateNameLabel => 'Nom';
+
+  @override
+  String get communityCreateNameHint => 'ex. Club des Golden Retriever';
+
+  @override
+  String get communityCreateHandleLabel => 'Identifiant';
+
+  @override
+  String get communityCreateHandleHint => 'golden-club';
+
+  @override
+  String get communityHandleChecking => 'Vérification de la disponibilité…';
+
+  @override
+  String get communityHandleAvailable => 'Identifiant disponible';
+
+  @override
+  String get communityHandleTaken => 'Cet identifiant est déjà pris';
+
+  @override
+  String get communityHandleInvalid =>
+      'Utilisez uniquement minuscules, chiffres et tirets';
+
+  @override
+  String get communityCreateDescriptionLabel => 'Description';
+
+  @override
+  String get communityCreateDescriptionHint =>
+      'De quoi parle cette communauté ?';
+
+  @override
+  String get communityCreateCategoryLabel => 'Catégorie';
+
+  @override
+  String get communityCreateBannerLabel => 'Ajouter une photo de couverture';
+
+  @override
+  String get communityCreateSubmit => 'Créer la communauté';
+
+  @override
+  String get communityCreateNameRequired => 'Veuillez saisir un nom';
+
+  @override
+  String get communityCreateCategoryRequired =>
+      'Veuillez choisir une catégorie';
+
+  @override
+  String get communityCreatedToast => 'Communauté créée 🎉';
+
+  @override
+  String get communityCreateFailed =>
+      'Impossible de créer la communauté. Réessayez.';
+
+  @override
+  String get communityCreateAddPetFirst =>
+      'Ajoutez d’abord un animal pour diriger une communauté';
+
+  @override
+  String get communityMembersTitle => 'Membres';
+
+  @override
+  String get communityMemberRemove => 'Retirer';
+
+  @override
+  String get communityMemberRemoveConfirmTitle => 'Retirer le membre ?';
+
+  @override
+  String communityMemberRemoveConfirmMessage(String name) {
+    return 'Retirer $name de cette communauté ?';
+  }
+
+  @override
+  String get communityMemberRemovedToast => 'Membre retiré';
+
+  @override
+  String communityComposerPostingIn(String name) {
+    return 'Publication dans $name';
+  }
 }

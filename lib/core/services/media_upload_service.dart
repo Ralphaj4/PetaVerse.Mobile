@@ -12,12 +12,15 @@ class MediaUploadService {
 
   /// Upload a file with automatic retry on confirm failure.
   /// Returns the confirmed asset or a failure.
+  ///
+  /// [onProgress] (0.0–1.0) reports the R2 upload fraction for this file.
   Future<Result<MediaAsset>> uploadFile({
     required File file,
     required String contentType,
     required MediaCategory category,
     String? fileName,
     int? petId,
+    void Function(double fraction)? onProgress,
   }) async {
     // Step 1: Get upload URL
     final urlResult = await _datasource.getUploadUrl(
@@ -36,6 +39,11 @@ class MediaUploadService {
           uploadUrlResponse.uploadUrl,
           file,
           contentType,
+          onProgress: onProgress == null
+              ? null
+              : (sent, total) {
+                  if (total > 0) onProgress(sent / total);
+                },
         );
 
         return uploadResult.when(

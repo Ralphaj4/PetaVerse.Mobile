@@ -75,6 +75,11 @@ class ApiClient {
 
   Future<T> delete<T>(String path) => _request(() => _dio.delete<T>(path));
 
+  /// DELETE with a request body. Some endpoints (e.g. PawHub unlike / unsave /
+  /// unfollow / unblock) identify the acting pet in the body even on a DELETE.
+  Future<T> deleteWithBody<T>(String path, {Object? data}) =>
+      _request(() => _dio.delete<T>(path, data: data));
+
   Future<T> _request<T>(Future<Response<T>> Function() send) async {
     try {
       final response = await send();
@@ -106,6 +111,12 @@ class ApiClient {
             fieldErrors: _extractFieldErrors(body),
           );
         }
+        if (status == 429) {
+          return RateLimitException(
+            message,
+            retryAfter: _extractRetryAfter(e.response),
+          );
+        }
         if (status >= 500) return ServerException(message);
         return ServerException(message);
       case DioExceptionType.cancel:
@@ -127,6 +138,15 @@ class ApiClient {
         body['message'] as String? ??
         body['title'] as String? ??
         '';
+  }
+
+  /// Parses the `Retry-After` header (delta-seconds form, per the API's 429
+  /// contract). Returns null when absent or unparseable.
+  Duration? _extractRetryAfter(Response<dynamic>? response) {
+    final raw = response?.headers.value('retry-after');
+    if (raw == null) return null;
+    final seconds = int.tryParse(raw.trim());
+    return seconds == null ? null : Duration(seconds: seconds);
   }
 
   Map<String, String> _extractFieldErrors(dynamic body) {

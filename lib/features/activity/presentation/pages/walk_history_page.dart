@@ -268,11 +268,7 @@ class _ActivityCard extends StatelessWidget {
                   width: 46,
                   height: 46,
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF1A7F8B), Color(0xFF01B4C2)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
+                    color: AppColors.secondary,
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
                   child: const Icon(
@@ -287,7 +283,7 @@ class _ActivityCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        timeLabel,
+                        '${activity.intensity} activity at $timeLabel',
                         style: AppTextStyles.titleSmall,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,

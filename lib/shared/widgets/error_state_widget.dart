@@ -120,6 +120,10 @@ class _ErrorStyle {
             FluentIcons.cloud_dismiss_24_regular,
             AppColors.error,
           ),
+        RateLimitFailure() => const _ErrorStyle(
+            FluentIcons.timer_24_regular,
+            AppColors.warning,
+          ),
         CacheFailure() => const _ErrorStyle(
             FluentIcons.cloud_off_24_regular,
             AppColors.textSecondary,

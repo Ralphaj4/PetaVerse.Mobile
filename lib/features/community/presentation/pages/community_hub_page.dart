@@ -1,6 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -9,6 +10,7 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../adoption/presentation/pages/adoption_board_page.dart';
 import '../../../lost_and_found/presentation/pages/lost_and_found_page.dart';
+import '../providers/pawhub_tab_provider.dart';
 import 'pawhub_page.dart';
 
 /// The Community destination (bottom-nav tab 1). Hosts the three
@@ -19,17 +21,38 @@ import 'pawhub_page.dart';
 /// and Adoption render in [embedded] mode (no own AppBar) — the hub supplies the
 /// shared header. PawHub keeps its own functional toolbar (pet switcher /
 /// notifications) below the segmented control.
-class CommunityHubPage extends StatefulWidget {
-  const CommunityHubPage({super.key});
+class CommunityHubPage extends ConsumerStatefulWidget {
+  const CommunityHubPage({this.initialTab = 0, super.key});
+
+  /// Which segment to open on first build: 0 = Feed, 1 = Lost & Found,
+  /// 2 = Adoption. Lets Home's quick actions deep-link into a specific tab.
+  final int initialTab;
 
   @override
-  State<CommunityHubPage> createState() => _CommunityHubPageState();
+  ConsumerState<CommunityHubPage> createState() => _CommunityHubPageState();
 }
 
-class _CommunityHubPageState extends State<CommunityHubPage>
+class _CommunityHubPageState extends ConsumerState<CommunityHubPage>
     with SingleTickerProviderStateMixin {
-  late final TabController _controller =
-      TabController(length: 3, vsync: this);
+  late final TabController _controller = TabController(
+    length: 3,
+    vsync: this,
+    initialIndex: widget.initialTab.clamp(0, 2),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    // Consume a pending tab request (e.g. from Home's quick actions) once the
+    // first frame is up, then clear it so it doesn't re-fire on the next visit.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final requested = ref.read(pawHubRequestedTabProvider);
+      if (requested != null) {
+        _controller.index = requested.clamp(0, 2);
+        ref.read(pawHubRequestedTabProvider.notifier).clear();
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -40,6 +63,15 @@ class _CommunityHubPageState extends State<CommunityHubPage>
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+
+    // The hub is kept alive in the shell's IndexedStack, so react to later tab
+    // requests (arriving while already built) by animating to that segment.
+    ref.listen<int?>(pawHubRequestedTabProvider, (_, next) {
+      if (next != null && mounted) {
+        _controller.animateTo(next.clamp(0, 2));
+        ref.read(pawHubRequestedTabProvider.notifier).clear();
+      }
+    });
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,

@@ -717,6 +717,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get errorServer => 'تواجه خوادمنا مشكلة. يرجى المحاولة لاحقاً.';
 
   @override
+  String get errorRateLimit =>
+      'أنت تقوم بذلك بسرعة كبيرة. يرجى التمهل والمحاولة مرة أخرى.';
+
+  @override
+  String errorRateLimitRetry(int seconds) {
+    return 'طلبات كثيرة جداً. حاول مرة أخرى خلال $seconds ثانية.';
+  }
+
+  @override
   String get errorCache => 'تعذر تحميل البيانات المحفوظة.';
 
   @override
@@ -2172,4 +2181,555 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get dateYesterday => 'أمس';
+
+  @override
+  String get pawHubSearchHint => 'ابحث عن حيوانات ومنشورات ووسوم #';
+
+  @override
+  String get pawHubFeedTabFollowing => 'المتابَعون';
+
+  @override
+  String get pawHubFeedTabDiscover => 'اكتشف';
+
+  @override
+  String get pawHubNewPosts => 'منشورات جديدة';
+
+  @override
+  String get pawHubFeedEmptyTitle => 'فيدك هادئ بعض الشيء';
+
+  @override
+  String get pawHubFeedEmptyDescription =>
+      'تابع حيوانات أخرى وستظهر لحظاتهم هنا 🐾';
+
+  @override
+  String get pawHubDiscoverPets => 'اكتشف حيوانات';
+
+  @override
+  String get pawHubSuggestedPets => 'حيوانات قد تعجبك';
+
+  @override
+  String get pawHubLostPetNearby => 'حيوان ضائع قريب';
+
+  @override
+  String get pawHubViewOnMap => 'عرض على الخريطة';
+
+  @override
+  String get pawHubFollow => 'متابعة';
+
+  @override
+  String get pawHubFollowing => 'تتابع';
+
+  @override
+  String get pawHubCouldNotLoadFeed => 'تعذّر تحميل الفيد';
+
+  @override
+  String get pawHubPostSaved => 'تم الحفظ';
+
+  @override
+  String get pawHubPostRemovedFromSaved => 'تمت الإزالة من المحفوظات';
+
+  @override
+  String get pawHubLinkCopied => 'تم نسخ الرابط';
+
+  @override
+  String get pawHubPostHidden => 'تم إخفاء المنشور';
+
+  @override
+  String get pawHubPostReported => 'تم الإبلاغ. شكراً لك.';
+
+  @override
+  String pawHubBlockedUser(String name) {
+    return 'تم حظر $name';
+  }
+
+  @override
+  String get pawHubPostDeleted => 'تم حذف المنشور';
+
+  @override
+  String get pawHubEditCaption => 'تعديل التعليق';
+
+  @override
+  String get pawHubCaptionUpdated => 'تم تحديث التعليق';
+
+  @override
+  String pawHubFollowingPet(String name) {
+    return 'تتابع $name';
+  }
+
+  @override
+  String pawHubUnfollowedPet(String name) {
+    return 'إلغاء متابعة $name';
+  }
+
+  @override
+  String get pawHubAddPetFirstToPost => 'أضف حيواناً أولاً للنشر';
+
+  @override
+  String pawHubPostedAs(String name) {
+    return 'نُشر باسم $name 🐾';
+  }
+
+  @override
+  String get pawHubPostOptionSave => 'حفظ';
+
+  @override
+  String get pawHubPostOptionRemoveSaved => 'إزالة من المحفوظات';
+
+  @override
+  String get pawHubPostOptionCopyLink => 'نسخ الرابط';
+
+  @override
+  String get pawHubPostOptionShareTo => 'مشاركة إلى…';
+
+  @override
+  String get pawHubPostOptionEditPost => 'تعديل المنشور';
+
+  @override
+  String get pawHubPostOptionDeletePost => 'حذف المنشور';
+
+  @override
+  String get pawHubPostOptionHidePost => 'إخفاء هذا المنشور';
+
+  @override
+  String get pawHubPostOptionReport => 'الإبلاغ';
+
+  @override
+  String pawHubPostOptionBlock(String name) {
+    return 'حظر $name';
+  }
+
+  @override
+  String get pawHubReportTitle => 'لماذا تُبلّغ عن هذا؟';
+
+  @override
+  String get pawHubReportReasonCruelty => 'إيذاء الحيوانات أو القسوة عليها';
+
+  @override
+  String get pawHubReportReasonSpam => 'بريد عشوائي أو احتيال';
+
+  @override
+  String get pawHubReportReasonNudity => 'محتوى إباحي أو جنسي';
+
+  @override
+  String get pawHubReportReasonHarassment => 'مضايقة أو تنمر';
+
+  @override
+  String get pawHubReportReasonImpersonation =>
+      'ليس حيواناً حقيقياً / انتحال هوية';
+
+  @override
+  String get pawHubReportReasonOther => 'شيء آخر';
+
+  @override
+  String get pawHubCommentsTitle => 'التعليقات';
+
+  @override
+  String get pawHubCommentAs => 'التعليق باسم';
+
+  @override
+  String pawHubCommentHint(String name) {
+    return 'أضف تعليقاً باسم $name…';
+  }
+
+  @override
+  String pawHubReplyingTo(String name) {
+    return 'رداً على $name';
+  }
+
+  @override
+  String get pawHubSortTop => 'الأبرز';
+
+  @override
+  String get pawHubSortNewest => 'الأحدث';
+
+  @override
+  String get pawHubCommentReply => 'رد';
+
+  @override
+  String get pawHubNoCommentsYet => 'لا توجد تعليقات بعد';
+
+  @override
+  String get pawHubFirstCommentEncouragement =>
+      'كن أول من يقول شيئاً لطيفاً 🐾';
+
+  @override
+  String get pawHubNotificationsTitle => 'الإشعارات';
+
+  @override
+  String get pawHubMarkAllRead => 'تعيين الكل كمقروء';
+
+  @override
+  String get pawHubPostLike => 'إعجاب';
+
+  @override
+  String get pawHubPostComment => 'تعليق';
+
+  @override
+  String get pawHubPostShare => 'مشاركة';
+
+  @override
+  String get pawHubPostSaveAction => 'حفظ';
+
+  @override
+  String get pawHubLikesCountPaw => 'مخلب';
+
+  @override
+  String get pawHubLikesCountPaws => 'مخالب';
+
+  @override
+  String pawHubTaggedWith(String names) {
+    return 'مع $names';
+  }
+
+  @override
+  String get pawHubPostEdited => ' · معدَّل';
+
+  @override
+  String pawHubViewAllComments(int count) {
+    return 'عرض $count تعليقات';
+  }
+
+  @override
+  String get pawHubNewPostTitle => 'منشور جديد';
+
+  @override
+  String get pawHubShare => 'مشاركة';
+
+  @override
+  String get pawHubPostingAs => 'النشر باسم';
+
+  @override
+  String get pawHubCaptionHint => 'اكتب تعليقاً… أضف #وسوم و@إشارات';
+
+  @override
+  String get pawHubTagPets => 'وسم الحيوانات';
+
+  @override
+  String get pawHubAddLocation => 'إضافة موقع';
+
+  @override
+  String get pawHubVisibility => 'الظهور';
+
+  @override
+  String get pawHubAddMedia => 'إضافة';
+
+  @override
+  String get pawHubCoverPhoto => 'غلاف';
+
+  @override
+  String get pawHubDone => 'تم';
+
+  @override
+  String get pawHubAddPhotoRequired => 'أضف صورة واحدة على الأقل';
+
+  @override
+  String get pawHubProfilePosts => 'المنشورات';
+
+  @override
+  String get pawHubProfileFollowers => 'المتابعون';
+
+  @override
+  String get pawHubProfileFollowing => 'المتابَعون';
+
+  @override
+  String get pawHubProfileManagePet => 'إدارة الحيوان';
+
+  @override
+  String pawHubProfileSiblings(String name) {
+    return 'إخوة $name';
+  }
+
+  @override
+  String pawHubProfileCaredForBy(String owner) {
+    return 'يُعتنى به من قِبَل $owner';
+  }
+
+  @override
+  String get communitiesTitle => 'المجتمعات';
+
+  @override
+  String get communitiesEntryButton => 'المجتمعات';
+
+  @override
+  String get communitiesSearchHint => 'ابحث عن المجتمعات';
+
+  @override
+  String get communitiesMyCommunities => 'مجتمعاتي';
+
+  @override
+  String get communitiesTabDiscover => 'استكشاف';
+
+  @override
+  String get communitiesTabMine => 'مجتمعاتي';
+
+  @override
+  String get communitiesMineEmptyTitle => 'لم تنضم إلى أي مجتمع';
+
+  @override
+  String get communitiesMineEmptyDescription =>
+      'استكشف المجتمعات وانضم إلى ما يناسب حيوانك الأليف 🐾';
+
+  @override
+  String get communitiesDiscoverRailTitle => 'مجتمعات للانضمام';
+
+  @override
+  String get communitiesSeeAll => 'عرض الكل';
+
+  @override
+  String get communitiesEmptyTitle => 'لا توجد مجتمعات بعد';
+
+  @override
+  String get communitiesEmptyDescription => 'كن أول من ينشئ مجتمعًا لرفاقك 🐾';
+
+  @override
+  String communitiesSearchEmpty(String query) {
+    return 'لا توجد مجتمعات تطابق «$query»';
+  }
+
+  @override
+  String get communitiesCouldNotLoad => 'تعذّر تحميل المجتمعات';
+
+  @override
+  String get communitiesRetry => 'إعادة المحاولة';
+
+  @override
+  String get communitySortPopular => 'الأكثر شيوعًا';
+
+  @override
+  String get communitySortNewest => 'الأحدث';
+
+  @override
+  String get communitySortMostActive => 'الأكثر نشاطًا';
+
+  @override
+  String get communityCategoryAll => 'الكل';
+
+  @override
+  String get communityCategoryBreedClub => 'نادي السلالة';
+
+  @override
+  String get communityCategoryShelterRescues => 'الملاجئ والإنقاذ';
+
+  @override
+  String get communityCategoryBreeding => 'التربية';
+
+  @override
+  String get communityCategorySpecialNeeds => 'الاحتياجات الخاصة';
+
+  @override
+  String get communityCategoryActivity => 'النشاط';
+
+  @override
+  String get communityCategoryHealth => 'الصحة';
+
+  @override
+  String get communityCategoryOther => 'أخرى';
+
+  @override
+  String get communityJoin => 'انضمام';
+
+  @override
+  String get communityJoined => 'منضم';
+
+  @override
+  String get communityLeave => 'مغادرة';
+
+  @override
+  String get communityManage => 'إدارة';
+
+  @override
+  String get communityEditAvatar => 'تغيير صورة الملف';
+
+  @override
+  String get communityEditBanner => 'تغيير صورة الغلاف';
+
+  @override
+  String get communityImagesUpdating => 'جارٍ التحديث…';
+
+  @override
+  String get communityImagesUpdated => 'تم تحديث الصورة';
+
+  @override
+  String get communityImagesUpdateFailed => 'تعذّر تحديث الصورة. حاول مجددًا.';
+
+  @override
+  String get communityLeadBadge => 'القائد';
+
+  @override
+  String communityMembersCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count عضو',
+      many: '$count عضوًا',
+      few: '$count أعضاء',
+      two: 'عضوان',
+      one: 'عضو واحد',
+      zero: 'لا أعضاء',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String communityPostsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count منشور',
+      many: '$count منشورًا',
+      few: '$count منشورات',
+      two: 'منشوران',
+      one: 'منشور واحد',
+      zero: 'لا منشورات',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String communityLedBy(String name) {
+    return 'بقيادة $name';
+  }
+
+  @override
+  String communityJoinedToast(String name) {
+    return 'انضممت إلى $name';
+  }
+
+  @override
+  String communityLeftToast(String name) {
+    return 'غادرت $name';
+  }
+
+  @override
+  String get communityDetailAbout => 'نبذة';
+
+  @override
+  String get communityDetailMembers => 'الأعضاء';
+
+  @override
+  String get communityStatPosts => 'المنشورات';
+
+  @override
+  String get communityLeaderLabel => 'القائد';
+
+  @override
+  String get communityDetailFeedEmptyTitle => 'لا منشورات بعد';
+
+  @override
+  String get communityCreateFirstPost => 'أنشئ أول منشور';
+
+  @override
+  String get communityDetailViewMembers => 'عرض جميع الأعضاء';
+
+  @override
+  String get communityDetailFeedEmpty => 'لا منشورات بعد — كن أول من يشارك';
+
+  @override
+  String get communityDetailJoinToPost => 'انضم لتنشر هنا';
+
+  @override
+  String get communityLeaveConfirmTitle => 'مغادرة المجتمع؟';
+
+  @override
+  String communityLeaveConfirmMessage(String name) {
+    return 'لن ترى بعد الآن منشورات $name.';
+  }
+
+  @override
+  String get communityDeleteConfirmTitle => 'حذف المجتمع؟';
+
+  @override
+  String communityDeleteConfirmMessage(String name) {
+    return 'سيؤدي هذا إلى حذف $name وكل منشوراته نهائيًا. لا يمكن التراجع.';
+  }
+
+  @override
+  String get communityDelete => 'حذف';
+
+  @override
+  String get communityDeletedToast => 'تم حذف المجتمع';
+
+  @override
+  String get communityCancel => 'إلغاء';
+
+  @override
+  String get communityCreateTitle => 'مجتمع جديد';
+
+  @override
+  String get communityCreateNameLabel => 'الاسم';
+
+  @override
+  String get communityCreateNameHint => 'مثال: نادي الغولدن ريتريفر';
+
+  @override
+  String get communityCreateHandleLabel => 'المعرّف';
+
+  @override
+  String get communityCreateHandleHint => 'golden-club';
+
+  @override
+  String get communityHandleChecking => 'جارٍ التحقق من التوفر…';
+
+  @override
+  String get communityHandleAvailable => 'المعرّف متاح';
+
+  @override
+  String get communityHandleTaken => 'هذا المعرّف مستخدَم بالفعل';
+
+  @override
+  String get communityHandleInvalid =>
+      'استخدم أحرفًا صغيرة وأرقامًا وشرطات فقط';
+
+  @override
+  String get communityCreateDescriptionLabel => 'الوصف';
+
+  @override
+  String get communityCreateDescriptionHint => 'عمّ يدور هذا المجتمع؟';
+
+  @override
+  String get communityCreateCategoryLabel => 'الفئة';
+
+  @override
+  String get communityCreateBannerLabel => 'أضِف صورة غلاف';
+
+  @override
+  String get communityCreateSubmit => 'إنشاء المجتمع';
+
+  @override
+  String get communityCreateNameRequired => 'يرجى إدخال اسم';
+
+  @override
+  String get communityCreateCategoryRequired => 'يرجى اختيار فئة';
+
+  @override
+  String get communityCreatedToast => 'تم إنشاء المجتمع 🎉';
+
+  @override
+  String get communityCreateFailed => 'تعذّر إنشاء المجتمع. حاول مجددًا.';
+
+  @override
+  String get communityCreateAddPetFirst =>
+      'أضِف حيوانًا أليفًا أولًا لقيادة مجتمع';
+
+  @override
+  String get communityMembersTitle => 'الأعضاء';
+
+  @override
+  String get communityMemberRemove => 'إزالة';
+
+  @override
+  String get communityMemberRemoveConfirmTitle => 'إزالة العضو؟';
+
+  @override
+  String communityMemberRemoveConfirmMessage(String name) {
+    return 'إزالة $name من هذا المجتمع؟';
+  }
+
+  @override
+  String get communityMemberRemovedToast => 'تمت إزالة العضو';
+
+  @override
+  String communityComposerPostingIn(String name) {
+    return 'النشر في $name';
+  }
 }

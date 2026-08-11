@@ -32,32 +32,25 @@ class HomeHeader extends StatelessWidget {
     return l10n.goodEvening;
   }
 
+  /// The user's first name only (falls back to the full string if it's blank).
+  String get _firstName {
+    final trimmed = userName.trim();
+    if (trimmed.isEmpty) return trimmed;
+    return trimmed.split(RegExp(r'\s+')).first;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                _greeting(context),
-                style: AppTextStyles.titleMedium.copyWith(
-                  color: AppColors.onPrimary,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              Text(
-                userName,
-                style: AppTextStyles.headlineMedium.copyWith(
-                  color: AppColors.onPrimary,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
+          child: Text(
+            '${_greeting(context)}, $_firstName',
+            style: AppTextStyles.headlineMedium.copyWith(
+              color: AppColors.onPrimary,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
         const SizedBox(width: AppSpacing.md),
@@ -69,8 +62,10 @@ class HomeHeader extends StatelessWidget {
             color: AppColors.onPrimary,
           ),
         ),
-        // In debug builds, long-pressing the avatar opens the sandbox.
+        // Tap the avatar → personal information. (Debug: long-press opens the
+        // sandbox.)
         GestureDetector(
+          onTap: () => context.push(AppRoutes.personalInformation),
           onLongPress:
               kDebugMode ? () => context.push(AppRoutes.sandbox) : null,
           child: AppAvatar(name: userName, imageUrl: avatarUrl, radius: 20),

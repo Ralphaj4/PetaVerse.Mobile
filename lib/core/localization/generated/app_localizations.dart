@@ -367,19 +367,19 @@ abstract class AppLocalizations {
   /// No description provided for @goodMorning.
   ///
   /// In en, this message translates to:
-  /// **'Good Morning 👋'**
+  /// **'Good Morning'**
   String get goodMorning;
 
   /// No description provided for @goodAfternoon.
   ///
   /// In en, this message translates to:
-  /// **'Good Afternoon 👋'**
+  /// **'Good Afternoon'**
   String get goodAfternoon;
 
   /// No description provided for @goodEvening.
   ///
   /// In en, this message translates to:
-  /// **'Good Evening 👋'**
+  /// **'Good Evening'**
   String get goodEvening;
 
   /// No description provided for @petDoingGreat.
@@ -1389,6 +1389,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Our servers are having trouble. Please try again later.'**
   String get errorServer;
+
+  /// No description provided for @errorRateLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re doing that too fast. Please slow down and try again.'**
+  String get errorRateLimit;
+
+  /// No description provided for @errorRateLimitRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many requests. Try again in {seconds}s.'**
+  String errorRateLimitRetry(int seconds);
 
   /// No description provided for @errorCache.
   ///
@@ -3813,6 +3825,972 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Yesterday'**
   String get dateYesterday;
+
+  /// No description provided for @pawHubSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search pets, posts, #tags'**
+  String get pawHubSearchHint;
+
+  /// No description provided for @pawHubFeedTabFollowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get pawHubFeedTabFollowing;
+
+  /// No description provided for @pawHubFeedTabDiscover.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover'**
+  String get pawHubFeedTabDiscover;
+
+  /// No description provided for @pawHubNewPosts.
+  ///
+  /// In en, this message translates to:
+  /// **'New paw-sts'**
+  String get pawHubNewPosts;
+
+  /// No description provided for @pawHubFeedEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your feed is a little quiet'**
+  String get pawHubFeedEmptyTitle;
+
+  /// No description provided for @pawHubFeedEmptyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow some pets and their moments will show up right here 🐾'**
+  String get pawHubFeedEmptyDescription;
+
+  /// No description provided for @pawHubDiscoverPets.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover pets'**
+  String get pawHubDiscoverPets;
+
+  /// No description provided for @pawHubSuggestedPets.
+  ///
+  /// In en, this message translates to:
+  /// **'Pets you might like'**
+  String get pawHubSuggestedPets;
+
+  /// No description provided for @pawHubLostPetNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'LOST PET NEARBY'**
+  String get pawHubLostPetNearby;
+
+  /// No description provided for @pawHubViewOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'View on map'**
+  String get pawHubViewOnMap;
+
+  /// No description provided for @pawHubFollow.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get pawHubFollow;
+
+  /// No description provided for @pawHubFollowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get pawHubFollowing;
+
+  /// No description provided for @pawHubCouldNotLoadFeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load feed'**
+  String get pawHubCouldNotLoadFeed;
+
+  /// No description provided for @pawHubPostSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get pawHubPostSaved;
+
+  /// No description provided for @pawHubPostRemovedFromSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed from saved'**
+  String get pawHubPostRemovedFromSaved;
+
+  /// No description provided for @pawHubLinkCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Link copied'**
+  String get pawHubLinkCopied;
+
+  /// No description provided for @pawHubPostHidden.
+  ///
+  /// In en, this message translates to:
+  /// **'Post hidden'**
+  String get pawHubPostHidden;
+
+  /// No description provided for @pawHubPostReported.
+  ///
+  /// In en, this message translates to:
+  /// **'Reported. Thank you.'**
+  String get pawHubPostReported;
+
+  /// No description provided for @pawHubBlockedUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked {name}'**
+  String pawHubBlockedUser(String name);
+
+  /// No description provided for @pawHubPostDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Post deleted'**
+  String get pawHubPostDeleted;
+
+  /// No description provided for @pawHubEditCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit caption'**
+  String get pawHubEditCaption;
+
+  /// No description provided for @pawHubCaptionUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Caption updated'**
+  String get pawHubCaptionUpdated;
+
+  /// No description provided for @pawHubFollowingPet.
+  ///
+  /// In en, this message translates to:
+  /// **'Following {name}'**
+  String pawHubFollowingPet(String name);
+
+  /// No description provided for @pawHubUnfollowedPet.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfollowed {name}'**
+  String pawHubUnfollowedPet(String name);
+
+  /// No description provided for @pawHubAddPetFirstToPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a pet first to post'**
+  String get pawHubAddPetFirstToPost;
+
+  /// No description provided for @pawHubPostedAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Posted as {name} 🐾'**
+  String pawHubPostedAs(String name);
+
+  /// No description provided for @pawHubPostOptionSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get pawHubPostOptionSave;
+
+  /// No description provided for @pawHubPostOptionRemoveSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from saved'**
+  String get pawHubPostOptionRemoveSaved;
+
+  /// No description provided for @pawHubPostOptionCopyLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy link'**
+  String get pawHubPostOptionCopyLink;
+
+  /// No description provided for @pawHubPostOptionShareTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Share to…'**
+  String get pawHubPostOptionShareTo;
+
+  /// No description provided for @pawHubPostOptionEditPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit post'**
+  String get pawHubPostOptionEditPost;
+
+  /// No description provided for @pawHubPostOptionDeletePost.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete post'**
+  String get pawHubPostOptionDeletePost;
+
+  /// No description provided for @pawHubPostOptionHidePost.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide this post'**
+  String get pawHubPostOptionHidePost;
+
+  /// No description provided for @pawHubPostOptionReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get pawHubPostOptionReport;
+
+  /// No description provided for @pawHubPostOptionBlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Block {name}'**
+  String pawHubPostOptionBlock(String name);
+
+  /// No description provided for @pawHubReportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Why are you reporting this?'**
+  String get pawHubReportTitle;
+
+  /// No description provided for @pawHubReportReasonCruelty.
+  ///
+  /// In en, this message translates to:
+  /// **'Animal cruelty or harm'**
+  String get pawHubReportReasonCruelty;
+
+  /// No description provided for @pawHubReportReasonSpam.
+  ///
+  /// In en, this message translates to:
+  /// **'Spam or a scam'**
+  String get pawHubReportReasonSpam;
+
+  /// No description provided for @pawHubReportReasonNudity.
+  ///
+  /// In en, this message translates to:
+  /// **'Nudity or sexual content'**
+  String get pawHubReportReasonNudity;
+
+  /// No description provided for @pawHubReportReasonHarassment.
+  ///
+  /// In en, this message translates to:
+  /// **'Harassment or bullying'**
+  String get pawHubReportReasonHarassment;
+
+  /// No description provided for @pawHubReportReasonImpersonation.
+  ///
+  /// In en, this message translates to:
+  /// **'Not a real pet / impersonation'**
+  String get pawHubReportReasonImpersonation;
+
+  /// No description provided for @pawHubReportReasonOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Something else'**
+  String get pawHubReportReasonOther;
+
+  /// No description provided for @pawHubCommentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get pawHubCommentsTitle;
+
+  /// No description provided for @pawHubCommentAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment as'**
+  String get pawHubCommentAs;
+
+  /// No description provided for @pawHubCommentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a comment as {name}…'**
+  String pawHubCommentHint(String name);
+
+  /// No description provided for @pawHubReplyingTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Replying to {name}'**
+  String pawHubReplyingTo(String name);
+
+  /// No description provided for @pawHubSortTop.
+  ///
+  /// In en, this message translates to:
+  /// **'Top'**
+  String get pawHubSortTop;
+
+  /// No description provided for @pawHubSortNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest'**
+  String get pawHubSortNewest;
+
+  /// No description provided for @pawHubCommentReply.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply'**
+  String get pawHubCommentReply;
+
+  /// No description provided for @pawHubNoCommentsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No comments yet'**
+  String get pawHubNoCommentsYet;
+
+  /// No description provided for @pawHubFirstCommentEncouragement.
+  ///
+  /// In en, this message translates to:
+  /// **'Be the first to say something nice 🐾'**
+  String get pawHubFirstCommentEncouragement;
+
+  /// No description provided for @pawHubNotificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get pawHubNotificationsTitle;
+
+  /// No description provided for @pawHubMarkAllRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all read'**
+  String get pawHubMarkAllRead;
+
+  /// No description provided for @pawHubPostLike.
+  ///
+  /// In en, this message translates to:
+  /// **'Like'**
+  String get pawHubPostLike;
+
+  /// No description provided for @pawHubPostComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment'**
+  String get pawHubPostComment;
+
+  /// No description provided for @pawHubPostShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get pawHubPostShare;
+
+  /// No description provided for @pawHubPostSaveAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get pawHubPostSaveAction;
+
+  /// No description provided for @pawHubLikesCountPaw.
+  ///
+  /// In en, this message translates to:
+  /// **'paw'**
+  String get pawHubLikesCountPaw;
+
+  /// No description provided for @pawHubLikesCountPaws.
+  ///
+  /// In en, this message translates to:
+  /// **'paws'**
+  String get pawHubLikesCountPaws;
+
+  /// No description provided for @pawHubTaggedWith.
+  ///
+  /// In en, this message translates to:
+  /// **'with {names}'**
+  String pawHubTaggedWith(String names);
+
+  /// No description provided for @pawHubPostEdited.
+  ///
+  /// In en, this message translates to:
+  /// **' · Edited'**
+  String get pawHubPostEdited;
+
+  /// No description provided for @pawHubViewAllComments.
+  ///
+  /// In en, this message translates to:
+  /// **'View all {count} comments'**
+  String pawHubViewAllComments(int count);
+
+  /// No description provided for @pawHubNewPostTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New post'**
+  String get pawHubNewPostTitle;
+
+  /// No description provided for @pawHubShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get pawHubShare;
+
+  /// No description provided for @pawHubPostingAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Posting as'**
+  String get pawHubPostingAs;
+
+  /// No description provided for @pawHubCaptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a caption… add #hashtags and @mentions'**
+  String get pawHubCaptionHint;
+
+  /// No description provided for @pawHubTagPets.
+  ///
+  /// In en, this message translates to:
+  /// **'Tag pets'**
+  String get pawHubTagPets;
+
+  /// No description provided for @pawHubAddLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Add location'**
+  String get pawHubAddLocation;
+
+  /// No description provided for @pawHubVisibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Visibility'**
+  String get pawHubVisibility;
+
+  /// No description provided for @pawHubAddMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get pawHubAddMedia;
+
+  /// No description provided for @pawHubCoverPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover'**
+  String get pawHubCoverPhoto;
+
+  /// No description provided for @pawHubDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get pawHubDone;
+
+  /// No description provided for @pawHubAddPhotoRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one photo'**
+  String get pawHubAddPhotoRequired;
+
+  /// No description provided for @pawHubProfilePosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Posts'**
+  String get pawHubProfilePosts;
+
+  /// No description provided for @pawHubProfileFollowers.
+  ///
+  /// In en, this message translates to:
+  /// **'Followers'**
+  String get pawHubProfileFollowers;
+
+  /// No description provided for @pawHubProfileFollowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get pawHubProfileFollowing;
+
+  /// No description provided for @pawHubProfileManagePet.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage pet'**
+  String get pawHubProfileManagePet;
+
+  /// No description provided for @pawHubProfileSiblings.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s siblings'**
+  String pawHubProfileSiblings(String name);
+
+  /// No description provided for @pawHubProfileCaredForBy.
+  ///
+  /// In en, this message translates to:
+  /// **'cared for by {owner}'**
+  String pawHubProfileCaredForBy(String owner);
+
+  /// No description provided for @communitiesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Communities'**
+  String get communitiesTitle;
+
+  /// No description provided for @communitiesEntryButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Communities'**
+  String get communitiesEntryButton;
+
+  /// No description provided for @communitiesSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search communities'**
+  String get communitiesSearchHint;
+
+  /// No description provided for @communitiesMyCommunities.
+  ///
+  /// In en, this message translates to:
+  /// **'My communities'**
+  String get communitiesMyCommunities;
+
+  /// No description provided for @communitiesTabDiscover.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover'**
+  String get communitiesTabDiscover;
+
+  /// No description provided for @communitiesTabMine.
+  ///
+  /// In en, this message translates to:
+  /// **'My communities'**
+  String get communitiesTabMine;
+
+  /// No description provided for @communitiesMineEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t joined any communities'**
+  String get communitiesMineEmptyTitle;
+
+  /// No description provided for @communitiesMineEmptyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore communities and join the ones your pet belongs in 🐾'**
+  String get communitiesMineEmptyDescription;
+
+  /// No description provided for @communitiesDiscoverRailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Communities to join'**
+  String get communitiesDiscoverRailTitle;
+
+  /// No description provided for @communitiesSeeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'See all'**
+  String get communitiesSeeAll;
+
+  /// No description provided for @communitiesEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No communities yet'**
+  String get communitiesEmptyTitle;
+
+  /// No description provided for @communitiesEmptyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Be the first to start one for your pack 🐾'**
+  String get communitiesEmptyDescription;
+
+  /// No description provided for @communitiesSearchEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No communities match “{query}”'**
+  String communitiesSearchEmpty(String query);
+
+  /// No description provided for @communitiesCouldNotLoad.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load communities'**
+  String get communitiesCouldNotLoad;
+
+  /// No description provided for @communitiesRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get communitiesRetry;
+
+  /// No description provided for @communitySortPopular.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular'**
+  String get communitySortPopular;
+
+  /// No description provided for @communitySortNewest.
+  ///
+  /// In en, this message translates to:
+  /// **'Newest'**
+  String get communitySortNewest;
+
+  /// No description provided for @communitySortMostActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Most active'**
+  String get communitySortMostActive;
+
+  /// No description provided for @communityCategoryAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get communityCategoryAll;
+
+  /// No description provided for @communityCategoryBreedClub.
+  ///
+  /// In en, this message translates to:
+  /// **'Breed club'**
+  String get communityCategoryBreedClub;
+
+  /// No description provided for @communityCategoryShelterRescues.
+  ///
+  /// In en, this message translates to:
+  /// **'Shelters & rescues'**
+  String get communityCategoryShelterRescues;
+
+  /// No description provided for @communityCategoryBreeding.
+  ///
+  /// In en, this message translates to:
+  /// **'Breeding'**
+  String get communityCategoryBreeding;
+
+  /// No description provided for @communityCategorySpecialNeeds.
+  ///
+  /// In en, this message translates to:
+  /// **'Special needs'**
+  String get communityCategorySpecialNeeds;
+
+  /// No description provided for @communityCategoryActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get communityCategoryActivity;
+
+  /// No description provided for @communityCategoryHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Health'**
+  String get communityCategoryHealth;
+
+  /// No description provided for @communityCategoryOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get communityCategoryOther;
+
+  /// No description provided for @communityJoin.
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get communityJoin;
+
+  /// No description provided for @communityJoined.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined'**
+  String get communityJoined;
+
+  /// No description provided for @communityLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get communityLeave;
+
+  /// No description provided for @communityManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage'**
+  String get communityManage;
+
+  /// No description provided for @communityEditAvatar.
+  ///
+  /// In en, this message translates to:
+  /// **'Change profile photo'**
+  String get communityEditAvatar;
+
+  /// No description provided for @communityEditBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Change cover photo'**
+  String get communityEditBanner;
+
+  /// No description provided for @communityImagesUpdating.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating…'**
+  String get communityImagesUpdating;
+
+  /// No description provided for @communityImagesUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo updated'**
+  String get communityImagesUpdated;
+
+  /// No description provided for @communityImagesUpdateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t update the photo. Please try again.'**
+  String get communityImagesUpdateFailed;
+
+  /// No description provided for @communityLeadBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Lead'**
+  String get communityLeadBadge;
+
+  /// No description provided for @communityMembersCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No members} =1{1 member} other{{count} members}}'**
+  String communityMembersCount(int count);
+
+  /// No description provided for @communityPostsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No posts} =1{1 post} other{{count} posts}}'**
+  String communityPostsCount(int count);
+
+  /// No description provided for @communityLedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Led by {name}'**
+  String communityLedBy(String name);
+
+  /// No description provided for @communityJoinedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Joined {name}'**
+  String communityJoinedToast(String name);
+
+  /// No description provided for @communityLeftToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Left {name}'**
+  String communityLeftToast(String name);
+
+  /// No description provided for @communityDetailAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get communityDetailAbout;
+
+  /// No description provided for @communityDetailMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get communityDetailMembers;
+
+  /// No description provided for @communityStatPosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Posts'**
+  String get communityStatPosts;
+
+  /// No description provided for @communityLeaderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Leader'**
+  String get communityLeaderLabel;
+
+  /// No description provided for @communityDetailFeedEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No posts yet'**
+  String get communityDetailFeedEmptyTitle;
+
+  /// No description provided for @communityCreateFirstPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Create first post'**
+  String get communityCreateFirstPost;
+
+  /// No description provided for @communityDetailViewMembers.
+  ///
+  /// In en, this message translates to:
+  /// **'View all members'**
+  String get communityDetailViewMembers;
+
+  /// No description provided for @communityDetailFeedEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No posts yet — be the first to share'**
+  String get communityDetailFeedEmpty;
+
+  /// No description provided for @communityDetailJoinToPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Join to post here'**
+  String get communityDetailJoinToPost;
+
+  /// No description provided for @communityLeaveConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave community?'**
+  String get communityLeaveConfirmTitle;
+
+  /// No description provided for @communityLeaveConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You’ll stop seeing posts from {name}.'**
+  String communityLeaveConfirmMessage(String name);
+
+  /// No description provided for @communityDeleteConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete community?'**
+  String get communityDeleteConfirmTitle;
+
+  /// No description provided for @communityDeleteConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This permanently removes {name} and all its posts. This can’t be undone.'**
+  String communityDeleteConfirmMessage(String name);
+
+  /// No description provided for @communityDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get communityDelete;
+
+  /// No description provided for @communityDeletedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Community deleted'**
+  String get communityDeletedToast;
+
+  /// No description provided for @communityCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get communityCancel;
+
+  /// No description provided for @communityCreateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New community'**
+  String get communityCreateTitle;
+
+  /// No description provided for @communityCreateNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get communityCreateNameLabel;
+
+  /// No description provided for @communityCreateNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Golden Retriever Club'**
+  String get communityCreateNameHint;
+
+  /// No description provided for @communityCreateHandleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Handle'**
+  String get communityCreateHandleLabel;
+
+  /// No description provided for @communityCreateHandleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'golden-club'**
+  String get communityCreateHandleHint;
+
+  /// No description provided for @communityHandleChecking.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking availability…'**
+  String get communityHandleChecking;
+
+  /// No description provided for @communityHandleAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Handle is available'**
+  String get communityHandleAvailable;
+
+  /// No description provided for @communityHandleTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'That handle is already taken'**
+  String get communityHandleTaken;
+
+  /// No description provided for @communityHandleInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Use lowercase letters, numbers, and hyphens only'**
+  String get communityHandleInvalid;
+
+  /// No description provided for @communityCreateDescriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get communityCreateDescriptionLabel;
+
+  /// No description provided for @communityCreateDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What is this community about?'**
+  String get communityCreateDescriptionHint;
+
+  /// No description provided for @communityCreateCategoryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get communityCreateCategoryLabel;
+
+  /// No description provided for @communityCreateBannerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a cover photo'**
+  String get communityCreateBannerLabel;
+
+  /// No description provided for @communityCreateSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Create community'**
+  String get communityCreateSubmit;
+
+  /// No description provided for @communityCreateNameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a name'**
+  String get communityCreateNameRequired;
+
+  /// No description provided for @communityCreateCategoryRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please choose a category'**
+  String get communityCreateCategoryRequired;
+
+  /// No description provided for @communityCreatedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Community created 🎉'**
+  String get communityCreatedToast;
+
+  /// No description provided for @communityCreateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not create community. Please try again.'**
+  String get communityCreateFailed;
+
+  /// No description provided for @communityCreateAddPetFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a pet first to lead a community'**
+  String get communityCreateAddPetFirst;
+
+  /// No description provided for @communityMembersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Members'**
+  String get communityMembersTitle;
+
+  /// No description provided for @communityMemberRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get communityMemberRemove;
+
+  /// No description provided for @communityMemberRemoveConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove member?'**
+  String get communityMemberRemoveConfirmTitle;
+
+  /// No description provided for @communityMemberRemoveConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} from this community?'**
+  String communityMemberRemoveConfirmMessage(String name);
+
+  /// No description provided for @communityMemberRemovedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Member removed'**
+  String get communityMemberRemovedToast;
+
+  /// No description provided for @communityComposerPostingIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Posting in {name}'**
+  String communityComposerPostingIn(String name);
 }
 
 class _AppLocalizationsDelegate

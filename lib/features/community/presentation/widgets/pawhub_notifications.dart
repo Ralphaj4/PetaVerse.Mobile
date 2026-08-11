@@ -1,5 +1,6 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
@@ -8,19 +9,26 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_cached_image.dart';
 import '../models/pawhub_models.dart';
+import '../providers/community_notifications_providers.dart';
 
 /// The notifications sheet: grouped rows, safety alerts styled distinctly,
 /// tap-to-mark-read. Prototype state lives locally.
-class NotificationsSheet extends StatefulWidget {
+class NotificationsSheet extends ConsumerStatefulWidget {
   const NotificationsSheet({required this.items, super.key});
 
   final List<PawNotif> items;
 
   @override
-  State<NotificationsSheet> createState() => _NotificationsSheetState();
+  ConsumerState<NotificationsSheet> createState() => _NotificationsSheetState();
 }
 
-class _NotificationsSheetState extends State<NotificationsSheet> {
+class _NotificationsSheetState extends ConsumerState<NotificationsSheet> {
+  Future<void> _markNotificationRead(PawNotif notif) async {
+    if (notif.isRead) return;
+    setState(() => notif.isRead = true);
+    await ref.read(communityNotificationsProvider.notifier).markRead(notif.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
@@ -68,9 +76,16 @@ class _NotificationsSheetState extends State<NotificationsSheet> {
                 itemCount: widget.items.length,
                 itemBuilder: (_, i) => _NotifRow(
                   notif: widget.items[i],
-                  onTap: () => setState(() => widget.items[i].isRead = true),
+                  onTap: () {
+                    _markNotificationRead(widget.items[i]);
+                    Navigator.of(context).pop();
+                  },
                 ),
               ),
+            ),
+            Container(
+              height: AppSpacing.xl,
+              color: AppColors.surface,
             ),
           ],
         ),

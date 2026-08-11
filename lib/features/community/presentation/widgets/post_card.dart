@@ -1,12 +1,18 @@
+import 'dart:async';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../domain/entities/community_entities.dart' as domain;
 import '../models/pawhub_models.dart';
+import '../providers/community_actions_providers.dart';
+import 'community_post_badge.dart';
 import 'pawhub_common.dart';
 import 'pawhub_media.dart';
 
@@ -14,7 +20,8 @@ import 'pawhub_media.dart';
 /// double-tap paw burst), save, comment, share, options, caption expand,
 /// media carousel + zoom. All callbacks bubble up so the page can react
 /// (open comments sheet, open options sheet, open viewer, open profile).
-class PostCard extends StatefulWidget {
+/// Wired to communityActionsProvider for backend syncing.
+class PostCard extends ConsumerStatefulWidget {
   const PostCard({
     required this.post,
     required this.onOpenComments,
@@ -31,10 +38,10 @@ class PostCard extends StatefulWidget {
   final VoidCallback onShare;
 
   @override
-  State<PostCard> createState() => _PostCardState();
+  ConsumerState<PostCard> createState() => _PostCardState();
 }
 
-class _PostCardState extends State<PostCard>
+class _PostCardState extends ConsumerState<PostCard>
     with SingleTickerProviderStateMixin {
   bool _captionExpanded = false;
 
@@ -54,16 +61,55 @@ class _PostCardState extends State<PostCard>
 
   PawPost get post => widget.post;
 
-  void _toggleLike() {
+  Future<void> _toggleLike() async {
+    final domainPost = _toDomainPost();
+
     setState(() {
       post.likedByMe = !post.likedByMe;
       post.likes += post.likedByMe ? 1 : -1;
     });
     if (post.likedByMe) {
-      _likePop.forward(from: 0.85);
-      HapticFeedback.lightImpact();
+      await _likePop.forward(from: 0.85);
+      unawaited(HapticFeedback.lightImpact());
     }
+
+    await ref.read(communityActionsProvider).toggleLike(domainPost);
   }
+
+  domain.Post _toDomainPost() => domain.Post(
+        id: post.backendId,
+        author: domain.CommunityPet(
+          id: post.author.backendId,
+          name: post.author.name,
+          breed: post.author.breed,
+          species: post.author.species,
+          avatarUrl: post.author.avatarUrl,
+          ownerName: post.author.ownerName,
+          isVerified: post.author.isVerified,
+          followers: post.author.followers,
+          isFollowing: post.author.isFollowing,
+          isMine: post.author.isMine,
+        ),
+        media: post.media
+            .map((m) => domain.PostMedia(
+                  url: m.url,
+                  isVideo: m.isVideo,
+                  altText: m.altText,
+                ))
+            .toList(),
+        hashtags: post.hashtags,
+        taggedPetIds: const [],
+        likes: post.likes,
+        comments: post.commentCount,
+        likedByMe: post.likedByMe,
+        saved: post.saved,
+        isEdited: post.isEdited,
+        createdAt: DateTime.now(),
+        caption: post.caption,
+        locationName: post.locationName,
+        visibility: post.visibility.toDomain,
+        timeAgo: post.timeAgo,
+      );
 
   void _doubleTapLike() {
     if (!post.likedByMe) {
@@ -76,9 +122,13 @@ class _PostCardState extends State<PostCard>
     }
   }
 
-  void _toggleSave() {
+  Future<void> _toggleSave() async {
+    final domainPost = _toDomainPost();
+
     setState(() => post.saved = !post.saved);
-    HapticFeedback.selectionClick();
+    await HapticFeedback.selectionClick();
+
+    await ref.read(communityActionsProvider).toggleSave(domainPost);
   }
 
   void _openViewer(int index) {
@@ -150,6 +200,19 @@ class _PostCardState extends State<PostCard>
               onTap: () => widget.onOpenProfile(post.author),
             ),
           ),
+          if (post.communityId != null && post.communityName != null) ...[
+            // Capped, shrink-wrapped so it sits just left of the chip/ellipsis
+            // without stealing flex from the identity — the ellipsis keeps the
+            // same right-edge position as on non-community posts.
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 140),
+              child: CommunityPostBadge(
+                communityId: post.communityId!,
+                communityName: post.communityName!,
+              ),
+            ),
+            const SizedBox(width: AppSpacing.xs),
+          ],
           _VisibilityChip(visibility: post.visibility),
           IconButton(
             onPressed: widget.onOpenOptions,

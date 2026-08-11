@@ -24,7 +24,21 @@ import '../../../features/adoption/presentation/pages/manage_applicants_page.dar
 import '../../../features/adoption/presentation/pages/my_adoptions_page.dart';
 import '../../../features/co_ownership/presentation/pages/co_owner_invitations_page.dart';
 import '../../../features/co_ownership/presentation/pages/invite_co_owner_page.dart';
+import '../../../features/community/presentation/pages/communities_page.dart';
+import '../../../features/community/presentation/pages/community_detail_page.dart';
 import '../../../features/community/presentation/pages/community_hub_page.dart';
+import '../../../features/community/presentation/pages/community_members_page.dart';
+import '../../../features/community/presentation/pages/create_community_page.dart';
+import '../../../features/community/presentation/pages/pawhub_search_page.dart';
+import '../../../features/community/presentation/pages/pawhub_saved_page.dart';
+import '../../../features/community/presentation/pages/pawhub_my_posts_page.dart';
+import '../../../features/community/presentation/pages/pawhub_hashtag_page.dart';
+import '../../../features/community/presentation/pages/pawhub_post_detail_page.dart';
+import '../../../features/community/presentation/pages/pawhub_followers_page.dart';
+import '../../../features/community/presentation/pages/pawhub_following_page.dart';
+import '../../../features/community/presentation/pages/pawhub_blocked_page.dart';
+import '../../../features/community/presentation/pages/pawhub_trending_page.dart';
+import '../../../features/community/presentation/pages/tag_pets_page.dart';
 import '../../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../../features/pets/domain/entities/pet_ref.dart';
 import '../../../features/pets/presentation/pages/create_pet_page.dart';
@@ -106,6 +120,7 @@ abstract final class AppRoutes {
   static const String map = '/map';
   static const String petVision = '/pet-vision';
   static const String sandbox = '/sandbox';
+  static const String tagPets = '/community/tag-pets';
 
   // PawCare health (under a pet)
   static String addWeightPath(int petId) => '/pet/$petId/weight/add';
@@ -537,6 +552,138 @@ GoRouter appRouter(Ref ref) {
                       key: state.pageKey,
                       child: const CommunityHubPage(),
                     ),
+                routes: [
+                  GoRoute(
+                    path: 'search',
+                    name: 'community_search',
+                    pageBuilder: (context, state) => AppTransitionPage(
+                          key: state.pageKey,
+                          child: const PawHubSearchPage(),
+                        ),
+                  ),
+                  GoRoute(
+                    path: 'saved',
+                    name: 'community_saved',
+                    pageBuilder: (context, state) => AppTransitionPage(
+                          key: state.pageKey,
+                          child: const PawHubSavedPage(),
+                        ),
+                  ),
+                  GoRoute(
+                    path: 'my-posts',
+                    name: 'community_my_posts',
+                    pageBuilder: (context, state) => AppTransitionPage(
+                          key: state.pageKey,
+                          child: const PawHubMyPostsPage(),
+                        ),
+                  ),
+                  GoRoute(
+                    path: 'hashtag/:tag',
+                    name: 'community_hashtag',
+                    pageBuilder: (context, state) => AppTransitionPage(
+                          key: state.pageKey,
+                          child: PawHubHashtagPage(
+                            hashtag: state.pathParameters['tag'] ?? '',
+                          ),
+                        ),
+                  ),
+                  GoRoute(
+                    path: 'post/:id',
+                    name: 'community_post',
+                    pageBuilder: (context, state) => AppTransitionPage(
+                          key: state.pageKey,
+                          child: PawHubPostDetailPage(
+                            postId:
+                                int.tryParse(state.pathParameters['id'] ?? '') ??
+                                    0,
+                          ),
+                        ),
+                  ),
+                  GoRoute(
+                    path: 'pet/:id/followers',
+                    name: 'community_followers',
+                    pageBuilder: (context, state) => AppTransitionPage(
+                          key: state.pageKey,
+                          child: PawHubFollowersPage(
+                            petId:
+                                int.tryParse(state.pathParameters['id'] ?? '') ??
+                                    0,
+                          ),
+                        ),
+                  ),
+                  GoRoute(
+                    path: 'pet/:id/following',
+                    name: 'community_following',
+                    pageBuilder: (context, state) => AppTransitionPage(
+                          key: state.pageKey,
+                          child: PawHubFollowingPage(
+                            petId:
+                                int.tryParse(state.pathParameters['id'] ?? '') ??
+                                    0,
+                          ),
+                        ),
+                  ),
+                  GoRoute(
+                    path: 'blocked',
+                    name: 'community_blocked',
+                    pageBuilder: (context, state) => AppTransitionPage(
+                          key: state.pageKey,
+                          child: const PawHubBlockedPage(),
+                        ),
+                  ),
+                  GoRoute(
+                    path: 'trending',
+                    name: 'community_trending',
+                    pageBuilder: (context, state) => AppTransitionPage(
+                          key: state.pageKey,
+                          child: const PawHubTrendingPage(),
+                        ),
+                  ),
+                  GoRoute(
+                    path: 'communities',
+                    name: 'communities',
+                    pageBuilder: (context, state) => AppTransitionPage(
+                          key: state.pageKey,
+                          child: const CommunitiesPage(),
+                        ),
+                    routes: [
+                      GoRoute(
+                        path: 'create',
+                        name: 'community_create',
+                        pageBuilder: (context, state) => AppTransitionPage(
+                              key: state.pageKey,
+                              child: const CreateCommunityPage(),
+                            ),
+                      ),
+                      GoRoute(
+                        path: ':id',
+                        name: 'community_detail',
+                        pageBuilder: (context, state) => AppTransitionPage(
+                              key: state.pageKey,
+                              child: CommunityDetailPage(
+                                communityId: int.tryParse(
+                                        state.pathParameters['id'] ?? '') ??
+                                    0,
+                              ),
+                            ),
+                        routes: [
+                          GoRoute(
+                            path: 'members',
+                            name: 'community_members',
+                            pageBuilder: (context, state) => AppTransitionPage(
+                                  key: state.pageKey,
+                                  child: CommunityMembersPage(
+                                    communityId: int.tryParse(
+                                            state.pathParameters['id'] ?? '') ??
+                                        0,
+                                  ),
+                                ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),
@@ -744,6 +891,15 @@ GoRouter appRouter(Ref ref) {
         pageBuilder: (context, state) => AppTransitionPage(
               key: state.pageKey,
               child: const SandboxPage(),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.tagPets,
+        name: 'tagPets',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+              key: state.pageKey,
+              child: TagPetsPage(args: state.extra! as TagPetsArgs),
             ),
       ),
       GoRoute(

@@ -5,6 +5,26 @@ import '../../utils/logger_service.dart';
 import '../api_endpoints.dart';
 import '../auth_events.dart';
 
+/// Outcome of a refresh attempt. Distinguishes a session the backend actually
+/// killed (→ log out) from a refresh we simply couldn't complete because the
+/// server never answered in time (→ keep the tokens; the session may still be
+/// fine).
+enum _RefreshOutcome {
+  /// New token pair persisted; retry the original request.
+  success,
+
+  /// Backend rejected the refresh token (401/400) or returned an unusable body.
+  /// The session is unrecoverable — clear tokens and redirect to login.
+  rejected,
+
+  /// The refresh call could not reach a verdict (timeout, connection refused,
+  /// server restarting, 5xx). We do NOT know the session is dead, so tokens are
+  /// left intact and the original request is allowed to fail with its network
+  /// error. The next request refreshes again once the server responds. (This is
+  /// also what a debugger breakpoint held past the receive timeout looks like.)
+  inconclusive,
+}
+
 /// Attaches the bearer token to every request and transparently refreshes
 /// it once on a 401 before failing the call.
 class AuthInterceptor extends Interceptor {
@@ -33,6 +53,14 @@ class AuthInterceptor extends Interceptor {
 
   static const String _tag = 'AUTH';
 
+  /// In-flight refresh, shared across all concurrent 401s. The backend rotates
+  /// the refresh token on every refresh, so if N requests each fired their own
+  /// refresh with the same stored token, the first would rotate it and the rest
+  /// would POST a now-consumed token → rejected → session wiped. Single-flight
+  /// guarantees exactly one refresh runs; every other 401 awaits its result and
+  /// then retries with the freshly-persisted access token.
+  Future<_RefreshOutcome>? _refreshing;
+
   @override
   Future<void> onRequest(
     RequestOptions options,
@@ -57,11 +85,25 @@ class AuthInterceptor extends Interceptor {
       return;
     }
 
-    final refreshed = await _tryRefreshToken();
-    if (!refreshed) {
-      await _endSession('token refresh failed');
-      handler.next(err);
-      return;
+    final outcome = await _refreshOnce();
+    switch (outcome) {
+      case _RefreshOutcome.rejected:
+        // Backend positively rejected the refresh token — session is dead.
+        await _endSession('token refresh rejected');
+        handler.next(err);
+        return;
+      case _RefreshOutcome.inconclusive:
+        // We never got a verdict (timeout / unreachable / 5xx). Do NOT clear
+        // tokens — the session may still be valid. Fail this one request with
+        // its original error; the next request will refresh again.
+        _logger.warning(
+          'Token refresh inconclusive (server unreachable); keeping tokens.',
+          tag: _tag,
+        );
+        handler.next(err);
+        return;
+      case _RefreshOutcome.success:
+        break;
     }
 
     try {
@@ -74,18 +116,34 @@ class AuthInterceptor extends Interceptor {
       final response = await _refreshDio.fetch<dynamic>(options);
       handler.resolve(response);
     } on DioException catch (retryError) {
-      // Refresh succeeded but the replayed request still 401'd — the new
-      // access token is already dead. Treat the session as gone.
-      await _endSession('retry after refresh still unauthorized');
+      // Only a real 401 here means the freshly-issued access token is already
+      // dead → session gone. If the replay merely timed out or couldn't reach
+      // the server, keep the tokens (consistent with the inconclusive path) and
+      // just surface the error — the refresh itself had just succeeded.
+      if (retryError.response?.statusCode == 401) {
+        await _endSession('retry after refresh still unauthorized');
+      }
       handler.next(retryError);
     }
   }
 
-  Future<bool> _tryRefreshToken() async {
+  /// Runs the refresh at most once at a time. The first caller starts it and
+  /// stores the future; concurrent callers await that same future instead of
+  /// starting a competing refresh with the same (about-to-be-rotated) token.
+  Future<_RefreshOutcome> _refreshOnce() {
+    final inFlight = _refreshing;
+    if (inFlight != null) return inFlight;
+
+    final future = _tryRefreshToken().whenComplete(() => _refreshing = null);
+    _refreshing = future;
+    return future;
+  }
+
+  Future<_RefreshOutcome> _tryRefreshToken() async {
     final refreshToken = await _secureStorage.readRefreshToken();
     if (refreshToken == null || refreshToken.isEmpty) {
       _logger.warning('No refresh token stored; cannot refresh.', tag: _tag);
-      return false;
+      return _RefreshOutcome.rejected;
     }
 
     const maxRetries = 3;
@@ -98,7 +156,7 @@ class AuthInterceptor extends Interceptor {
         final body = response.data;
         if (body == null) {
           _logger.error('Refresh response had an empty body.', tag: _tag);
-          return false;
+          return _RefreshOutcome.rejected;
         }
         // Read defensively: the backend's RefreshTokenResult is PascalCase C#
         // (AccessToken/RefreshToken), typically serialized camelCase. Accept
@@ -115,7 +173,7 @@ class AuthInterceptor extends Interceptor {
             '(keys: ${body.keys.toList()}).',
             tag: _tag,
           );
-          return false;
+          return _RefreshOutcome.rejected;
         }
         // Persist the rotated pair — the backend rotates the refresh token on
         // every refresh, so saving the new one is what keeps the 7-day window
@@ -124,26 +182,38 @@ class AuthInterceptor extends Interceptor {
           accessToken: newAccess,
           refreshToken: newRefresh,
         );
-        return true;
+        return _RefreshOutcome.success;
       } on DioException catch (e) {
-        // If it's the last attempt or a non-retryable error, give up
-        if (attempt == maxRetries || _isNonRetryableError(e)) {
+        // A 401/400 is the backend positively rejecting the refresh token: the
+        // session is dead and no retry will help. Anything else (timeout,
+        // connection error, 5xx, a debugger breakpoint held past the receive
+        // timeout) means we simply never got a verdict — retry, and if we run
+        // out of attempts report inconclusive so the caller KEEPS the tokens.
+        if (_isRejection(e)) {
+          _logger.warning(
+            'Refresh token rejected by backend (${e.response?.statusCode}).',
+            tag: _tag,
+          );
+          return _RefreshOutcome.rejected;
+        }
+        if (attempt == maxRetries) {
           _logger.error(
-            'Token refresh failed (attempt $attempt/$maxRetries).',
+            'Token refresh inconclusive after $maxRetries attempts '
+            '(server unreachable / too slow).',
             tag: _tag,
             error: e,
           );
-          return false;
+          return _RefreshOutcome.inconclusive;
         }
         _logger.warning(
-          'Token refresh attempt $attempt failed; retrying.',
+          'Token refresh attempt $attempt did not complete; retrying.',
           tag: _tag,
         );
         // Brief delay before retry
         await Future.delayed(Duration(milliseconds: 100 * attempt));
       }
     }
-    return false;
+    return _RefreshOutcome.inconclusive;
   }
 
   /// Reads a token value under any of the given [keys] (to tolerate camelCase
@@ -163,8 +233,12 @@ class AuthInterceptor extends Interceptor {
     _authEvents.notifySessionExpired();
   }
 
-  bool _isNonRetryableError(DioException e) {
-    // Don't retry on 401 (invalid refresh token) or 400 (bad request)
+  /// Whether the backend positively rejected the refresh token — the only
+  /// condition under which the session should be ended. A 401 means the token
+  /// is invalid/expired/revoked; a 400 means it was malformed. Every other
+  /// failure (timeout, connection error, 5xx) is inconclusive, not a rejection,
+  /// and must never trigger a logout on its own.
+  bool _isRejection(DioException e) {
     final status = e.response?.statusCode;
     return status == 401 || status == 400;
   }

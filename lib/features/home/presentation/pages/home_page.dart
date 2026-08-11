@@ -12,6 +12,7 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/section_header.dart';
 import '../../../activity/presentation/widgets/walk_banner.dart';
+import '../../../community/presentation/providers/pawhub_tab_provider.dart';
 import '../../../pawcare/domain/entities/health_reminder.dart';
 import '../../../pawcare/presentation/providers/pawcare_providers.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
@@ -194,11 +195,18 @@ class _StatsRow extends StatelessWidget {
   }
 }
 
-class _QuickActionsRow extends StatelessWidget {
+class _QuickActionsRow extends ConsumerWidget {
   const _QuickActionsRow();
 
+  /// Deep-links into a PawHub hub segment: set the requested tab, then switch
+  /// to the community branch (go, not push, so the bottom nav follows).
+  void _openPawHubTab(BuildContext context, WidgetRef ref, int tab) {
+    ref.read(pawHubRequestedTabProvider.notifier).request(tab);
+    context.go(AppRoutes.community);
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -217,7 +225,7 @@ class _QuickActionsRow extends StatelessWidget {
             color: AppColors.secondary,
             filled: true,
             label: l10n.lostAndFound,
-            onTap: () => context.push(AppRoutes.lostAndFound),
+            onTap: () => _openPawHubTab(context, ref, 1),
           ),
         ),
         Expanded(
@@ -225,7 +233,7 @@ class _QuickActionsRow extends StatelessWidget {
             icon: FluentIcons.heart_24_regular,
             color: AppColors.primary,
             label: l10n.adoptionTitle,
-            onTap: () => context.push(AppRoutes.adoptionBoard),
+            onTap: () => _openPawHubTab(context, ref, 2),
           ),
         ),
         Expanded(

@@ -30,6 +30,14 @@ class WalkActivity {
 
   Duration get duration => Duration(seconds: durationSeconds);
 
+  /// Categorize walk intensity: 'Quick' (<15m), 'Regular' (15-45m), 'Adventure' (45m+).
+  String get intensity {
+    final minutes = duration.inMinutes;
+    if (minutes < 15) return 'Quick';
+    if (minutes < 45) return 'Regular';
+    return 'Adventure';
+  }
+
   /// Deletion is only allowed within [kWalkDeleteWindow] of the walk ending.
   bool get canDelete =>
       DateTime.now().difference(endedAt) <= kWalkDeleteWindow;

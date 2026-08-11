@@ -22,6 +22,11 @@ extension FailureL10n on Failure {
         NotFoundFailure(:final message) =>
           _detail(message) ?? l10n.errorNotFound,
         ServerFailure(:final message) => _detail(message) ?? l10n.errorServer,
+        RateLimitFailure(:final message, :final retryAfter) =>
+          _detail(message) ??
+              (retryAfter != null
+                  ? l10n.errorRateLimitRetry(retryAfter.inSeconds)
+                  : l10n.errorRateLimit),
         UnauthorizedFailure(:final message) =>
           _detail(message) ?? l10n.errorUnauthorized,
         ValidationFailure(:final message) =>

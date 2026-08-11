@@ -22,6 +22,10 @@ enum MediaCategory {
   petReport,
   @JsonValue(6)
   adoptionListingPhoto,
+  @JsonValue(7)
+  communityAvatar,
+  @JsonValue(8)
+  communityBanner,
 }
 
 @freezed

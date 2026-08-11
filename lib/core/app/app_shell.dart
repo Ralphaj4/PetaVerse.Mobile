@@ -17,6 +17,10 @@ const double _fabOverlap = 55;
 
 /// centerFloat shifted down so the FAB renders on top of the bottom bar
 /// (FABs always paint above the bottomNavigationBar in the Scaffold).
+///
+/// The keyboard inset ([ScaffoldPrelayoutGeometry.minInsets] bottom) is added
+/// back so the button stays pinned to the bottom bar instead of riding up when
+/// the keyboard opens — the center AI button must always stay put.
 class _OverlappingCenterFabLocation extends FloatingActionButtonLocation {
   const _OverlappingCenterFabLocation();
 
@@ -24,7 +28,7 @@ class _OverlappingCenterFabLocation extends FloatingActionButtonLocation {
   Offset getOffset(ScaffoldPrelayoutGeometry scaffoldGeometry) {
     final base =
         FloatingActionButtonLocation.centerFloat.getOffset(scaffoldGeometry);
-    return Offset(base.dx, base.dy + _fabOverlap);
+    return Offset(base.dx, base.dy + _fabOverlap + scaffoldGeometry.minInsets.bottom);
   }
 }
 
@@ -61,6 +65,9 @@ class AppShell extends ConsumerWidget {
         width: _fabSize,
         height: _fabSize,
         child: FloatingActionButton(
+          // Explicit tag so this always-present shell FAB never collides with a
+          // screen-level FAB's default Hero tag during route transitions.
+          heroTag: 'app_shell_ai_fab',
           onPressed: () => context.push('/assistant'),
           tooltip: l10n.aiAssistant,
           child: const Icon(FluentIcons.animal_paw_print_24_filled, size: 32),

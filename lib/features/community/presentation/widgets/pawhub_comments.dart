@@ -1,19 +1,27 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_avatar.dart';
+import '../../domain/entities/community_entities.dart';
 import '../models/pawhub_models.dart';
+import '../providers/community_actions_providers.dart';
+import '../providers/community_comments_providers.dart';
+import '../../../pets/presentation/providers/pets_provider.dart';
 import 'pawhub_common.dart';
+import 'pawhub_sheets.dart';
+import 'pet_profile_sheet.dart';
 
 enum _CommentSort { top, newest }
 
 /// The comments bottom sheet: threaded (one level) comments with likes, a
-/// sort toggle, pinned comments, and a composer that posts as [actingAs].
-class CommentsSheet extends StatefulWidget {
+/// sort toggle, pinned comments, and a composer that posts as the acting pet.
+/// Wired to [PostComments] provider — all mutations go through the backend.
+class CommentsSheet extends ConsumerStatefulWidget {
   const CommentsSheet({
     required this.post,
     required this.actingAs,
@@ -28,14 +36,14 @@ class CommentsSheet extends StatefulWidget {
   final ValueChanged<PawPet> onActingAsChanged;
 
   @override
-  State<CommentsSheet> createState() => _CommentsSheetState();
+  ConsumerState<CommentsSheet> createState() => _CommentsSheetState();
 }
 
-class _CommentsSheetState extends State<CommentsSheet> {
+class _CommentsSheetState extends ConsumerState<CommentsSheet> {
   final _controller = TextEditingController();
   final _focus = FocusNode();
   _CommentSort _sort = _CommentSort.top;
-  PawComment? _replyingTo;
+  Comment? _replyingTo;
   late PawPet _actingAs = widget.actingAs;
 
   @override
@@ -45,52 +53,114 @@ class _CommentsSheetState extends State<CommentsSheet> {
     super.dispose();
   }
 
-  List<PawComment> get _sorted {
-    final list = [...widget.post.comments];
+  int get _postId => widget.post.backendId;
+
+  List<Comment> _sorted(List<Comment> raw) {
+    final list = [...raw];
     if (_sort == _CommentSort.top) {
       list.sort((a, b) {
         if (a.isPinned != b.isPinned) return a.isPinned ? -1 : 1;
         return b.likes.compareTo(a.likes);
       });
+      return list;
     }
-    // "newest" keeps insertion order reversed (newest appended last).
-    if (_sort == _CommentSort.newest) {
-      final pinned = list.where((c) => c.isPinned).toList();
-      final rest = list.where((c) => !c.isPinned).toList().reversed.toList();
-      return [...pinned, ...rest];
-    }
-    return list;
+    // newest: pinned first, then reverse insertion order
+    final pinned = list.where((c) => c.isPinned).toList();
+    final rest = list.where((c) => !c.isPinned).toList().reversed.toList();
+    return [...pinned, ...rest];
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     final text = _controller.text.trim();
     if (text.isEmpty) return;
-    setState(() {
-      final comment = PawComment(
-        id: 'new_${DateTime.now().microsecondsSinceEpoch}',
-        author: _actingAs,
-        body: text,
-        timeAgo: 'now',
-      );
-      if (_replyingTo != null) {
-        _replyingTo!.replies.add(comment);
-      } else {
-        widget.post.comments.add(comment);
-      }
-      _controller.clear();
-      _replyingTo = null;
-    });
+    _controller.clear();
     _focus.unfocus();
+    final replyTo = _replyingTo;
+    setState(() => _replyingTo = null);
+    await ref.read(postCommentsProvider(_postId).notifier).add(
+          text,
+          parentCommentId: replyTo?.id,
+        );
   }
 
-  void _toggleLike(PawComment c) {
-    setState(() {
-      c.likedByMe = !c.likedByMe;
-      c.likes += c.likedByMe ? 1 : -1;
-    });
+  Future<void> _toggleLike(Comment c) async {
+    await ref.read(postCommentsProvider(_postId).notifier).toggleLike(c);
   }
 
-  void _startReply(PawComment c) {
+  Future<void> _showCommentMenu(Comment c) async {
+    final action = await showCommentOptionsSheet(context, comment: PawComment.fromEntity(c));
+    if (action == null || !mounted) return;
+    final actions = ref.read(communityActionsProvider);
+
+    switch (action) {
+      case CommentAction.edit:
+        await _editComment(c);
+      case CommentAction.delete:
+        await actions.deleteComment(c.id);
+        if (mounted) {
+          ref.invalidate(postCommentsProvider(widget.post.backendId));
+        }
+      case CommentAction.report:
+        final reason = await showReportSheet(context);
+        if (reason != null) {
+          await actions.reportComment(c.id, reason);
+        }
+    }
+  }
+
+  Future<void> _editComment(Comment c) async {
+    final controller = TextEditingController(text: c.body);
+    final result = await showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
+      ),
+      builder: (ctx) => Padding(
+        padding: EdgeInsets.only(
+          left: AppSpacing.lg,
+          right: AppSpacing.lg,
+          top: AppSpacing.lg,
+          bottom: MediaQuery.viewInsetsOf(ctx).bottom + AppSpacing.lg,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Edit comment', style: AppTextStyles.titleMedium),
+            const SizedBox(height: AppSpacing.md),
+            TextField(
+              controller: controller,
+              minLines: 2,
+              maxLines: 5,
+              autofocus: true,
+              decoration: const InputDecoration(border: OutlineInputBorder()),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: () => Navigator.pop(ctx, controller.text.trim()),
+                child: const Text('Save'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (result != null && mounted) {
+      await ref.read(communityActionsProvider).editComment(
+            commentId: c.id,
+            body: result,
+          );
+      if (mounted) {
+        ref.invalidate(postCommentsProvider(widget.post.backendId));
+      }
+    }
+  }
+
+  void _startReply(Comment c) {
     setState(() => _replyingTo = c);
     _focus.requestFocus();
   }
@@ -105,57 +175,80 @@ class _CommentsSheetState extends State<CommentsSheet> {
     if (chosen != null) {
       setState(() => _actingAs = chosen);
       widget.onActingAsChanged(chosen);
+      ref.read(petsProvider.notifier).selectPet(chosen.backendId);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final commentsAsync = ref.watch(postCommentsProvider(_postId));
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
-    return DraggableScrollableSheet(
-      initialChildSize: 0.75,
-      minChildSize: 0.5,
-      maxChildSize: 0.95,
-      expand: false,
-      builder: (context, scrollController) {
-        final comments = _sorted;
-        return Container(
-          decoration: const BoxDecoration(
-            color: AppColors.surface,
-            borderRadius:
-                BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
-          ),
-          child: Column(
-            children: [
-              _header(comments.isEmpty),
-              Expanded(
-                child: comments.isEmpty
-                    ? const _EmptyComments()
-                    : ListView.builder(
-                        controller: scrollController,
-                        padding: const EdgeInsets.fromLTRB(
-                          AppSpacing.lg,
-                          0,
-                          AppSpacing.lg,
-                          AppSpacing.lg,
-                        ),
+
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
+      ),
+      padding: const EdgeInsets.only(bottom: AppSpacing.xl),
+      child: DraggableScrollableSheet(
+        initialChildSize: 0.75,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (context, scrollController) {
+          return SafeArea(
+            top: false,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: AppColors.surface,
+              ),
+              child: Column(
+                children: [
+                  commentsAsync.when(
+                    loading: () => _headerStatic(null),
+                    error: (e, st) => _headerStatic(null),
+                    data: (page) => _header(page.comments),
+                  ),
+                  Expanded(
+                    child: commentsAsync.when(
+                      loading: () => const Center(child: CircularProgressIndicator()),
+                      error: (e, st) => const Center(
+                        child: Text('Could not load comments'),
+                      ),
+                      data: (page) {
+                        final comments = _sorted(page.comments);
+                        if (comments.isEmpty) return const _EmptyComments();
+                        return ListView.builder(
+                          controller: scrollController,
+                          padding: const EdgeInsets.fromLTRB(
+                            AppSpacing.lg,
+                            0,
+                            AppSpacing.lg,
+                            AppSpacing.lg,
+                          ),
                         itemCount: comments.length,
                         itemBuilder: (_, i) => _CommentTile(
                           comment: comments[i],
                           onLike: () => _toggleLike(comments[i]),
                           onReply: () => _startReply(comments[i]),
                           onLikeReply: _toggleLike,
+                          onShowMenu: _showCommentMenu,
                         ),
-                      ),
+                      );
+                    },
+                  ),
+                ),
+                  _composer(bottomInset),
+                ],
               ),
-              _composer(bottomInset),
-            ],
-          ),
-        );
-      },
+            ),
+          );
+        },
+      ),
     );
   }
 
-  Widget _header(bool empty) {
+  Widget _headerStatic(List<Comment>? comments) {
     return Column(
       children: [
         Container(
@@ -172,13 +265,47 @@ class _CommentsSheetState extends State<CommentsSheet> {
           child: Row(
             children: [
               Text('Comments', style: AppTextStyles.titleMedium),
-              const SizedBox(width: AppSpacing.sm),
-              if (!empty)
-                Text('${widget.post.commentCount}',
+              if (comments != null && comments.isNotEmpty) ...[
+                const SizedBox(width: AppSpacing.sm),
+                Text('${comments.length}',
                     style: AppTextStyles.bodyMedium
                         .copyWith(color: AppColors.textTertiary)),
+              ],
               const Spacer(),
-              if (!empty)
+            ],
+          ),
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        const Divider(height: 1, color: AppColors.divider),
+      ],
+    );
+  }
+
+  Widget _header(List<Comment> comments) {
+    return Column(
+      children: [
+        Container(
+          width: 40,
+          height: 4,
+          margin: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+          decoration: BoxDecoration(
+            color: AppColors.divider,
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          child: Row(
+            children: [
+              Text('Comments', style: AppTextStyles.titleMedium),
+              if (comments.isNotEmpty) ...[
+                const SizedBox(width: AppSpacing.sm),
+                Text('${comments.length}',
+                    style: AppTextStyles.bodyMedium
+                        .copyWith(color: AppColors.textTertiary)),
+              ],
+              const Spacer(),
+              if (comments.isNotEmpty)
                 _SortToggle(
                   sort: _sort,
                   onChanged: (s) => setState(() => _sort = s),
@@ -318,19 +445,26 @@ class _SortToggle extends StatelessWidget {
   }
 }
 
-class _CommentTile extends StatelessWidget {
+class _CommentTile extends ConsumerStatefulWidget {
   const _CommentTile({
     required this.comment,
     required this.onLike,
     required this.onReply,
     required this.onLikeReply,
+    required this.onShowMenu,
   });
 
-  final PawComment comment;
+  final Comment comment;
   final VoidCallback onLike;
   final VoidCallback onReply;
-  final ValueChanged<PawComment> onLikeReply;
+  final ValueChanged<Comment> onLikeReply;
+  final ValueChanged<Comment> onShowMenu;
 
+  @override
+  ConsumerState<_CommentTile> createState() => _CommentTileState();
+}
+
+class _CommentTileState extends ConsumerState<_CommentTile> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -338,23 +472,33 @@ class _CommentTile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _row(comment, onLike, onReply),
-          for (final reply in comment.replies)
+          _row(widget.comment, widget.onLike, widget.onReply),
+          for (final reply in widget.comment.replies)
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 40, top: AppSpacing.md),
-              child: _row(reply, () => onLikeReply(reply), null),
+              padding: const EdgeInsets.only(left: 40, top: AppSpacing.md),
+              child: _row(reply, () => widget.onLikeReply(reply), null),
             ),
         ],
       ),
     );
   }
 
-  Widget _row(PawComment c, VoidCallback onLikeTap, VoidCallback? onReplyTap) {
+  Widget _row(Comment c, VoidCallback onLikeTap, VoidCallback? onReplyTap) {
+    final authorPet = PawPet.fromEntity(c.author);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppAvatar(name: c.author.name, imageUrl: c.author.avatarUrl, radius: 16),
+        GestureDetector(
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: AppColors.surface,
+              builder: (_) => PetProfileSheet(pet: authorPet),
+            );
+          },
+          child: AppAvatar(name: authorPet.name, imageUrl: authorPet.avatarUrl, radius: 16),
+        ),
         const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Column(
@@ -362,13 +506,23 @@ class _CommentTile extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Text(c.author.name, style: AppTextStyles.labelLarge),
-                  if (c.author.isVerified) ...[
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: AppColors.surface,
+                        builder: (_) => PetProfileSheet(pet: authorPet),
+                      );
+                    },
+                    child: Text(authorPet.name, style: AppTextStyles.labelLarge),
+                  ),
+                  if (authorPet.isVerified) ...[
                     const SizedBox(width: 4),
                     const VerifiedBadge(size: 13),
                   ],
                   const SizedBox(width: AppSpacing.sm),
-                  Text(c.timeAgo,
+                  Text(c.timeAgo ?? '',
                       style: AppTextStyles.bodySmall
                           .copyWith(color: AppColors.textTertiary)),
                   if (c.isPinned) ...[
@@ -408,6 +562,13 @@ class _CommentTile extends StatelessWidget {
                   style: AppTextStyles.labelSmall
                       .copyWith(color: AppColors.textTertiary)),
           ],
+        ),
+        IconButton(
+          onPressed: () => widget.onShowMenu(c),
+          icon: const Icon(FluentIcons.more_horizontal_24_regular,
+              size: 18, color: AppColors.textSecondary),
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints(),
         ),
       ],
     );

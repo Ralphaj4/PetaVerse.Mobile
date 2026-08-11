@@ -58,11 +58,11 @@
       }
     }
   },
-  "goodMorning": "Good Morning 👋",
+  "goodMorning": "Good Morning",
   "@goodMorning": {},
-  "goodAfternoon": "Good Afternoon 👋",
+  "goodAfternoon": "Good Afternoon",
   "@goodAfternoon": {},
-  "goodEvening": "Good Evening 👋",
+  "goodEvening": "Good Evening",
   "@goodEvening": {},
   "petDoingGreat": "{petName} is doing great today! 🐾",
   "@petDoingGreat": {
@@ -300,6 +300,11 @@
   "errorForbidden": "You don't have permission to do that.",
   "errorValidation": "Some information is invalid. Please review and try again.",
   "errorServer": "Our servers are having trouble. Please try again later.",
+  "errorRateLimit": "You're doing that too fast. Please slow down and try again.",
+  "errorRateLimitRetry": "Too many requests. Try again in {seconds}s.",
+  "@errorRateLimitRetry": {
+    "placeholders": { "seconds": { "type": "int" } }
+  },
   "errorCache": "Could not load saved data.",
   "errorUnknown": "An unexpected error occurred. Please try again.",
   "errorNotFound": "We couldn't find an account with that information.",
@@ -919,5 +924,312 @@
   "dateToday": "Today",
   "@dateToday": {},
   "dateYesterday": "Yesterday",
-  "@dateYesterday": {}
+  "@dateYesterday": {},
+
+  "pawHubSearchHint": "Search pets, posts, #tags",
+  "pawHubFeedTabFollowing": "Following",
+  "@pawHubFeedTabFollowing": {},
+  "pawHubFeedTabDiscover": "Discover",
+  "@pawHubFeedTabDiscover": {},
+  "pawHubNewPosts": "New paw-sts",
+  "@pawHubNewPosts": {},
+  "pawHubFeedEmptyTitle": "Your feed is a little quiet",
+  "@pawHubFeedEmptyTitle": {},
+  "pawHubFeedEmptyDescription": "Follow some pets and their moments will show up right here 🐾",
+  "@pawHubFeedEmptyDescription": {},
+  "pawHubDiscoverPets": "Discover pets",
+  "@pawHubDiscoverPets": {},
+  "pawHubSuggestedPets": "Pets you might like",
+  "@pawHubSuggestedPets": {},
+  "pawHubLostPetNearby": "LOST PET NEARBY",
+  "@pawHubLostPetNearby": {},
+  "pawHubViewOnMap": "View on map",
+  "@pawHubViewOnMap": {},
+  "pawHubFollow": "Follow",
+  "@pawHubFollow": {},
+  "pawHubFollowing": "Following",
+  "@pawHubFollowing": {},
+  "pawHubCouldNotLoadFeed": "Could not load feed",
+  "@pawHubCouldNotLoadFeed": {},
+
+  "pawHubPostSaved": "Saved",
+  "@pawHubPostSaved": {},
+  "pawHubPostRemovedFromSaved": "Removed from saved",
+  "@pawHubPostRemovedFromSaved": {},
+  "pawHubLinkCopied": "Link copied",
+  "@pawHubLinkCopied": {},
+  "pawHubPostHidden": "Post hidden",
+  "@pawHubPostHidden": {},
+  "pawHubPostReported": "Reported. Thank you.",
+  "@pawHubPostReported": {},
+  "pawHubBlockedUser": "Blocked {name}",
+  "@pawHubBlockedUser": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "pawHubPostDeleted": "Post deleted",
+  "@pawHubPostDeleted": {},
+  "pawHubEditCaption": "Edit caption",
+  "@pawHubEditCaption": {},
+  "pawHubCaptionUpdated": "Caption updated",
+  "@pawHubCaptionUpdated": {},
+  "pawHubFollowingPet": "Following {name}",
+  "@pawHubFollowingPet": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "pawHubUnfollowedPet": "Unfollowed {name}",
+  "@pawHubUnfollowedPet": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "pawHubAddPetFirstToPost": "Add a pet first to post",
+  "@pawHubAddPetFirstToPost": {},
+  "pawHubPostedAs": "Posted as {name} 🐾",
+  "@pawHubPostedAs": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+
+  "pawHubPostOptionSave": "Save",
+  "@pawHubPostOptionSave": {},
+  "pawHubPostOptionRemoveSaved": "Remove from saved",
+  "@pawHubPostOptionRemoveSaved": {},
+  "pawHubPostOptionCopyLink": "Copy link",
+  "@pawHubPostOptionCopyLink": {},
+  "pawHubPostOptionShareTo": "Share to…",
+  "@pawHubPostOptionShareTo": {},
+  "pawHubPostOptionEditPost": "Edit post",
+  "@pawHubPostOptionEditPost": {},
+  "pawHubPostOptionDeletePost": "Delete post",
+  "@pawHubPostOptionDeletePost": {},
+  "pawHubPostOptionHidePost": "Hide this post",
+  "@pawHubPostOptionHidePost": {},
+  "pawHubPostOptionReport": "Report",
+  "@pawHubPostOptionReport": {},
+  "pawHubPostOptionBlock": "Block {name}",
+  "@pawHubPostOptionBlock": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+
+  "pawHubReportTitle": "Why are you reporting this?",
+  "@pawHubReportTitle": {},
+  "pawHubReportReasonCruelty": "Animal cruelty or harm",
+  "@pawHubReportReasonCruelty": {},
+  "pawHubReportReasonSpam": "Spam or a scam",
+  "@pawHubReportReasonSpam": {},
+  "pawHubReportReasonNudity": "Nudity or sexual content",
+  "@pawHubReportReasonNudity": {},
+  "pawHubReportReasonHarassment": "Harassment or bullying",
+  "@pawHubReportReasonHarassment": {},
+  "pawHubReportReasonImpersonation": "Not a real pet / impersonation",
+  "@pawHubReportReasonImpersonation": {},
+  "pawHubReportReasonOther": "Something else",
+  "@pawHubReportReasonOther": {},
+
+  "pawHubCommentsTitle": "Comments",
+  "@pawHubCommentsTitle": {},
+  "pawHubCommentAs": "Comment as",
+  "@pawHubCommentAs": {},
+  "pawHubCommentHint": "Add a comment as {name}…",
+  "@pawHubCommentHint": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "pawHubReplyingTo": "Replying to {name}",
+  "@pawHubReplyingTo": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "pawHubSortTop": "Top",
+  "@pawHubSortTop": {},
+  "pawHubSortNewest": "Newest",
+  "@pawHubSortNewest": {},
+  "pawHubCommentReply": "Reply",
+  "@pawHubCommentReply": {},
+  "pawHubNoCommentsYet": "No comments yet",
+  "@pawHubNoCommentsYet": {},
+  "pawHubFirstCommentEncouragement": "Be the first to say something nice 🐾",
+  "@pawHubFirstCommentEncouragement": {},
+
+  "pawHubNotificationsTitle": "Notifications",
+  "@pawHubNotificationsTitle": {},
+  "pawHubMarkAllRead": "Mark all read",
+  "@pawHubMarkAllRead": {},
+
+  "pawHubPostLike": "Like",
+  "@pawHubPostLike": {},
+  "pawHubPostComment": "Comment",
+  "@pawHubPostComment": {},
+  "pawHubPostShare": "Share",
+  "@pawHubPostShare": {},
+  "pawHubPostSaveAction": "Save",
+  "@pawHubPostSaveAction": {},
+  "pawHubLikesCountPaw": "paw",
+  "@pawHubLikesCountPaw": {},
+  "pawHubLikesCountPaws": "paws",
+  "@pawHubLikesCountPaws": {},
+  "pawHubTaggedWith": "with {names}",
+  "@pawHubTaggedWith": {
+    "placeholders": { "names": { "type": "String" } }
+  },
+  "pawHubPostEdited": " · Edited",
+  "@pawHubPostEdited": {},
+  "pawHubViewAllComments": "View all {count} comments",
+  "@pawHubViewAllComments": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "pawHubNewPostTitle": "New post",
+  "@pawHubNewPostTitle": {},
+  "pawHubShare": "Share",
+  "@pawHubShare": {},
+  "pawHubPostingAs": "Posting as",
+  "@pawHubPostingAs": {},
+  "pawHubCaptionHint": "Write a caption… add #hashtags and @mentions",
+  "@pawHubCaptionHint": {},
+  "pawHubTagPets": "Tag pets",
+  "@pawHubTagPets": {},
+  "pawHubAddLocation": "Add location",
+  "@pawHubAddLocation": {},
+  "pawHubVisibility": "Visibility",
+  "@pawHubVisibility": {},
+  "pawHubAddMedia": "Add",
+  "@pawHubAddMedia": {},
+  "pawHubCoverPhoto": "Cover",
+  "@pawHubCoverPhoto": {},
+  "pawHubDone": "Done",
+  "@pawHubDone": {},
+  "pawHubAddPhotoRequired": "Add at least one photo",
+  "@pawHubAddPhotoRequired": {},
+
+  "pawHubProfilePosts": "Posts",
+  "@pawHubProfilePosts": {},
+  "pawHubProfileFollowers": "Followers",
+  "@pawHubProfileFollowers": {},
+  "pawHubProfileFollowing": "Following",
+  "@pawHubProfileFollowing": {},
+  "pawHubProfileManagePet": "Manage pet",
+  "@pawHubProfileManagePet": {},
+  "pawHubProfileSiblings": "{name}'s siblings",
+  "@pawHubProfileSiblings": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "pawHubProfileCaredForBy": "cared for by {owner}",
+  "@pawHubProfileCaredForBy": {
+    "placeholders": { "owner": { "type": "String" } }
+  },
+
+  "communitiesTitle": "Communities",
+  "communitiesEntryButton": "Communities",
+  "communitiesSearchHint": "Search communities",
+  "communitiesMyCommunities": "My communities",
+  "communitiesTabDiscover": "Discover",
+  "communitiesTabMine": "My communities",
+  "communitiesMineEmptyTitle": "You haven't joined any communities",
+  "communitiesMineEmptyDescription": "Explore communities and join the ones your pet belongs in 🐾",
+  "communitiesDiscoverRailTitle": "Communities to join",
+  "communitiesSeeAll": "See all",
+  "communitiesEmptyTitle": "No communities yet",
+  "communitiesEmptyDescription": "Be the first to start one for your pack 🐾",
+  "communitiesSearchEmpty": "No communities match “{query}”",
+  "@communitiesSearchEmpty": {
+    "placeholders": { "query": { "type": "String" } }
+  },
+  "communitiesCouldNotLoad": "Could not load communities",
+  "communitiesRetry": "Retry",
+
+  "communitySortPopular": "Popular",
+  "communitySortNewest": "Newest",
+  "communitySortMostActive": "Most active",
+  "communityCategoryAll": "All",
+  "communityCategoryBreedClub": "Breed club",
+  "communityCategoryShelterRescues": "Shelters & rescues",
+  "communityCategoryBreeding": "Breeding",
+  "communityCategorySpecialNeeds": "Special needs",
+  "communityCategoryActivity": "Activity",
+  "communityCategoryHealth": "Health",
+  "communityCategoryOther": "Other",
+
+  "communityJoin": "Join",
+  "communityJoined": "Joined",
+  "communityLeave": "Leave",
+  "communityManage": "Manage",
+  "communityEditAvatar": "Change profile photo",
+  "communityEditBanner": "Change cover photo",
+  "communityImagesUpdating": "Updating…",
+  "communityImagesUpdated": "Photo updated",
+  "communityImagesUpdateFailed": "Couldn't update the photo. Please try again.",
+  "communityLeadBadge": "Lead",
+  "communityMembersCount": "{count, plural, =0{No members} =1{1 member} other{{count} members}}",
+  "@communityMembersCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "communityPostsCount": "{count, plural, =0{No posts} =1{1 post} other{{count} posts}}",
+  "@communityPostsCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "communityLedBy": "Led by {name}",
+  "@communityLedBy": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "communityJoinedToast": "Joined {name}",
+  "@communityJoinedToast": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "communityLeftToast": "Left {name}",
+  "@communityLeftToast": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+
+  "communityDetailAbout": "About",
+  "communityDetailMembers": "Members",
+  "communityStatPosts": "Posts",
+  "communityLeaderLabel": "Leader",
+  "communityDetailFeedEmptyTitle": "No posts yet",
+  "communityCreateFirstPost": "Create first post",
+  "communityDetailViewMembers": "View all members",
+  "communityDetailFeedEmpty": "No posts yet — be the first to share",
+  "communityDetailJoinToPost": "Join to post here",
+  "communityLeaveConfirmTitle": "Leave community?",
+  "communityLeaveConfirmMessage": "You’ll stop seeing posts from {name}.",
+  "@communityLeaveConfirmMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "communityDeleteConfirmTitle": "Delete community?",
+  "communityDeleteConfirmMessage": "This permanently removes {name} and all its posts. This can’t be undone.",
+  "@communityDeleteConfirmMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "communityDelete": "Delete",
+  "communityDeletedToast": "Community deleted",
+  "communityCancel": "Cancel",
+
+  "communityCreateTitle": "New community",
+  "communityCreateNameLabel": "Name",
+  "communityCreateNameHint": "e.g. Golden Retriever Club",
+  "communityCreateHandleLabel": "Handle",
+  "communityCreateHandleHint": "golden-club",
+  "communityHandleChecking": "Checking availability…",
+  "communityHandleAvailable": "Handle is available",
+  "communityHandleTaken": "That handle is already taken",
+  "communityHandleInvalid": "Use lowercase letters, numbers, and hyphens only",
+  "communityCreateDescriptionLabel": "Description",
+  "communityCreateDescriptionHint": "What is this community about?",
+  "communityCreateCategoryLabel": "Category",
+  "communityCreateBannerLabel": "Add a cover photo",
+  "communityCreateSubmit": "Create community",
+  "communityCreateNameRequired": "Please enter a name",
+  "communityCreateCategoryRequired": "Please choose a category",
+  "communityCreatedToast": "Community created 🎉",
+  "communityCreateFailed": "Could not create community. Please try again.",
+  "communityCreateAddPetFirst": "Add a pet first to lead a community",
+
+  "communityMembersTitle": "Members",
+  "communityMemberRemove": "Remove",
+  "communityMemberRemoveConfirmTitle": "Remove member?",
+  "communityMemberRemoveConfirmMessage": "Remove {name} from this community?",
+  "@communityMemberRemoveConfirmMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "communityMemberRemovedToast": "Member removed",
+
+  "communityComposerPostingIn": "Posting in {name}",
+  "@communityComposerPostingIn": {
+    "placeholders": { "name": { "type": "String" } }
+  }
 }

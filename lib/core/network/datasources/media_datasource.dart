@@ -11,7 +11,15 @@ import '../dtos/media_dtos.dart';
 
 abstract class IMediaDatasource {
   Future<Result<UploadUrlResponse>> getUploadUrl(UploadUrlRequest request);
-  Future<Result<void>> uploadToR2(String uploadUrl, File file, String contentType);
+
+  /// PUTs [file] to the signed [uploadUrl]. [onProgress] (sent, total) fires as
+  /// bytes upload, enabling a real progress bar.
+  Future<Result<void>> uploadToR2(
+    String uploadUrl,
+    File file,
+    String contentType, {
+    void Function(int sent, int total)? onProgress,
+  });
   Future<Result<MediaAsset>> confirmUpload(String assetId);
   Future<Result<MediaAsset>> getMedia(String assetId);
   Future<Result<void>> deleteMedia(String assetId);
@@ -45,18 +53,25 @@ class MediaDatasource implements IMediaDatasource {
   Future<Result<void>> uploadToR2(
     String uploadUrl,
     File file,
-    String contentType,
-  ) async {
+    String contentType, {
+    void Function(int sent, int total)? onProgress,
+  }) async {
     try {
-      final fileBytes = await file.readAsBytes();
-      // Use raw Dio without interceptors for R2 upload
+      // Stream the file instead of reading it fully into memory — avoids a
+      // large spike for videos and lets Dio report real send progress.
+      final length = await file.length();
+      // Use raw Dio without interceptors for R2 upload.
       await _rawDio.put<void>(
         uploadUrl,
-        data: fileBytes,
+        data: file.openRead(),
+        onSendProgress: onProgress,
         options: Options(
           contentType: contentType, // Must match exactly
           headers: {
             'Content-Type': contentType,
+            // Signed R2 PUTs require the exact length; a streamed body has no
+            // implicit Content-Length, so set it explicitly.
+            Headers.contentLengthHeader: length,
           },
         ),
       );
@@ -110,6 +125,10 @@ class MediaDatasource implements IMediaDatasource {
         ValidationException() => ValidationFailure(
             message: e.message,
             fieldErrors: e.fieldErrors,
+          ),
+        RateLimitException() => RateLimitFailure(
+            message: e.message,
+            retryAfter: e.retryAfter,
           ),
         ServerException() => ServerFailure(message: e.message),
         CacheException() => CacheFailure(message: e.message),

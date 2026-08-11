@@ -75,6 +75,17 @@ class AuthRemoteDataSource {
     );
   }
 
+  /// Exchanges a refresh token for a fresh token pair. Used by the proactive
+  /// startup refresh (an expired access token on cold launch) — the reactive
+  /// 401 path in [AuthInterceptor] refreshes on its own and does not use this.
+  Future<AuthTokensDto> refreshSession(String refreshToken) async {
+    final json = await _client.post<Map<String, dynamic>>(
+      ApiEndpoints.refreshToken,
+      data: {'refreshToken': refreshToken},
+    );
+    return AuthTokensDto.fromJson(json);
+  }
+
   /// Starts a password reset: backend sends an OTP to the mobile number.
   Future<OtpDispatchDto> forgotPassword(String mobileNumber) async {
     final json = await _client.post<Map<String, dynamic>>(

@@ -468,9 +468,20 @@ class PostCardSkeleton extends StatelessWidget {
 
 /// Empty state for the Following feed (no follows yet).
 class FeedEmptyState extends StatelessWidget {
-  const FeedEmptyState({required this.onDiscover, super.key});
+  const FeedEmptyState({
+    this.onDiscover,
+    this.title,
+    this.message,
+    super.key,
+  });
 
-  final VoidCallback onDiscover;
+  /// Optional "Discover pets" CTA. Null hides the button (e.g. on the Discover
+  /// tab itself, where the CTA would be redundant).
+  final VoidCallback? onDiscover;
+
+  /// Copy overrides — default to the Following-feed wording.
+  final String? title;
+  final String? message;
 
   @override
   Widget build(BuildContext context) {
@@ -490,21 +501,25 @@ class FeedEmptyState extends StatelessWidget {
                   size: 44, color: AppColors.primary),
             ),
             const SizedBox(height: AppSpacing.lg),
-            Text('Your feed is a little quiet',
+            Text(title ?? 'Your feed is a little quiet',
                 style: AppTextStyles.titleMedium, textAlign: TextAlign.center),
             const SizedBox(height: AppSpacing.xs),
             Text(
-              'Follow some pets and their moments\nwill show up right here 🐾',
+              message ??
+                  'Follow some pets and their moments\nwill show up right here 🐾',
               style: AppTextStyles.bodyMedium
                   .copyWith(color: AppColors.textSecondary),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: AppSpacing.lg),
-            FilledButton.icon(
-              onPressed: onDiscover,
-              icon: const Icon(FluentIcons.compass_northwest_24_regular, size: 18),
-              label: const Text('Discover pets'),
-            ),
+            if (onDiscover != null) ...[
+              const SizedBox(height: AppSpacing.lg),
+              FilledButton.icon(
+                onPressed: onDiscover,
+                icon: const Icon(FluentIcons.compass_northwest_24_regular,
+                    size: 18),
+                label: const Text('Discover pets'),
+              ),
+            ],
           ],
         ),
       ),

@@ -1,6 +1,10 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:video_player/video_player.dart';
 
+import '../../../../core/services/video_cache.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/app_cached_image.dart';
@@ -75,14 +79,25 @@ class _PostMediaCarouselState extends State<PostMediaCarousel>
                   return Stack(
                     fit: StackFit.expand,
                     children: [
-                      Semantics(
-                        image: true,
-                        label: m.altText.isEmpty ? null : m.altText,
-                        child: AppCachedImage(
-                          imageUrl: m.url,
-                          borderRadius: BorderRadius.zero,
+                      // Videos show the server-generated poster (tiny, cached);
+                      // the clip itself is fetched only when the full-screen
+                      // viewer opens. Images render normally.
+                      if (m.isVideo)
+                        (m.thumbnailUrl != null)
+                            ? AppCachedImage(
+                                imageUrl: m.thumbnailUrl,
+                                borderRadius: BorderRadius.zero,
+                              )
+                            : const ColoredBox(color: Colors.black)
+                      else
+                        Semantics(
+                          image: true,
+                          label: m.altText.isEmpty ? null : m.altText,
+                          child: AppCachedImage(
+                            imageUrl: m.url,
+                            borderRadius: BorderRadius.zero,
+                          ),
                         ),
-                      ),
                       if (m.isVideo) const _VideoOverlay(),
                       if (m.isVideo && m.durationLabel != null)
                         PositionedDirectional(
@@ -277,17 +292,24 @@ class _MediaZoomViewerState extends State<MediaZoomViewer> {
             controller: _controller,
             itemCount: widget.media.length,
             onPageChanged: (i) => setState(() => _index = i),
-            itemBuilder: (_, i) => InteractiveViewer(
-              minScale: 1,
-              maxScale: 4,
-              child: Center(
-                child: AppCachedImage(
-                  imageUrl: widget.media[i].url,
-                  borderRadius: BorderRadius.zero,
-                  fit: BoxFit.contain,
+            itemBuilder: (_, i) {
+              final m = widget.media[i];
+              if (m.isVideo) {
+                return _VideoPlayerView(
+                    url: m.url, thumbnailUrl: m.thumbnailUrl);
+              }
+              return InteractiveViewer(
+                minScale: 1,
+                maxScale: 4,
+                child: Center(
+                  child: AppCachedImage(
+                    imageUrl: m.url,
+                    borderRadius: BorderRadius.zero,
+                    fit: BoxFit.contain,
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
           SafeArea(
             child: Padding(
@@ -306,6 +328,265 @@ class _MediaZoomViewerState extends State<MediaZoomViewer> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Formats a [Duration] as `m:ss` (or `h:mm:ss` past an hour).
+String _fmtDuration(Duration d) {
+  final h = d.inHours;
+  final m = d.inMinutes.remainder(60);
+  final s = d.inSeconds.remainder(60).toString().padLeft(2, '0');
+  if (h > 0) return '$h:${m.toString().padLeft(2, '0')}:$s';
+  return '$m:$s';
+}
+
+/// A polished network video player for the full-screen viewer:
+/// - cached poster behind the video until the first frame is ready
+/// - tap toggles auto-hiding controls; big center play/pause
+/// - seekable scrub bar with elapsed / total time
+/// - buffering spinner, mute toggle, loops
+class _VideoPlayerView extends ConsumerStatefulWidget {
+  const _VideoPlayerView({required this.url, this.thumbnailUrl});
+
+  final String url;
+  final String? thumbnailUrl;
+
+  @override
+  ConsumerState<_VideoPlayerView> createState() => _VideoPlayerViewState();
+}
+
+class _VideoPlayerViewState extends ConsumerState<_VideoPlayerView> {
+  VideoPlayerController? _controller;
+  bool _initialized = false;
+  bool _failed = false;
+  bool _controlsVisible = true;
+  bool _muted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _init();
+  }
+
+  Future<void> _init() async {
+    try {
+      // Download-once into the on-disk cache, then play from the local file so
+      // replays never re-fetch over the network.
+      final file = await ref.read(videoCacheProvider).fileFor(widget.url);
+      if (!mounted) return;
+      final controller = VideoPlayerController.file(file);
+      _controller = controller;
+      controller.addListener(_onTick);
+      await controller.initialize();
+      await controller.setLooping(true);
+      if (!mounted) return;
+      setState(() => _initialized = true);
+      await controller.play();
+      _scheduleHideControls();
+    } catch (_) {
+      if (mounted) setState(() => _failed = true);
+    }
+  }
+
+  void _onTick() {
+    if (mounted) setState(() {}); // drive scrub bar + time labels
+  }
+
+  @override
+  void dispose() {
+    _controller?.removeListener(_onTick);
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  void _scheduleHideControls() {
+    Future.delayed(const Duration(seconds: 3), () {
+      if (!mounted) return;
+      final c = _controller;
+      if (c != null && c.value.isPlaying) {
+        setState(() => _controlsVisible = false);
+      }
+    });
+  }
+
+  void _toggleControls() {
+    setState(() => _controlsVisible = !_controlsVisible);
+    if (_controlsVisible) _scheduleHideControls();
+  }
+
+  void _togglePlay() {
+    final c = _controller;
+    if (c == null || !_initialized) return;
+    setState(() {
+      if (c.value.isPlaying) {
+        c.pause();
+        _controlsVisible = true;
+      } else {
+        c.play();
+        _scheduleHideControls();
+      }
+    });
+  }
+
+  void _toggleMute() {
+    final c = _controller;
+    if (c == null) return;
+    setState(() {
+      _muted = !_muted;
+      c.setVolume(_muted ? 0 : 1);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_failed) {
+      return const Center(
+        child: Icon(FluentIcons.video_off_24_regular,
+            color: Colors.white54, size: 48),
+      );
+    }
+    final c = _controller;
+    final value = c?.value;
+    final ready = _initialized && c != null && value != null;
+    final buffering = ready && value.isBuffering;
+
+    return GestureDetector(
+      onTap: _toggleControls,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Server poster stays behind until the first video frame is ready.
+          Positioned.fill(
+            child: widget.thumbnailUrl != null
+                ? AppCachedImage(
+                    imageUrl: widget.thumbnailUrl,
+                    fit: BoxFit.contain,
+                    borderRadius: BorderRadius.zero,
+                  )
+                : const ColoredBox(color: Colors.black),
+          ),
+          if (ready)
+            Center(
+              child: AspectRatio(
+                aspectRatio: value.aspectRatio == 0 ? 16 / 9 : value.aspectRatio,
+                child: VideoPlayer(c),
+              ),
+            ),
+
+          // Buffering / initial-load spinner.
+          if (!ready || buffering)
+            const CircularProgressIndicator(color: Colors.white),
+
+          // Controls scrim + center play/pause (auto-hide while playing).
+          if (ready)
+            AnimatedOpacity(
+              opacity: _controlsVisible ? 1 : 0,
+              duration: const Duration(milliseconds: 200),
+              child: IgnorePointer(
+                ignoring: !_controlsVisible,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // Center play/pause.
+                    _GlyphButton(
+                      icon: value.isPlaying
+                          ? FluentIcons.pause_24_filled
+                          : FluentIcons.play_24_filled,
+                      onTap: _togglePlay,
+                    ),
+                    // Bottom bar: time + scrub + mute.
+                    Positioned(
+                      left: AppSpacing.md,
+                      right: AppSpacing.md,
+                      bottom: AppSpacing.md,
+                      child: _VideoControlBar(
+                        controller: c,
+                        muted: _muted,
+                        onToggleMute: _toggleMute,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Bottom control bar: elapsed time, seekable progress, total time, mute.
+class _VideoControlBar extends StatelessWidget {
+  const _VideoControlBar({
+    required this.controller,
+    required this.muted,
+    required this.onToggleMute,
+  });
+
+  final VideoPlayerController controller;
+  final bool muted;
+  final VoidCallback onToggleMute;
+
+  @override
+  Widget build(BuildContext context) {
+    final value = controller.value;
+    return Row(
+      children: [
+        Text(_fmtDuration(value.position),
+            style: const TextStyle(color: Colors.white, fontSize: 12)),
+        const SizedBox(width: AppSpacing.sm),
+        Expanded(
+          child: VideoProgressIndicator(
+            controller,
+            allowScrubbing: true,
+            padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+            colors: const VideoProgressColors(
+              playedColor: AppColors.primary,
+              bufferedColor: Colors.white38,
+              backgroundColor: Colors.white24,
+            ),
+          ),
+        ),
+        const SizedBox(width: AppSpacing.sm),
+        Text(_fmtDuration(value.duration),
+            style: const TextStyle(color: Colors.white, fontSize: 12)),
+        const SizedBox(width: AppSpacing.xs),
+        GestureDetector(
+          onTap: onToggleMute,
+          child: Icon(
+            muted
+                ? FluentIcons.speaker_mute_24_filled
+                : FluentIcons.speaker_2_24_filled,
+            color: Colors.white,
+            size: 20,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// The translucent circular play/pause glyph in the video center.
+class _GlyphButton extends StatelessWidget {
+  const _GlyphButton({required this.icon, required this.onTap});
+
+  final IconData icon;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 68,
+        height: 68,
+        decoration: BoxDecoration(
+          color: Colors.black.withValues(alpha: 0.5),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(icon, color: Colors.white, size: 34),
       ),
     );
   }

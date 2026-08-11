@@ -1,0 +1,72 @@
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../core/theme/app_colors.dart';
+import '../models/pawhub_models.dart';
+import '../providers/community_actions_providers.dart';
+import '../providers/community_feed_providers.dart';
+import '../widgets/pawhub_sheets.dart';
+import '../widgets/pet_profile_sheet.dart';
+
+/// Full-page pet profile view. Uses the profile sheet content in a scrollable page.
+class PawHubPetProfilePage extends ConsumerStatefulWidget {
+  const PawHubPetProfilePage({
+    required this.pet,
+    required this.siblings,
+    super.key,
+  });
+
+  final PawPet pet;
+  final List<PawPet> siblings;
+
+  @override
+  ConsumerState<PawHubPetProfilePage> createState() => _PawHubPetProfilePageState();
+}
+
+class _PawHubPetProfilePageState extends ConsumerState<PawHubPetProfilePage> {
+  @override
+  void initState() {
+    super.initState();
+    // Invalidate cached pet posts to force a fresh fetch
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.invalidate(petPostsProvider(widget.pet.backendId));
+    });
+  }
+
+  Future<void> _reportPet() async {
+    final reason = await showReportSheet(context);
+    if (reason != null && mounted) {
+      await ref.read(communityActionsProvider).reportPet(widget.pet.backendId, reason);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Reported. Thank you.')),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.surface,
+      appBar: AppBar(
+        backgroundColor: AppColors.surface,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        actions: [
+          if (!widget.pet.isMine)
+            IconButton(
+              onPressed: _reportPet,
+              icon: const Icon(FluentIcons.flag_24_regular,
+                  color: AppColors.error),
+            ),
+        ],
+      ),
+      body: PetProfileSheet(
+        pet: widget.pet,
+        siblings: widget.siblings,
+      ),
+    );
+  }
+}

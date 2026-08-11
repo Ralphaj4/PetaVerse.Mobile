@@ -35,6 +35,14 @@ final class ServerException extends AppException {
   const ServerException(super.message);
 }
 
+/// 429 responses — too many requests. [retryAfter] is the value of the
+/// `Retry-After` header (seconds), when the server supplied one.
+final class RateLimitException extends AppException {
+  const RateLimitException(super.message, {this.retryAfter});
+
+  final Duration? retryAfter;
+}
+
 final class CacheException extends AppException {
   const CacheException(super.message);
 }

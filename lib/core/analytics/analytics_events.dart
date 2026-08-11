@@ -13,4 +13,6 @@ abstract final class AnalyticsEvents {
   static const String foundPetReported = 'FoundPetReported';
   static const String postCreated = 'PostCreated';
   static const String reminderCreated = 'ReminderCreated';
+  static const String communityCreated = 'CommunityCreated';
+  static const String communityJoined = 'CommunityJoined';
 }

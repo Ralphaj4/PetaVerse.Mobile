@@ -1,5 +1,6 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
@@ -245,6 +246,37 @@ Future<PawPet?> showPetSwitcherSheet(
                 selected: pet.id == current.id,
                 onTap: () => Navigator.of(context).pop(pet),
               ),
+            const SizedBox(height: AppSpacing.md),
+            const Divider(color: AppColors.divider, height: 1),
+            const SizedBox(height: AppSpacing.md),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+                context.push('/community/my-posts');
+              },
+              borderRadius: AppRadius.mdAll,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(AppSpacing.sm),
+                      decoration: const BoxDecoration(
+                        color: AppColors.primarySoft,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        FluentIcons.person_24_regular,
+                        size: 20,
+                        color: AppColors.primaryDark,
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.md),
+                    Text('My posts', style: AppTextStyles.titleSmall),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

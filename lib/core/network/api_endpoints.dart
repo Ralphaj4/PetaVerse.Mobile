@@ -119,11 +119,79 @@ abstract final class ApiEndpoints {
   // Services directory
   static const String services = '/services';
 
-  // Community
-  static const String posts = '/community/posts';
-  static String post(String id) => '/community/posts/$id';
-  static String postLike(String id) => '/community/posts/$id/like';
-  static String postComments(String id) => '/community/posts/$id/comments';
+  // Community (PawHub) — per-pet social graph. All under /community.
+  // Feeds & post CRUD
+  static const String communityFeed = '/community/feed';
+  static const String communityDiscover = '/community/discover';
+  static const String communitySaved = '/community/saved';
+  static String communityPetPosts(int petId) => '/community/pets/$petId/posts';
+  static const String communityPosts = '/community/posts';
+  static String communityPost(int postId) => '/community/posts/$postId';
+
+  // Interactions (acting pet in body)
+  static String communityPostLike(int postId) =>
+      '/community/posts/$postId/like';
+  static String communityPostSave(int postId) =>
+      '/community/posts/$postId/save';
+  static String communityPostShare(int postId) =>
+      '/community/posts/$postId/share';
+
+  // Comments
+  static String communityPostComments(int postId) =>
+      '/community/posts/$postId/comments';
+  static String communityComment(int commentId) =>
+      '/community/comments/$commentId';
+  static String communityCommentLike(int commentId) =>
+      '/community/comments/$commentId/like';
+  static String communityCommentPin(int commentId) =>
+      '/community/comments/$commentId/pin';
+
+  // Follows & suggestions
+  static String communityFollow(int petId) => '/community/pets/$petId/follow';
+  static String communityFollowers(int petId) =>
+      '/community/pets/$petId/followers';
+  static String communityFollowing(int petId) =>
+      '/community/pets/$petId/following';
+  static const String communitySuggested = '/community/discover/suggested';
+
+  // Notifications (the bell)
+  static const String communityNotifications = '/community/notifications';
+  static String communityNotification(int id) =>
+      '/community/notifications/$id';
+  static const String communityNotificationsMarkAll =
+      '/community/notifications/mark-all-read';
+
+  // Moderation — reporting & blocking
+  static String communityReportPost(int postId) =>
+      '/community/posts/$postId/report';
+  static String communityReportComment(int commentId) =>
+      '/community/comments/$commentId/report';
+  static String communityReportPet(int petId) =>
+      '/community/pets/$petId/report';
+  static String communityBlock(int petId) => '/community/pets/$petId/block';
+  static const String communityBlocked = '/community/blocked';
+
+  // Search & discovery
+  static const String communitySearch = '/community/search';
+  static String communityHashtag(String tag) => '/community/hashtags/$tag';
+  static const String communityTrending = '/community/trending';
+
+  // Communities (pet-led groups). All under /community/communities.
+  static const String communities = '/community/communities';
+  static const String communitiesSearch = '/community/communities/search';
+  static const String communitiesSuggested = '/community/communities/suggested';
+  static const String communitiesMine = '/community/communities/mine';
+  static const String communitiesHandleAvailable =
+      '/community/communities/handle-available';
+  static String community(int id) => '/community/communities/$id';
+  static String communityGroupFeed(int id) => '/community/communities/$id/feed';
+  static String communityGroupMembers(int id) =>
+      '/community/communities/$id/members';
+  static String communityGroupJoin(int id) => '/community/communities/$id/join';
+  static String communityGroupLeave(int id) =>
+      '/community/communities/$id/leave';
+  static String communityGroupMember(int id, int petId) =>
+      '/community/communities/$id/members/$petId';
 
   // Media (avatars, pet documents, etc.)
   static const String mediaUploadUrl = '/media/upload-url';

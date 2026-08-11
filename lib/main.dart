@@ -1,5 +1,4 @@
-import 'dart:ui';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -23,6 +22,14 @@ Future<void> main() async {
       error: details.exception,
       stackTrace: details.stack,
     );
+    // In debug, also surface the full exception + widget stack on the run
+    // console (developer.log alone is easy to miss), and render the red
+    // error block so the offending widget is obvious.
+    if (kDebugMode) {
+      debugPrint('══╡ FLUTTER ERROR ╞══\n${details.exceptionAsString()}');
+      debugPrintStack(stackTrace: details.stack, maxFrames: 40);
+      FlutterError.presentError(details);
+    }
   };
   PlatformDispatcher.instance.onError = (error, stack) {
     logger.error(

@@ -4,6 +4,7 @@ import '../../../../core/errors/app_exception.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
 import '../../../../core/storage/secure_storage_service.dart';
+import '../../../../core/utils/jwt_utils.dart';
 import '../../domain/entities/auth_session.dart';
 import '../../domain/entities/login_outcome.dart';
 import '../../domain/repositories/auth_repository.dart';
@@ -139,7 +140,44 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<bool> hasSession() async {
     final token = await _secureStorage.readAccessToken();
-    return token != null && token.isNotEmpty;
+    if (token == null || token.isEmpty) return false;
+
+    // A stored access token isn't proof of a live session: on a cold launch the
+    // day after login it is typically expired. Returning true here would let
+    // the app enter Home, then every startup request would 401 at once and race
+    // the (rotating) refresh token — logging the user out. So when the access
+    // token is expired, refresh it up front and let THAT decide the verdict.
+    if (!JwtUtils.isExpired(token)) return true;
+
+    final refresh = await _secureStorage.readRefreshToken();
+    if (refresh == null || refresh.isEmpty) return false;
+
+    try {
+      final dto = await _remote.refreshSession(refresh);
+      await _secureStorage.saveTokens(
+        accessToken: dto.accessToken,
+        refreshToken: dto.refreshToken,
+      );
+      return true;
+    } on UnauthorizedException {
+      // Backend positively rejected the refresh token (401): the session is
+      // dead. Clear the stale pair so we don't retry a doomed refresh next
+      // launch, and report no session so the router routes to login.
+      await _secureStorage.clearTokens();
+      return false;
+    } on ValidationException {
+      // 400 — malformed refresh token; same verdict as a 401.
+      await _secureStorage.clearTokens();
+      return false;
+    } on AppException {
+      // Any other failure (timeout, connection error, 5xx) is inconclusive: we
+      // do NOT know the session is dead, so we KEEP the tokens and let the user
+      // in optimistically. The first authenticated request will 401 and the
+      // interceptor will refresh again once the server responds; if the token
+      // really is dead, that path ends the session cleanly. Clearing here would
+      // log a valid user out over a momentary blip (or a debugger breakpoint).
+      return true;
+    }
   }
 
   // ── Helpers ──────────────────────────────────────────────────────────
@@ -199,6 +237,10 @@ class AuthRepositoryImpl implements AuthRepository {
         ValidationException() => ValidationFailure(
             message: e.message,
             fieldErrors: e.fieldErrors,
+          ),
+        RateLimitException() => RateLimitFailure(
+            message: e.message,
+            retryAfter: e.retryAfter,
           ),
         ServerException() => ServerFailure(message: e.message),
         CacheException() => CacheFailure(message: e.message),

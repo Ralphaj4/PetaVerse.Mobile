@@ -197,6 +197,10 @@ class PetRepositoryImpl implements PetRepository {
             message: e.message,
             fieldErrors: e.fieldErrors,
           ),
+        RateLimitException() => RateLimitFailure(
+            message: e.message,
+            retryAfter: e.retryAfter,
+          ),
         ServerException() => ServerFailure(message: e.message),
         CacheException() => CacheFailure(message: e.message),
       };

@@ -5,29 +5,36 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../domain/entities/community_enums.dart' hide PostVisibility;
 import '../models/pawhub_models.dart';
 
 /// Result of the post options sheet.
-enum PostAction { save, copyLink, share, hide, report, block, edit, delete }
+enum PostAction { save, copyLink, share, hide, report, block, delete }
+
+/// Result of the comment options sheet.
+enum CommentAction { edit, delete, report }
 
 /// The long-press / "⋯" options sheet for a post. Tailors items to whether the
 /// viewer owns the post (edit/delete) or not (hide/report/block).
 Future<PostAction?> showPostOptionsSheet(
   BuildContext context, {
   required PawPost post,
+  bool forceMine = false,
 }) {
-  final isMine = post.author.isMine;
+  final isMine = forceMine || post.author.isMine;
   return showModalBottomSheet<PostAction>(
     context: context,
     backgroundColor: AppColors.surface,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
     ),
-    builder: (_) => SafeArea(
-      top: false,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
+    builder: (_) => Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.xl),
+      child: SafeArea(
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
           const _SheetHandle(),
           _OptionTile(
             icon: post.saved
@@ -48,11 +55,6 @@ Future<PostAction?> showPostOptionsSheet(
           ),
           const Divider(height: 1, color: AppColors.divider),
           if (isMine) ...[
-            _OptionTile(
-              icon: FluentIcons.edit_24_regular,
-              label: 'Edit post',
-              onTap: () => Navigator.pop(context, PostAction.edit),
-            ),
             _OptionTile(
               icon: FluentIcons.delete_24_regular,
               label: 'Delete post',
@@ -80,24 +82,26 @@ Future<PostAction?> showPostOptionsSheet(
           ],
           const SizedBox(height: AppSpacing.sm),
         ],
+        ),
       ),
     ),
   );
 }
 
-/// Report reasons — pet-app specific (cruelty & scams are the real risks).
-const _reportReasons = <String>[
-  'Animal cruelty or harm',
-  'Spam or a scam',
-  'Nudity or sexual content',
-  'Harassment or bullying',
-  'Not a real pet / impersonation',
-  'Something else',
+/// Report reason labels shown in the sheet.
+final _reportReasonLabels = <(ReportReason, String)>[
+  (ReportReason.inappropriate, 'Animal cruelty or harm'),
+  (ReportReason.spam, 'Spam or a scam'),
+  (ReportReason.violence, 'Nudity or sexual content'),
+  (ReportReason.harassment, 'Harassment or bullying'),
+  (ReportReason.misinformation, 'Not a real pet / impersonation'),
+  (ReportReason.other, 'Something else'),
 ];
 
-/// The report-reason picker. Returns the chosen reason string, or null.
-Future<String?> showReportSheet(BuildContext context) {
-  return showModalBottomSheet<String>(
+/// The report-reason picker. Returns a [ReportReason] (the API enum), or null
+/// if the user dismissed without choosing.
+Future<ReportReason?> showReportSheet(BuildContext context) {
+  return showModalBottomSheet<ReportReason>(
     context: context,
     backgroundColor: AppColors.surface,
     shape: const RoundedRectangleBorder(
@@ -120,10 +124,10 @@ Future<String?> showReportSheet(BuildContext context) {
             child: Text('Why are you reporting this?',
                 style: AppTextStyles.titleMedium),
           ),
-          for (final reason in _reportReasons)
+          for (final (reason, label) in _reportReasonLabels)
             _OptionTile(
               icon: FluentIcons.chevron_right_24_regular,
-              label: reason,
+              label: label,
               trailingChevron: true,
               onTap: () => Navigator.pop(context, reason),
             ),
@@ -185,6 +189,53 @@ class _SheetHandle extends StatelessWidget {
       ),
     );
   }
+}
+
+/// The comment options sheet for edit/delete/report.
+Future<CommentAction?> showCommentOptionsSheet(
+  BuildContext context, {
+  required PawComment comment,
+}) {
+  final isMine = comment.author.isMine;
+  return showModalBottomSheet<CommentAction>(
+    context: context,
+    backgroundColor: AppColors.surface,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
+    ),
+    builder: (_) => Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.xl),
+      child: SafeArea(
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (isMine) ...[
+              _OptionTile(
+                icon: FluentIcons.edit_24_regular,
+                label: 'Edit comment',
+                onTap: () => Navigator.pop(context, CommentAction.edit),
+              ),
+              _OptionTile(
+                icon: FluentIcons.delete_24_regular,
+                label: 'Delete comment',
+                destructive: true,
+                onTap: () => Navigator.pop(context, CommentAction.delete),
+              ),
+            ] else ...[
+              _OptionTile(
+                icon: FluentIcons.flag_24_regular,
+                label: 'Report comment',
+                destructive: true,
+                onTap: () => Navigator.pop(context, CommentAction.report),
+              ),
+            ],
+            const SizedBox(height: AppSpacing.sm),
+          ],
+        ),
+      ),
+    ),
+  );
 }
 
 class _OptionTile extends StatelessWidget {

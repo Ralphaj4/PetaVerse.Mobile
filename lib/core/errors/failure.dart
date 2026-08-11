@@ -43,6 +43,15 @@ final class ServerFailure extends Failure {
   const ServerFailure({super.message});
 }
 
+/// 429 responses — the caller hit a rate limit. [retryAfter] carries the
+/// server's `Retry-After` hint (seconds) when present, so the UI can show a
+/// "try again in Ns" message and disable the action until then.
+final class RateLimitFailure extends Failure {
+  const RateLimitFailure({super.message, this.retryAfter});
+
+  final Duration? retryAfter;
+}
+
 /// Local cache read/write problems.
 final class CacheFailure extends Failure {
   const CacheFailure({super.message});
