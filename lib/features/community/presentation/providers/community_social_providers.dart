@@ -108,18 +108,73 @@ class SearchScope extends _$SearchScope {
   void select(SearchType type) => state = type;
 }
 
-/// Mixed search results for the current query + scope. Returns an empty page
-/// for a blank query (so the screen shows its idle state, not a spinner).
-@riverpod
-Future<SearchResultsPage> communitySearch(Ref ref) async {
-  final query = ref.watch(searchQueryProvider).trim();
-  if (query.isEmpty) {
-    return const SearchResultsPage(results: [], cursor: PageCursor.empty);
-  }
-  final result = await ref.read(communityRepositoryProvider).search(
-        query: query,
-        type: ref.watch(searchScopeProvider),
-        actingPetId: ref.watch(actingPetIdProvider),
+/// Accumulated search state: results loaded so far + paging cursor + a footer
+/// "loading more" flag. Mirrors [PagedFeed] / [PagedPolls].
+class PagedSearch {
+  const PagedSearch({
+    required this.results,
+    required this.cursor,
+    this.loadingMore = false,
+  });
+
+  final List<SearchResult> results;
+  final PageCursor cursor;
+  final bool loadingMore;
+
+  bool get hasMore => cursor.hasMore;
+
+  PagedSearch copyWith({
+    List<SearchResult>? results,
+    PageCursor? cursor,
+    bool? loadingMore,
+  }) =>
+      PagedSearch(
+        results: results ?? this.results,
+        cursor: cursor ?? this.cursor,
+        loadingMore: loadingMore ?? this.loadingMore,
       );
-  return result.when(success: (p) => p, failure: (f) => throw f);
+}
+
+/// Mixed search results for the current query + scope. Loads page 0 on build
+/// (rebuilding whenever the debounced query, scope, or acting pet changes) and
+/// appends further pages via [loadMore]. Returns an empty page for a blank
+/// query so the screen shows its idle state, not a spinner.
+@riverpod
+class CommunitySearch extends _$CommunitySearch {
+  @override
+  Future<PagedSearch> build() async {
+    final query = ref.watch(searchQueryProvider).trim();
+    if (query.isEmpty) {
+      return const PagedSearch(results: [], cursor: PageCursor.empty);
+    }
+    final result = await ref.read(communityRepositoryProvider).search(
+          query: query,
+          type: ref.watch(searchScopeProvider),
+          actingPetId: ref.watch(actingPetIdProvider),
+        );
+    final page = result.when(success: (p) => p, failure: (f) => throw f);
+    return PagedSearch(results: page.results, cursor: page.cursor);
+  }
+
+  Future<void> loadMore() async {
+    final current = state.value;
+    if (current == null || !current.hasMore || current.loadingMore) return;
+    state = AsyncData(current.copyWith(loadingMore: true));
+    final result = await ref.read(communityRepositoryProvider).search(
+          query: ref.read(searchQueryProvider).trim(),
+          type: ref.read(searchScopeProvider),
+          actingPetId: ref.read(actingPetIdProvider),
+          page: current.cursor.nextPage ?? 0,
+        );
+    result.when(
+      success: (page) => state = AsyncData(
+        current.copyWith(
+          results: [...current.results, ...page.results],
+          cursor: page.cursor,
+          loadingMore: false,
+        ),
+      ),
+      failure: (_) => state = AsyncData(current.copyWith(loadingMore: false)),
+    );
+  }
 }

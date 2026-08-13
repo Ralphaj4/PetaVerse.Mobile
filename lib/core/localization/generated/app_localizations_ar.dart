@@ -2732,4 +2732,611 @@ class AppLocalizationsAr extends AppLocalizations {
   String communityComposerPostingIn(String name) {
     return 'النشر في $name';
   }
+
+  @override
+  String get communityCreateSheetTitle => 'إنشاء';
+
+  @override
+  String get communityCreateSheetSubtitle => 'ماذا تريد أن تضيف؟';
+
+  @override
+  String get composeNewPost => 'منشور جديد';
+
+  @override
+  String get composeNewPostSubtitle => 'شارك صورة أو فيديو';
+
+  @override
+  String get composeNewPoll => 'استطلاع جديد';
+
+  @override
+  String get composeNewPollSubtitle => 'اطرح سؤالاً على المجتمع';
+
+  @override
+  String get composeNewEvent => 'فعالية جديدة';
+
+  @override
+  String get composeNewEventSubtitle => 'خطط للقاء أو تجمع';
+
+  @override
+  String get pollNewTitle => 'استطلاع جديد';
+
+  @override
+  String get pollQuestionLabel => 'السؤال';
+
+  @override
+  String get pollQuestionHint => 'مثال: أفضل حديقة للكلاب؟';
+
+  @override
+  String get pollQuestionRequired => 'يرجى إدخال سؤال';
+
+  @override
+  String get pollDescriptionLabel => 'الوصف (اختياري)';
+
+  @override
+  String get pollDescriptionHint => 'أضف مزيداً من التفاصيل';
+
+  @override
+  String get pollOptionsLabel => 'الخيارات';
+
+  @override
+  String pollOptionHint(int number) {
+    return 'الخيار $number';
+  }
+
+  @override
+  String get pollAddOption => 'إضافة خيار';
+
+  @override
+  String get pollOptionsMin => 'أضف خيارين على الأقل';
+
+  @override
+  String get pollAllowMultiple => 'السماح بخيارات متعددة';
+
+  @override
+  String get pollAllowMultipleSubtitle => 'دع المصوّتين يختارون أكثر من خيار';
+
+  @override
+  String get pollSetExpiry => 'تحديد تاريخ الإغلاق';
+
+  @override
+  String get pollExpiryLabel => 'يُغلق في';
+
+  @override
+  String get pollNoExpiry => 'بدون تاريخ إغلاق';
+
+  @override
+  String get pollCreateSubmit => 'إنشاء استطلاع';
+
+  @override
+  String get pollCreatedToast => 'تم إنشاء الاستطلاع';
+
+  @override
+  String get pollCreateFailed =>
+      'تعذّر إنشاء الاستطلاع. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String pollTotalVotes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count أصوات',
+      one: 'صوت واحد',
+      zero: 'لا أصوات بعد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pollClosesIn(String when) {
+    return 'يُغلق $when';
+  }
+
+  @override
+  String get pollClosed => 'الاستطلاع مغلق';
+
+  @override
+  String get pollJoinToVote => 'انضم للتصويت';
+
+  @override
+  String get pollTapToVote => 'اضغط على خيار للتصويت';
+
+  @override
+  String get pollChangeVote => 'اضغط لتغيير صوتك';
+
+  @override
+  String get pollRetractVote => 'إزالة صوتي';
+
+  @override
+  String get pollVoteFailed => 'تعذّر تسجيل صوتك';
+
+  @override
+  String get pollDeleteTitle => 'حذف الاستطلاع؟';
+
+  @override
+  String get pollDeleteMessage =>
+      'سيؤدي هذا إلى إزالة الاستطلاع وأصواته نهائياً.';
+
+  @override
+  String get pollDeletedToast => 'تم حذف الاستطلاع';
+
+  @override
+  String get pollBadge => 'استطلاع';
+
+  @override
+  String get eventNewTitle => 'فعالية جديدة';
+
+  @override
+  String get eventTitleLabel => 'العنوان';
+
+  @override
+  String get eventTitleHint => 'مثال: حفلة الكفوف الصيفية';
+
+  @override
+  String get eventTitleRequired => 'يرجى إدخال عنوان';
+
+  @override
+  String get eventDescriptionLabel => 'الوصف (اختياري)';
+
+  @override
+  String get eventDescriptionHint => 'عن ماذا تدور هذه الفعالية؟';
+
+  @override
+  String get eventLocationLabel => 'الموقع (اختياري)';
+
+  @override
+  String get eventLocationHint => 'مثال: الحديقة المركزية، نيويورك';
+
+  @override
+  String get eventStartsLabel => 'يبدأ';
+
+  @override
+  String get eventEndsLabel => 'ينتهي (اختياري)';
+
+  @override
+  String get eventStartRequired => 'يرجى اختيار تاريخ ووقت البدء';
+
+  @override
+  String get eventStartMustBeFuture => 'يجب أن يكون البدء في المستقبل';
+
+  @override
+  String get eventEndAfterStart => 'يجب أن يكون الانتهاء بعد البدء';
+
+  @override
+  String get eventCreateSubmit => 'إنشاء الفعالية';
+
+  @override
+  String get eventEditTitle => 'تعديل الفعالية';
+
+  @override
+  String get eventUpdateSubmit => 'حفظ التغييرات';
+
+  @override
+  String get eventCreatedToast => 'تم إنشاء الفعالية';
+
+  @override
+  String get eventUpdatedToast => 'تم تحديث الفعالية';
+
+  @override
+  String get eventCreateFailed =>
+      'تعذّر إنشاء الفعالية. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get eventBadge => 'فعالية';
+
+  @override
+  String get eventPast => 'فعالية سابقة';
+
+  @override
+  String get eventGoing => 'سأحضر';
+
+  @override
+  String get eventInterested => 'مهتم';
+
+  @override
+  String get eventCantGo => 'لا أستطيع';
+
+  @override
+  String eventAttendingCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count سيحضرون',
+      one: 'شخص واحد سيحضر',
+      zero: 'لا أحد سيحضر بعد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String eventInterestedCount(int count) {
+    return '$count مهتم';
+  }
+
+  @override
+  String get eventJoinToRsvp => 'انضم للرد على الدعوة';
+
+  @override
+  String get eventViewAttendees => 'عرض الحاضرين';
+
+  @override
+  String get eventAttendeesTitle => 'الحاضرون';
+
+  @override
+  String get eventRsvpFailed => 'تعذّر تحديث ردك';
+
+  @override
+  String get eventDeleteTitle => 'حذف الفعالية؟';
+
+  @override
+  String get eventDeleteMessage => 'سيؤدي هذا إلى إزالة الفعالية نهائياً.';
+
+  @override
+  String get eventDeletedToast => 'تم حذف الفعالية';
+
+  @override
+  String get eventEdit => 'تعديل الفعالية';
+
+  @override
+  String get eventTabAttending => 'سأحضر';
+
+  @override
+  String get eventTabInterested => 'مهتم';
+
+  @override
+  String get eventTabDeclined => 'معتذر';
+
+  @override
+  String get eventNoAttendees => 'لا ردود بعد';
+
+  @override
+  String get eventDirections => 'الاتجاهات';
+
+  @override
+  String get eventDirectionsFailed => 'تعذّر فتح الخرائط';
+
+  @override
+  String get pawhubManagePet => 'إدارة الحيوان';
+
+  @override
+  String get pawhubComposerAddToPost => 'أضِف إلى منشورك';
+
+  @override
+  String get pawhubComposerAddToPostSubtitle => 'اختر مصدر الصورة أو الفيديو';
+
+  @override
+  String get pawhubComposerCameraSubtitle => 'التقط صورة';
+
+  @override
+  String get pawhubComposerGallerySubtitle => 'اختر من المعرض';
+
+  @override
+  String get pawhubComposerAddPhotosOrVideos => 'أضِف صوراً أو فيديوهات';
+
+  @override
+  String get pawhubComposerAddMedia => 'إضافة وسائط';
+
+  @override
+  String get pawhubComposerMediaLimit => 'حتى ١٠ عناصر';
+
+  @override
+  String get pawhubComposerCoverBadge => 'الغلاف';
+
+  @override
+  String get pawhubComposerTagPetsSubtitle => 'أضِف حيواناتك إلى هذا المنشور';
+
+  @override
+  String get pawhubComposerAddLocationSubtitle => 'شارِك مكان حدوث ذلك';
+
+  @override
+  String get pawhubComposerPostingIn => 'النشر في';
+
+  @override
+  String get pawhubComposerVideoLengthError =>
+      'تعذّر قراءة مدة أحد الفيديوهات المحددة. يرجى إزالته وإضافته من جديد.';
+
+  @override
+  String get pawhubErrorPickingImage => 'تعذّر اختيار الصورة';
+
+  @override
+  String get pawhubErrorPickingMedia => 'تعذّر اختيار الوسائط';
+
+  @override
+  String get pawhubMyPostsLink => 'منشوراتي';
+
+  @override
+  String get pawHubActingAs => 'التصرّف باسم';
+
+  @override
+  String pawhubAlertReward(int amount) {
+    return 'مكافأة ‎\$$amount';
+  }
+
+  @override
+  String get pawhubEditComment => 'تعديل التعليق';
+
+  @override
+  String pawhubCommentsCountLabel(int count) {
+    return '$count تعليقات';
+  }
+
+  @override
+  String get pawhubCouldNotLoadComments => 'تعذّر تحميل التعليقات';
+
+  @override
+  String get pawhubCommentOptionDeleteComment => 'حذف التعليق';
+
+  @override
+  String get pawhubCommentOptionReportComment => 'الإبلاغ عن التعليق';
+
+  @override
+  String get pawhubBlockedTitle => 'الحيوانات المحظورة';
+
+  @override
+  String get pawhubBlockedFailed => 'تعذّر تحميل الحيوانات المحظورة';
+
+  @override
+  String get pawhubBlockedEmptyTitle => 'لا توجد حيوانات محظورة';
+
+  @override
+  String get pawhubBlockedEmptyMessage =>
+      'لن تظهر الحيوانات التي تحظرها في موجزك';
+
+  @override
+  String get pawhubUnblock => 'إلغاء الحظر';
+
+  @override
+  String pawhubUnblockConfirmTitle(String name) {
+    return 'إلغاء حظر $name؟';
+  }
+
+  @override
+  String get pawhubUnblockConfirmMessage => 'سيتمكنون من رؤية منشوراتك مجدداً.';
+
+  @override
+  String pawhubUnfollowConfirmTitle(String name) {
+    return 'إلغاء متابعة $name؟';
+  }
+
+  @override
+  String pawhubUnfollowConfirmMessage(String name) {
+    return 'لن ترى منشورات $name في موجزك';
+  }
+
+  @override
+  String get pawhubUnfollow => 'إلغاء المتابعة';
+
+  @override
+  String get pawhubMyPostsTitle => 'منشوراتي';
+
+  @override
+  String get pawhubMyPostsFailed => 'تعذّر تحميل منشوراتك';
+
+  @override
+  String get pawhubMyPostsEmptyTitle => 'لا توجد منشورات بعد';
+
+  @override
+  String get pawhubMyPostsEmptyMessage => 'شارِك أول منشور لك مع المجتمع';
+
+  @override
+  String get pawhubDeletePostTitle => 'حذف المنشور؟';
+
+  @override
+  String get pawhubDeletePostMessage => 'لا يمكن التراجع عن هذا الإجراء.';
+
+  @override
+  String get pawhubSavedTitle => 'المحفوظات';
+
+  @override
+  String get pawhubSavedFailed => 'تعذّر تحميل المنشورات المحفوظة';
+
+  @override
+  String get pawhubSavedEmptyTitle => 'لا توجد منشورات محفوظة بعد';
+
+  @override
+  String get pawhubSavedEmptyMessage =>
+      'اضغط على علامة الحفظ في أي منشور لحفظه';
+
+  @override
+  String get pawhubFollowersTitle => 'المتابِعون';
+
+  @override
+  String pawhubFollowersTitleCount(int count) {
+    return 'المتابِعون ($count)';
+  }
+
+  @override
+  String get pawhubFollowersFailed => 'تعذّر تحميل المتابِعين';
+
+  @override
+  String get pawhubFollowersEmptyTitle => 'لا يوجد متابِعون بعد';
+
+  @override
+  String get pawhubFollowingTitle => 'المتابَعون';
+
+  @override
+  String pawhubFollowingTitleCount(int count) {
+    return 'المتابَعون ($count)';
+  }
+
+  @override
+  String get pawhubFollowingFailed => 'تعذّر تحميل قائمة المتابَعين';
+
+  @override
+  String get pawhubFollowingEmptyTitle => 'لا تتابِع أحداً بعد';
+
+  @override
+  String get pawhubTrendingTitle => 'الرائج';
+
+  @override
+  String get pawhubTrendingFailed => 'تعذّر تحميل الرائج';
+
+  @override
+  String get pawhubTrendingHashtags => 'الوسوم الرائجة';
+
+  @override
+  String get pawhubTopPosts => 'أبرز المنشورات';
+
+  @override
+  String pawhubHashtagPostsCount(int count) {
+    return '$count منشورات';
+  }
+
+  @override
+  String get pawhubSearchTitle => 'ابحث في PawHub';
+
+  @override
+  String get pawhubSearchSubtitle => 'ابحث عن حيوانات أو منشورات أو وسوم';
+
+  @override
+  String get pawhubSearchScopeAll => 'الكل';
+
+  @override
+  String get pawhubSearchScopePosts => 'المنشورات';
+
+  @override
+  String get pawhubSearchScopeHashtags => 'الوسوم';
+
+  @override
+  String get pawhubSearchScopePets => 'الحيوانات';
+
+  @override
+  String pawhubSearchNoResults(String query) {
+    return 'لا نتائج لـ \"$query\"';
+  }
+
+  @override
+  String get pawhubSearchTryDifferent => 'جرّب كلمة مختلفة';
+
+  @override
+  String get pawhubSearchSectionPets => 'الحيوانات';
+
+  @override
+  String get pawhubSearchSectionHashtags => 'الوسوم';
+
+  @override
+  String get pawhubSearchSectionPosts => 'المنشورات';
+
+  @override
+  String pawhubSearchPostBy(String name) {
+    return 'بواسطة $name';
+  }
+
+  @override
+  String get pawhubHashtagFailed => 'تعذّر تحميل المنشورات';
+
+  @override
+  String pawhubHashtagEmpty(String hashtag) {
+    return 'لا توجد منشورات بعد لـ #$hashtag';
+  }
+
+  @override
+  String get pawhubPostTitle => 'المنشور';
+
+  @override
+  String get pawhubPostFailed => 'تعذّر تحميل المنشور';
+
+  @override
+  String get pawhubProfileFailedPosts => 'تعذّر تحميل المنشورات';
+
+  @override
+  String get pawhubProfileNoPosts => 'لا توجد منشورات بعد';
+
+  @override
+  String get pawhubTagPetsTitle => 'الإشارة إلى حيوانات';
+
+  @override
+  String get pawhubTagPetsSearchHint => 'ابحث عن الحيوانات بالاسم…';
+
+  @override
+  String get pawhubTagPetsNoMatch => 'لم يُعثر على أي حيوان.';
+
+  @override
+  String get pawhubTagPetsResults => 'النتائج';
+
+  @override
+  String pawhubTagPetsTaggedCount(int count) {
+    return 'المُشار إليها ($count)';
+  }
+
+  @override
+  String get pawhubTagPetsMyPets => 'حيواناتي';
+
+  @override
+  String get pawhubTagPetsEmpty => 'ليس لديك حيوانات للإشارة إليها بعد.';
+
+  @override
+  String get pawhubDiscoverEmptyTitle => 'لا شيء لاكتشافه بعد';
+
+  @override
+  String get pawhubDiscoverEmptyMessage =>
+      'ستظهر منشورات جديدة من المجتمع هنا قريباً 🐾';
+
+  @override
+  String get pawhubSavedPostsTooltip => 'المنشورات المحفوظة';
+
+  @override
+  String get pawhubComposerLocationHint => 'ابحث أو انقر على الخريطة';
+
+  @override
+  String get locationResolving => 'جارٍ تحديد العنوان…';
+
+  @override
+  String get pawhubLike => 'إعجاب';
+
+  @override
+  String get pawhubComment => 'تعليق';
+
+  @override
+  String get communityMembersEmptyTitle => 'لا أعضاء بعد';
+
+  @override
+  String get communityMembersEmptyMessage => 'كن أول من ينضم إلى هذا المجتمع.';
+
+  @override
+  String get pawhubTrendingEmptyTitle => 'لا شيء رائج بعد';
+
+  @override
+  String get pawhubTrendingEmptyMessage =>
+      'ستظهر الوسوم والمنشورات الرائجة هنا مع نمو المجتمع.';
+
+  @override
+  String get pawhubBack => 'رجوع';
+
+  @override
+  String get pawhubMoreOptions => 'خيارات أخرى';
+
+  @override
+  String get pawhubRemoveOption => 'إزالة الخيار';
+
+  @override
+  String get pawhubRemoveTag => 'إزالة الوسم';
+
+  @override
+  String get pawhubViewPost => 'عرض المنشور';
+
+  @override
+  String get pawhubViewProfile => 'عرض الملف الشخصي';
+
+  @override
+  String get pawhubExpandMap => 'توسيع الخريطة';
+
+  @override
+  String get pawhubComposerSetCover => 'تعيين غلاف';
+
+  @override
+  String get pawhubComposerChangeCover => 'تغيير الغلاف';
+
+  @override
+  String get pawhubComposerLocationFieldHint => 'مثال: بيروت، لبنان';
+
+  @override
+  String pawhubComposerTaggedSummary(String name, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count آخرين',
+      one: '1 آخر',
+    );
+    return '$name و$_temp0';
+  }
 }

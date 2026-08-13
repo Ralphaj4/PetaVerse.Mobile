@@ -1,6 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -14,59 +15,96 @@ import 'pawhub_common.dart';
 /// Following / Discover segmented control for the feed top bar.
 enum FeedTab { following, discover }
 
+/// The Following / Discover tab selector: two large rounded pill buttons.
+/// The active tab is orange-outlined (orange icon + label); the inactive one is
+/// grey-outlined. Following shows an orange unread dot when fresh posts have
+/// arrived. Designed to sit in a Row and share the available width evenly.
 class FeedTabToggle extends StatelessWidget {
-  const FeedTabToggle({required this.tab, required this.onChanged, super.key});
+  const FeedTabToggle({
+    required this.tab,
+    required this.onChanged,
+    this.followingHasUpdates = false,
+    super.key,
+  });
 
   final FeedTab tab;
   final ValueChanged<FeedTab> onChanged;
 
+  /// Shows an orange dot on the Following pill when new posts are available.
+  final bool followingHasUpdates;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(3),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(50),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _seg('Following', FeedTab.following),
-          _seg('Discover', FeedTab.discover),
-        ],
-      ),
+    return Row(
+      children: [
+        Expanded(
+          child: _pill(
+            label: context.l10n.pawHubFeedTabFollowing,
+            icon: FluentIcons.bookmark_24_regular,
+            value: FeedTab.following,
+            showDot: followingHasUpdates,
+          ),
+        ),
+        const SizedBox(width: AppSpacing.sm),
+        Expanded(
+          child: _pill(
+            label: context.l10n.pawHubFeedTabDiscover,
+            icon: FluentIcons.compass_northwest_24_regular,
+            value: FeedTab.discover,
+            showDot: false,
+          ),
+        ),
+      ],
     );
   }
 
-  Widget _seg(String label, FeedTab value) {
+  Widget _pill({
+    required String label,
+    required IconData icon,
+    required FeedTab value,
+    required bool showDot,
+  }) {
     final selected = tab == value;
-    return GestureDetector(
-      onTap: () => onChanged(value),
-      behavior: HitTestBehavior.opaque,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.lg,
-          vertical: AppSpacing.sm,
-        ),
-        decoration: BoxDecoration(
-          color: selected ? AppColors.surface : Colors.transparent,
-          borderRadius: BorderRadius.circular(50),
-          boxShadow: selected
-              ? [
-                  BoxShadow(
-                    color: AppColors.textPrimary.withValues(alpha: 0.08),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
+    final fg = selected ? AppColors.primaryDark : AppColors.textSecondary;
+    return Material(
+      color: selected ? AppColors.primarySoft : AppColors.surface,
+      borderRadius: BorderRadius.circular(50),
+      child: InkWell(
+        onTap: () => onChanged(value),
+        borderRadius: BorderRadius.circular(50),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50),
+            border: Border.all(
+              color: selected ? AppColors.primary : AppColors.divider,
+            ),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 18, color: fg),
+              const SizedBox(width: AppSpacing.xs),
+              Text(
+                label,
+                style: AppTextStyles.labelLarge.copyWith(
+                  color: fg,
+                  fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
+                ),
+              ),
+              if (showDot) ...[
+                const SizedBox(width: AppSpacing.xs),
+                Container(
+                  width: 8,
+                  height: 8,
+                  decoration: const BoxDecoration(
+                    color: AppColors.primary,
+                    shape: BoxShape.circle,
                   ),
-                ]
-              : null,
-        ),
-        child: Text(
-          label,
-          style: AppTextStyles.labelLarge.copyWith(
-            color: selected ? AppColors.primaryDark : AppColors.textSecondary,
-            fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                ),
+              ],
+            ],
           ),
         ),
       ),
@@ -91,19 +129,19 @@ class NewPostsPill extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(50),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.md,
               vertical: AppSpacing.sm,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(FluentIcons.arrow_up_24_filled,
+                const Icon(FluentIcons.arrow_up_24_filled,
                     size: 16, color: AppColors.onPrimary),
-                SizedBox(width: AppSpacing.xs),
-                Text('New paw-sts',
-                    style: TextStyle(
+                const SizedBox(width: AppSpacing.xs),
+                Text(context.l10n.pawHubNewPosts,
+                    style: const TextStyle(
                         color: AppColors.onPrimary,
                         fontWeight: FontWeight.w700,
                         fontSize: 13)),
@@ -147,7 +185,7 @@ class AlertCard extends StatelessWidget {
                 const Icon(FluentIcons.alert_urgent_24_filled,
                     size: 16, color: AppColors.error),
                 const SizedBox(width: AppSpacing.xs),
-                Text('LOST PET NEARBY',
+                Text(context.l10n.pawHubLostPetNearby,
                     style: AppTextStyles.labelMedium.copyWith(
                         color: AppColors.error, fontWeight: FontWeight.w800)),
                 const Spacer(),
@@ -194,7 +232,9 @@ class AlertCard extends StatelessWidget {
                                 color: AppColors.success.withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(50),
                               ),
-                              child: Text('\$${alert.reward} reward',
+                              child: Text(
+                                  context.l10n
+                                      .pawhubAlertReward(alert.reward!),
                                   style: AppTextStyles.labelSmall.copyWith(
                                       color: AppColors.success)),
                             ),
@@ -215,7 +255,7 @@ class AlertCard extends StatelessWidget {
               child: OutlinedButton.icon(
                 onPressed: onView,
                 icon: const Icon(FluentIcons.map_24_regular, size: 18),
-                label: const Text('View on map'),
+                label: Text(context.l10n.pawHubViewOnMap),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.error,
                   side: BorderSide(
@@ -268,7 +308,8 @@ class SuggestedPetsRail extends StatelessWidget {
                 const Icon(FluentIcons.sparkle_24_filled,
                     size: 18, color: AppColors.primary),
                 const SizedBox(width: AppSpacing.sm),
-                Text('Pets you might like', style: AppTextStyles.titleSmall),
+                Text(context.l10n.pawHubSuggestedPets,
+                    style: AppTextStyles.titleSmall),
               ],
             ),
           ),
@@ -317,9 +358,13 @@ class _SuggestedCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          GestureDetector(
-            onTap: onOpenProfile,
-            child: AppAvatar(name: pet.name, imageUrl: pet.avatarUrl, radius: 30),
+          Semantics(
+            button: true,
+            label: context.l10n.pawhubViewProfile,
+            child: GestureDetector(
+              onTap: onOpenProfile,
+              child: AppAvatar(name: pet.name, imageUrl: pet.avatarUrl, radius: 30),
+            ),
           ),
           const SizedBox(height: AppSpacing.sm),
           Row(
@@ -379,7 +424,7 @@ class _FollowButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(50),
         child: Center(
           child: Text(
-            following ? 'Following' : 'Follow',
+            following ? context.l10n.pawHubFollowing : context.l10n.pawHubFollow,
             style: AppTextStyles.labelMedium.copyWith(
               color: following ? AppColors.textSecondary : AppColors.onPrimary,
               fontWeight: FontWeight.w700,
@@ -501,12 +546,11 @@ class FeedEmptyState extends StatelessWidget {
                   size: 44, color: AppColors.primary),
             ),
             const SizedBox(height: AppSpacing.lg),
-            Text(title ?? 'Your feed is a little quiet',
+            Text(title ?? context.l10n.pawHubFeedEmptyTitle,
                 style: AppTextStyles.titleMedium, textAlign: TextAlign.center),
             const SizedBox(height: AppSpacing.xs),
             Text(
-              message ??
-                  'Follow some pets and their moments\nwill show up right here 🐾',
+              message ?? context.l10n.pawHubFeedEmptyDescription,
               style: AppTextStyles.bodyMedium
                   .copyWith(color: AppColors.textSecondary),
               textAlign: TextAlign.center,
@@ -517,7 +561,7 @@ class FeedEmptyState extends StatelessWidget {
                 onPressed: onDiscover,
                 icon: const Icon(FluentIcons.compass_northwest_24_regular,
                     size: 18),
-                label: const Text('Discover pets'),
+                label: Text(context.l10n.pawHubDiscoverPets),
               ),
             ],
           ],

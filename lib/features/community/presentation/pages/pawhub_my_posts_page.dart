@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -14,6 +15,7 @@ import '../providers/community_providers.dart';
 import '../widgets/pawhub_comments.dart';
 import '../widgets/pawhub_sheets.dart';
 import '../widgets/post_card.dart';
+import 'pawhub_pet_profile_page.dart';
 
 class PawHubMyPostsPage extends ConsumerStatefulWidget {
   const PawHubMyPostsPage({super.key});
@@ -49,7 +51,8 @@ class _PawHubMyPostsPageState extends ConsumerState<PawHubMyPostsPage> {
           icon: const Icon(FluentIcons.arrow_left_24_regular,
               color: AppColors.textPrimary),
         ),
-        title: Text('My Posts', style: AppTextStyles.titleLarge),
+        title: Text(context.l10n.pawhubMyPostsTitle,
+            style: AppTextStyles.titleLarge),
       ),
       body: myPostsAsync.when(
         loading: () => _loadingState(),
@@ -87,9 +90,11 @@ class _PawHubMyPostsPageState extends ConsumerState<PawHubMyPostsPage> {
             const Icon(FluentIcons.warning_24_regular,
                 size: 40, color: AppColors.error),
             const SizedBox(height: AppSpacing.md),
-            Text('Failed to load your posts', style: AppTextStyles.titleSmall),
+            Text(context.l10n.pawhubMyPostsFailed,
+                style: AppTextStyles.titleSmall),
             const SizedBox(height: AppSpacing.lg),
-            FilledButton(onPressed: onRetry, child: const Text('Retry')),
+            FilledButton(
+                onPressed: onRetry, child: Text(context.l10n.retry)),
           ],
         ),
       ),
@@ -111,11 +116,12 @@ class _PawHubMyPostsPageState extends ConsumerState<PawHubMyPostsPage> {
                 size: 32, color: AppColors.primaryDark),
           ),
           const SizedBox(height: AppSpacing.lg),
-          Text('No posts yet', style: AppTextStyles.titleSmall),
+          Text(context.l10n.pawhubMyPostsEmptyTitle,
+              style: AppTextStyles.titleSmall),
           const SizedBox(height: AppSpacing.xs),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-            child: Text('Share your first post with the community',
+            child: Text(context.l10n.pawhubMyPostsEmptyMessage,
                 style: AppTextStyles.bodySmall
                     .copyWith(color: AppColors.textSecondary),
                 textAlign: TextAlign.center),
@@ -144,7 +150,7 @@ class _PawHubMyPostsPageState extends ConsumerState<PawHubMyPostsPage> {
             onOpenComments: () => _showComments(post, actingPet),
             onOpenOptions: () =>
                 _showOptions(post, feed.posts[i], actingPet),
-            onOpenProfile: (_) {},
+            onOpenProfile: (pet) => openPawHubPetProfile(context, pet),
             onShare: () => _share(feed.posts[i]),
           );
         },
@@ -215,10 +221,11 @@ class _PawHubMyPostsPageState extends ConsumerState<PawHubMyPostsPage> {
                     ),
                   ),
                   const SizedBox(height: AppSpacing.md),
-                  Text('Delete post?', style: AppTextStyles.titleMedium),
+                  Text(context.l10n.pawhubDeletePostTitle,
+                      style: AppTextStyles.titleMedium),
                   const SizedBox(height: AppSpacing.md),
                   Text(
-                    'This action cannot be undone.',
+                    context.l10n.pawhubDeletePostMessage,
                     style: AppTextStyles.bodySmall
                         .copyWith(color: AppColors.textSecondary),
                     textAlign: TextAlign.center,
@@ -231,12 +238,12 @@ class _PawHubMyPostsPageState extends ConsumerState<PawHubMyPostsPage> {
                         backgroundColor: AppColors.error,
                       ),
                       onPressed: () => Navigator.pop(dialogContext, true),
-                      child: const Text('Delete'),
+                      child: Text(context.l10n.delete),
                     ),
                   ),
                   TextButton(
                     onPressed: () => Navigator.pop(dialogContext, false),
-                    child: const Text('Cancel'),
+                    child: Text(context.l10n.cancel),
                   ),
                 ],
               ),

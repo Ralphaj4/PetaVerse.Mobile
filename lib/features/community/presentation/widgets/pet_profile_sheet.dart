@@ -1,7 +1,10 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/app/router/app_router.dart';
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -65,11 +68,11 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
                   ),
                 ),
                 const SizedBox(height: AppSpacing.md),
-                Text('Unfollow ${widget.pet.name}?',
+                Text(context.l10n.pawhubUnfollowConfirmTitle(widget.pet.name),
                     style: AppTextStyles.titleMedium),
                 const SizedBox(height: AppSpacing.md),
                 Text(
-                  "You won't see ${widget.pet.name}'s posts in your feed",
+                  context.l10n.pawhubUnfollowConfirmMessage(widget.pet.name),
                   style: AppTextStyles.bodySmall
                       .copyWith(color: AppColors.textSecondary),
                   textAlign: TextAlign.center,
@@ -82,12 +85,12 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
                       backgroundColor: AppColors.error,
                     ),
                     onPressed: () => Navigator.pop(dialogContext, true),
-                    child: const Text('Unfollow'),
+                    child: Text(context.l10n.pawhubUnfollow),
                   ),
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(dialogContext, false),
-                  child: const Text('Cancel'),
+                  child: Text(context.l10n.cancel),
                 ),
               ],
             ),
@@ -120,9 +123,28 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
     }
   }
 
+  /// True once we've adopted the server-authoritative follow state (so a later
+  /// optimistic toggle isn't overwritten by a rebuild).
+  bool _syncedFromServer = false;
+
   @override
   Widget build(BuildContext context) {
     final pet = widget.pet;
+    // The passed-in [PawPet] can carry stale follow state (e.g. a tagged pet,
+    // whose payload omits `isFollowing`). Fetch the pet's profile by id
+    // (`/community/pets/{id}?viewerPetId=…`) and adopt its authoritative
+    // follow state — correct from any entry point.
+    ref.listen(petProfileProvider(widget.pet.backendId), (_, next) {
+      final fresh = next.value;
+      if (fresh == null || _syncedFromServer) return;
+      _syncedFromServer = true;
+      if (fresh.isFollowing != _following || fresh.followers != _followers) {
+        setState(() {
+          _following = fresh.isFollowing;
+          _followers = fresh.followers;
+        });
+      }
+    });
     final isDraggable = Navigator.of(context).canPop() &&
         ModalRoute.of(context)?.settings.name?.contains('bottom_sheet') == true;
 
@@ -148,7 +170,8 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
                   const Icon(FluentIcons.grid_24_regular,
                       size: 18, color: AppColors.textSecondary),
                   const SizedBox(width: AppSpacing.sm),
-                  Text('Posts', style: AppTextStyles.titleSmall),
+                  Text(context.l10n.pawHubProfilePosts,
+                      style: AppTextStyles.titleSmall),
                 ],
               ),
             ),
@@ -218,7 +241,7 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
               const Icon(FluentIcons.person_24_regular,
                   size: 14, color: AppColors.textTertiary),
               const SizedBox(width: 4),
-              Text('cared for by ${pet.ownerName}',
+              Text(context.l10n.pawHubProfileCaredForBy(pet.ownerName),
                   style: AppTextStyles.bodySmall
                       .copyWith(color: AppColors.textTertiary)),
             ],
@@ -243,9 +266,10 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _stat(postCount, 'Posts'),
-              _stat(_compact(_followers), 'Followers'),
-              _stat(_compact((_followers * 0.4).round()), 'Following'),
+              _stat(postCount, context.l10n.pawHubProfilePosts),
+              _stat(_compact(_followers), context.l10n.pawHubProfileFollowers),
+              _stat(_compact((_followers * 0.4).round()),
+                  context.l10n.pawHubProfileFollowing),
             ],
           ),
         );
@@ -262,6 +286,13 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
         ],
       );
 
+  /// Closes the profile sheet and opens the pet's management screen.
+  void _managePet(PawPet pet) {
+    if (pet.backendId <= 0) return;
+    Navigator.of(context).pop();
+    context.push(AppRoutes.petDetailPath(pet.backendId));
+  }
+
   Widget _action(PawPet pet) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -269,9 +300,9 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
           ? SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
-                onPressed: () {},
+                onPressed: () => _managePet(pet),
                 icon: const Icon(FluentIcons.settings_24_regular, size: 18),
-                label: const Text('Manage pet'),
+                label: Text(context.l10n.pawhubManagePet),
               ),
             )
           : FollowButton(
@@ -289,7 +320,7 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("${widget.pet.name}'s siblings",
+          Text(context.l10n.pawHubProfileSiblings(widget.pet.name),
               style: AppTextStyles.titleSmall),
           const SizedBox(height: AppSpacing.sm),
           SizedBox(
@@ -324,7 +355,7 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
 
   Widget _postsGrid(int petId) {
     return Consumer(
-      builder: (_, ref, _) {
+      builder: (context, ref, _) {
         final postsAsync = ref.watch(petPostsProvider(petId));
         return postsAsync.when(
           loading: () => SliverPadding(
@@ -347,18 +378,18 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
               ),
             ),
           ),
-          error: (_, _) => const SliverToBoxAdapter(
+          error: (_, _) => SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.all(AppSpacing.lg),
-              child: Text('Failed to load posts'),
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: Text(context.l10n.pawhubProfileFailedPosts),
             ),
           ),
           data: (feed) {
             if (feed.posts.isEmpty) {
-              return const SliverToBoxAdapter(
+              return SliverToBoxAdapter(
                 child: Padding(
-                  padding: EdgeInsets.all(AppSpacing.lg),
-                  child: Text('No posts yet'),
+                  padding: const EdgeInsets.all(AppSpacing.lg),
+                  child: Text(context.l10n.pawhubProfileNoPosts),
                 ),
               );
             }
@@ -377,7 +408,10 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
                     final mediaUrl = post.media.isNotEmpty
                         ? post.media[0].url
                         : null;
-                    return GestureDetector(
+                    return Semantics(
+                      button: true,
+                      label: context.l10n.pawhubViewPost,
+                      child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
@@ -401,6 +435,7 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
                                   color: AppColors.textTertiary,
                                 ),
                               ),
+                      ),
                       ),
                     );
                   },
@@ -453,6 +488,7 @@ class _PostCarouselState extends State<_PostCarousel> {
         scrolledUnderElevation: 0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
+          tooltip: context.l10n.close,
           icon: const Icon(FluentIcons.dismiss_24_regular,
               color: AppColors.onPrimary),
         ),

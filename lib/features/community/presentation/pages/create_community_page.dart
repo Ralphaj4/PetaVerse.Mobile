@@ -360,7 +360,10 @@ class _CreateCommunityPageState extends ConsumerState<CreateCommunityPage> {
         clipBehavior: Clip.none,
         children: [
           // Banner
-          GestureDetector(
+          Semantics(
+            button: true,
+            label: l10n.communityEditBanner,
+            child: GestureDetector(
             onTap: _submitting ? null : () => _pickImage(isBanner: true),
             child: Container(
               height: 120,
@@ -385,12 +388,16 @@ class _CreateCommunityPageState extends ConsumerState<CreateCommunityPage> {
                       ],
                     ),
             ),
+            ),
           ),
           // Avatar
           Positioned(
             bottom: 0,
             left: AppSpacing.lg,
-            child: GestureDetector(
+            child: Semantics(
+              button: true,
+              label: l10n.communityEditAvatar,
+              child: GestureDetector(
               onTap: _submitting ? null : () => _pickImage(isBanner: false),
               child: Container(
                 width: 72,
@@ -406,6 +413,7 @@ class _CreateCommunityPageState extends ConsumerState<CreateCommunityPage> {
                     : const Icon(FluentIcons.camera_add_24_regular,
                         color: AppColors.textTertiary),
               ),
+            ),
             ),
           ),
         ],

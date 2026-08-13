@@ -341,6 +341,18 @@ class PetPosts extends _$PetPosts {
   }
 }
 
+/// A single pet's profile (`/community/pets/{id}`) with authoritative follow
+/// state relative to the acting pet. Used by the profile page so follow state
+/// is correct regardless of the entry point (feed avatar, tag, list, search).
+@riverpod
+Future<CommunityPet> petProfile(Ref ref, int petId) async {
+  final result = await ref.read(communityRepositoryProvider).getPet(
+        petId: petId,
+        viewerPetId: ref.watch(actingPetIdProvider),
+      );
+  return result.when(success: (p) => p, failure: (f) => throw f);
+}
+
 /// Suggested pets to follow (Discover rail / follow suggestions).
 @riverpod
 Future<List<CommunityPet>> suggestedPets(Ref ref) async {

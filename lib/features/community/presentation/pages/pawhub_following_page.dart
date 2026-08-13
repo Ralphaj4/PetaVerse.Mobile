@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -40,10 +41,12 @@ class _PawHubFollowingPageState extends ConsumerState<PawHubFollowingPage> {
               color: AppColors.textPrimary),
         ),
         title: followingAsync.when(
-          loading: () => Text('Following', style: AppTextStyles.titleLarge),
-          error: (_, _) =>
-              Text('Following', style: AppTextStyles.titleLarge),
-          data: (page) => Text('Following (${page.count})',
+          loading: () => Text(context.l10n.pawhubFollowingTitle,
+              style: AppTextStyles.titleLarge),
+          error: (_, _) => Text(context.l10n.pawhubFollowingTitle,
+              style: AppTextStyles.titleLarge),
+          data: (page) => Text(
+              context.l10n.pawhubFollowingTitleCount(page.count),
               style: AppTextStyles.titleLarge),
         ),
       ),
@@ -117,9 +120,11 @@ class _PawHubFollowingPageState extends ConsumerState<PawHubFollowingPage> {
             const Icon(FluentIcons.warning_24_regular,
                 size: 40, color: AppColors.error),
             const SizedBox(height: AppSpacing.md),
-            Text('Failed to load following', style: AppTextStyles.titleSmall),
+            Text(context.l10n.pawhubFollowingFailed,
+                style: AppTextStyles.titleSmall),
             const SizedBox(height: AppSpacing.lg),
-            FilledButton(onPressed: onRetry, child: const Text('Retry')),
+            FilledButton(
+                onPressed: onRetry, child: Text(context.l10n.retry)),
           ],
         ),
       ),
@@ -141,7 +146,8 @@ class _PawHubFollowingPageState extends ConsumerState<PawHubFollowingPage> {
                 size: 32, color: AppColors.primaryDark),
           ),
           const SizedBox(height: AppSpacing.lg),
-          Text('Not following anyone yet', style: AppTextStyles.titleSmall),
+          Text(context.l10n.pawhubFollowingEmptyTitle,
+              style: AppTextStyles.titleSmall),
         ],
       ),
     );

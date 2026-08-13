@@ -375,27 +375,24 @@ abstract class _$SearchScope extends $Notifier<SearchType> {
   }
 }
 
-/// Mixed search results for the current query + scope. Returns an empty page
-/// for a blank query (so the screen shows its idle state, not a spinner).
+/// Mixed search results for the current query + scope. Loads page 0 on build
+/// (rebuilding whenever the debounced query, scope, or acting pet changes) and
+/// appends further pages via [loadMore]. Returns an empty page for a blank
+/// query so the screen shows its idle state, not a spinner.
 
-@ProviderFor(communitySearch)
+@ProviderFor(CommunitySearch)
 final communitySearchProvider = CommunitySearchProvider._();
 
-/// Mixed search results for the current query + scope. Returns an empty page
-/// for a blank query (so the screen shows its idle state, not a spinner).
-
+/// Mixed search results for the current query + scope. Loads page 0 on build
+/// (rebuilding whenever the debounced query, scope, or acting pet changes) and
+/// appends further pages via [loadMore]. Returns an empty page for a blank
+/// query so the screen shows its idle state, not a spinner.
 final class CommunitySearchProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<SearchResultsPage>,
-          SearchResultsPage,
-          FutureOr<SearchResultsPage>
-        >
-    with
-        $FutureModifier<SearchResultsPage>,
-        $FutureProvider<SearchResultsPage> {
-  /// Mixed search results for the current query + scope. Returns an empty page
-  /// for a blank query (so the screen shows its idle state, not a spinner).
+    extends $AsyncNotifierProvider<CommunitySearch, PagedSearch> {
+  /// Mixed search results for the current query + scope. Loads page 0 on build
+  /// (rebuilding whenever the debounced query, scope, or acting pet changes) and
+  /// appends further pages via [loadMore]. Returns an empty page for a blank
+  /// query so the screen shows its idle state, not a spinner.
   CommunitySearchProvider._()
     : super(
         from: null,
@@ -412,14 +409,30 @@ final class CommunitySearchProvider
 
   @$internal
   @override
-  $FutureProviderElement<SearchResultsPage> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<SearchResultsPage> create(Ref ref) {
-    return communitySearch(ref);
-  }
+  CommunitySearch create() => CommunitySearch();
 }
 
-String _$communitySearchHash() => r'8b016df61d02f45bcab16ae6b515723d77ec277f';
+String _$communitySearchHash() => r'2b4adb752de84c589889fce086360ebeeae0a5ab';
+
+/// Mixed search results for the current query + scope. Loads page 0 on build
+/// (rebuilding whenever the debounced query, scope, or acting pet changes) and
+/// appends further pages via [loadMore]. Returns an empty page for a blank
+/// query so the screen shows its idle state, not a spinner.
+
+abstract class _$CommunitySearch extends $AsyncNotifier<PagedSearch> {
+  FutureOr<PagedSearch> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<AsyncValue<PagedSearch>, PagedSearch>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<PagedSearch>, PagedSearch>,
+              AsyncValue<PagedSearch>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}

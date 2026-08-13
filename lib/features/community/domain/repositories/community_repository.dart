@@ -39,6 +39,12 @@ abstract interface class CommunityRepository {
     int limit = 20,
   });
 
+  /// A single pet's profile with follow state relative to [viewerPetId].
+  Future<Result<CommunityPet>> getPet({
+    required int petId,
+    int? viewerPetId,
+  });
+
   Future<Result<PostDetail>> getPost({required int postId, int? viewerPetId});
 
   Future<Result<Post>> createPost({
@@ -235,6 +241,7 @@ class PostMediaDraft {
     required this.mediaAssetId,
     this.altText,
     this.durationSeconds,
+    this.thumbnailAssetId,
   });
 
   final String mediaAssetId;
@@ -242,4 +249,8 @@ class PostMediaDraft {
 
   /// Videos only (1–600). Must be null for images.
   final int? durationSeconds;
+
+  /// Confirmed asset id of a poster image for a video (from the presign/confirm
+  /// flow). Null for images or videos without a chosen cover.
+  final String? thumbnailAssetId;
 }

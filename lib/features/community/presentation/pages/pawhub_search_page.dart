@@ -198,7 +198,7 @@ class _PawHubSearchPageState extends ConsumerState<PawHubSearchPage> {
 
   void _openPost(Post post) => context.push('/community/post/${post.id}');
 
-  Widget _body(String query, AsyncValue<SearchResultsPage> async) {
+  Widget _body(String query, AsyncValue<PagedSearch> async) {
     if (query.isEmpty) return _IdleState(onSuggestion: _applySuggestion);
     return async.when(
       loading: () => const _ResultsSkeleton(),
@@ -208,11 +208,24 @@ class _PawHubSearchPageState extends ConsumerState<PawHubSearchPage> {
       ),
       data: (page) {
         if (page.results.isEmpty) return _EmptyState(query: query);
-        return _ResultsList(
-          results: page.results,
-          onOpenPet: _openPet,
-          onOpenHashtag: _openHashtag,
-          onOpenPost: _openPost,
+        // Load the next page when the user scrolls near the bottom. Works for
+        // both the grouped and flat result lists without restructuring them.
+        return NotificationListener<ScrollNotification>(
+          onNotification: (n) {
+            if (page.hasMore &&
+                !page.loadingMore &&
+                n.metrics.pixels >= n.metrics.maxScrollExtent - 400) {
+              ref.read(communitySearchProvider.notifier).loadMore();
+            }
+            return false;
+          },
+          child: _ResultsList(
+            results: page.results,
+            loadingMore: page.loadingMore,
+            onOpenPet: _openPet,
+            onOpenHashtag: _openHashtag,
+            onOpenPost: _openPost,
+          ),
         );
       },
     );
@@ -225,11 +238,18 @@ class _ScopePicker extends StatelessWidget {
   final ValueChanged<SearchType> onSelect;
 
   static const _tabs = [
-    (SearchType.all, 'All', FluentIcons.grid_24_regular),
-    (SearchType.posts, 'Posts', FluentIcons.image_24_regular),
-    (SearchType.hashtags, 'Hashtags', FluentIcons.number_symbol_24_regular),
-    (SearchType.pets, 'Pets', FluentIcons.animal_paw_print_24_regular),
+    (SearchType.all, FluentIcons.grid_24_regular),
+    (SearchType.posts, FluentIcons.image_24_regular),
+    (SearchType.hashtags, FluentIcons.number_symbol_24_regular),
+    (SearchType.pets, FluentIcons.animal_paw_print_24_regular),
   ];
+
+  String _labelFor(BuildContext context, SearchType type) => switch (type) {
+        SearchType.all => context.l10n.pawhubSearchScopeAll,
+        SearchType.posts => context.l10n.pawhubSearchScopePosts,
+        SearchType.hashtags => context.l10n.pawhubSearchScopeHashtags,
+        SearchType.pets => context.l10n.pawhubSearchScopePets,
+      };
 
   @override
   Widget build(BuildContext context) {
@@ -261,9 +281,9 @@ class _ScopePicker extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(t.$3, size: 15, color: fg),
+                  Icon(t.$2, size: 15, color: fg),
                   const SizedBox(width: 5),
-                  Text(t.$2,
+                  Text(_labelFor(context, t.$1),
                       style: AppTextStyles.labelMedium.copyWith(color: fg)),
                 ],
               ),
@@ -303,11 +323,12 @@ class _IdleState extends ConsumerWidget {
         ),
         const SizedBox(height: AppSpacing.xl),
         Center(
-          child: Text('Search PawHub', style: AppTextStyles.titleMedium),
+          child: Text(context.l10n.pawhubSearchTitle,
+              style: AppTextStyles.titleMedium),
         ),
         const SizedBox(height: AppSpacing.sm),
         Center(
-          child: Text('Find pets, posts, or hashtags',
+          child: Text(context.l10n.pawhubSearchSubtitle,
               style: AppTextStyles.bodyMedium
                   .copyWith(color: AppColors.textSecondary)),
         ),
@@ -327,7 +348,7 @@ class _IdleState extends ConsumerWidget {
                     size: 15, color: AppColors.primaryDark),
               ),
               const SizedBox(width: AppSpacing.sm),
-              Text('Trending',
+              Text(context.l10n.pawhubTrendingTitle,
                   style: AppTextStyles.titleSmall),
             ],
           ),
@@ -408,14 +429,14 @@ class _ErrorState extends StatelessWidget {
             const Icon(FluentIcons.warning_24_regular,
                 size: 40, color: AppColors.error),
             const SizedBox(height: AppSpacing.md),
-            Text('Something went wrong', style: AppTextStyles.titleSmall),
+            Text(context.l10n.errorTitle, style: AppTextStyles.titleSmall),
             const SizedBox(height: AppSpacing.xs),
             Text(message,
                 style: AppTextStyles.bodySmall
                     .copyWith(color: AppColors.textSecondary),
                 textAlign: TextAlign.center),
             const SizedBox(height: AppSpacing.lg),
-            FilledButton(onPressed: onRetry, child: const Text('Retry')),
+            FilledButton(onPressed: onRetry, child: Text(context.l10n.retry)),
           ],
         ),
       ),
@@ -438,9 +459,10 @@ class _EmptyState extends StatelessWidget {
             const Icon(FluentIcons.search_24_regular,
                 size: 40, color: AppColors.textTertiary),
             const SizedBox(height: AppSpacing.md),
-            Text('No results for "$query"', style: AppTextStyles.titleSmall),
+            Text(context.l10n.pawhubSearchNoResults(query),
+                style: AppTextStyles.titleSmall),
             const SizedBox(height: AppSpacing.xs),
-            Text('Try a different keyword',
+            Text(context.l10n.pawhubSearchTryDifferent,
                 style: AppTextStyles.bodySmall
                     .copyWith(color: AppColors.textSecondary)),
           ],
@@ -502,9 +524,13 @@ class _ResultsList extends StatelessWidget {
     required this.onOpenPet,
     required this.onOpenHashtag,
     required this.onOpenPost,
+    this.loadingMore = false,
   });
 
   final List<SearchResult> results;
+
+  /// Shows a footer spinner while the next page is loading.
+  final bool loadingMore;
   final void Function(CommunityPet) onOpenPet;
   final void Function(TrendingHashtag) onOpenHashtag;
   final void Function(Post) onOpenPost;
@@ -535,10 +561,12 @@ class _ResultsList extends StatelessWidget {
     if (!grouped) {
       return ListView.separated(
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-        itemCount: results.length,
+        // One extra row for the footer loader when a page is in flight.
+        itemCount: results.length + (loadingMore ? 1 : 0),
         separatorBuilder: (_, _) =>
             const Divider(height: 1, indent: 56, color: AppColors.divider),
-        itemBuilder: (_, i) => _tileFor(results[i]),
+        itemBuilder: (_, i) =>
+            i >= results.length ? const _LoadMoreFooter() : _tileFor(results[i]),
       );
     }
 
@@ -548,22 +576,42 @@ class _ResultsList extends StatelessWidget {
         if (pets.isNotEmpty)
           _ResultSection(
             icon: FluentIcons.animal_paw_print_24_regular,
-            label: 'Pets',
+            label: context.l10n.pawhubSearchSectionPets,
             children: [for (final r in pets) _tileFor(r)],
           ),
         if (tags.isNotEmpty)
           _ResultSection(
             icon: FluentIcons.number_symbol_24_regular,
-            label: 'Hashtags',
+            label: context.l10n.pawhubSearchSectionHashtags,
             children: [for (final r in tags) _tileFor(r)],
           ),
         if (posts.isNotEmpty)
           _ResultSection(
             icon: FluentIcons.image_24_regular,
-            label: 'Posts',
+            label: context.l10n.pawhubSearchSectionPosts,
             children: [for (final r in posts) _tileFor(r)],
           ),
+        if (loadingMore) const _LoadMoreFooter(),
       ],
+    );
+  }
+}
+
+/// A small centered footer spinner shown while the next result page loads.
+class _LoadMoreFooter extends StatelessWidget {
+  const _LoadMoreFooter();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.all(AppSpacing.md),
+      child: Center(
+        child: SizedBox(
+          width: 20,
+          height: 20,
+          child: CircularProgressIndicator(strokeWidth: 2),
+        ),
+      ),
     );
   }
 }
@@ -645,7 +693,7 @@ class _HashtagTile extends StatelessWidget {
         ),
       ),
       title: Text('#${tag.tag}', style: AppTextStyles.labelLarge),
-      subtitle: Text('${tag.postCount} posts',
+      subtitle: Text(context.l10n.pawhubHashtagPostsCount(tag.postCount),
           style: AppTextStyles.bodySmall
               .copyWith(color: AppColors.textSecondary)),
       trailing: const Icon(FluentIcons.chevron_right_24_regular,
@@ -681,7 +729,7 @@ class _PostTile extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      subtitle: Text('by ${post.author.name}',
+      subtitle: Text(context.l10n.pawhubSearchPostBy(post.author.name),
           style: AppTextStyles.bodySmall
               .copyWith(color: AppColors.textSecondary)),
       trailing: const Icon(FluentIcons.chevron_right_24_regular,

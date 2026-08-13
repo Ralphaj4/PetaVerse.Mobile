@@ -2739,4 +2739,626 @@ class AppLocalizationsFr extends AppLocalizations {
   String communityComposerPostingIn(String name) {
     return 'Publication dans $name';
   }
+
+  @override
+  String get communityCreateSheetTitle => 'Créer';
+
+  @override
+  String get communityCreateSheetSubtitle => 'Que souhaitez-vous ajouter ?';
+
+  @override
+  String get composeNewPost => 'Nouvelle publication';
+
+  @override
+  String get composeNewPostSubtitle => 'Partagez une photo ou une vidéo';
+
+  @override
+  String get composeNewPoll => 'Nouveau sondage';
+
+  @override
+  String get composeNewPollSubtitle => 'Posez une question à la communauté';
+
+  @override
+  String get composeNewEvent => 'Nouvel événement';
+
+  @override
+  String get composeNewEventSubtitle =>
+      'Planifiez une rencontre ou un rassemblement';
+
+  @override
+  String get pollNewTitle => 'Nouveau sondage';
+
+  @override
+  String get pollQuestionLabel => 'Question';
+
+  @override
+  String get pollQuestionHint => 'ex. Parc à chiens préféré ?';
+
+  @override
+  String get pollQuestionRequired => 'Veuillez saisir une question';
+
+  @override
+  String get pollDescriptionLabel => 'Description (facultatif)';
+
+  @override
+  String get pollDescriptionHint => 'Ajoutez plus de contexte';
+
+  @override
+  String get pollOptionsLabel => 'Options';
+
+  @override
+  String pollOptionHint(int number) {
+    return 'Option $number';
+  }
+
+  @override
+  String get pollAddOption => 'Ajouter une option';
+
+  @override
+  String get pollOptionsMin => 'Ajoutez au moins 2 options';
+
+  @override
+  String get pollAllowMultiple => 'Autoriser plusieurs choix';
+
+  @override
+  String get pollAllowMultipleSubtitle =>
+      'Permettez aux votants de choisir plusieurs options';
+
+  @override
+  String get pollSetExpiry => 'Définir une date de clôture';
+
+  @override
+  String get pollExpiryLabel => 'Clôture le';
+
+  @override
+  String get pollNoExpiry => 'Aucune date de clôture';
+
+  @override
+  String get pollCreateSubmit => 'Créer le sondage';
+
+  @override
+  String get pollCreatedToast => 'Sondage créé';
+
+  @override
+  String get pollCreateFailed =>
+      'Impossible de créer le sondage. Veuillez réessayer.';
+
+  @override
+  String pollTotalVotes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count votes',
+      one: '1 vote',
+      zero: 'Aucun vote pour l\'instant',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pollClosesIn(String when) {
+    return 'Clôture $when';
+  }
+
+  @override
+  String get pollClosed => 'Sondage clôturé';
+
+  @override
+  String get pollJoinToVote => 'Rejoignez pour voter';
+
+  @override
+  String get pollTapToVote => 'Touchez une option pour voter';
+
+  @override
+  String get pollChangeVote => 'Touchez pour modifier votre vote';
+
+  @override
+  String get pollRetractVote => 'Retirer mon vote';
+
+  @override
+  String get pollVoteFailed => 'Impossible d\'enregistrer votre vote';
+
+  @override
+  String get pollDeleteTitle => 'Supprimer le sondage ?';
+
+  @override
+  String get pollDeleteMessage =>
+      'Cela supprime définitivement le sondage et ses votes.';
+
+  @override
+  String get pollDeletedToast => 'Sondage supprimé';
+
+  @override
+  String get pollBadge => 'Sondage';
+
+  @override
+  String get eventNewTitle => 'Nouvel événement';
+
+  @override
+  String get eventTitleLabel => 'Titre';
+
+  @override
+  String get eventTitleHint => 'ex. Fête des pattes d\'été';
+
+  @override
+  String get eventTitleRequired => 'Veuillez saisir un titre';
+
+  @override
+  String get eventDescriptionLabel => 'Description (facultatif)';
+
+  @override
+  String get eventDescriptionHint => 'De quoi s\'agit-il ?';
+
+  @override
+  String get eventLocationLabel => 'Lieu (facultatif)';
+
+  @override
+  String get eventLocationHint => 'ex. Central Park, NY';
+
+  @override
+  String get eventStartsLabel => 'Début';
+
+  @override
+  String get eventEndsLabel => 'Fin (facultatif)';
+
+  @override
+  String get eventStartRequired =>
+      'Veuillez choisir une date et une heure de début';
+
+  @override
+  String get eventStartMustBeFuture => 'Le début doit être dans le futur';
+
+  @override
+  String get eventEndAfterStart => 'La fin doit être après le début';
+
+  @override
+  String get eventCreateSubmit => 'Créer l\'événement';
+
+  @override
+  String get eventEditTitle => 'Modifier l\'événement';
+
+  @override
+  String get eventUpdateSubmit => 'Enregistrer les modifications';
+
+  @override
+  String get eventCreatedToast => 'Événement créé';
+
+  @override
+  String get eventUpdatedToast => 'Événement mis à jour';
+
+  @override
+  String get eventCreateFailed =>
+      'Impossible de créer l\'événement. Veuillez réessayer.';
+
+  @override
+  String get eventBadge => 'Événement';
+
+  @override
+  String get eventPast => 'Événement passé';
+
+  @override
+  String get eventGoing => 'Je participe';
+
+  @override
+  String get eventInterested => 'Intéressé';
+
+  @override
+  String get eventCantGo => 'Absent';
+
+  @override
+  String eventAttendingCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count participants',
+      one: '1 participant',
+      zero: 'Personne pour l\'instant',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String eventInterestedCount(int count) {
+    return '$count intéressés';
+  }
+
+  @override
+  String get eventJoinToRsvp => 'Rejoignez pour répondre';
+
+  @override
+  String get eventViewAttendees => 'Voir les participants';
+
+  @override
+  String get eventAttendeesTitle => 'Participants';
+
+  @override
+  String get eventRsvpFailed => 'Impossible de mettre à jour votre réponse';
+
+  @override
+  String get eventDeleteTitle => 'Supprimer l\'événement ?';
+
+  @override
+  String get eventDeleteMessage => 'Cela supprime définitivement l\'événement.';
+
+  @override
+  String get eventDeletedToast => 'Événement supprimé';
+
+  @override
+  String get eventEdit => 'Modifier l\'événement';
+
+  @override
+  String get eventTabAttending => 'Je participe';
+
+  @override
+  String get eventTabInterested => 'Intéressé';
+
+  @override
+  String get eventTabDeclined => 'Refusé';
+
+  @override
+  String get eventNoAttendees => 'Aucune réponse pour l\'instant';
+
+  @override
+  String get eventDirections => 'Itinéraire';
+
+  @override
+  String get eventDirectionsFailed => 'Impossible d\'ouvrir la carte';
+
+  @override
+  String get pawhubManagePet => 'Gérer l\'animal';
+
+  @override
+  String get pawhubComposerAddToPost => 'Ajouter à votre publication';
+
+  @override
+  String get pawhubComposerAddToPostSubtitle =>
+      'Choisissez d\'où importer votre photo ou vidéo';
+
+  @override
+  String get pawhubComposerCameraSubtitle => 'Prendre une photo';
+
+  @override
+  String get pawhubComposerGallerySubtitle => 'Choisir dans la galerie';
+
+  @override
+  String get pawhubComposerAddPhotosOrVideos =>
+      'Ajouter des photos ou des vidéos';
+
+  @override
+  String get pawhubComposerAddMedia => 'Ajouter un média';
+
+  @override
+  String get pawhubComposerMediaLimit => 'Jusqu\'à 10 éléments';
+
+  @override
+  String get pawhubComposerCoverBadge => 'Couverture';
+
+  @override
+  String get pawhubComposerTagPetsSubtitle =>
+      'Ajoutez vos animaux à cette publication';
+
+  @override
+  String get pawhubComposerAddLocationSubtitle =>
+      'Indiquez où cela s\'est passé';
+
+  @override
+  String get pawhubComposerPostingIn => 'Publier dans';
+
+  @override
+  String get pawhubComposerVideoLengthError =>
+      'Impossible de lire la durée d\'une vidéo sélectionnée. Veuillez la retirer et la rajouter.';
+
+  @override
+  String get pawhubErrorPickingImage => 'Impossible de sélectionner l\'image';
+
+  @override
+  String get pawhubErrorPickingMedia => 'Impossible de sélectionner le média';
+
+  @override
+  String get pawhubMyPostsLink => 'Mes publications';
+
+  @override
+  String get pawHubActingAs => 'Au nom de';
+
+  @override
+  String pawhubAlertReward(int amount) {
+    return 'récompense de \$$amount';
+  }
+
+  @override
+  String get pawhubEditComment => 'Modifier le commentaire';
+
+  @override
+  String pawhubCommentsCountLabel(int count) {
+    return '$count commentaires';
+  }
+
+  @override
+  String get pawhubCouldNotLoadComments =>
+      'Impossible de charger les commentaires';
+
+  @override
+  String get pawhubCommentOptionDeleteComment => 'Supprimer le commentaire';
+
+  @override
+  String get pawhubCommentOptionReportComment => 'Signaler le commentaire';
+
+  @override
+  String get pawhubBlockedTitle => 'Animaux bloqués';
+
+  @override
+  String get pawhubBlockedFailed => 'Échec du chargement des animaux bloqués';
+
+  @override
+  String get pawhubBlockedEmptyTitle => 'Aucun animal bloqué';
+
+  @override
+  String get pawhubBlockedEmptyMessage =>
+      'Les animaux que vous bloquez n\'apparaîtront pas dans votre fil';
+
+  @override
+  String get pawhubUnblock => 'Débloquer';
+
+  @override
+  String pawhubUnblockConfirmTitle(String name) {
+    return 'Débloquer $name ?';
+  }
+
+  @override
+  String get pawhubUnblockConfirmMessage =>
+      'Ils pourront de nouveau voir vos publications.';
+
+  @override
+  String pawhubUnfollowConfirmTitle(String name) {
+    return 'Ne plus suivre $name ?';
+  }
+
+  @override
+  String pawhubUnfollowConfirmMessage(String name) {
+    return 'Vous ne verrez plus les publications de $name dans votre fil';
+  }
+
+  @override
+  String get pawhubUnfollow => 'Ne plus suivre';
+
+  @override
+  String get pawhubMyPostsTitle => 'Mes publications';
+
+  @override
+  String get pawhubMyPostsFailed => 'Échec du chargement de vos publications';
+
+  @override
+  String get pawhubMyPostsEmptyTitle => 'Aucune publication';
+
+  @override
+  String get pawhubMyPostsEmptyMessage =>
+      'Partagez votre première publication avec la communauté';
+
+  @override
+  String get pawhubDeletePostTitle => 'Supprimer la publication ?';
+
+  @override
+  String get pawhubDeletePostMessage => 'Cette action est irréversible.';
+
+  @override
+  String get pawhubSavedTitle => 'Enregistrés';
+
+  @override
+  String get pawhubSavedFailed =>
+      'Échec du chargement des publications enregistrées';
+
+  @override
+  String get pawhubSavedEmptyTitle => 'Aucune publication enregistrée';
+
+  @override
+  String get pawhubSavedEmptyMessage =>
+      'Touchez le signet d\'une publication pour l\'enregistrer';
+
+  @override
+  String get pawhubFollowersTitle => 'Abonnés';
+
+  @override
+  String pawhubFollowersTitleCount(int count) {
+    return 'Abonnés ($count)';
+  }
+
+  @override
+  String get pawhubFollowersFailed => 'Échec du chargement des abonnés';
+
+  @override
+  String get pawhubFollowersEmptyTitle => 'Aucun abonné pour l\'instant';
+
+  @override
+  String get pawhubFollowingTitle => 'Abonnements';
+
+  @override
+  String pawhubFollowingTitleCount(int count) {
+    return 'Abonnements ($count)';
+  }
+
+  @override
+  String get pawhubFollowingFailed => 'Échec du chargement des abonnements';
+
+  @override
+  String get pawhubFollowingEmptyTitle =>
+      'Vous ne suivez personne pour l\'instant';
+
+  @override
+  String get pawhubTrendingTitle => 'Tendances';
+
+  @override
+  String get pawhubTrendingFailed => 'Échec du chargement des tendances';
+
+  @override
+  String get pawhubTrendingHashtags => 'Hashtags tendance';
+
+  @override
+  String get pawhubTopPosts => 'Meilleures publications';
+
+  @override
+  String pawhubHashtagPostsCount(int count) {
+    return '$count publications';
+  }
+
+  @override
+  String get pawhubSearchTitle => 'Rechercher sur PawHub';
+
+  @override
+  String get pawhubSearchSubtitle =>
+      'Trouvez des animaux, des publications ou des hashtags';
+
+  @override
+  String get pawhubSearchScopeAll => 'Tout';
+
+  @override
+  String get pawhubSearchScopePosts => 'Publications';
+
+  @override
+  String get pawhubSearchScopeHashtags => 'Hashtags';
+
+  @override
+  String get pawhubSearchScopePets => 'Animaux';
+
+  @override
+  String pawhubSearchNoResults(String query) {
+    return 'Aucun résultat pour « $query »';
+  }
+
+  @override
+  String get pawhubSearchTryDifferent => 'Essayez un autre mot-clé';
+
+  @override
+  String get pawhubSearchSectionPets => 'Animaux';
+
+  @override
+  String get pawhubSearchSectionHashtags => 'Hashtags';
+
+  @override
+  String get pawhubSearchSectionPosts => 'Publications';
+
+  @override
+  String pawhubSearchPostBy(String name) {
+    return 'par $name';
+  }
+
+  @override
+  String get pawhubHashtagFailed => 'Échec du chargement des publications';
+
+  @override
+  String pawhubHashtagEmpty(String hashtag) {
+    return 'Aucune publication pour #$hashtag pour l\'instant';
+  }
+
+  @override
+  String get pawhubPostTitle => 'Publication';
+
+  @override
+  String get pawhubPostFailed => 'Échec du chargement de la publication';
+
+  @override
+  String get pawhubProfileFailedPosts => 'Échec du chargement des publications';
+
+  @override
+  String get pawhubProfileNoPosts => 'Aucune publication';
+
+  @override
+  String get pawhubTagPetsTitle => 'Identifier des animaux';
+
+  @override
+  String get pawhubTagPetsSearchHint => 'Rechercher des animaux par nom…';
+
+  @override
+  String get pawhubTagPetsNoMatch => 'Aucun animal trouvé.';
+
+  @override
+  String get pawhubTagPetsResults => 'Résultats';
+
+  @override
+  String pawhubTagPetsTaggedCount(int count) {
+    return 'Identifiés ($count)';
+  }
+
+  @override
+  String get pawhubTagPetsMyPets => 'Mes animaux';
+
+  @override
+  String get pawhubTagPetsEmpty =>
+      'Vous n\'avez pas encore d\'animaux à identifier.';
+
+  @override
+  String get pawhubDiscoverEmptyTitle => 'Rien à découvrir pour l\'instant';
+
+  @override
+  String get pawhubDiscoverEmptyMessage =>
+      'De nouvelles publications de la communauté apparaîtront ici bientôt 🐾';
+
+  @override
+  String get pawhubSavedPostsTooltip => 'Publications enregistrées';
+
+  @override
+  String get pawhubComposerLocationHint => 'Recherchez ou touchez la carte';
+
+  @override
+  String get locationResolving => 'Recherche de l\'adresse…';
+
+  @override
+  String get pawhubLike => 'J\'aime';
+
+  @override
+  String get pawhubComment => 'Commenter';
+
+  @override
+  String get communityMembersEmptyTitle => 'Aucun membre pour l\'instant';
+
+  @override
+  String get communityMembersEmptyMessage =>
+      'Soyez le premier à rejoindre cette communauté.';
+
+  @override
+  String get pawhubTrendingEmptyTitle => 'Rien de tendance pour l\'instant';
+
+  @override
+  String get pawhubTrendingEmptyMessage =>
+      'Les hashtags et publications populaires apparaîtront ici à mesure que la communauté grandit.';
+
+  @override
+  String get pawhubBack => 'Retour';
+
+  @override
+  String get pawhubMoreOptions => 'Plus d\'options';
+
+  @override
+  String get pawhubRemoveOption => 'Supprimer l\'option';
+
+  @override
+  String get pawhubRemoveTag => 'Retirer l\'étiquette';
+
+  @override
+  String get pawhubViewPost => 'Voir la publication';
+
+  @override
+  String get pawhubViewProfile => 'Voir le profil';
+
+  @override
+  String get pawhubExpandMap => 'Agrandir la carte';
+
+  @override
+  String get pawhubComposerSetCover => 'Définir la couverture';
+
+  @override
+  String get pawhubComposerChangeCover => 'Changer la couverture';
+
+  @override
+  String get pawhubComposerLocationFieldHint => 'ex. Beyrouth, Liban';
+
+  @override
+  String pawhubComposerTaggedSummary(String name, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count autres',
+      one: '1 autre',
+    );
+    return '$name et $_temp0';
+  }
 }

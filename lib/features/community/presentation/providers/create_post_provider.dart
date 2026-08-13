@@ -23,12 +23,17 @@ class DraftMedia {
     required this.contentType,
     this.altText,
     this.durationSeconds,
+    this.thumbnailFile,
   });
 
   final File file;
   final String contentType;
   final String? altText;
   final int? durationSeconds;
+
+  /// Optional poster image for a video (a JPEG the user picked as the cover).
+  /// Uploaded as a separate asset; its confirmed id becomes `thumbnailAssetId`.
+  final File? thumbnailFile;
 
   bool get isVideo => contentType.startsWith('video/');
 }

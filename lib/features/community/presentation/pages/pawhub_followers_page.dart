@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -40,10 +41,12 @@ class _PawHubFollowersPageState extends ConsumerState<PawHubFollowersPage> {
               color: AppColors.textPrimary),
         ),
         title: followersAsync.when(
-          loading: () => Text('Followers', style: AppTextStyles.titleLarge),
-          error: (_, _) =>
-              Text('Followers', style: AppTextStyles.titleLarge),
-          data: (page) => Text('Followers (${page.count})',
+          loading: () => Text(context.l10n.pawhubFollowersTitle,
+              style: AppTextStyles.titleLarge),
+          error: (_, _) => Text(context.l10n.pawhubFollowersTitle,
+              style: AppTextStyles.titleLarge),
+          data: (page) => Text(
+              context.l10n.pawhubFollowersTitleCount(page.count),
               style: AppTextStyles.titleLarge),
         ),
       ),
@@ -117,9 +120,11 @@ class _PawHubFollowersPageState extends ConsumerState<PawHubFollowersPage> {
             const Icon(FluentIcons.warning_24_regular,
                 size: 40, color: AppColors.error),
             const SizedBox(height: AppSpacing.md),
-            Text('Failed to load followers', style: AppTextStyles.titleSmall),
+            Text(context.l10n.pawhubFollowersFailed,
+                style: AppTextStyles.titleSmall),
             const SizedBox(height: AppSpacing.lg),
-            FilledButton(onPressed: onRetry, child: const Text('Retry')),
+            FilledButton(
+                onPressed: onRetry, child: Text(context.l10n.retry)),
           ],
         ),
       ),
@@ -141,7 +146,8 @@ class _PawHubFollowersPageState extends ConsumerState<PawHubFollowersPage> {
                 size: 32, color: AppColors.primaryDark),
           ),
           const SizedBox(height: AppSpacing.lg),
-          Text('No followers yet', style: AppTextStyles.titleSmall),
+          Text(context.l10n.pawhubFollowersEmptyTitle,
+              style: AppTextStyles.titleSmall),
         ],
       ),
     );

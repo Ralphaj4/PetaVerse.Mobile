@@ -78,7 +78,6 @@ class _CommunitiesPageState extends ConsumerState<CommunitiesPage> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final searching = _query.isNotEmpty;
-    debugPrint('[Communities] build searching=$searching');
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -188,8 +187,6 @@ class _CommunitiesPageState extends ConsumerState<CommunitiesPage> {
   /// Only the list area reacts to loading/error — the controls above stay put.
   Widget _directory() {
     final state = ref.watch(communityDirectoryProvider);
-    debugPrint('[Communities] _directory state='
-        '${state.isLoading ? "loading" : state.hasError ? "error(${state.error})" : "data(${state.value?.communities.length})"}');
     return state.when(
       loading: () => const _CenteredLoader(),
       error: (e, _) => ErrorStateWidget(

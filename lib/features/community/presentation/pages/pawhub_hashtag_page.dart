@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -14,6 +15,7 @@ import '../widgets/pawhub_comments.dart';
 import '../widgets/pawhub_feed_widgets.dart';
 import '../widgets/pawhub_sheets.dart';
 import '../widgets/post_card.dart';
+import 'pawhub_pet_profile_page.dart';
 
 class PawHubHashtagPage extends ConsumerStatefulWidget {
   const PawHubHashtagPage({required this.hashtag, super.key});
@@ -88,9 +90,11 @@ class _PawHubHashtagPageState extends ConsumerState<PawHubHashtagPage> {
             const Icon(FluentIcons.warning_24_regular,
                 size: 40, color: AppColors.error),
             const SizedBox(height: AppSpacing.md),
-            Text('Failed to load posts', style: AppTextStyles.titleSmall),
+            Text(context.l10n.pawhubHashtagFailed,
+                style: AppTextStyles.titleSmall),
             const SizedBox(height: AppSpacing.lg),
-            FilledButton(onPressed: onRetry, child: const Text('Retry')),
+            FilledButton(
+                onPressed: onRetry, child: Text(context.l10n.retry)),
           ],
         ),
       ),
@@ -112,7 +116,7 @@ class _PawHubHashtagPageState extends ConsumerState<PawHubHashtagPage> {
                 size: 32, color: AppColors.primaryDark),
           ),
           const SizedBox(height: AppSpacing.lg),
-          Text('No posts for #${widget.hashtag} yet',
+          Text(context.l10n.pawhubHashtagEmpty(widget.hashtag),
               style: AppTextStyles.titleSmall),
         ],
       ),
@@ -144,7 +148,7 @@ class _PawHubHashtagPageState extends ConsumerState<PawHubHashtagPage> {
             onOpenComments: () => _showComments(post, actingPet),
             onOpenOptions: () =>
                 _showOptions(post, feed.posts[i], actingPet),
-            onOpenProfile: (_) {},
+            onOpenProfile: (pet) => openPawHubPetProfile(context, pet),
             onShare: () => _share(feed.posts[i]),
           );
         },

@@ -144,17 +144,19 @@ class _PawHubPageState extends ConsumerState<PawHubPage> {
         final saved = await actions.toggleSave(domainPost);
         if (mounted) {
           setState(() => post.saved = saved);
-          _snack(saved ? 'Saved' : 'Removed from saved');
+          _snack(saved
+              ? context.l10n.pawHubPostSaved
+              : context.l10n.pawHubPostRemovedFromSaved);
         }
       case PostAction.copyLink:
         unawaited(Clipboard.setData(
             ClipboardData(text: 'https://petaverse.app/p/${post.backendId}')));
-        _snack('Link copied');
+        _snack(context.l10n.pawHubLinkCopied);
       case PostAction.share:
         final url = await actions.share(domainPost, shareMethod: 'copy_link');
         if (url != null && mounted) {
           unawaited(Clipboard.setData(ClipboardData(text: url)));
-          _snack('Link copied');
+          _snack(context.l10n.pawHubLinkCopied);
         }
       case PostAction.hide:
         // Only following feed supports removePost; discover just refreshes.
@@ -163,20 +165,20 @@ class _PawHubPageState extends ConsumerState<PawHubPage> {
         } else {
           unawaited(ref.read(discoverFeedProvider.notifier).refresh());
         }
-        _snack('Post hidden');
+        _snack(context.l10n.pawHubPostHidden);
       case PostAction.report:
         final reason = await showReportSheet(context);
         if (reason != null && mounted) {
           await actions.reportPost(post.backendId, reason);
-          _snack('Reported. Thank you.');
+          if (mounted) _snack(context.l10n.pawHubPostReported);
         }
       case PostAction.block:
         final authorId = post.author.backendId;
         if (authorId > 0) await actions.block(authorId);
-        _snack('Blocked ${post.author.ownerName}');
+        if (mounted) _snack(context.l10n.pawHubBlockedUser(post.author.ownerName));
       case PostAction.delete:
         await actions.deletePost(post.backendId);
-        _snack('Post deleted');
+        if (mounted) _snack(context.l10n.pawHubPostDeleted);
     }
   }
 
@@ -206,8 +208,8 @@ void _openProfile(PawPet pet) {
     setState(() {
       pet.isFollowing = nowFollowing;
       _snack(nowFollowing
-          ? 'Following ${pet.name}'
-          : 'Unfollowed ${pet.name}');
+          ? context.l10n.pawHubFollowingPet(pet.name)
+          : context.l10n.pawHubUnfollowedPet(pet.name));
     });
   }
 
@@ -234,7 +236,7 @@ void _openProfile(PawPet pet) {
     final myPets = _myPawPets();
     final actingPet = _currentActingPawPet();
     if (myPets.isEmpty) {
-      _snack('Add a pet first to post');
+      _snack(context.l10n.pawHubAddPetFirstToPost);
       return;
     }
     final post = await Navigator.of(context).push<PawPost>(
@@ -250,7 +252,7 @@ void _openProfile(PawPet pet) {
     if (post != null && mounted) {
       // The real post comes from the provider (createPost calls refresh).
       setState(() {});
-      _snack('Posted as ${post.author.name} 🐾');
+      _snack(context.l10n.pawHubPostedAs(post.author.name));
     }
   }
 
@@ -305,7 +307,7 @@ void _openProfile(PawPet pet) {
         ),
         media: const [],
         hashtags: p.hashtags,
-        taggedPetIds: const [],
+        taggedPets: const [],
         likes: p.likes,
         comments: p.totalCommentCount,
         likedByMe: p.likedByMe,
@@ -372,8 +374,8 @@ void _openProfile(PawPet pet) {
         bottom: false,
         child: Column(
           children: [
-            _searchBar(),
-            _topBar(actingPawPet, unreadCount),
+            _searchBar(unreadCount),
+            _topBar(actingPawPet),
             // Background post-upload progress — shown here (below the
             // Following/Discover bar, above the feed) rather than app-wide.
             const UploadProgressBanner(),
@@ -406,73 +408,62 @@ void _openProfile(PawPet pet) {
     );
   }
 
-  /// A tap-to-search bar that opens the full PawHub search screen, sharing a
-  /// [Hero] with the search page's field so the pill flies between screens.
-  Widget _searchBar() {
+  /// The search row: a tap-to-search bar (opens the full PawHub search screen,
+  /// sharing a [Hero] with the search page's field) plus the notifications bell
+  /// beside it.
+  Widget _searchBar(int unreadCount) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md, AppSpacing.sm, AppSpacing.md, AppSpacing.xs),
-      child: Hero(
-        tag: kPawHubSearchHeroTag,
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () => context.push('/community/search'),
-            borderRadius: AppRadius.lgAll,
-            child: Container(
-              height: 44,
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: AppRadius.lgAll,
-                border: Border.all(color: AppColors.divider),
-              ),
-              child: Row(
-                children: [
-                  const Icon(FluentIcons.search_24_regular,
-                      size: 20, color: AppColors.textSecondary),
-                  const SizedBox(width: AppSpacing.sm),
-                  Expanded(
-                    child: Text(
-                      context.l10n.pawHubSearchHint,
-                      style: AppTextStyles.bodyMedium
-                          .copyWith(color: AppColors.textTertiary),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _topBar(PawPet actingPawPet, int unreadCount) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md, AppSpacing.sm, AppSpacing.xs, AppSpacing.sm),
+          AppSpacing.md, AppSpacing.sm, AppSpacing.xs, AppSpacing.xs),
       child: Row(
         children: [
-          PetSwitcherPill(pet: actingPawPet, onTap: _switchActingPet),
-          const Spacer(),
-          Center(
-            child: FeedTabToggle(
-              tab: _tab,
-              onChanged: (t) => setState(() => _tab = t),
+          Expanded(
+            child: Hero(
+              tag: kPawHubSearchHeroTag,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () => context.push('/community/search'),
+                  borderRadius: AppRadius.lgAll,
+                  child: Container(
+                    height: 44,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                    decoration: BoxDecoration(
+                      color: AppColors.surface,
+                      borderRadius: AppRadius.lgAll,
+                      border: Border.all(color: AppColors.divider),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(FluentIcons.search_24_regular,
+                            size: 20, color: AppColors.textSecondary),
+                        const SizedBox(width: AppSpacing.sm),
+                        Expanded(
+                          child: Text(
+                            context.l10n.pawHubSearchHint,
+                            style: AppTextStyles.bodyMedium
+                                .copyWith(color: AppColors.textTertiary),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
-          const SizedBox(width: AppSpacing.sm),
           IconButton(
             onPressed: () => context.push('/community/saved'),
             icon: const Icon(FluentIcons.bookmark_24_regular,
                 color: AppColors.textPrimary),
-            tooltip: 'Saved posts',
+            tooltip: context.l10n.pawhubSavedPostsTooltip,
           ),
           IconButton(
             onPressed: _openNotifications,
+            tooltip: context.l10n.pawHubNotificationsTitle,
             icon: Stack(
               clipBehavior: Clip.none,
               children: [
@@ -485,6 +476,26 @@ void _openProfile(PawPet pet) {
                     child: CountBadge(count: unreadCount),
                   ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _topBar(PawPet actingPawPet) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+          AppSpacing.md, AppSpacing.sm, AppSpacing.md, AppSpacing.sm),
+      child: Row(
+        children: [
+          PetSwitcherPill(pet: actingPawPet, onTap: _switchActingPet),
+          const SizedBox(width: AppSpacing.sm),
+          Expanded(
+            child: FeedTabToggle(
+              tab: _tab,
+              onChanged: (t) => setState(() => _tab = t),
+              followingHasUpdates: _showNewPill,
             ),
           ),
         ],
@@ -540,10 +551,9 @@ void _openProfile(PawPet pet) {
               rail,
               // No CTA here — already on the Discover tab — and Discover-specific
               // copy (not the "follow some pets" Following wording).
-              const FeedEmptyState(
-                title: 'Nothing to discover yet',
-                message:
-                    'New posts from the community will show up here soon 🐾',
+              FeedEmptyState(
+                title: context.l10n.pawhubDiscoverEmptyTitle,
+                message: context.l10n.pawhubDiscoverEmptyMessage,
               ),
             ],
           );
@@ -584,9 +594,11 @@ void _openProfile(PawPet pet) {
             const Icon(FluentIcons.warning_24_regular,
                 size: 48, color: AppColors.textTertiary),
             const SizedBox(height: AppSpacing.md),
-            Text('Could not load feed', style: AppTextStyles.bodyMedium),
+            Text(context.l10n.pawHubCouldNotLoadFeed,
+                style: AppTextStyles.bodyMedium),
             const SizedBox(height: AppSpacing.sm),
-            FilledButton(onPressed: _refresh, child: const Text('Retry')),
+            FilledButton(
+                onPressed: _refresh, child: Text(context.l10n.retry)),
           ],
         ),
       );

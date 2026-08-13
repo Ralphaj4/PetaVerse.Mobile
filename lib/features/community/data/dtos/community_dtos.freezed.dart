@@ -580,7 +580,9 @@ as String?,
 /// @nodoc
 mixin _$PostDto {
 
- int get id; PetSummaryDto get author; List<PostMediaDto> get media; String? get caption; String? get locationName; int get visibility; List<String> get hashtags; List<int> get taggedPets; int get likes; int get comments; bool get likedByMe; bool get saved; bool get isEdited; DateTime? get createdAt; String? get timeAgo; int? get communityId; String? get communityName;
+ int get id; PetSummaryDto get author; List<PostMediaDto> get media; String? get caption; String? get locationName; int get visibility; List<String> get hashtags;// Tagged pets now arrive as full pet objects (id/name/avatarUrl/breed),
+// not bare ids.
+ List<PetSummaryDto> get taggedPets; int get likes; int get comments; bool get likedByMe; bool get saved; bool get isEdited; DateTime? get createdAt; String? get timeAgo; int? get communityId; String? get communityName;
 /// Create a copy of PostDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -613,7 +615,7 @@ abstract mixin class $PostDtoCopyWith<$Res>  {
   factory $PostDtoCopyWith(PostDto value, $Res Function(PostDto) _then) = _$PostDtoCopyWithImpl;
 @useResult
 $Res call({
- int id, PetSummaryDto author, List<PostMediaDto> media, String? caption, String? locationName, int visibility, List<String> hashtags, List<int> taggedPets, int likes, int comments, bool likedByMe, bool saved, bool isEdited, DateTime? createdAt, String? timeAgo, int? communityId, String? communityName
+ int id, PetSummaryDto author, List<PostMediaDto> media, String? caption, String? locationName, int visibility, List<String> hashtags, List<PetSummaryDto> taggedPets, int likes, int comments, bool likedByMe, bool saved, bool isEdited, DateTime? createdAt, String? timeAgo, int? communityId, String? communityName
 });
 
 
@@ -640,7 +642,7 @@ as String?,locationName: freezed == locationName ? _self.locationName : location
 as String?,visibility: null == visibility ? _self.visibility : visibility // ignore: cast_nullable_to_non_nullable
 as int,hashtags: null == hashtags ? _self.hashtags : hashtags // ignore: cast_nullable_to_non_nullable
 as List<String>,taggedPets: null == taggedPets ? _self.taggedPets : taggedPets // ignore: cast_nullable_to_non_nullable
-as List<int>,likes: null == likes ? _self.likes : likes // ignore: cast_nullable_to_non_nullable
+as List<PetSummaryDto>,likes: null == likes ? _self.likes : likes // ignore: cast_nullable_to_non_nullable
 as int,comments: null == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable
 as int,likedByMe: null == likedByMe ? _self.likedByMe : likedByMe // ignore: cast_nullable_to_non_nullable
 as bool,saved: null == saved ? _self.saved : saved // ignore: cast_nullable_to_non_nullable
@@ -743,7 +745,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  PetSummaryDto author,  List<PostMediaDto> media,  String? caption,  String? locationName,  int visibility,  List<String> hashtags,  List<int> taggedPets,  int likes,  int comments,  bool likedByMe,  bool saved,  bool isEdited,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  PetSummaryDto author,  List<PostMediaDto> media,  String? caption,  String? locationName,  int visibility,  List<String> hashtags,  List<PetSummaryDto> taggedPets,  int likes,  int comments,  bool likedByMe,  bool saved,  bool isEdited,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PostDto() when $default != null:
 return $default(_that.id,_that.author,_that.media,_that.caption,_that.locationName,_that.visibility,_that.hashtags,_that.taggedPets,_that.likes,_that.comments,_that.likedByMe,_that.saved,_that.isEdited,_that.createdAt,_that.timeAgo,_that.communityId,_that.communityName);case _:
@@ -764,7 +766,7 @@ return $default(_that.id,_that.author,_that.media,_that.caption,_that.locationNa
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  PetSummaryDto author,  List<PostMediaDto> media,  String? caption,  String? locationName,  int visibility,  List<String> hashtags,  List<int> taggedPets,  int likes,  int comments,  bool likedByMe,  bool saved,  bool isEdited,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  PetSummaryDto author,  List<PostMediaDto> media,  String? caption,  String? locationName,  int visibility,  List<String> hashtags,  List<PetSummaryDto> taggedPets,  int likes,  int comments,  bool likedByMe,  bool saved,  bool isEdited,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName)  $default,) {final _that = this;
 switch (_that) {
 case _PostDto():
 return $default(_that.id,_that.author,_that.media,_that.caption,_that.locationName,_that.visibility,_that.hashtags,_that.taggedPets,_that.likes,_that.comments,_that.likedByMe,_that.saved,_that.isEdited,_that.createdAt,_that.timeAgo,_that.communityId,_that.communityName);case _:
@@ -784,7 +786,7 @@ return $default(_that.id,_that.author,_that.media,_that.caption,_that.locationNa
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  PetSummaryDto author,  List<PostMediaDto> media,  String? caption,  String? locationName,  int visibility,  List<String> hashtags,  List<int> taggedPets,  int likes,  int comments,  bool likedByMe,  bool saved,  bool isEdited,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  PetSummaryDto author,  List<PostMediaDto> media,  String? caption,  String? locationName,  int visibility,  List<String> hashtags,  List<PetSummaryDto> taggedPets,  int likes,  int comments,  bool likedByMe,  bool saved,  bool isEdited,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName)?  $default,) {final _that = this;
 switch (_that) {
 case _PostDto() when $default != null:
 return $default(_that.id,_that.author,_that.media,_that.caption,_that.locationName,_that.visibility,_that.hashtags,_that.taggedPets,_that.likes,_that.comments,_that.likedByMe,_that.saved,_that.isEdited,_that.createdAt,_that.timeAgo,_that.communityId,_that.communityName);case _:
@@ -799,7 +801,7 @@ return $default(_that.id,_that.author,_that.media,_that.caption,_that.locationNa
 @JsonSerializable()
 
 class _PostDto extends PostDto {
-  const _PostDto({required this.id, required this.author, final  List<PostMediaDto> media = const <PostMediaDto>[], this.caption, this.locationName, this.visibility = 0, final  List<String> hashtags = const <String>[], final  List<int> taggedPets = const <int>[], this.likes = 0, this.comments = 0, this.likedByMe = false, this.saved = false, this.isEdited = false, this.createdAt, this.timeAgo, this.communityId, this.communityName}): _media = media,_hashtags = hashtags,_taggedPets = taggedPets,super._();
+  const _PostDto({required this.id, required this.author, final  List<PostMediaDto> media = const <PostMediaDto>[], this.caption, this.locationName, this.visibility = 0, final  List<String> hashtags = const <String>[], final  List<PetSummaryDto> taggedPets = const <PetSummaryDto>[], this.likes = 0, this.comments = 0, this.likedByMe = false, this.saved = false, this.isEdited = false, this.createdAt, this.timeAgo, this.communityId, this.communityName}): _media = media,_hashtags = hashtags,_taggedPets = taggedPets,super._();
   factory _PostDto.fromJson(Map<String, dynamic> json) => _$PostDtoFromJson(json);
 
 @override final  int id;
@@ -821,8 +823,12 @@ class _PostDto extends PostDto {
   return EqualUnmodifiableListView(_hashtags);
 }
 
- final  List<int> _taggedPets;
-@override@JsonKey() List<int> get taggedPets {
+// Tagged pets now arrive as full pet objects (id/name/avatarUrl/breed),
+// not bare ids.
+ final  List<PetSummaryDto> _taggedPets;
+// Tagged pets now arrive as full pet objects (id/name/avatarUrl/breed),
+// not bare ids.
+@override@JsonKey() List<PetSummaryDto> get taggedPets {
   if (_taggedPets is EqualUnmodifiableListView) return _taggedPets;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_taggedPets);
@@ -871,7 +877,7 @@ abstract mixin class _$PostDtoCopyWith<$Res> implements $PostDtoCopyWith<$Res> {
   factory _$PostDtoCopyWith(_PostDto value, $Res Function(_PostDto) _then) = __$PostDtoCopyWithImpl;
 @override @useResult
 $Res call({
- int id, PetSummaryDto author, List<PostMediaDto> media, String? caption, String? locationName, int visibility, List<String> hashtags, List<int> taggedPets, int likes, int comments, bool likedByMe, bool saved, bool isEdited, DateTime? createdAt, String? timeAgo, int? communityId, String? communityName
+ int id, PetSummaryDto author, List<PostMediaDto> media, String? caption, String? locationName, int visibility, List<String> hashtags, List<PetSummaryDto> taggedPets, int likes, int comments, bool likedByMe, bool saved, bool isEdited, DateTime? createdAt, String? timeAgo, int? communityId, String? communityName
 });
 
 
@@ -898,7 +904,7 @@ as String?,locationName: freezed == locationName ? _self.locationName : location
 as String?,visibility: null == visibility ? _self.visibility : visibility // ignore: cast_nullable_to_non_nullable
 as int,hashtags: null == hashtags ? _self._hashtags : hashtags // ignore: cast_nullable_to_non_nullable
 as List<String>,taggedPets: null == taggedPets ? _self._taggedPets : taggedPets // ignore: cast_nullable_to_non_nullable
-as List<int>,likes: null == likes ? _self.likes : likes // ignore: cast_nullable_to_non_nullable
+as List<PetSummaryDto>,likes: null == likes ? _self.likes : likes // ignore: cast_nullable_to_non_nullable
 as int,comments: null == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable
 as int,likedByMe: null == likedByMe ? _self.likedByMe : likedByMe // ignore: cast_nullable_to_non_nullable
 as bool,saved: null == saved ? _self.saved : saved // ignore: cast_nullable_to_non_nullable

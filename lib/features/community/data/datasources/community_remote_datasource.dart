@@ -63,6 +63,19 @@ class CommunityRemoteDataSource {
     return FeedResponseDto.fromJson(data);
   }
 
+  /// A single pet's PawHub profile (`PetSummaryResponse`), with follow state
+  /// relative to [viewerPetId].
+  Future<PetSummaryDto> getPet({
+    required int petId,
+    int? viewerPetId,
+  }) async {
+    final data = await _client.get<Map<String, dynamic>>(
+      ApiEndpoints.communityPet(petId),
+      queryParameters: {'viewerPetId': ?viewerPetId},
+    );
+    return PetSummaryDto.fromJson(data);
+  }
+
   Future<FeedResponseDto> getPetPosts({
     required int petId,
     int? viewerPetId,

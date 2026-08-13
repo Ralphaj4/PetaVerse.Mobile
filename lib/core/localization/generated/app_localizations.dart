@@ -4791,6 +4791,1092 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Posting in {name}'**
   String communityComposerPostingIn(String name);
+
+  /// No description provided for @communityCreateSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get communityCreateSheetTitle;
+
+  /// No description provided for @communityCreateSheetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What would you like to add?'**
+  String get communityCreateSheetSubtitle;
+
+  /// No description provided for @composeNewPost.
+  ///
+  /// In en, this message translates to:
+  /// **'New Post'**
+  String get composeNewPost;
+
+  /// No description provided for @composeNewPostSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share a photo or video'**
+  String get composeNewPostSubtitle;
+
+  /// No description provided for @composeNewPoll.
+  ///
+  /// In en, this message translates to:
+  /// **'New Poll'**
+  String get composeNewPoll;
+
+  /// No description provided for @composeNewPollSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask the community a question'**
+  String get composeNewPollSubtitle;
+
+  /// No description provided for @composeNewEvent.
+  ///
+  /// In en, this message translates to:
+  /// **'New Event'**
+  String get composeNewEvent;
+
+  /// No description provided for @composeNewEventSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan a meetup or gathering'**
+  String get composeNewEventSubtitle;
+
+  /// No description provided for @pollNewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New poll'**
+  String get pollNewTitle;
+
+  /// No description provided for @pollQuestionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Question'**
+  String get pollQuestionLabel;
+
+  /// No description provided for @pollQuestionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Favourite dog park?'**
+  String get pollQuestionHint;
+
+  /// No description provided for @pollQuestionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a question'**
+  String get pollQuestionRequired;
+
+  /// No description provided for @pollDescriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (optional)'**
+  String get pollDescriptionLabel;
+
+  /// No description provided for @pollDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add more context'**
+  String get pollDescriptionHint;
+
+  /// No description provided for @pollOptionsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Options'**
+  String get pollOptionsLabel;
+
+  /// No description provided for @pollOptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Option {number}'**
+  String pollOptionHint(int number);
+
+  /// No description provided for @pollAddOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Add option'**
+  String get pollAddOption;
+
+  /// No description provided for @pollOptionsMin.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least 2 options'**
+  String get pollOptionsMin;
+
+  /// No description provided for @pollAllowMultiple.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow multiple choices'**
+  String get pollAllowMultiple;
+
+  /// No description provided for @pollAllowMultipleSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Let voters pick more than one option'**
+  String get pollAllowMultipleSubtitle;
+
+  /// No description provided for @pollSetExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a closing date'**
+  String get pollSetExpiry;
+
+  /// No description provided for @pollExpiryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Closes on'**
+  String get pollExpiryLabel;
+
+  /// No description provided for @pollNoExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'No closing date'**
+  String get pollNoExpiry;
+
+  /// No description provided for @pollCreateSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Create poll'**
+  String get pollCreateSubmit;
+
+  /// No description provided for @pollCreatedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Poll created'**
+  String get pollCreatedToast;
+
+  /// No description provided for @pollCreateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not create poll. Please try again.'**
+  String get pollCreateFailed;
+
+  /// No description provided for @pollTotalVotes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No votes yet} =1{1 vote} other{{count} votes}}'**
+  String pollTotalVotes(int count);
+
+  /// No description provided for @pollClosesIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Closes {when}'**
+  String pollClosesIn(String when);
+
+  /// No description provided for @pollClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Poll closed'**
+  String get pollClosed;
+
+  /// No description provided for @pollJoinToVote.
+  ///
+  /// In en, this message translates to:
+  /// **'Join to vote'**
+  String get pollJoinToVote;
+
+  /// No description provided for @pollTapToVote.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap an option to vote'**
+  String get pollTapToVote;
+
+  /// No description provided for @pollChangeVote.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to change your vote'**
+  String get pollChangeVote;
+
+  /// No description provided for @pollRetractVote.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove my vote'**
+  String get pollRetractVote;
+
+  /// No description provided for @pollVoteFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not record your vote'**
+  String get pollVoteFailed;
+
+  /// No description provided for @pollDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete poll?'**
+  String get pollDeleteTitle;
+
+  /// No description provided for @pollDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This permanently removes the poll and its votes.'**
+  String get pollDeleteMessage;
+
+  /// No description provided for @pollDeletedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Poll deleted'**
+  String get pollDeletedToast;
+
+  /// No description provided for @pollBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Poll'**
+  String get pollBadge;
+
+  /// No description provided for @eventNewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New event'**
+  String get eventNewTitle;
+
+  /// No description provided for @eventTitleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get eventTitleLabel;
+
+  /// No description provided for @eventTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Summer Paw Party'**
+  String get eventTitleHint;
+
+  /// No description provided for @eventTitleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a title'**
+  String get eventTitleRequired;
+
+  /// No description provided for @eventDescriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (optional)'**
+  String get eventDescriptionLabel;
+
+  /// No description provided for @eventDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s this event about?'**
+  String get eventDescriptionHint;
+
+  /// No description provided for @eventLocationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Location (optional)'**
+  String get eventLocationLabel;
+
+  /// No description provided for @eventLocationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Central Park, NY'**
+  String get eventLocationHint;
+
+  /// No description provided for @eventStartsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts'**
+  String get eventStartsLabel;
+
+  /// No description provided for @eventEndsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends (optional)'**
+  String get eventEndsLabel;
+
+  /// No description provided for @eventStartRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please choose a start date & time'**
+  String get eventStartRequired;
+
+  /// No description provided for @eventStartMustBeFuture.
+  ///
+  /// In en, this message translates to:
+  /// **'Start must be in the future'**
+  String get eventStartMustBeFuture;
+
+  /// No description provided for @eventEndAfterStart.
+  ///
+  /// In en, this message translates to:
+  /// **'End must be after the start'**
+  String get eventEndAfterStart;
+
+  /// No description provided for @eventCreateSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Create event'**
+  String get eventCreateSubmit;
+
+  /// No description provided for @eventEditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit event'**
+  String get eventEditTitle;
+
+  /// No description provided for @eventUpdateSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get eventUpdateSubmit;
+
+  /// No description provided for @eventCreatedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Event created'**
+  String get eventCreatedToast;
+
+  /// No description provided for @eventUpdatedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Event updated'**
+  String get eventUpdatedToast;
+
+  /// No description provided for @eventCreateFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not create event. Please try again.'**
+  String get eventCreateFailed;
+
+  /// No description provided for @eventBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Event'**
+  String get eventBadge;
+
+  /// No description provided for @eventPast.
+  ///
+  /// In en, this message translates to:
+  /// **'Past event'**
+  String get eventPast;
+
+  /// No description provided for @eventGoing.
+  ///
+  /// In en, this message translates to:
+  /// **'Going'**
+  String get eventGoing;
+
+  /// No description provided for @eventInterested.
+  ///
+  /// In en, this message translates to:
+  /// **'Interested'**
+  String get eventInterested;
+
+  /// No description provided for @eventCantGo.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t go'**
+  String get eventCantGo;
+
+  /// No description provided for @eventAttendingCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No one going yet} =1{1 going} other{{count} going}}'**
+  String eventAttendingCount(int count);
+
+  /// No description provided for @eventInterestedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} interested'**
+  String eventInterestedCount(int count);
+
+  /// No description provided for @eventJoinToRsvp.
+  ///
+  /// In en, this message translates to:
+  /// **'Join to RSVP'**
+  String get eventJoinToRsvp;
+
+  /// No description provided for @eventViewAttendees.
+  ///
+  /// In en, this message translates to:
+  /// **'View attendees'**
+  String get eventViewAttendees;
+
+  /// No description provided for @eventAttendeesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attendees'**
+  String get eventAttendeesTitle;
+
+  /// No description provided for @eventRsvpFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not update your RSVP'**
+  String get eventRsvpFailed;
+
+  /// No description provided for @eventDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete event?'**
+  String get eventDeleteTitle;
+
+  /// No description provided for @eventDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This permanently removes the event.'**
+  String get eventDeleteMessage;
+
+  /// No description provided for @eventDeletedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Event deleted'**
+  String get eventDeletedToast;
+
+  /// No description provided for @eventEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit event'**
+  String get eventEdit;
+
+  /// No description provided for @eventTabAttending.
+  ///
+  /// In en, this message translates to:
+  /// **'Going'**
+  String get eventTabAttending;
+
+  /// No description provided for @eventTabInterested.
+  ///
+  /// In en, this message translates to:
+  /// **'Interested'**
+  String get eventTabInterested;
+
+  /// No description provided for @eventTabDeclined.
+  ///
+  /// In en, this message translates to:
+  /// **'Declined'**
+  String get eventTabDeclined;
+
+  /// No description provided for @eventNoAttendees.
+  ///
+  /// In en, this message translates to:
+  /// **'No responses yet'**
+  String get eventNoAttendees;
+
+  /// No description provided for @eventDirections.
+  ///
+  /// In en, this message translates to:
+  /// **'Directions'**
+  String get eventDirections;
+
+  /// No description provided for @eventDirectionsFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open maps'**
+  String get eventDirectionsFailed;
+
+  /// No description provided for @pawhubManagePet.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage pet'**
+  String get pawhubManagePet;
+
+  /// No description provided for @pawhubComposerAddToPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to your post'**
+  String get pawhubComposerAddToPost;
+
+  /// No description provided for @pawhubComposerAddToPostSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose where to pull your photo or video from'**
+  String get pawhubComposerAddToPostSubtitle;
+
+  /// No description provided for @pawhubComposerCameraSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo'**
+  String get pawhubComposerCameraSubtitle;
+
+  /// No description provided for @pawhubComposerGallerySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from library'**
+  String get pawhubComposerGallerySubtitle;
+
+  /// No description provided for @pawhubComposerAddPhotosOrVideos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photos or videos'**
+  String get pawhubComposerAddPhotosOrVideos;
+
+  /// No description provided for @pawhubComposerAddMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Add media'**
+  String get pawhubComposerAddMedia;
+
+  /// No description provided for @pawhubComposerMediaLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Up to 10 items'**
+  String get pawhubComposerMediaLimit;
+
+  /// No description provided for @pawhubComposerCoverBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Cover'**
+  String get pawhubComposerCoverBadge;
+
+  /// No description provided for @pawhubComposerTagPetsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your pets to this post'**
+  String get pawhubComposerTagPetsSubtitle;
+
+  /// No description provided for @pawhubComposerAddLocationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share where this happened'**
+  String get pawhubComposerAddLocationSubtitle;
+
+  /// No description provided for @pawhubComposerPostingIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Posting in'**
+  String get pawhubComposerPostingIn;
+
+  /// No description provided for @pawhubComposerVideoLengthError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t read a selected video\'s length. Please remove and re-add it.'**
+  String get pawhubComposerVideoLengthError;
+
+  /// No description provided for @pawhubErrorPickingImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t pick image'**
+  String get pawhubErrorPickingImage;
+
+  /// No description provided for @pawhubErrorPickingMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t pick media'**
+  String get pawhubErrorPickingMedia;
+
+  /// No description provided for @pawhubMyPostsLink.
+  ///
+  /// In en, this message translates to:
+  /// **'My posts'**
+  String get pawhubMyPostsLink;
+
+  /// No description provided for @pawHubActingAs.
+  ///
+  /// In en, this message translates to:
+  /// **'Acting as'**
+  String get pawHubActingAs;
+
+  /// No description provided for @pawhubAlertReward.
+  ///
+  /// In en, this message translates to:
+  /// **'\${amount} reward'**
+  String pawhubAlertReward(int amount);
+
+  /// No description provided for @pawhubEditComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit comment'**
+  String get pawhubEditComment;
+
+  /// No description provided for @pawhubCommentsCountLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Comments'**
+  String pawhubCommentsCountLabel(int count);
+
+  /// No description provided for @pawhubCouldNotLoadComments.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load comments'**
+  String get pawhubCouldNotLoadComments;
+
+  /// No description provided for @pawhubCommentOptionDeleteComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete comment'**
+  String get pawhubCommentOptionDeleteComment;
+
+  /// No description provided for @pawhubCommentOptionReportComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Report comment'**
+  String get pawhubCommentOptionReportComment;
+
+  /// No description provided for @pawhubBlockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked Pets'**
+  String get pawhubBlockedTitle;
+
+  /// No description provided for @pawhubBlockedFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load blocked pets'**
+  String get pawhubBlockedFailed;
+
+  /// No description provided for @pawhubBlockedEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No blocked pets'**
+  String get pawhubBlockedEmptyTitle;
+
+  /// No description provided for @pawhubBlockedEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Pets you block won\'t appear in your feed'**
+  String get pawhubBlockedEmptyMessage;
+
+  /// No description provided for @pawhubUnblock.
+  ///
+  /// In en, this message translates to:
+  /// **'Unblock'**
+  String get pawhubUnblock;
+
+  /// No description provided for @pawhubUnblockConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unblock {name}?'**
+  String pawhubUnblockConfirmTitle(String name);
+
+  /// No description provided for @pawhubUnblockConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'They\'ll be able to see your posts again.'**
+  String get pawhubUnblockConfirmMessage;
+
+  /// No description provided for @pawhubUnfollowConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfollow {name}?'**
+  String pawhubUnfollowConfirmTitle(String name);
+
+  /// No description provided for @pawhubUnfollowConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You won\'t see {name}\'s posts in your feed'**
+  String pawhubUnfollowConfirmMessage(String name);
+
+  /// No description provided for @pawhubUnfollow.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfollow'**
+  String get pawhubUnfollow;
+
+  /// No description provided for @pawhubMyPostsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My Posts'**
+  String get pawhubMyPostsTitle;
+
+  /// No description provided for @pawhubMyPostsFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load your posts'**
+  String get pawhubMyPostsFailed;
+
+  /// No description provided for @pawhubMyPostsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No posts yet'**
+  String get pawhubMyPostsEmptyTitle;
+
+  /// No description provided for @pawhubMyPostsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your first post with the community'**
+  String get pawhubMyPostsEmptyMessage;
+
+  /// No description provided for @pawhubDeletePostTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete post?'**
+  String get pawhubDeletePostTitle;
+
+  /// No description provided for @pawhubDeletePostMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone.'**
+  String get pawhubDeletePostMessage;
+
+  /// No description provided for @pawhubSavedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get pawhubSavedTitle;
+
+  /// No description provided for @pawhubSavedFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load saved posts'**
+  String get pawhubSavedFailed;
+
+  /// No description provided for @pawhubSavedEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No saved posts yet'**
+  String get pawhubSavedEmptyTitle;
+
+  /// No description provided for @pawhubSavedEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the bookmark on any post to save it'**
+  String get pawhubSavedEmptyMessage;
+
+  /// No description provided for @pawhubFollowersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Followers'**
+  String get pawhubFollowersTitle;
+
+  /// No description provided for @pawhubFollowersTitleCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Followers ({count})'**
+  String pawhubFollowersTitleCount(int count);
+
+  /// No description provided for @pawhubFollowersFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load followers'**
+  String get pawhubFollowersFailed;
+
+  /// No description provided for @pawhubFollowersEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No followers yet'**
+  String get pawhubFollowersEmptyTitle;
+
+  /// No description provided for @pawhubFollowingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get pawhubFollowingTitle;
+
+  /// No description provided for @pawhubFollowingTitleCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Following ({count})'**
+  String pawhubFollowingTitleCount(int count);
+
+  /// No description provided for @pawhubFollowingFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load following'**
+  String get pawhubFollowingFailed;
+
+  /// No description provided for @pawhubFollowingEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Not following anyone yet'**
+  String get pawhubFollowingEmptyTitle;
+
+  /// No description provided for @pawhubTrendingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Trending'**
+  String get pawhubTrendingTitle;
+
+  /// No description provided for @pawhubTrendingFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load trending'**
+  String get pawhubTrendingFailed;
+
+  /// No description provided for @pawhubTrendingHashtags.
+  ///
+  /// In en, this message translates to:
+  /// **'Trending Hashtags'**
+  String get pawhubTrendingHashtags;
+
+  /// No description provided for @pawhubTopPosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Posts'**
+  String get pawhubTopPosts;
+
+  /// No description provided for @pawhubHashtagPostsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} posts'**
+  String pawhubHashtagPostsCount(int count);
+
+  /// No description provided for @pawhubSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Search PawHub'**
+  String get pawhubSearchTitle;
+
+  /// No description provided for @pawhubSearchSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find pets, posts, or hashtags'**
+  String get pawhubSearchSubtitle;
+
+  /// No description provided for @pawhubSearchScopeAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get pawhubSearchScopeAll;
+
+  /// No description provided for @pawhubSearchScopePosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Posts'**
+  String get pawhubSearchScopePosts;
+
+  /// No description provided for @pawhubSearchScopeHashtags.
+  ///
+  /// In en, this message translates to:
+  /// **'Hashtags'**
+  String get pawhubSearchScopeHashtags;
+
+  /// No description provided for @pawhubSearchScopePets.
+  ///
+  /// In en, this message translates to:
+  /// **'Pets'**
+  String get pawhubSearchScopePets;
+
+  /// No description provided for @pawhubSearchNoResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No results for \"{query}\"'**
+  String pawhubSearchNoResults(String query);
+
+  /// No description provided for @pawhubSearchTryDifferent.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a different keyword'**
+  String get pawhubSearchTryDifferent;
+
+  /// No description provided for @pawhubSearchSectionPets.
+  ///
+  /// In en, this message translates to:
+  /// **'Pets'**
+  String get pawhubSearchSectionPets;
+
+  /// No description provided for @pawhubSearchSectionHashtags.
+  ///
+  /// In en, this message translates to:
+  /// **'Hashtags'**
+  String get pawhubSearchSectionHashtags;
+
+  /// No description provided for @pawhubSearchSectionPosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Posts'**
+  String get pawhubSearchSectionPosts;
+
+  /// No description provided for @pawhubSearchPostBy.
+  ///
+  /// In en, this message translates to:
+  /// **'by {name}'**
+  String pawhubSearchPostBy(String name);
+
+  /// No description provided for @pawhubHashtagFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load posts'**
+  String get pawhubHashtagFailed;
+
+  /// No description provided for @pawhubHashtagEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No posts for #{hashtag} yet'**
+  String pawhubHashtagEmpty(String hashtag);
+
+  /// No description provided for @pawhubPostTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Post'**
+  String get pawhubPostTitle;
+
+  /// No description provided for @pawhubPostFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load post'**
+  String get pawhubPostFailed;
+
+  /// No description provided for @pawhubProfileFailedPosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load posts'**
+  String get pawhubProfileFailedPosts;
+
+  /// No description provided for @pawhubProfileNoPosts.
+  ///
+  /// In en, this message translates to:
+  /// **'No posts yet'**
+  String get pawhubProfileNoPosts;
+
+  /// No description provided for @pawhubTagPetsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tag pets'**
+  String get pawhubTagPetsTitle;
+
+  /// No description provided for @pawhubTagPetsSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search pets by name…'**
+  String get pawhubTagPetsSearchHint;
+
+  /// No description provided for @pawhubTagPetsNoMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'No pets found.'**
+  String get pawhubTagPetsNoMatch;
+
+  /// No description provided for @pawhubTagPetsResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Results'**
+  String get pawhubTagPetsResults;
+
+  /// No description provided for @pawhubTagPetsTaggedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Tagged ({count})'**
+  String pawhubTagPetsTaggedCount(int count);
+
+  /// No description provided for @pawhubTagPetsMyPets.
+  ///
+  /// In en, this message translates to:
+  /// **'My pets'**
+  String get pawhubTagPetsMyPets;
+
+  /// No description provided for @pawhubTagPetsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no pets to tag yet.'**
+  String get pawhubTagPetsEmpty;
+
+  /// No description provided for @pawhubDiscoverEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to discover yet'**
+  String get pawhubDiscoverEmptyTitle;
+
+  /// No description provided for @pawhubDiscoverEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'New posts from the community will show up here soon 🐾'**
+  String get pawhubDiscoverEmptyMessage;
+
+  /// No description provided for @pawhubSavedPostsTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved posts'**
+  String get pawhubSavedPostsTooltip;
+
+  /// No description provided for @pawhubComposerLocationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search or tap the map'**
+  String get pawhubComposerLocationHint;
+
+  /// No description provided for @locationResolving.
+  ///
+  /// In en, this message translates to:
+  /// **'Finding address…'**
+  String get locationResolving;
+
+  /// No description provided for @pawhubLike.
+  ///
+  /// In en, this message translates to:
+  /// **'Like'**
+  String get pawhubLike;
+
+  /// No description provided for @pawhubComment.
+  ///
+  /// In en, this message translates to:
+  /// **'Comment'**
+  String get pawhubComment;
+
+  /// No description provided for @communityMembersEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No members yet'**
+  String get communityMembersEmptyTitle;
+
+  /// No description provided for @communityMembersEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Be the first to join this community.'**
+  String get communityMembersEmptyMessage;
+
+  /// No description provided for @pawhubTrendingEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing trending yet'**
+  String get pawhubTrendingEmptyTitle;
+
+  /// No description provided for @pawhubTrendingEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Popular hashtags and posts will appear here as the community grows.'**
+  String get pawhubTrendingEmptyMessage;
+
+  /// No description provided for @pawhubBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get pawhubBack;
+
+  /// No description provided for @pawhubMoreOptions.
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get pawhubMoreOptions;
+
+  /// No description provided for @pawhubRemoveOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove option'**
+  String get pawhubRemoveOption;
+
+  /// No description provided for @pawhubRemoveTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove tag'**
+  String get pawhubRemoveTag;
+
+  /// No description provided for @pawhubViewPost.
+  ///
+  /// In en, this message translates to:
+  /// **'View post'**
+  String get pawhubViewPost;
+
+  /// No description provided for @pawhubViewProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'View profile'**
+  String get pawhubViewProfile;
+
+  /// No description provided for @pawhubExpandMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Expand map'**
+  String get pawhubExpandMap;
+
+  /// No description provided for @pawhubComposerSetCover.
+  ///
+  /// In en, this message translates to:
+  /// **'Set cover'**
+  String get pawhubComposerSetCover;
+
+  /// No description provided for @pawhubComposerChangeCover.
+  ///
+  /// In en, this message translates to:
+  /// **'Change cover'**
+  String get pawhubComposerChangeCover;
+
+  /// No description provided for @pawhubComposerLocationFieldHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Beirut, Lebanon'**
+  String get pawhubComposerLocationFieldHint;
+
+  /// No description provided for @pawhubComposerTaggedSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} & {count, plural, =1{1 more} other{{count} more}}'**
+  String pawhubComposerTaggedSummary(String name, int count);
 }
 
 class _AppLocalizationsDelegate

@@ -11,10 +11,11 @@ import '../../../../shared/widgets/app_cached_image.dart';
 import '../../domain/entities/community_group_entities.dart';
 import 'community_card.dart';
 
-/// A collapsible "Communities to join" rail for the Discover tab: a titled,
-/// tappable header (glyph + title + count + expand chevron, with "See all")
-/// over a horizontally-scrolling row of community tiles.
-class CommunityDiscoverRail extends StatefulWidget {
+/// A "Communities to join" rail for the Discover tab: a titled header (glyph +
+/// title + count + chevron) — tapping anywhere on the header opens the full
+/// communities directory — over a horizontally-scrolling row of community
+/// tiles. No collapse; the carousel is always shown.
+class CommunityDiscoverRail extends StatelessWidget {
   const CommunityDiscoverRail({
     required this.communities,
     required this.onOpen,
@@ -24,28 +25,21 @@ class CommunityDiscoverRail extends StatefulWidget {
 
   final List<CommunityGroup> communities;
   final void Function(CommunityGroup) onOpen;
+
+  /// Opens the full communities directory. Fired by tapping the header.
   final VoidCallback onSeeAll;
 
   @override
-  State<CommunityDiscoverRail> createState() => _CommunityDiscoverRailState();
-}
-
-class _CommunityDiscoverRailState extends State<CommunityDiscoverRail> {
-  bool _expanded = true;
-
-  void _toggle() => setState(() => _expanded = !_expanded);
-
-  @override
   Widget build(BuildContext context) {
-    if (widget.communities.isEmpty) return const SizedBox.shrink();
+    if (communities.isEmpty) return const SizedBox.shrink();
     final l10n = context.l10n;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Tappable header toggles the section.
+        // The whole header is one tap target → opens the directory.
         InkWell(
-          onTap: _toggle,
+          onTap: onSeeAll,
           borderRadius: AppRadius.mdAll,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(
@@ -75,61 +69,34 @@ class _CommunityDiscoverRailState extends State<CommunityDiscoverRail> {
                     color: AppColors.secondarySoft,
                     borderRadius: AppRadius.lgAll,
                   ),
-                  child: Text('${widget.communities.length}',
+                  child: Text('${communities.length}',
                       style: AppTextStyles.labelSmall
                           .copyWith(color: AppColors.secondaryDark)),
                 ),
                 const Spacer(),
-                // "See all" — a distinct tap target (navigates, not toggle).
-                if (_expanded)
-                  InkWell(
-                    onTap: widget.onSeeAll,
-                    borderRadius: AppRadius.smAll,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.xs, vertical: 4),
-                      child: Text(l10n.communitiesSeeAll,
-                          style: AppTextStyles.labelMedium
-                              .copyWith(color: AppColors.primary)),
-                    ),
-                  ),
-                const SizedBox(width: AppSpacing.xs),
-                // Expand/collapse chevron (points down when open).
-                AnimatedRotation(
-                  turns: _expanded ? 0 : -0.25,
-                  duration: const Duration(milliseconds: 200),
-                  child: const Icon(FluentIcons.chevron_down_24_regular,
-                      size: 20, color: AppColors.textSecondary),
-                ),
+                // Chevron affordance signalling the header navigates.
+                const Icon(FluentIcons.chevron_right_24_regular,
+                    size: 20, color: AppColors.textSecondary),
               ],
             ),
           ),
         ),
-        // Animated collapse/expand of the rail.
-        AnimatedSize(
-          duration: const Duration(milliseconds: 220),
-          curve: Curves.easeInOut,
-          alignment: Alignment.topCenter,
-          child: _expanded
-              ? Padding(
-                  padding: const EdgeInsets.only(top: AppSpacing.sm),
-                  child: SizedBox(
-                    height: 200,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.lg),
-                      itemCount: widget.communities.length,
-                      separatorBuilder: (_, _) =>
-                          const SizedBox(width: AppSpacing.md),
-                      itemBuilder: (context, i) => _CommunityTile(
-                        community: widget.communities[i],
-                        onOpen: () => widget.onOpen(widget.communities[i]),
-                      ),
-                    ),
-                  ),
-                )
-              : const SizedBox(width: double.infinity),
+        // The always-visible carousel.
+        Padding(
+          padding: const EdgeInsets.only(top: AppSpacing.sm),
+          child: SizedBox(
+            height: 200,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              itemCount: communities.length,
+              separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.md),
+              itemBuilder: (context, i) => _CommunityTile(
+                community: communities[i],
+                onOpen: () => onOpen(communities[i]),
+              ),
+            ),
+          ),
         ),
       ],
     );

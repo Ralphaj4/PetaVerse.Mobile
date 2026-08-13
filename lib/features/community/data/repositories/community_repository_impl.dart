@@ -108,6 +108,17 @@ class CommunityRepositoryImpl implements CommunityRepository {
       });
 
   @override
+  Future<Result<CommunityPet>> getPet({
+    required int petId,
+    int? viewerPetId,
+  }) =>
+      _guard(() async {
+        final dto =
+            await _remote.getPet(petId: petId, viewerPetId: viewerPetId);
+        return dto.toEntity(mine: _mine.contains(dto.id));
+      });
+
+  @override
   Future<Result<PostDetail>> getPost({required int postId, int? viewerPetId}) =>
       _guard(() async {
         final dto = await _remote.getPost(postId: postId, viewerPetId: viewerPetId);
@@ -137,6 +148,7 @@ class CommunityRepositoryImpl implements CommunityRepository {
                     'mediaAssetId': m.mediaAssetId,
                     'altText': ?m.altText,
                     'durationSeconds': ?m.durationSeconds,
+                    'thumbnailAssetId': ?m.thumbnailAssetId,
                   })
               .toList(growable: false),
           'taggedPetIds': taggedPetIds,

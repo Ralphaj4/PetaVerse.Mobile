@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -28,6 +29,7 @@ class PostCard extends ConsumerStatefulWidget {
     required this.onOpenOptions,
     required this.onOpenProfile,
     required this.onShare,
+    this.showCommunityBadge = true,
     super.key,
   });
 
@@ -36,6 +38,10 @@ class PostCard extends ConsumerStatefulWidget {
   final VoidCallback onOpenOptions;
   final void Function(PawPet pet) onOpenProfile;
   final VoidCallback onShare;
+
+  /// Whether to show the "posted in `<community>`" badge. Suppressed inside a
+  /// community's own feed, where the tag would be redundant.
+  final bool showCommunityBadge;
 
   @override
   ConsumerState<PostCard> createState() => _PostCardState();
@@ -98,7 +104,7 @@ class _PostCardState extends ConsumerState<PostCard>
                 ))
             .toList(),
         hashtags: post.hashtags,
-        taggedPetIds: const [],
+        taggedPets: const [],
         likes: post.likes,
         comments: post.commentCount,
         likedByMe: post.likedByMe,
@@ -200,7 +206,9 @@ class _PostCardState extends ConsumerState<PostCard>
               onTap: () => widget.onOpenProfile(post.author),
             ),
           ),
-          if (post.communityId != null && post.communityName != null) ...[
+          if (widget.showCommunityBadge &&
+              post.communityId != null &&
+              post.communityName != null) ...[
             // Capped, shrink-wrapped so it sits just left of the chip/ellipsis
             // without stealing flex from the identity — the ellipsis keeps the
             // same right-edge position as on non-community posts.
@@ -238,28 +246,28 @@ class _PostCardState extends ConsumerState<PostCard>
             scale: _likePop,
             child: _ActionIcon(
               onTap: _toggleLike,
-              tooltip: 'Like',
+              tooltip: context.l10n.pawhubLike,
               child: PawGlyph(filled: post.likedByMe),
             ),
           ),
           const SizedBox(width: AppSpacing.xs),
           _ActionIcon(
             onTap: widget.onOpenComments,
-            tooltip: 'Comment',
+            tooltip: context.l10n.pawhubComment,
             child: const Icon(FluentIcons.comment_24_regular,
                 color: AppColors.textSecondary),
           ),
           const SizedBox(width: AppSpacing.xs),
           _ActionIcon(
             onTap: widget.onShare,
-            tooltip: 'Share',
+            tooltip: context.l10n.pawHubShare,
             child: const Icon(FluentIcons.share_24_regular,
                 color: AppColors.textSecondary),
           ),
           const Spacer(),
           _ActionIcon(
             onTap: _toggleSave,
-            tooltip: 'Save',
+            tooltip: context.l10n.save,
             child: Icon(
               post.saved
                   ? FluentIcons.bookmark_24_filled
@@ -284,8 +292,40 @@ class _PostCardState extends ConsumerState<PostCard>
     );
   }
 
+  /// "with Buddy, Luna" where each name is a real tappable widget → opens that
+  /// pet's profile. Built as a Wrap of widgets (not rich-text spans) so each
+  /// name reliably gets its own hit target.
+  Widget _taggedPetsText(List<PawPet> tags) {
+    final base =
+        AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary);
+    final nameStyle = base.copyWith(
+      color: AppColors.secondaryDark,
+      fontWeight: FontWeight.w600,
+    );
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        Text('with ', style: base),
+        for (var i = 0; i < tags.length; i++) ...[
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => widget.onOpenProfile(tags[i]),
+            child: Text(tags[i].name, style: nameStyle),
+          ),
+          if (i < tags.length - 1) Text(', ', style: base),
+        ],
+      ],
+    );
+  }
+
   Widget _caption() {
     final tags = post.taggedPets;
+    final captionText = post.hashtags.isEmpty
+        ? post.caption
+        : '${post.caption} ${post.hashtags.map((h) => '#$h').join(' ')}'.trim();
+    // Only lead with the bold author name when there's actual caption text —
+    // an empty-caption post shouldn't render a lone name.
+    final hasCaption = captionText.trim().isNotEmpty;
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         AppSpacing.md,
@@ -296,16 +336,19 @@ class _PostCardState extends ConsumerState<PostCard>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          GestureDetector(
-            onTap: () => setState(() => _captionExpanded = !_captionExpanded),
-            child: RichCaption(
-              text: post.hashtags.isEmpty
-                  ? post.caption
-                  : '${post.caption} ${post.hashtags.map((h) => '#$h').join(' ')}',
-              style: AppTextStyles.bodyMedium,
-              maxLines: _captionExpanded ? null : 2,
+          if (hasCaption)
+            GestureDetector(
+              onTap: () => setState(() => _captionExpanded = !_captionExpanded),
+              child: RichCaption(
+                // Instagram-style: bold author name leads the caption; tapping
+                // it opens the author's profile.
+                leadingName: post.author.name,
+                onLeadingTap: () => widget.onOpenProfile(post.author),
+                text: captionText,
+                style: AppTextStyles.bodyMedium,
+                maxLines: _captionExpanded ? null : 2,
+              ),
             ),
-          ),
           if (tags.isNotEmpty) ...[
             const SizedBox(height: AppSpacing.xs),
             Row(
@@ -313,15 +356,7 @@ class _PostCardState extends ConsumerState<PostCard>
                 const Icon(FluentIcons.tag_24_regular,
                     size: 14, color: AppColors.textTertiary),
                 const SizedBox(width: 4),
-                Flexible(
-                  child: Text(
-                    'with ${tags.map((p) => p.name).join(', ')}',
-                    style: AppTextStyles.bodySmall
-                        .copyWith(color: AppColors.textSecondary),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
+                Flexible(child: _taggedPetsText(tags)),
               ],
             ),
           ],

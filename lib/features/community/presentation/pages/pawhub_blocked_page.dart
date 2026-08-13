@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -34,7 +35,8 @@ class _PawHubBlockedPageState extends ConsumerState<PawHubBlockedPage> {
           icon: const Icon(FluentIcons.arrow_left_24_regular,
               color: AppColors.textPrimary),
         ),
-        title: Text('Blocked Pets', style: AppTextStyles.titleLarge),
+        title: Text(context.l10n.pawhubBlockedTitle,
+            style: AppTextStyles.titleLarge),
       ),
       body: blockedAsync.when(
         loading: () => _loadingState(),
@@ -106,10 +108,11 @@ class _PawHubBlockedPageState extends ConsumerState<PawHubBlockedPage> {
             const Icon(FluentIcons.warning_24_regular,
                 size: 40, color: AppColors.error),
             const SizedBox(height: AppSpacing.md),
-            Text('Failed to load blocked pets',
+            Text(context.l10n.pawhubBlockedFailed,
                 style: AppTextStyles.titleSmall),
             const SizedBox(height: AppSpacing.lg),
-            FilledButton(onPressed: onRetry, child: const Text('Retry')),
+            FilledButton(
+                onPressed: onRetry, child: Text(context.l10n.retry)),
           ],
         ),
       ),
@@ -131,12 +134,13 @@ class _PawHubBlockedPageState extends ConsumerState<PawHubBlockedPage> {
                 size: 32, color: AppColors.primaryDark),
           ),
           const SizedBox(height: AppSpacing.lg),
-          Text('No blocked pets', style: AppTextStyles.titleSmall),
+          Text(context.l10n.pawhubBlockedEmptyTitle,
+              style: AppTextStyles.titleSmall),
           const SizedBox(height: AppSpacing.xs),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
             child: Text(
-                'Pets you block won\'t appear in your feed',
+                context.l10n.pawhubBlockedEmptyMessage,
                 style: AppTextStyles.bodySmall
                     .copyWith(color: AppColors.textSecondary),
                 textAlign: TextAlign.center),
@@ -177,7 +181,7 @@ class _PetTile extends ConsumerWidget {
               AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary)),
       trailing: TextButton(
         onPressed: () => _unblock(context, ref),
-        child: const Text('Unblock'),
+        child: Text(context.l10n.pawhubUnblock),
       ),
     );
   }
@@ -186,16 +190,16 @@ class _PetTile extends ConsumerWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text('Unblock ${pet.name}?'),
-        content: const Text('They\'ll be able to see your posts again.'),
+        title: Text(context.l10n.pawhubUnblockConfirmTitle(pet.name)),
+        content: Text(context.l10n.pawhubUnblockConfirmMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.cancel),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Unblock'),
+            child: Text(context.l10n.pawhubUnblock),
           ),
         ],
       ),

@@ -332,6 +332,100 @@ abstract class _$PetPosts extends $AsyncNotifier<PagedFeed> {
   }
 }
 
+/// A single pet's profile (`/community/pets/{id}`) with authoritative follow
+/// state relative to the acting pet. Used by the profile page so follow state
+/// is correct regardless of the entry point (feed avatar, tag, list, search).
+
+@ProviderFor(petProfile)
+final petProfileProvider = PetProfileFamily._();
+
+/// A single pet's profile (`/community/pets/{id}`) with authoritative follow
+/// state relative to the acting pet. Used by the profile page so follow state
+/// is correct regardless of the entry point (feed avatar, tag, list, search).
+
+final class PetProfileProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<CommunityPet>,
+          CommunityPet,
+          FutureOr<CommunityPet>
+        >
+    with $FutureModifier<CommunityPet>, $FutureProvider<CommunityPet> {
+  /// A single pet's profile (`/community/pets/{id}`) with authoritative follow
+  /// state relative to the acting pet. Used by the profile page so follow state
+  /// is correct regardless of the entry point (feed avatar, tag, list, search).
+  PetProfileProvider._({
+    required PetProfileFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'petProfileProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$petProfileHash();
+
+  @override
+  String toString() {
+    return r'petProfileProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<CommunityPet> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<CommunityPet> create(Ref ref) {
+    final argument = this.argument as int;
+    return petProfile(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is PetProfileProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$petProfileHash() => r'a8064a9e6eeaae02620be307688e3ff633ecd5a1';
+
+/// A single pet's profile (`/community/pets/{id}`) with authoritative follow
+/// state relative to the acting pet. Used by the profile page so follow state
+/// is correct regardless of the entry point (feed avatar, tag, list, search).
+
+final class PetProfileFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<CommunityPet>, int> {
+  PetProfileFamily._()
+    : super(
+        retry: null,
+        name: r'petProfileProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// A single pet's profile (`/community/pets/{id}`) with authoritative follow
+  /// state relative to the acting pet. Used by the profile page so follow state
+  /// is correct regardless of the entry point (feed avatar, tag, list, search).
+
+  PetProfileProvider call(int petId) =>
+      PetProfileProvider._(argument: petId, from: this);
+
+  @override
+  String toString() => r'petProfileProvider';
+}
+
 /// Suggested pets to follow (Discover rail / follow suggestions).
 
 @ProviderFor(suggestedPets)

@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../core/app/router/app_router.dart';
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -53,13 +54,14 @@ class PostComposerPage extends ConsumerStatefulWidget {
 class _PostComposerPageState extends ConsumerState<PostComposerPage> {
   late PawPet _actingAs = widget.actingAs;
   final _caption = TextEditingController();
+  final _location = TextEditingController();
   final List<PawMedia> _media = [];
   final List<PawPet> _tagged = [];
   // Visibility is fixed to public for now (the picker row was removed); still
   // sent to the backend on publish.
   final PostVisibility _visibility = PostVisibility.public;
-  String? _location;
   final ImagePicker _picker = ImagePicker();
+  bool _pickerActive = false;
 
   static const int _captionLimit = 500;
 
@@ -76,82 +78,90 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
   void dispose() {
     _caption.removeListener(_onCaptionChanged);
     _caption.dispose();
+    _location.dispose();
     super.dispose();
   }
 
   Future<void> _addMedia() async {
-    unawaited(showModalBottomSheet(
-      context: context,
-      useRootNavigator: true,
-      backgroundColor: AppColors.surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
-      ),
-      builder: (sheetContext) => SafeArea(
-        top: false,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(
-              AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.lg),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: AppColors.divider,
-                    borderRadius: BorderRadius.circular(2),
+    if (_pickerActive) return;
+    _pickerActive = true;
+    try {
+      unawaited(showModalBottomSheet(
+        context: context,
+        useRootNavigator: true,
+        backgroundColor: AppColors.surface,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
+        ),
+        builder: (sheetContext) => SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.lg),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: AppColors.divider,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              Text('Add to your post', style: AppTextStyles.titleMedium),
-              const SizedBox(height: AppSpacing.xs),
-              Text(
-                'Choose where to pull your photo or video from',
-                style: AppTextStyles.bodySmall
-                    .copyWith(color: AppColors.textSecondary),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              Row(
-                children: [
-                  Expanded(
-                    child: _MediaSourceCard(
-                      icon: FluentIcons.camera_24_regular,
-                      label: 'Camera',
-                      subtitle: 'Take a photo',
-                      accent: AppColors.secondary,
-                      accentSoft: AppColors.secondarySoft,
-                      onTap: () {
-                        Navigator.pop(sheetContext);
-                        _pickImage(ImageSource.camera);
-                      },
+                const SizedBox(height: AppSpacing.lg),
+                Text(context.l10n.pawhubComposerAddToPost,
+                    style: AppTextStyles.titleMedium),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  context.l10n.pawhubComposerAddToPostSubtitle,
+                  style: AppTextStyles.bodySmall
+                      .copyWith(color: AppColors.textSecondary),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _MediaSourceCard(
+                        icon: FluentIcons.camera_24_regular,
+                        label: context.l10n.camera,
+                        subtitle: context.l10n.pawhubComposerCameraSubtitle,
+                        accent: AppColors.secondary,
+                        accentSoft: AppColors.secondarySoft,
+                        onTap: () {
+                          Navigator.pop(sheetContext);
+                          _pickImage(ImageSource.camera);
+                        },
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: _MediaSourceCard(
-                      icon: FluentIcons.image_multiple_24_regular,
-                      label: 'Gallery',
-                      subtitle: 'Choose from library',
-                      accent: AppColors.primaryDark,
-                      accentSoft: AppColors.primarySoft,
-                      onTap: () {
-                        Navigator.pop(sheetContext);
-                        _pickMedia();
-                      },
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: _MediaSourceCard(
+                        icon: FluentIcons.image_multiple_24_regular,
+                        label: context.l10n.gallery,
+                        subtitle: context.l10n.pawhubComposerGallerySubtitle,
+                        accent: AppColors.primaryDark,
+                        accentSoft: AppColors.primarySoft,
+                        onTap: () {
+                          Navigator.pop(sheetContext);
+                          _pickMedia();
+                        },
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: AppSpacing.xxl),
-            ],
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.xxl),
+              ],
+            ),
           ),
         ),
-      ),
-    ));
+      ));
+    } finally {
+      _pickerActive = false;
+    }
   }
 
   Future<void> _pickImage(ImageSource source) async {
@@ -168,7 +178,7 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error picking image: $e')),
+          SnackBar(content: Text(context.l10n.pawhubErrorPickingImage)),
         );
       }
     }
@@ -196,9 +206,34 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error picking media: $e')),
+          SnackBar(content: Text(context.l10n.pawhubErrorPickingMedia)),
         );
       }
+    }
+  }
+
+  /// Lets the user pick a cover image (poster) for the video at [index] from
+  /// the gallery. Stored locally on the item and uploaded as the thumbnail
+  /// asset on publish. Reuses the picker-active guard so it can't overlap
+  /// another picker session.
+  Future<void> _pickCover(int index) async {
+    if (_pickerActive) return;
+    _pickerActive = true;
+    try {
+      final file = await _picker.pickImage(source: ImageSource.gallery);
+      if (file != null && mounted) {
+        setState(() {
+          _media[index] = _media[index].copyWith(localCoverPath: file.path);
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(context.l10n.pawhubErrorPickingImage)),
+        );
+      }
+    } finally {
+      _pickerActive = false;
     }
   }
 
@@ -230,12 +265,13 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
     }
   }
 
+
   Future<void> _switchPet() async {
     final chosen = await showPetSwitcherSheet(
       context,
       pets: widget.myPets,
       current: _actingAs,
-      title: 'Posting as',
+      title: context.l10n.pawHubPostingAs,
     );
     if (chosen != null) {
       setState(() => _actingAs = chosen);
@@ -249,6 +285,8 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
       extra: TagPetsArgs(
         candidates: widget.taggablePets,
         selected: List<PawPet>.from(_tagged),
+        // Can't tag the author pet in its own post.
+        excludePetId: _actingAs.backendId,
       ),
     );
     if (result != null && mounted) {
@@ -258,17 +296,23 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
     }
   }
 
-  void _editLocation() {
-    const samples = ['Beirut, Lebanon', 'Achrafieh', 'Ramlet al-Baida', null];
-    final next = samples[(samples.indexOf(_location) + 1) % samples.length];
-    setState(() => _location = next);
+  /// The tag-pets row value: null when none, the single name when one, or
+  /// "First & N more" when several (avoids truncating a comma-joined list).
+  String? _taggedSummary() {
+    if (_tagged.isEmpty) return null;
+    if (_tagged.length == 1) return _tagged.first.name;
+    return context.l10n.pawhubComposerTaggedSummary(
+      _tagged.first.name,
+      _tagged.length - 1,
+    );
   }
 
   Future<void> _publish() async {
     if (_media.isEmpty) {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
-        ..showSnackBar(const SnackBar(content: Text('Add at least one photo')));
+        ..showSnackBar(
+            SnackBar(content: Text(context.l10n.pawHubAddPhotoRequired)));
       return;
     }
 
@@ -279,9 +323,8 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
     if (videoMissingDuration) {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
-        ..showSnackBar(const SnackBar(
-          content: Text("Couldn't read a selected video's length. "
-              'Please remove and re-add it.'),
+        ..showSnackBar(SnackBar(
+          content: Text(context.l10n.pawhubComposerVideoLengthError),
         ));
       return;
     }
@@ -305,6 +348,10 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
         contentType: isVideo ? 'video/mp4' : 'image/jpeg',
         altText: m.altText,
         durationSeconds: isVideo ? m.durationSeconds : null,
+        // Only videos carry a cover; ignore any stray path on an image.
+        thumbnailFile: isVideo && m.localCoverPath != null
+            ? File(m.localCoverPath!)
+            : null,
       );
     }).toList();
 
@@ -315,7 +362,8 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
           PostDraft(
             authorPetId: resolvedPetId,
             caption: cleanCaption.isNotEmpty ? cleanCaption : null,
-            locationName: _location,
+            locationName:
+                _location.text.trim().isEmpty ? null : _location.text.trim(),
             visibility: _visibility.toDomain,
             media: draftMedia,
             hashtags: hashtags,
@@ -351,7 +399,8 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('New Post', style: AppTextStyles.titleLarge),
+            Text(context.l10n.pawHubNewPostTitle,
+                style: AppTextStyles.titleLarge),
             const SizedBox(width: AppSpacing.sm),
             const Icon(FluentIcons.animal_paw_print_24_filled,
                 size: 20, color: AppColors.primary),
@@ -388,7 +437,8 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Add photos or videos', style: AppTextStyles.titleSmall),
+                Text(context.l10n.pawhubComposerAddPhotosOrVideos,
+                    style: AppTextStyles.titleSmall),
                 const SizedBox(height: AppSpacing.md),
                 _mediaStrip(),
               ],
@@ -409,21 +459,13 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
                 children: [
                   _optionRow(
                     icon: FluentIcons.tag_24_regular,
-                    label: 'Tag pets',
-                    subtitle: 'Add your pets to this post',
-                    value: _tagged.isEmpty
-                        ? null
-                        : _tagged.map((p) => p.name).join(', '),
+                    label: context.l10n.pawHubTagPets,
+                    subtitle: context.l10n.pawhubComposerTagPetsSubtitle,
+                    value: _taggedSummary(),
                     onTap: _pickTags,
                   ),
                   const _RowDivider(),
-                  _optionRow(
-                    icon: FluentIcons.location_24_regular,
-                    label: 'Add location',
-                    subtitle: 'Share where this happened',
-                    value: _location,
-                    onTap: _editLocation,
-                  ),
+                  _locationRow(),
                 ],
               ),
             ),
@@ -451,7 +493,7 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Posting as',
+                context.l10n.pawHubPostingAs,
                 style: AppTextStyles.bodySmall
                     .copyWith(color: AppColors.textSecondary),
               ),
@@ -487,7 +529,7 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Posting in',
+                Text(context.l10n.pawhubComposerPostingIn,
                     style: AppTextStyles.bodySmall
                         .copyWith(color: AppColors.secondaryDark)),
                 Text(
@@ -521,7 +563,7 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
             textCapitalization: TextCapitalization.sentences,
             style: AppTextStyles.bodyMedium,
             decoration: InputDecoration(
-              hintText: 'Write a caption…\nAdd #hashtags or @mentions',
+              hintText: context.l10n.pawHubCaptionHint,
               hintStyle: AppTextStyles.bodyMedium
                   .copyWith(color: AppColors.textTertiary),
               isDense: true,
@@ -567,12 +609,17 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
         separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.md),
         itemBuilder: (_, i) {
           if (i == _media.length) {
-            return _AddMediaTile(onTap: _addMedia);
+            return _AddMediaTile(
+              onTap: _pickerActive ? null : _addMedia,
+              disabled: _pickerActive,
+            );
           }
           return _MediaThumb(
             media: _media[i],
             isCover: i == 0,
             onRemove: () => setState(() => _media.removeAt(i)),
+            onPickCover:
+                _media[i].isVideo ? () => _pickCover(i) : null,
           );
         },
       ),
@@ -596,6 +643,7 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
             Icon(icon, size: 24, color: AppColors.secondary),
             const SizedBox(width: AppSpacing.md),
             Expanded(
+              flex: 3,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -613,13 +661,18 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
             ),
             const SizedBox(width: AppSpacing.sm),
             if (value != null)
-              Flexible(
+              // Its own Expanded so the value's box stretches toward the
+              // chevron; TextAlign.end then pins the text hard against the
+              // right edge rather than letting it hug the label column mid-row.
+              Expanded(
+                flex: 2,
                 child: Text(
                   value,
                   style: AppTextStyles.bodyMedium
                       .copyWith(color: AppColors.secondaryDark),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.end,
                 ),
               ),
             const SizedBox(width: AppSpacing.xs),
@@ -627,6 +680,43 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
                 size: 18, color: AppColors.textTertiary),
           ],
         ),
+      ),
+    );
+  }
+
+  /// The location input: an inline text field the user types a place name into
+  /// (no map picker). Mirrors the option-row's icon + labels on the left.
+  Widget _locationRow() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
+      child: Row(
+        children: [
+          const Icon(FluentIcons.location_24_regular,
+              size: 24, color: AppColors.secondary),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: TextField(
+              controller: _location,
+              textCapitalization: TextCapitalization.words,
+              textInputAction: TextInputAction.done,
+              style: AppTextStyles.bodyMedium,
+              decoration: InputDecoration(
+                labelText: context.l10n.pawHubAddLocation,
+                hintText: context.l10n.pawhubComposerLocationFieldHint,
+                hintStyle: AppTextStyles.bodyMedium
+                    .copyWith(color: AppColors.textTertiary),
+                isDense: true,
+                filled: false,
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -704,7 +794,7 @@ class _ShareButton extends StatelessWidget {
               child: CircularProgressIndicator(
                   strokeWidth: 2, color: Colors.white),
             )
-          : Text('Share',
+          : Text(context.l10n.pawHubShare,
               style: AppTextStyles.titleSmall
                   .copyWith(color: AppColors.onPrimary)),
     );
@@ -712,47 +802,51 @@ class _ShareButton extends StatelessWidget {
 }
 
 class _AddMediaTile extends StatelessWidget {
-  const _AddMediaTile({required this.onTap});
-  final VoidCallback onTap;
+  const _AddMediaTile({required this.onTap, this.disabled = false});
+  final VoidCallback? onTap;
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.primarySoft,
-      borderRadius: AppRadius.mdAll,
-      child: InkWell(
-        onTap: onTap,
+    return Opacity(
+      opacity: disabled ? 0.5 : 1,
+      child: Material(
+        color: AppColors.primarySoft,
         borderRadius: AppRadius.mdAll,
-        child: CustomPaint(
-          painter: _DashedBorderPainter(
-            color: AppColors.primary.withValues(alpha: 0.55),
-            radius: AppRadius.md,
-          ),
-          child: SizedBox(
-            width: 120,
-            height: 132,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 48,
-                  height: 48,
-                  decoration: const BoxDecoration(
-                    color: AppColors.primary,
-                    shape: BoxShape.circle,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: AppRadius.mdAll,
+          child: CustomPaint(
+            painter: _DashedBorderPainter(
+              color: AppColors.primary.withValues(alpha: 0.55),
+              radius: AppRadius.md,
+            ),
+            child: SizedBox(
+              width: 120,
+              height: 132,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: const BoxDecoration(
+                      color: AppColors.primary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(FluentIcons.add_24_filled,
+                        color: AppColors.onPrimary, size: 24),
                   ),
-                  child: const Icon(FluentIcons.add_24_filled,
-                      color: AppColors.onPrimary, size: 24),
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                Text('Add media',
-                    style: AppTextStyles.labelMedium
-                        .copyWith(color: AppColors.primaryDark)),
-                const SizedBox(height: 2),
-                Text('Up to 10 items',
-                    style: AppTextStyles.labelSmall
-                        .copyWith(color: AppColors.textSecondary)),
-              ],
+                  const SizedBox(height: AppSpacing.sm),
+                  Text(context.l10n.pawhubComposerAddMedia,
+                      style: AppTextStyles.labelMedium
+                          .copyWith(color: AppColors.primaryDark)),
+                  const SizedBox(height: 2),
+                  Text(context.l10n.pawhubComposerMediaLimit,
+                      style: AppTextStyles.labelSmall
+                          .copyWith(color: AppColors.textSecondary)),
+                ],
+              ),
             ),
           ),
         ),
@@ -863,11 +957,15 @@ class _MediaThumb extends StatelessWidget {
     required this.media,
     required this.isCover,
     required this.onRemove,
+    this.onPickCover,
   });
 
   final PawMedia media;
   final bool isCover;
   final VoidCallback onRemove;
+
+  /// Videos only: opens the cover-image picker. Null for images.
+  final VoidCallback? onPickCover;
 
   @override
   Widget build(BuildContext context) {
@@ -901,8 +999,8 @@ class _MediaThumb extends StatelessWidget {
                 color: Colors.black.withValues(alpha: 0.6),
                 borderRadius: BorderRadius.circular(50),
               ),
-              child: const Text('Cover',
-                  style: TextStyle(color: Colors.white, fontSize: 10)),
+              child: Text(context.l10n.pawhubComposerCoverBadge,
+                  style: const TextStyle(color: Colors.white, fontSize: 10)),
             ),
           ),
         PositionedDirectional(
@@ -921,14 +1019,56 @@ class _MediaThumb extends StatelessWidget {
             ),
           ),
         ),
+        // Videos: a "set/change cover" pill along the bottom.
+        if (onPickCover != null)
+          PositionedDirectional(
+            bottom: 4,
+            start: 4,
+            end: 4,
+            child: Semantics(
+              button: true,
+              label: context.l10n.pawhubComposerSetCover,
+              child: GestureDetector(
+                onTap: onPickCover,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withValues(alpha: 0.6),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        media.localCoverPath == null
+                            ? FluentIcons.image_add_24_regular
+                            : FluentIcons.image_edit_24_regular,
+                        size: 12,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        media.localCoverPath == null
+                            ? context.l10n.pawhubComposerSetCover
+                            : context.l10n.pawhubComposerChangeCover,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 10),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
       ],
     );
   }
 
-  /// Placeholder tile for a picked video — a dark surface with a play glyph.
-  /// (Rendering a real frame would need a thumbnail plugin; the play badge
-  /// makes the video status clear without one.)
+  /// Placeholder tile for a picked video — dark background with play badge
+  /// overlay. Prefers the user-chosen cover image; otherwise falls back to the
+  /// raw video file's first frame (best-effort).
   Widget _videoThumb(bool isLocalFile) {
+    final cover = media.localCoverPath;
     return Container(
       width: 120,
       height: 132,
@@ -936,7 +1076,15 @@ class _MediaThumb extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          if (isLocalFile)
+          if (cover != null)
+            Positioned.fill(
+              child: Image.file(
+                File(cover),
+                fit: BoxFit.cover,
+                errorBuilder: (_, _, _) => const SizedBox.shrink(),
+              ),
+            )
+          else if (isLocalFile)
             Positioned.fill(
               child: Image.file(
                 File(media.url),

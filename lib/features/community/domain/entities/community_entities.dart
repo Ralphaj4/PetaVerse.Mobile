@@ -101,7 +101,7 @@ class Post {
     required this.author,
     required this.media,
     required this.hashtags,
-    required this.taggedPetIds,
+    required this.taggedPets,
     required this.likes,
     required this.comments,
     required this.likedByMe,
@@ -123,7 +123,9 @@ class Post {
   final String? locationName;
   final PostVisibility visibility;
   final List<String> hashtags;
-  final List<int> taggedPetIds;
+
+  /// Pets tagged in this post (full objects: id/name/avatar/breed).
+  final List<CommunityPet> taggedPets;
   final int likes;
   final int comments;
   final bool likedByMe;
@@ -152,14 +154,14 @@ class Post {
     String? caption,
     PostVisibility? visibility,
     List<String>? hashtags,
-    List<int>? taggedPetIds,
+    List<CommunityPet>? taggedPets,
   }) =>
       Post(
         id: id,
         author: author,
         media: media,
         hashtags: hashtags ?? this.hashtags,
-        taggedPetIds: taggedPetIds ?? this.taggedPetIds,
+        taggedPets: taggedPets ?? this.taggedPets,
         likes: likes ?? this.likes,
         comments: comments ?? this.comments,
         likedByMe: likedByMe ?? this.likedByMe,

@@ -1,11 +1,14 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../shared/widgets/empty_state_widget.dart';
 import '../../domain/entities/community_entities.dart' as domain;
 import '../models/pawhub_models.dart';
 import '../providers/community_actions_providers.dart';
@@ -14,6 +17,7 @@ import '../providers/community_providers.dart';
 import '../widgets/pawhub_comments.dart';
 import '../widgets/pawhub_sheets.dart';
 import '../widgets/post_card.dart';
+import 'pawhub_pet_profile_page.dart';
 
 class PawHubTrendingPage extends ConsumerStatefulWidget {
   const PawHubTrendingPage({super.key});
@@ -49,7 +53,8 @@ class _PawHubTrendingPageState extends ConsumerState<PawHubTrendingPage> {
           icon: const Icon(FluentIcons.arrow_left_24_regular,
               color: AppColors.textPrimary),
         ),
-        title: Text('Trending', style: AppTextStyles.titleLarge),
+        title: Text(context.l10n.pawhubTrendingTitle,
+            style: AppTextStyles.titleLarge),
       ),
       body: trendingAsync.when(
         loading: () => _loadingState(),
@@ -94,9 +99,11 @@ class _PawHubTrendingPageState extends ConsumerState<PawHubTrendingPage> {
             const Icon(FluentIcons.warning_24_regular,
                 size: 40, color: AppColors.error),
             const SizedBox(height: AppSpacing.md),
-            Text('Failed to load trending', style: AppTextStyles.titleSmall),
+            Text(context.l10n.pawhubTrendingFailed,
+                style: AppTextStyles.titleSmall),
             const SizedBox(height: AppSpacing.lg),
-            FilledButton(onPressed: onRetry, child: const Text('Retry')),
+            FilledButton(
+                onPressed: onRetry, child: Text(context.l10n.retry)),
           ],
         ),
       ),
@@ -104,6 +111,14 @@ class _PawHubTrendingPageState extends ConsumerState<PawHubTrendingPage> {
   }
 
   Widget _content(domain.Trending trending, PawPet actingPet) {
+    // Nothing trending yet — surface an empty state instead of a blank scroll.
+    if (trending.hashtags.isEmpty && trending.posts.isEmpty) {
+      return EmptyStateWidget(
+        icon: FluentIcons.fire_24_regular,
+        title: context.l10n.pawhubTrendingEmptyTitle,
+        message: context.l10n.pawhubTrendingEmptyMessage,
+      );
+    }
     return CustomScrollView(
       slivers: [
         if (trending.hashtags.isNotEmpty)
@@ -116,7 +131,8 @@ class _PawHubTrendingPageState extends ConsumerState<PawHubTrendingPage> {
                   const Icon(FluentIcons.number_symbol_24_regular,
                       size: 18, color: AppColors.textSecondary),
                   const SizedBox(width: AppSpacing.sm),
-                  Text('Trending Hashtags', style: AppTextStyles.titleSmall),
+                  Text(context.l10n.pawhubTrendingHashtags,
+                      style: AppTextStyles.titleSmall),
                 ],
               ),
             ),
@@ -141,7 +157,8 @@ class _PawHubTrendingPageState extends ConsumerState<PawHubTrendingPage> {
                   const Icon(FluentIcons.fire_24_regular,
                       size: 18, color: AppColors.textSecondary),
                   const SizedBox(width: AppSpacing.sm),
-                  Text('Top Posts', style: AppTextStyles.titleSmall),
+                  Text(context.l10n.pawhubTopPosts,
+                      style: AppTextStyles.titleSmall),
                 ],
               ),
             ),
@@ -158,7 +175,7 @@ class _PawHubTrendingPageState extends ConsumerState<PawHubTrendingPage> {
                     onOpenComments: () => _showComments(post, actingPet),
                     onOpenOptions: () =>
                         _showOptions(post, trending.posts[i], actingPet),
-                    onOpenProfile: (_) {},
+                    onOpenProfile: (pet) => openPawHubPetProfile(context, pet),
                     onShare: () => _share(trending.posts[i]),
                   ),
                 );
@@ -238,10 +255,10 @@ class _HashtagTile extends StatelessWidget {
         ),
       ),
       title: Text('#${tag.tag}', style: AppTextStyles.labelLarge),
-      subtitle: Text('${tag.postCount} posts',
+      subtitle: Text(context.l10n.pawhubHashtagPostsCount(tag.postCount),
           style:
               AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary)),
-      onTap: () {},
+      onTap: () => context.push('/community/hashtag/${tag.tag}'),
     );
   }
 }

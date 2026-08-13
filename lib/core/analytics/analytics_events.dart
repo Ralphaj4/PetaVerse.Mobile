@@ -15,4 +15,8 @@ abstract final class AnalyticsEvents {
   static const String reminderCreated = 'ReminderCreated';
   static const String communityCreated = 'CommunityCreated';
   static const String communityJoined = 'CommunityJoined';
+  static const String pollCreated = 'PollCreated';
+  static const String pollVoted = 'PollVoted';
+  static const String eventCreated = 'EventCreated';
+  static const String eventRsvp = 'EventRsvp';
 }

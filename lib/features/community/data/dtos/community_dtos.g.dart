@@ -68,9 +68,9 @@ _PostDto _$PostDtoFromJson(Map<String, dynamic> json) => _PostDto(
       const <String>[],
   taggedPets:
       (json['taggedPets'] as List<dynamic>?)
-          ?.map((e) => (e as num).toInt())
+          ?.map((e) => PetSummaryDto.fromJson(e as Map<String, dynamic>))
           .toList() ??
-      const <int>[],
+      const <PetSummaryDto>[],
   likes: (json['likes'] as num?)?.toInt() ?? 0,
   comments: (json['comments'] as num?)?.toInt() ?? 0,
   likedByMe: json['likedByMe'] as bool? ?? false,

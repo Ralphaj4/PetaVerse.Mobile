@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -13,6 +14,7 @@ import '../providers/community_providers.dart';
 import '../widgets/pawhub_comments.dart';
 import '../widgets/pawhub_sheets.dart';
 import '../widgets/post_card.dart';
+import 'pawhub_pet_profile_page.dart';
 
 class PawHubPostDetailPage extends ConsumerStatefulWidget {
   const PawHubPostDetailPage({required this.postId, super.key});
@@ -51,7 +53,8 @@ class _PawHubPostDetailPageState extends ConsumerState<PawHubPostDetailPage> {
           icon: const Icon(FluentIcons.arrow_left_24_regular,
               color: AppColors.textPrimary),
         ),
-        title: Text('Post', style: AppTextStyles.titleLarge),
+        title:
+            Text(context.l10n.pawhubPostTitle, style: AppTextStyles.titleLarge),
       ),
       body: detailAsync.when(
         loading: () => _loadingState(),
@@ -79,9 +82,11 @@ class _PawHubPostDetailPageState extends ConsumerState<PawHubPostDetailPage> {
             const Icon(FluentIcons.warning_24_regular,
                 size: 40, color: AppColors.error),
             const SizedBox(height: AppSpacing.md),
-            Text('Failed to load post', style: AppTextStyles.titleSmall),
+            Text(context.l10n.pawhubPostFailed,
+                style: AppTextStyles.titleSmall),
             const SizedBox(height: AppSpacing.lg),
-            FilledButton(onPressed: onRetry, child: const Text('Retry')),
+            FilledButton(
+                onPressed: onRetry, child: Text(context.l10n.retry)),
           ],
         ),
       ),
@@ -99,7 +104,7 @@ class _PawHubPostDetailPageState extends ConsumerState<PawHubPostDetailPage> {
             onOpenComments: () => _showComments(post, actingPet),
             onOpenOptions: () =>
                 _showOptions(post, detail.post, actingPet),
-            onOpenProfile: (_) {},
+            onOpenProfile: (pet) => openPawHubPetProfile(context, pet),
             onShare: () => _share(detail.post),
           ),
         ),
@@ -108,7 +113,8 @@ class _PawHubPostDetailPageState extends ConsumerState<PawHubPostDetailPage> {
           Padding(
             padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.lg,
                 AppSpacing.lg, AppSpacing.sm),
-            child: Text('${detail.comments.length} Comments',
+            child: Text(
+                context.l10n.pawhubCommentsCountLabel(detail.comments.length),
                 style: AppTextStyles.titleSmall),
           ),
           ...detail.comments.map((c) => _CommentRow(comment: c)),

@@ -154,7 +154,10 @@ class PostUploadQueue extends Notifier<List<PostUploadJob>> {
       _patch(id, (j) => j.copyWith(progress: (sent / totalBytes).clamp(0, 1)));
     }
 
-    // Step 1: upload each file, collecting confirmed asset ids.
+    // Step 1: upload each file, collecting confirmed asset ids. For a video
+    // with a user-chosen cover image, upload that too and attach its id as the
+    // thumbnail. Progress weighting covers the main files only — the small
+    // cover JPEGs don't move the bar meaningfully.
     final drafts = <PostMediaDraft>[];
     for (var i = 0; i < draft.media.length; i++) {
       final m = draft.media[i];
@@ -182,10 +185,27 @@ class PostUploadQueue extends Notifier<List<PostUploadJob>> {
       }
       sentBytes[i] = sizes[i]; // fully uploaded
       report();
+
+      // Upload the optional cover image as a separate asset. A failed cover
+      // upload doesn't fail the post — we just omit the thumbnail.
+      String? thumbnailAssetId;
+      final thumb = m.thumbnailFile;
+      if (thumb != null) {
+        final thumbResult = await uploader.uploadFile(
+          file: thumb,
+          contentType: 'image/jpeg',
+          category: MediaCategory.post,
+          petId: draft.authorPetId,
+        );
+        thumbnailAssetId =
+            thumbResult.when(success: (a) => a.id, failure: (_) => null);
+      }
+
       drafts.add(PostMediaDraft(
         mediaAssetId: asset.id,
         altText: m.altText,
         durationSeconds: m.durationSeconds,
+        thumbnailAssetId: thumbnailAssetId,
       ));
     }
 

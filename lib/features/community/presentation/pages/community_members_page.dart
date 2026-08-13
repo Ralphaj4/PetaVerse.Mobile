@@ -10,6 +10,7 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_confirm_dialog.dart';
+import '../../../../shared/widgets/empty_state_widget.dart';
 import '../../../../shared/widgets/error_state_widget.dart';
 import '../../domain/entities/community_group_entities.dart';
 import '../providers/community_group_actions_providers.dart';
@@ -73,7 +74,13 @@ class CommunityMembersPage extends ConsumerWidget {
           onRetry: () =>
               ref.invalidate(communityMembersProvider(communityId)),
         ),
-        data: (page) => ListView.separated(
+        data: (page) => page.members.isEmpty
+            ? EmptyStateWidget(
+                icon: FluentIcons.people_24_regular,
+                title: l10n.communityMembersEmptyTitle,
+                message: l10n.communityMembersEmptyMessage,
+              )
+            : ListView.separated(
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
           itemCount: page.members.length,
           separatorBuilder: (_, _) => const Divider(height: 1),

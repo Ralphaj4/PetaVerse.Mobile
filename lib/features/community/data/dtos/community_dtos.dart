@@ -85,7 +85,9 @@ abstract class PostDto with _$PostDto {
     String? locationName,
     @Default(0) int visibility,
     @Default(<String>[]) List<String> hashtags,
-    @Default(<int>[]) List<int> taggedPets,
+    // Tagged pets now arrive as full pet objects (id/name/avatarUrl/breed),
+    // not bare ids.
+    @Default(<PetSummaryDto>[]) List<PetSummaryDto> taggedPets,
     @Default(0) int likes,
     @Default(0) int comments,
     @Default(false) bool likedByMe,
@@ -107,7 +109,9 @@ abstract class PostDto with _$PostDto {
         author: author.toEntity(mine: myPetIds.contains(author.id)),
         media: media.map((m) => m.toEntity()).toList(growable: false),
         hashtags: hashtags,
-        taggedPetIds: taggedPets,
+        taggedPets: taggedPets
+            .map((p) => p.toEntity(mine: myPetIds.contains(p.id)))
+            .toList(growable: false),
         likes: likes,
         comments: comments,
         likedByMe: likedByMe,

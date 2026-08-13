@@ -124,6 +124,7 @@ abstract final class ApiEndpoints {
   static const String communityFeed = '/community/feed';
   static const String communityDiscover = '/community/discover';
   static const String communitySaved = '/community/saved';
+  static String communityPet(int petId) => '/community/pets/$petId';
   static String communityPetPosts(int petId) => '/community/pets/$petId/posts';
   static const String communityPosts = '/community/posts';
   static String communityPost(int postId) => '/community/posts/$postId';
@@ -192,6 +193,22 @@ abstract final class ApiEndpoints {
       '/community/communities/$id/leave';
   static String communityGroupMember(int id, int petId) =>
       '/community/communities/$id/members/$petId';
+
+  // Community polls
+  static String communityPolls(int communityId) =>
+      '/community/communities/$communityId/polls';
+  static String communityPoll(int pollId) => '/community/polls/$pollId';
+  static String communityPollVote(int pollId) =>
+      '/community/polls/$pollId/vote';
+
+  // Community events
+  static String communityEvents(int communityId) =>
+      '/community/communities/$communityId/events';
+  static String communityEvent(int eventId) => '/community/events/$eventId';
+  static String communityEventAttendees(int eventId) =>
+      '/community/events/$eventId/attendees';
+  static String communityEventRsvp(int eventId) =>
+      '/community/events/$eventId/rsvp';
 
   // Media (avatars, pet documents, etc.)
   static const String mediaUploadUrl = '/media/upload-url';

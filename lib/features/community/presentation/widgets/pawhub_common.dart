@@ -1,7 +1,9 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -137,6 +139,8 @@ class RichCaption extends StatelessWidget {
     this.style,
     this.maxLines,
     this.onToken,
+    this.leadingName,
+    this.onLeadingTap,
     super.key,
   });
 
@@ -144,6 +148,11 @@ class RichCaption extends StatelessWidget {
   final TextStyle? style;
   final int? maxLines;
   final void Function(String token)? onToken;
+
+  /// Optional bold name rendered inline before the caption (Instagram-style:
+  /// `**Alfredo** having fun…`). Tapping it fires [onLeadingTap].
+  final String? leadingName;
+  final VoidCallback? onLeadingTap;
 
   @override
   Widget build(BuildContext context) {
@@ -153,6 +162,18 @@ class RichCaption extends StatelessWidget {
       fontWeight: FontWeight.w600,
     );
     final spans = <InlineSpan>[];
+    if (leadingName != null && leadingName!.isNotEmpty) {
+      spans.add(TextSpan(
+        text: '$leadingName ',
+        style: base.copyWith(
+          fontWeight: FontWeight.w700,
+          color: AppColors.textPrimary,
+        ),
+        recognizer: onLeadingTap == null
+            ? null
+            : (TapGestureRecognizer()..onTap = onLeadingTap),
+      ));
+    }
     for (final word in text.split(RegExp(r'(\s+)'))) {
       if (word.isEmpty) continue;
       final isToken = word.startsWith('#') || word.startsWith('@');
@@ -206,8 +227,9 @@ Future<PawPet?> showPetSwitcherSheet(
   BuildContext context, {
   required List<PawPet> pets,
   required PawPet current,
-  String title = 'Acting as',
+  String? title,
 }) {
+  final resolvedTitle = title ?? context.l10n.pawHubActingAs;
   return showModalBottomSheet<PawPet>(
     context: context,
     backgroundColor: AppColors.surface,
@@ -238,7 +260,7 @@ Future<PawPet?> showPetSwitcherSheet(
                 ),
               ),
             ),
-            Text(title, style: AppTextStyles.titleMedium),
+            Text(resolvedTitle, style: AppTextStyles.titleMedium),
             const SizedBox(height: AppSpacing.md),
             for (final pet in pets)
               _PetSwitcherRow(
@@ -272,7 +294,8 @@ Future<PawPet?> showPetSwitcherSheet(
                       ),
                     ),
                     const SizedBox(width: AppSpacing.md),
-                    Text('My posts', style: AppTextStyles.titleSmall),
+                    Text(context.l10n.pawhubMyPostsLink,
+                        style: AppTextStyles.titleSmall),
                   ],
                 ),
               ),

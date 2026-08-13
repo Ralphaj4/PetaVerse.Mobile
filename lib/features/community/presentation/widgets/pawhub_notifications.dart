@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -56,7 +57,8 @@ class _NotificationsSheetState extends ConsumerState<NotificationsSheet> {
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
               child: Row(
                 children: [
-                  Text('Notifications', style: AppTextStyles.titleMedium),
+                  Text(context.l10n.pawHubNotificationsTitle,
+                      style: AppTextStyles.titleMedium),
                   const Spacer(),
                   TextButton(
                     onPressed: () => setState(() {
@@ -64,7 +66,7 @@ class _NotificationsSheetState extends ConsumerState<NotificationsSheet> {
                         n.isRead = true;
                       }
                     }),
-                    child: const Text('Mark all read'),
+                    child: Text(context.l10n.pawHubMarkAllRead),
                   ),
                 ],
               ),

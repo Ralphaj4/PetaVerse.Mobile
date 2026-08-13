@@ -24,17 +24,25 @@ import '../../../../shared/widgets/app_confirm_dialog.dart';
 import '../../../../shared/widgets/error_state_widget.dart';
 import '../../domain/entities/community_entities.dart' as domain;
 import '../../domain/entities/community_group_entities.dart';
+import '../../domain/entities/poll_event_entities.dart';
 import '../models/pawhub_models.dart';
 import '../providers/community_actions_providers.dart';
 import '../providers/community_group_actions_providers.dart';
 import '../providers/community_group_feed_providers.dart';
 import '../providers/community_providers.dart';
+import '../providers/poll_event_providers.dart';
 import '../widgets/community_card.dart';
 import '../widgets/community_common.dart';
 import '../widgets/community_sheet.dart';
+import '../widgets/create_choice_sheet.dart';
+import '../widgets/event_card.dart';
 import '../widgets/pawhub_sheets.dart';
+import '../widgets/poll_card.dart';
 import '../widgets/post_card.dart';
 import '../widgets/post_composer_page.dart';
+import 'create_event_page.dart';
+import 'create_poll_page.dart';
+import 'event_detail_page.dart';
 import 'pawhub_pet_profile_page.dart';
 
 /// Which image the lead is replacing in [_editImages].
@@ -59,7 +67,120 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
     await Future.wait([
       ref.read(communityDetailProvider(_id).notifier).refresh(),
       ref.read(communityFeedProvider(_id).notifier).refresh(),
+      ref.read(communityPollsProvider(_id).notifier).refresh(),
+      ref.read(communityEventsProvider(_id).notifier).refresh(),
     ]);
+  }
+
+  /// The community FAB: pick Post / Poll / Event, then route accordingly.
+  Future<void> _onCreate(CommunityGroup community) async {
+    final choice = await showCreateChoiceSheet(context);
+    if (choice == null || !mounted) return;
+    switch (choice) {
+      case CreateChoice.post:
+        await _openComposer(community);
+      case CreateChoice.poll:
+        await _openCreatePoll(community);
+      case CreateChoice.event:
+        await _openCreateEvent(community);
+    }
+  }
+
+  Future<void> _openCreatePoll(CommunityGroup community) async {
+    final poll = await Navigator.of(context).push<Poll>(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (_) => CreatePollPage(
+          communityId: _id,
+          communityName: community.name,
+        ),
+      ),
+    );
+    if (poll != null && mounted) {
+      ref.read(communityPollsProvider(_id).notifier).prepend(poll);
+      _snack(context.l10n.pollCreatedToast);
+    }
+  }
+
+  Future<void> _openCreateEvent(CommunityGroup community) async {
+    final event = await Navigator.of(context).push<CommunityEvent>(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (_) => CreateEventPage(
+          communityId: _id,
+          communityName: community.name,
+        ),
+      ),
+    );
+    if (event != null && mounted) {
+      ref.read(communityEventsProvider(_id).notifier).prepend(event);
+      _snack(context.l10n.eventCreatedToast);
+    }
+  }
+
+  Future<void> _confirmDeletePoll(Poll poll) async {
+    final l10n = context.l10n;
+    final petId = ref.read(actingPetIdProvider);
+    if (petId == null) return;
+    final ok = await AppConfirmDialog.show(
+      context,
+      icon: FluentIcons.delete_24_regular,
+      title: l10n.pollDeleteTitle,
+      message: l10n.pollDeleteMessage,
+      confirmLabel: l10n.communityDelete,
+      cancelLabel: l10n.communityCancel,
+      isDestructive: true,
+    );
+    if (!ok) return;
+    final result = await ref
+        .read(pollEventRepositoryProvider)
+        .deletePoll(pollId: poll.id, petId: petId);
+    if (!mounted) return;
+    result.when(
+      success: (_) {
+        ref.read(communityPollsProvider(_id).notifier).remove(poll.id);
+        _snack(l10n.pollDeletedToast);
+      },
+      failure: (f) => _snack(f.message ?? l10n.errorUnknown),
+    );
+  }
+
+  Future<void> _confirmDeleteEvent(CommunityEvent event) async {
+    final l10n = context.l10n;
+    final petId = ref.read(actingPetIdProvider);
+    if (petId == null) return;
+    final ok = await AppConfirmDialog.show(
+      context,
+      icon: FluentIcons.delete_24_regular,
+      title: l10n.eventDeleteTitle,
+      message: l10n.eventDeleteMessage,
+      confirmLabel: l10n.communityDelete,
+      cancelLabel: l10n.communityCancel,
+      isDestructive: true,
+    );
+    if (!ok) return;
+    final result = await ref
+        .read(pollEventRepositoryProvider)
+        .deleteEvent(eventId: event.id, actingPetId: petId);
+    if (!mounted) return;
+    result.when(
+      success: (_) {
+        ref.read(communityEventsProvider(_id).notifier).remove(event.id);
+        _snack(l10n.eventDeletedToast);
+      },
+      failure: (f) => _snack(f.message ?? l10n.errorUnknown),
+    );
+  }
+
+  void _openEvent(CommunityEvent event, CommunityGroup community) {
+    context.push(
+      '/community/events/${event.id}',
+      extra: EventDetailArgs(
+        communityId: _id,
+        canManage: event.creator.isMine || community.isLead,
+        communityName: community.name,
+      ),
+    );
   }
 
   Future<void> _openComposer(CommunityGroup community) async {
@@ -293,7 +414,7 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
         ),
         media: const [],
         hashtags: p.hashtags,
-        taggedPetIds: const [],
+        taggedPets: const [],
         likes: p.likes,
         comments: p.totalCommentCount,
         likedByMe: p.likedByMe,
@@ -306,15 +427,12 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
   @override
   Widget build(BuildContext context) {
     final detail = ref.watch(communityDetailProvider(_id));
-    debugPrint('[CommunityDetail] build id=$_id state='
-        '${detail.isLoading ? "loading" : detail.hasError ? "error(${detail.error})" : "data"}');
 
     return Scaffold(
       backgroundColor: AppColors.background,
       body: detail.when(
         loading: () => const _CommunityDetailSkeleton(),
-        error: (e, st) {
-          debugPrint('[CommunityDetail] detail ERROR: $e\n$st');
+        error: (e, _) {
           return _ErrorScaffold(
             failure: e is Failure ? e : null,
             onRetry: () =>
@@ -322,10 +440,6 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
           );
         },
         data: (community) {
-          debugPrint('[CommunityDetail] data name=${community.name} '
-              'isLead=${community.isLead} isMember=${community.isMember} '
-              'members=${community.memberCount} posts=${community.postCount} '
-              'avatar=${community.avatarUrl} banner=${community.bannerUrl}');
           return RefreshIndicator(
             color: AppColors.primary,
             onRefresh: _refresh,
@@ -336,7 +450,7 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
       floatingActionButton: detail.value?.isMember == true
           ? FloatingActionButton(
               heroTag: 'community_compose_fab',
-              onPressed: () => _openComposer(detail.value!),
+              onPressed: () => _onCreate(detail.value!),
               backgroundColor: AppColors.primary,
               child: const Icon(FluentIcons.add_24_filled,
                   color: AppColors.onPrimary),
@@ -347,9 +461,22 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
 
   Widget _content(CommunityGroup community) {
     final feed = ref.watch(communityFeedProvider(_id));
+    final pollsAsync = ref.watch(communityPollsProvider(_id));
+    final eventsAsync = ref.watch(communityEventsProvider(_id));
+
     final posts = feed.value?.posts ?? const [];
-    debugPrint('[CommunityDetail] _content feed='
-        '${feed.isLoading ? "loading" : feed.hasError ? "error(${feed.error})" : "data(${posts.length} posts)"}');
+    final polls = pollsAsync.value?.polls ?? const <Poll>[];
+    final events = eventsAsync.value?.events ?? const <CommunityEvent>[];
+
+    // Merge posts + polls + events into one chronological stream (newest
+    // first), so polls & events render inline with posts per the design.
+    final items = _mergeFeed(posts, polls, events);
+
+    // Feed is "loading" only while the *first* page of all three is still
+    // pending; once any has data we show the merged list.
+    final anyLoading =
+        feed.isLoading || pollsAsync.isLoading || eventsAsync.isLoading;
+    final feedHasMore = feed.value?.hasMore ?? false;
 
     return CustomScrollView(
       slivers: [
@@ -367,77 +494,125 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
         ),
         SliverToBoxAdapter(child: _StatsCard(community: community)),
         SliverToBoxAdapter(child: _MembersCard(communityId: _id)),
-        ...feed.when(
-          loading: () => [
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                    AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.lg),
-                child: Shimmer(child: _PostSkeleton()),
-              ),
+        if (items.isEmpty && anyLoading)
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                  AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.lg),
+              child: Shimmer(child: _PostSkeleton()),
             ),
-          ],
-          error: (_, _) => [
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.xl),
-                child: Text(context.l10n.communitiesCouldNotLoad,
-                    textAlign: TextAlign.center),
-              ),
+          )
+        else if (items.isEmpty)
+          SliverToBoxAdapter(
+            child: _EmptyFeedCard(
+              isMember: community.isMember,
+              onCreate:
+                  community.isMember ? () => _onCreate(community) : null,
             ),
-          ],
-          data: (paged) {
-            if (posts.isEmpty) {
-              return [
-                SliverToBoxAdapter(
-                  child: _EmptyFeedCard(
-                    isMember: community.isMember,
-                    onCreate: community.isMember
-                        ? () => _openComposer(community)
-                        : null,
-                  ),
-                ),
-              ];
-            }
-            return [
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.md,
-                    AppSpacing.lg, AppSpacing.xl * 2),
-                sliver: SliverList.separated(
-                  itemCount: posts.length + (paged.hasMore ? 1 : 0),
-                  separatorBuilder: (_, _) =>
-                      const SizedBox(height: AppSpacing.lg),
-                  itemBuilder: (context, i) {
-                    if (i >= posts.length) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) =>
-                          ref
-                              .read(communityFeedProvider(_id).notifier)
-                              .loadMore());
-                      return const Padding(
-                        padding: EdgeInsets.all(AppSpacing.lg),
-                        child: Center(child: CircularProgressIndicator()),
-                      );
-                    }
-                    final post = PawPost.fromEntity(posts[i]);
-                    return PostCard(
-                      post: post,
-                      onOpenComments: () =>
-                          context.push('/community/post/${post.backendId}'),
-                      onOpenOptions: () => _openPostOptions(post),
-                      onOpenProfile: _openProfile,
-                      onShare: () => _sharePost(post),
-                    );
-                  },
-                ),
-              ),
-            ];
-          },
-        ),
+          )
+        else
+          SliverPadding(
+            padding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.xl * 2),
+            sliver: SliverList.separated(
+              itemCount: items.length + (feedHasMore ? 1 : 0),
+              separatorBuilder: (_, _) =>
+                  const SizedBox(height: AppSpacing.lg),
+              itemBuilder: (context, i) {
+                if (i >= items.length) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) => ref
+                      .read(communityFeedProvider(_id).notifier)
+                      .loadMore());
+                  return const Padding(
+                    padding: EdgeInsets.all(AppSpacing.lg),
+                    child: Center(child: CircularProgressIndicator()),
+                  );
+                }
+                return _buildFeedItem(items[i], community);
+              },
+            ),
+          ),
         // Bottom clearance so the center FAB never covers content.
         const SliverToBoxAdapter(child: SizedBox(height: 96)),
       ],
     );
   }
+
+  /// Merges the three streams into one list ordered by `createdAt` descending.
+  List<_FeedItem> _mergeFeed(
+    List<domain.Post> posts,
+    List<Poll> polls,
+    List<CommunityEvent> events,
+  ) {
+    final items = <_FeedItem>[
+      for (final p in posts) _PostItem(p),
+      for (final p in polls) _PollItem(p),
+      for (final e in events) _EventItem(e),
+    ];
+    items.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return items;
+  }
+
+  Widget _buildFeedItem(_FeedItem item, CommunityGroup community) {
+    switch (item) {
+      case _PostItem(:final post):
+        final paw = PawPost.fromEntity(post);
+        return PostCard(
+          post: paw,
+          // Inside a community's own feed the community tag is redundant.
+          showCommunityBadge: false,
+          onOpenComments: () =>
+              context.push('/community/post/${paw.backendId}'),
+          onOpenOptions: () => _openPostOptions(paw),
+          onOpenProfile: _openProfile,
+          onShare: () => _sharePost(paw),
+        );
+      case _PollItem(:final poll):
+        return PollCard(
+          poll: poll,
+          communityId: _id,
+          isMember: community.isMember,
+          canManage: poll.creator.isMine || community.isLead,
+          onDelete: () => _confirmDeletePoll(poll),
+        );
+      case _EventItem(:final event):
+        return EventCard(
+          event: event,
+          communityId: _id,
+          isMember: community.isMember,
+          canManage: event.creator.isMine || community.isLead,
+          onTap: () => _openEvent(event, community),
+          onDelete: () => _confirmDeleteEvent(event),
+        );
+    }
+  }
+}
+
+/// A merged community-feed entry: a post, poll, or event. Sorted by [createdAt].
+sealed class _FeedItem {
+  const _FeedItem();
+  DateTime get createdAt;
+}
+
+class _PostItem extends _FeedItem {
+  const _PostItem(this.post);
+  final domain.Post post;
+  @override
+  DateTime get createdAt => post.createdAt;
+}
+
+class _PollItem extends _FeedItem {
+  const _PollItem(this.poll);
+  final Poll poll;
+  @override
+  DateTime get createdAt => poll.createdAt;
+}
+
+class _EventItem extends _FeedItem {
+  const _EventItem(this.event);
+  final CommunityEvent event;
+  @override
+  DateTime get createdAt => event.createdAt;
 }
 
 // ── Header pieces ──────────────────────────────────────────────────────────
@@ -459,7 +634,6 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('[CommunityDetail] _Header.build');
     final l10n = context.l10n;
     final topInset = MediaQuery.of(context).padding.top;
 
@@ -835,7 +1009,6 @@ class _StatsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('[CommunityDetail] _StatsCard.build');
     final l10n = context.l10n;
     return _SectionCard(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
@@ -920,12 +1093,10 @@ class _MembersCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    debugPrint('[CommunityDetail] _MembersCard.build');
     final l10n = context.l10n;
     final preview = ref.watch(communityMemberPreviewProvider(communityId)).value;
     final members = preview?.members ?? const [];
     final count = preview?.count ?? members.length;
-    debugPrint('[CommunityDetail] _MembersCard members=${members.length} count=$count');
 
     return _SectionCard(
       child: Column(

@@ -1,6 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -40,42 +41,44 @@ Future<PostAction?> showPostOptionsSheet(
             icon: post.saved
                 ? FluentIcons.bookmark_24_filled
                 : FluentIcons.bookmark_24_regular,
-            label: post.saved ? 'Remove from saved' : 'Save',
+            label: post.saved
+                ? context.l10n.pawHubPostOptionRemoveSaved
+                : context.l10n.pawHubPostOptionSave,
             onTap: () => Navigator.pop(context, PostAction.save),
           ),
           _OptionTile(
             icon: FluentIcons.link_24_regular,
-            label: 'Copy link',
+            label: context.l10n.pawHubPostOptionCopyLink,
             onTap: () => Navigator.pop(context, PostAction.copyLink),
           ),
           _OptionTile(
             icon: FluentIcons.share_24_regular,
-            label: 'Share to…',
+            label: context.l10n.pawHubPostOptionShareTo,
             onTap: () => Navigator.pop(context, PostAction.share),
           ),
           const Divider(height: 1, color: AppColors.divider),
           if (isMine) ...[
             _OptionTile(
               icon: FluentIcons.delete_24_regular,
-              label: 'Delete post',
+              label: context.l10n.pawHubPostOptionDeletePost,
               destructive: true,
               onTap: () => Navigator.pop(context, PostAction.delete),
             ),
           ] else ...[
             _OptionTile(
               icon: FluentIcons.eye_off_24_regular,
-              label: 'Hide this post',
+              label: context.l10n.pawHubPostOptionHidePost,
               onTap: () => Navigator.pop(context, PostAction.hide),
             ),
             _OptionTile(
               icon: FluentIcons.flag_24_regular,
-              label: 'Report',
+              label: context.l10n.pawHubPostOptionReport,
               destructive: true,
               onTap: () => Navigator.pop(context, PostAction.report),
             ),
             _OptionTile(
               icon: FluentIcons.person_prohibited_24_regular,
-              label: 'Block ${post.author.ownerName}',
+              label: context.l10n.pawHubPostOptionBlock(post.author.ownerName),
               destructive: true,
               onTap: () => Navigator.pop(context, PostAction.block),
             ),
@@ -88,14 +91,14 @@ Future<PostAction?> showPostOptionsSheet(
   );
 }
 
-/// Report reason labels shown in the sheet.
-final _reportReasonLabels = <(ReportReason, String)>[
-  (ReportReason.inappropriate, 'Animal cruelty or harm'),
-  (ReportReason.spam, 'Spam or a scam'),
-  (ReportReason.violence, 'Nudity or sexual content'),
-  (ReportReason.harassment, 'Harassment or bullying'),
-  (ReportReason.misinformation, 'Not a real pet / impersonation'),
-  (ReportReason.other, 'Something else'),
+/// Report reason labels shown in the sheet, localized.
+List<(ReportReason, String)> _reportReasonLabels(BuildContext context) => [
+  (ReportReason.inappropriate, context.l10n.pawHubReportReasonCruelty),
+  (ReportReason.spam, context.l10n.pawHubReportReasonSpam),
+  (ReportReason.violence, context.l10n.pawHubReportReasonNudity),
+  (ReportReason.harassment, context.l10n.pawHubReportReasonHarassment),
+  (ReportReason.misinformation, context.l10n.pawHubReportReasonImpersonation),
+  (ReportReason.other, context.l10n.pawHubReportReasonOther),
 ];
 
 /// The report-reason picker. Returns a [ReportReason] (the API enum), or null
@@ -121,10 +124,10 @@ Future<ReportReason?> showReportSheet(BuildContext context) {
               AppSpacing.lg,
               AppSpacing.sm,
             ),
-            child: Text('Why are you reporting this?',
+            child: Text(context.l10n.pawHubReportTitle,
                 style: AppTextStyles.titleMedium),
           ),
-          for (final (reason, label) in _reportReasonLabels)
+          for (final (reason, label) in _reportReasonLabels(context))
             _OptionTile(
               icon: FluentIcons.chevron_right_24_regular,
               label: label,
@@ -213,19 +216,19 @@ Future<CommentAction?> showCommentOptionsSheet(
             if (isMine) ...[
               _OptionTile(
                 icon: FluentIcons.edit_24_regular,
-                label: 'Edit comment',
+                label: context.l10n.pawhubEditComment,
                 onTap: () => Navigator.pop(context, CommentAction.edit),
               ),
               _OptionTile(
                 icon: FluentIcons.delete_24_regular,
-                label: 'Delete comment',
+                label: context.l10n.pawhubCommentOptionDeleteComment,
                 destructive: true,
                 onTap: () => Navigator.pop(context, CommentAction.delete),
               ),
             ] else ...[
               _OptionTile(
                 icon: FluentIcons.flag_24_regular,
-                label: 'Report comment',
+                label: context.l10n.pawhubCommentOptionReportComment,
                 destructive: true,
                 onTap: () => Navigator.pop(context, CommentAction.report),
               ),

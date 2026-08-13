@@ -29,6 +29,8 @@ import '../../../features/community/presentation/pages/community_detail_page.dar
 import '../../../features/community/presentation/pages/community_hub_page.dart';
 import '../../../features/community/presentation/pages/community_members_page.dart';
 import '../../../features/community/presentation/pages/create_community_page.dart';
+import '../../../features/community/presentation/pages/event_attendees_page.dart';
+import '../../../features/community/presentation/pages/event_detail_page.dart';
 import '../../../features/community/presentation/pages/pawhub_search_page.dart';
 import '../../../features/community/presentation/pages/pawhub_saved_page.dart';
 import '../../../features/community/presentation/pages/pawhub_my_posts_page.dart';
@@ -680,6 +682,44 @@ GoRouter appRouter(Ref ref) {
                                 ),
                           ),
                         ],
+                      ),
+                    ],
+                  ),
+                  // Event detail + attendees (community-scoped but addressed by
+                  // event id, so kept as siblings of the communities subtree).
+                  GoRoute(
+                    path: 'events/:eventId',
+                    name: 'community_event_detail',
+                    pageBuilder: (context, state) => AppTransitionPage(
+                          key: state.pageKey,
+                          child: EventDetailPage(
+                            eventId: int.tryParse(
+                                    state.pathParameters['eventId'] ?? '') ??
+                                0,
+                            communityId: (state.extra
+                                    as EventDetailArgs?)?.communityId ??
+                                0,
+                            canManage:
+                                (state.extra as EventDetailArgs?)?.canManage ??
+                                    false,
+                            communityName: (state.extra
+                                    as EventDetailArgs?)?.communityName ??
+                                '',
+                          ),
+                        ),
+                    routes: [
+                      GoRoute(
+                        path: 'attendees',
+                        name: 'community_event_attendees',
+                        pageBuilder: (context, state) => AppTransitionPage(
+                              key: state.pageKey,
+                              child: EventAttendeesPage(
+                                eventId: int.tryParse(
+                                        state.pathParameters['eventId'] ??
+                                            '') ??
+                                    0,
+                              ),
+                            ),
                       ),
                     ],
                   ),

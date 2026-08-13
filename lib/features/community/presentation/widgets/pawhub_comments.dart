@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -128,7 +129,8 @@ class _CommentsSheetState extends ConsumerState<CommentsSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Edit comment', style: AppTextStyles.titleMedium),
+            Text(context.l10n.pawhubEditComment,
+                style: AppTextStyles.titleMedium),
             const SizedBox(height: AppSpacing.md),
             TextField(
               controller: controller,
@@ -142,7 +144,7 @@ class _CommentsSheetState extends ConsumerState<CommentsSheet> {
               width: double.infinity,
               child: FilledButton(
                 onPressed: () => Navigator.pop(ctx, controller.text.trim()),
-                child: const Text('Save'),
+                child: Text(context.l10n.save),
               ),
             ),
           ],
@@ -170,7 +172,7 @@ class _CommentsSheetState extends ConsumerState<CommentsSheet> {
       context,
       pets: widget.myPets,
       current: _actingAs,
-      title: 'Comment as',
+      title: context.l10n.pawHubCommentAs,
     );
     if (chosen != null) {
       setState(() => _actingAs = chosen);
@@ -212,8 +214,8 @@ class _CommentsSheetState extends ConsumerState<CommentsSheet> {
                   Expanded(
                     child: commentsAsync.when(
                       loading: () => const Center(child: CircularProgressIndicator()),
-                      error: (e, st) => const Center(
-                        child: Text('Could not load comments'),
+                      error: (e, st) => Center(
+                        child: Text(context.l10n.pawhubCouldNotLoadComments),
                       ),
                       data: (page) {
                         final comments = _sorted(page.comments);
@@ -264,7 +266,8 @@ class _CommentsSheetState extends ConsumerState<CommentsSheet> {
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: Row(
             children: [
-              Text('Comments', style: AppTextStyles.titleMedium),
+              Text(context.l10n.pawHubCommentsTitle,
+                  style: AppTextStyles.titleMedium),
               if (comments != null && comments.isNotEmpty) ...[
                 const SizedBox(width: AppSpacing.sm),
                 Text('${comments.length}',
@@ -297,7 +300,8 @@ class _CommentsSheetState extends ConsumerState<CommentsSheet> {
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: Row(
             children: [
-              Text('Comments', style: AppTextStyles.titleMedium),
+              Text(context.l10n.pawHubCommentsTitle,
+                  style: AppTextStyles.titleMedium),
               if (comments.isNotEmpty) ...[
                 const SizedBox(width: AppSpacing.sm),
                 Text('${comments.length}',
@@ -342,22 +346,30 @@ class _CommentsSheetState extends ConsumerState<CommentsSheet> {
                 child: Row(
                   children: [
                     Text(
-                      'Replying to ${_replyingTo!.author.name}',
+                      context.l10n
+                          .pawHubReplyingTo(_replyingTo!.author.name),
                       style: AppTextStyles.bodySmall
                           .copyWith(color: AppColors.secondaryDark),
                     ),
                     const Spacer(),
-                    GestureDetector(
-                      onTap: () => setState(() => _replyingTo = null),
-                      child: const Icon(FluentIcons.dismiss_16_regular,
-                          size: 16, color: AppColors.textTertiary),
+                    Semantics(
+                      button: true,
+                      label: context.l10n.close,
+                      child: GestureDetector(
+                        onTap: () => setState(() => _replyingTo = null),
+                        child: const Icon(FluentIcons.dismiss_16_regular,
+                            size: 16, color: AppColors.textTertiary),
+                      ),
                     ),
                   ],
                 ),
               ),
             Row(
               children: [
-                GestureDetector(
+                Semantics(
+                  button: true,
+                  label: context.l10n.pawHubCommentAs,
+                  child: GestureDetector(
                   onTap: _switchPet,
                   child: Stack(
                     alignment: Alignment.bottomRight,
@@ -377,6 +389,7 @@ class _CommentsSheetState extends ConsumerState<CommentsSheet> {
                       ),
                     ],
                   ),
+                  ),
                 ),
                 const SizedBox(width: AppSpacing.sm),
                 Expanded(
@@ -387,7 +400,7 @@ class _CommentsSheetState extends ConsumerState<CommentsSheet> {
                     minLines: 1,
                     maxLines: 4,
                     decoration: InputDecoration(
-                      hintText: 'Add a comment as ${_actingAs.name}…',
+                      hintText: context.l10n.pawHubCommentHint(_actingAs.name),
                       isDense: true,
                       filled: true,
                       fillColor: AppColors.background,
@@ -406,6 +419,7 @@ class _CommentsSheetState extends ConsumerState<CommentsSheet> {
                 const SizedBox(width: AppSpacing.xs),
                 IconButton(
                   onPressed: _submit,
+                  tooltip: context.l10n.pawHubPostComment,
                   icon: const Icon(FluentIcons.send_24_filled,
                       color: AppColors.primary),
                 ),
@@ -435,7 +449,9 @@ class _SortToggle extends StatelessWidget {
               size: 16, color: AppColors.textSecondary),
           const SizedBox(width: 4),
           Text(
-            sort == _CommentSort.top ? 'Top' : 'Newest',
+            sort == _CommentSort.top
+                ? context.l10n.pawHubSortTop
+                : context.l10n.pawHubSortNewest,
             style: AppTextStyles.labelMedium
                 .copyWith(color: AppColors.textSecondary),
           ),
@@ -488,16 +504,20 @@ class _CommentTileState extends ConsumerState<_CommentTile> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GestureDetector(
-          onTap: () {
-            showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              backgroundColor: AppColors.surface,
-              builder: (_) => PetProfileSheet(pet: authorPet),
-            );
-          },
-          child: AppAvatar(name: authorPet.name, imageUrl: authorPet.avatarUrl, radius: 16),
+        Semantics(
+          button: true,
+          label: context.l10n.pawhubViewProfile,
+          child: GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: AppColors.surface,
+                builder: (_) => PetProfileSheet(pet: authorPet),
+              );
+            },
+            child: AppAvatar(name: authorPet.name, imageUrl: authorPet.avatarUrl, radius: 16),
+          ),
         ),
         const SizedBox(width: AppSpacing.sm),
         Expanded(
@@ -538,7 +558,7 @@ class _CommentTileState extends ConsumerState<_CommentTile> {
               if (onReplyTap != null)
                 GestureDetector(
                   onTap: onReplyTap,
-                  child: Text('Reply',
+                  child: Text(context.l10n.pawHubCommentReply,
                       style: AppTextStyles.labelMedium
                           .copyWith(color: AppColors.textSecondary)),
                 ),
@@ -547,14 +567,18 @@ class _CommentTileState extends ConsumerState<_CommentTile> {
         ),
         Column(
           children: [
-            GestureDetector(
-              onTap: onLikeTap,
-              child: Icon(
-                c.likedByMe
-                    ? FluentIcons.heart_24_filled
-                    : FluentIcons.heart_24_regular,
-                size: 18,
-                color: c.likedByMe ? AppColors.error : AppColors.textTertiary,
+            Semantics(
+              button: true,
+              label: context.l10n.pawhubLike,
+              child: GestureDetector(
+                onTap: onLikeTap,
+                child: Icon(
+                  c.likedByMe
+                      ? FluentIcons.heart_24_filled
+                      : FluentIcons.heart_24_regular,
+                  size: 18,
+                  color: c.likedByMe ? AppColors.error : AppColors.textTertiary,
+                ),
               ),
             ),
             if (c.likes > 0)
@@ -565,6 +589,7 @@ class _CommentTileState extends ConsumerState<_CommentTile> {
         ),
         IconButton(
           onPressed: () => widget.onShowMenu(c),
+          tooltip: context.l10n.pawhubMoreOptions,
           icon: const Icon(FluentIcons.more_horizontal_24_regular,
               size: 18, color: AppColors.textSecondary),
           padding: EdgeInsets.zero,
@@ -596,9 +621,10 @@ class _EmptyComments extends StatelessWidget {
                   size: 32, color: AppColors.primaryDark),
             ),
             const SizedBox(height: AppSpacing.lg),
-            Text('No comments yet', style: AppTextStyles.titleSmall),
+            Text(context.l10n.pawHubNoCommentsYet,
+                style: AppTextStyles.titleSmall),
             const SizedBox(height: AppSpacing.xs),
-            Text('Be the first to say something nice 🐾',
+            Text(context.l10n.pawHubFirstCommentEncouragement,
                 style: AppTextStyles.bodySmall
                     .copyWith(color: AppColors.textSecondary)),
           ],
