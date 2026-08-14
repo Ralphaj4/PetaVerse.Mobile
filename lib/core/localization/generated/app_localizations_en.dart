@@ -1192,6 +1192,88 @@ class AppLocalizationsEn extends AppLocalizations {
   String get healthVaccinationsDeleteSuccess => 'Vaccination deleted';
 
   @override
+  String get healthScoreTitle => 'Health Score';
+
+  @override
+  String get healthScoreOutOf => 'out of 100';
+
+  @override
+  String get healthScoreViewBreakdown => 'View breakdown';
+
+  @override
+  String get healthScoreConfidence => 'Confidence';
+
+  @override
+  String healthScoreBasedOnSignals(int count) {
+    return 'Based on $count of 4 signals';
+  }
+
+  @override
+  String get healthScoreBandExcellent => 'Excellent';
+
+  @override
+  String get healthScoreBandGood => 'Good';
+
+  @override
+  String get healthScoreBandFair => 'Fair';
+
+  @override
+  String get healthScoreBandNeedsAttention => 'Needs Attention';
+
+  @override
+  String get healthScoreBandNoData => 'No data';
+
+  @override
+  String get healthScoreEmptyGeneric =>
+      'Start logging vaccinations, weight, and meds to see this pet\'s health score.';
+
+  @override
+  String healthScoreEmptyNamed(String name) {
+    return 'Start logging vaccinations, weight, and meds to see $name\'s health score.';
+  }
+
+  @override
+  String get healthScoreBreakdownTitle => 'Component breakdown';
+
+  @override
+  String get healthScoreWhyTitle => 'Why this score';
+
+  @override
+  String get healthScoreNoReasons => 'No signals to explain yet.';
+
+  @override
+  String get healthScoreNotApplicable => 'N/A';
+
+  @override
+  String get healthScoreRedistributed =>
+      'Weight redistributed to the other signals';
+
+  @override
+  String healthScoreRedistributedWith(String reason) {
+    return '$reason — weight redistributed to the other signals';
+  }
+
+  @override
+  String healthScoreDeltaPoints(String points) {
+    return '$points pts';
+  }
+
+  @override
+  String healthScoreManagedConditions(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count managed conditions',
+      one: '1 managed condition',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get healthScoreDisclaimer =>
+      'This measures preventive-care compliance and vitals tracking, not clinical health. It scores weight volatility, not ideal body weight. Missing data is redistributed, never counted against your pet.';
+
+  @override
   String get photoSavedToGallery => 'Photo saved to gallery';
 
   @override

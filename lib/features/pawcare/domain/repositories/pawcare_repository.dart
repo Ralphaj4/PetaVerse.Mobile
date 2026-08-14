@@ -1,6 +1,7 @@
 import '../../../../core/errors/result.dart';
 import '../entities/health_lookup.dart';
 import '../entities/medication.dart';
+import '../entities/pet_health_score.dart';
 import '../entities/vaccination.dart';
 import '../entities/weight_record.dart';
 
@@ -98,4 +99,10 @@ abstract interface class PawCareRepository {
 
   /// Known vaccines for the add-vaccination picker.
   Future<Result<List<HealthLookup>>> getVaccineLookups();
+
+  // ── Health score ──────────────────────────────────────────────────────────
+
+  /// The pet's server-computed health score. Read-only; recompute by re-calling
+  /// after the owner logs a vaccination / medication / weight / activity.
+  Future<Result<PetHealthScore>> getHealthScore(int petId);
 }

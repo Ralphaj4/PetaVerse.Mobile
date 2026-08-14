@@ -55,6 +55,7 @@ import '../../../features/activity/presentation/pages/walk_history_page.dart';
 import '../../../features/pawcare/presentation/pages/add_medication_page.dart';
 import '../../../features/pawcare/presentation/pages/add_vaccination_page.dart';
 import '../../../features/pawcare/presentation/pages/add_weight_page.dart';
+import '../../../features/pawcare/presentation/pages/health_score_page.dart';
 import '../../../features/pawcare/presentation/pages/medications_list_page.dart';
 import '../../../features/pawcare/presentation/pages/vaccinations_list_page.dart';
 import '../../../features/pawcare/presentation/pages/weight_history_page.dart';
@@ -138,6 +139,8 @@ abstract final class AppRoutes {
   static const String addVaccination = '/pet/:id/vaccinations/add';
   static String vaccinationsPath(int petId) => '/pet/$petId/vaccinations';
   static const String vaccinations = '/pet/:id/vaccinations';
+  static String healthScorePath(int petId) => '/pet/$petId/health-score';
+  static const String healthScore = '/pet/:id/health-score';
 
   // Walk activity
   static String walkHistoryPath(int petId) => '/pet/$petId/walks';
@@ -482,6 +485,17 @@ GoRouter appRouter(Ref ref) {
         pageBuilder: (context, state) => AppSlideUpTransitionPage(
           key: state.pageKey,
           child: AddVaccinationPage(
+            petId: int.parse(state.pathParameters['id']!),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.healthScore,
+        name: 'healthScore',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+          key: state.pageKey,
+          child: HealthScorePage(
             petId: int.parse(state.pathParameters['id']!),
           ),
         ),

@@ -1682,4 +1682,1149 @@ as String?,
 
 }
 
+
+/// @nodoc
+mixin _$PetHealthScoreDto {
+
+ int get petId; int get value; String get band; double get confidence; int get applicableCount; List<HealthComponentDto> get components; List<HealthReasonDto> get reasons; ConditionsContextDto? get conditionsContext; DateTime get computedAt;
+/// Create a copy of PetHealthScoreDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PetHealthScoreDtoCopyWith<PetHealthScoreDto> get copyWith => _$PetHealthScoreDtoCopyWithImpl<PetHealthScoreDto>(this as PetHealthScoreDto, _$identity);
+
+  /// Serializes this PetHealthScoreDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PetHealthScoreDto&&(identical(other.petId, petId) || other.petId == petId)&&(identical(other.value, value) || other.value == value)&&(identical(other.band, band) || other.band == band)&&(identical(other.confidence, confidence) || other.confidence == confidence)&&(identical(other.applicableCount, applicableCount) || other.applicableCount == applicableCount)&&const DeepCollectionEquality().equals(other.components, components)&&const DeepCollectionEquality().equals(other.reasons, reasons)&&(identical(other.conditionsContext, conditionsContext) || other.conditionsContext == conditionsContext)&&(identical(other.computedAt, computedAt) || other.computedAt == computedAt));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,petId,value,band,confidence,applicableCount,const DeepCollectionEquality().hash(components),const DeepCollectionEquality().hash(reasons),conditionsContext,computedAt);
+
+@override
+String toString() {
+  return 'PetHealthScoreDto(petId: $petId, value: $value, band: $band, confidence: $confidence, applicableCount: $applicableCount, components: $components, reasons: $reasons, conditionsContext: $conditionsContext, computedAt: $computedAt)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PetHealthScoreDtoCopyWith<$Res>  {
+  factory $PetHealthScoreDtoCopyWith(PetHealthScoreDto value, $Res Function(PetHealthScoreDto) _then) = _$PetHealthScoreDtoCopyWithImpl;
+@useResult
+$Res call({
+ int petId, int value, String band, double confidence, int applicableCount, List<HealthComponentDto> components, List<HealthReasonDto> reasons, ConditionsContextDto? conditionsContext, DateTime computedAt
+});
+
+
+$ConditionsContextDtoCopyWith<$Res>? get conditionsContext;
+
+}
+/// @nodoc
+class _$PetHealthScoreDtoCopyWithImpl<$Res>
+    implements $PetHealthScoreDtoCopyWith<$Res> {
+  _$PetHealthScoreDtoCopyWithImpl(this._self, this._then);
+
+  final PetHealthScoreDto _self;
+  final $Res Function(PetHealthScoreDto) _then;
+
+/// Create a copy of PetHealthScoreDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? petId = null,Object? value = null,Object? band = null,Object? confidence = null,Object? applicableCount = null,Object? components = null,Object? reasons = null,Object? conditionsContext = freezed,Object? computedAt = null,}) {
+  return _then(_self.copyWith(
+petId: null == petId ? _self.petId : petId // ignore: cast_nullable_to_non_nullable
+as int,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+as int,band: null == band ? _self.band : band // ignore: cast_nullable_to_non_nullable
+as String,confidence: null == confidence ? _self.confidence : confidence // ignore: cast_nullable_to_non_nullable
+as double,applicableCount: null == applicableCount ? _self.applicableCount : applicableCount // ignore: cast_nullable_to_non_nullable
+as int,components: null == components ? _self.components : components // ignore: cast_nullable_to_non_nullable
+as List<HealthComponentDto>,reasons: null == reasons ? _self.reasons : reasons // ignore: cast_nullable_to_non_nullable
+as List<HealthReasonDto>,conditionsContext: freezed == conditionsContext ? _self.conditionsContext : conditionsContext // ignore: cast_nullable_to_non_nullable
+as ConditionsContextDto?,computedAt: null == computedAt ? _self.computedAt : computedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,
+  ));
+}
+/// Create a copy of PetHealthScoreDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ConditionsContextDtoCopyWith<$Res>? get conditionsContext {
+    if (_self.conditionsContext == null) {
+    return null;
+  }
+
+  return $ConditionsContextDtoCopyWith<$Res>(_self.conditionsContext!, (value) {
+    return _then(_self.copyWith(conditionsContext: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [PetHealthScoreDto].
+extension PetHealthScoreDtoPatterns on PetHealthScoreDto {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _PetHealthScoreDto value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _PetHealthScoreDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _PetHealthScoreDto value)  $default,){
+final _that = this;
+switch (_that) {
+case _PetHealthScoreDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _PetHealthScoreDto value)?  $default,){
+final _that = this;
+switch (_that) {
+case _PetHealthScoreDto() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int petId,  int value,  String band,  double confidence,  int applicableCount,  List<HealthComponentDto> components,  List<HealthReasonDto> reasons,  ConditionsContextDto? conditionsContext,  DateTime computedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _PetHealthScoreDto() when $default != null:
+return $default(_that.petId,_that.value,_that.band,_that.confidence,_that.applicableCount,_that.components,_that.reasons,_that.conditionsContext,_that.computedAt);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int petId,  int value,  String band,  double confidence,  int applicableCount,  List<HealthComponentDto> components,  List<HealthReasonDto> reasons,  ConditionsContextDto? conditionsContext,  DateTime computedAt)  $default,) {final _that = this;
+switch (_that) {
+case _PetHealthScoreDto():
+return $default(_that.petId,_that.value,_that.band,_that.confidence,_that.applicableCount,_that.components,_that.reasons,_that.conditionsContext,_that.computedAt);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int petId,  int value,  String band,  double confidence,  int applicableCount,  List<HealthComponentDto> components,  List<HealthReasonDto> reasons,  ConditionsContextDto? conditionsContext,  DateTime computedAt)?  $default,) {final _that = this;
+switch (_that) {
+case _PetHealthScoreDto() when $default != null:
+return $default(_that.petId,_that.value,_that.band,_that.confidence,_that.applicableCount,_that.components,_that.reasons,_that.conditionsContext,_that.computedAt);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _PetHealthScoreDto extends PetHealthScoreDto {
+  const _PetHealthScoreDto({required this.petId, this.value = 0, this.band = 'No data', this.confidence = 0, this.applicableCount = 0, final  List<HealthComponentDto> components = const <HealthComponentDto>[], final  List<HealthReasonDto> reasons = const <HealthReasonDto>[], this.conditionsContext, required this.computedAt}): _components = components,_reasons = reasons,super._();
+  factory _PetHealthScoreDto.fromJson(Map<String, dynamic> json) => _$PetHealthScoreDtoFromJson(json);
+
+@override final  int petId;
+@override@JsonKey() final  int value;
+@override@JsonKey() final  String band;
+@override@JsonKey() final  double confidence;
+@override@JsonKey() final  int applicableCount;
+ final  List<HealthComponentDto> _components;
+@override@JsonKey() List<HealthComponentDto> get components {
+  if (_components is EqualUnmodifiableListView) return _components;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_components);
+}
+
+ final  List<HealthReasonDto> _reasons;
+@override@JsonKey() List<HealthReasonDto> get reasons {
+  if (_reasons is EqualUnmodifiableListView) return _reasons;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_reasons);
+}
+
+@override final  ConditionsContextDto? conditionsContext;
+@override final  DateTime computedAt;
+
+/// Create a copy of PetHealthScoreDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$PetHealthScoreDtoCopyWith<_PetHealthScoreDto> get copyWith => __$PetHealthScoreDtoCopyWithImpl<_PetHealthScoreDto>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$PetHealthScoreDtoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PetHealthScoreDto&&(identical(other.petId, petId) || other.petId == petId)&&(identical(other.value, value) || other.value == value)&&(identical(other.band, band) || other.band == band)&&(identical(other.confidence, confidence) || other.confidence == confidence)&&(identical(other.applicableCount, applicableCount) || other.applicableCount == applicableCount)&&const DeepCollectionEquality().equals(other._components, _components)&&const DeepCollectionEquality().equals(other._reasons, _reasons)&&(identical(other.conditionsContext, conditionsContext) || other.conditionsContext == conditionsContext)&&(identical(other.computedAt, computedAt) || other.computedAt == computedAt));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,petId,value,band,confidence,applicableCount,const DeepCollectionEquality().hash(_components),const DeepCollectionEquality().hash(_reasons),conditionsContext,computedAt);
+
+@override
+String toString() {
+  return 'PetHealthScoreDto(petId: $petId, value: $value, band: $band, confidence: $confidence, applicableCount: $applicableCount, components: $components, reasons: $reasons, conditionsContext: $conditionsContext, computedAt: $computedAt)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$PetHealthScoreDtoCopyWith<$Res> implements $PetHealthScoreDtoCopyWith<$Res> {
+  factory _$PetHealthScoreDtoCopyWith(_PetHealthScoreDto value, $Res Function(_PetHealthScoreDto) _then) = __$PetHealthScoreDtoCopyWithImpl;
+@override @useResult
+$Res call({
+ int petId, int value, String band, double confidence, int applicableCount, List<HealthComponentDto> components, List<HealthReasonDto> reasons, ConditionsContextDto? conditionsContext, DateTime computedAt
+});
+
+
+@override $ConditionsContextDtoCopyWith<$Res>? get conditionsContext;
+
+}
+/// @nodoc
+class __$PetHealthScoreDtoCopyWithImpl<$Res>
+    implements _$PetHealthScoreDtoCopyWith<$Res> {
+  __$PetHealthScoreDtoCopyWithImpl(this._self, this._then);
+
+  final _PetHealthScoreDto _self;
+  final $Res Function(_PetHealthScoreDto) _then;
+
+/// Create a copy of PetHealthScoreDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? petId = null,Object? value = null,Object? band = null,Object? confidence = null,Object? applicableCount = null,Object? components = null,Object? reasons = null,Object? conditionsContext = freezed,Object? computedAt = null,}) {
+  return _then(_PetHealthScoreDto(
+petId: null == petId ? _self.petId : petId // ignore: cast_nullable_to_non_nullable
+as int,value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+as int,band: null == band ? _self.band : band // ignore: cast_nullable_to_non_nullable
+as String,confidence: null == confidence ? _self.confidence : confidence // ignore: cast_nullable_to_non_nullable
+as double,applicableCount: null == applicableCount ? _self.applicableCount : applicableCount // ignore: cast_nullable_to_non_nullable
+as int,components: null == components ? _self._components : components // ignore: cast_nullable_to_non_nullable
+as List<HealthComponentDto>,reasons: null == reasons ? _self._reasons : reasons // ignore: cast_nullable_to_non_nullable
+as List<HealthReasonDto>,conditionsContext: freezed == conditionsContext ? _self.conditionsContext : conditionsContext // ignore: cast_nullable_to_non_nullable
+as ConditionsContextDto?,computedAt: null == computedAt ? _self.computedAt : computedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,
+  ));
+}
+
+/// Create a copy of PetHealthScoreDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ConditionsContextDtoCopyWith<$Res>? get conditionsContext {
+    if (_self.conditionsContext == null) {
+    return null;
+  }
+
+  return $ConditionsContextDtoCopyWith<$Res>(_self.conditionsContext!, (value) {
+    return _then(_self.copyWith(conditionsContext: value));
+  });
+}
+}
+
+
+/// @nodoc
+mixin _$HealthComponentDto {
+
+ String get key; String get label; int get weight; bool get applicable; double get ratio; double get earned; String? get naReason;
+/// Create a copy of HealthComponentDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$HealthComponentDtoCopyWith<HealthComponentDto> get copyWith => _$HealthComponentDtoCopyWithImpl<HealthComponentDto>(this as HealthComponentDto, _$identity);
+
+  /// Serializes this HealthComponentDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HealthComponentDto&&(identical(other.key, key) || other.key == key)&&(identical(other.label, label) || other.label == label)&&(identical(other.weight, weight) || other.weight == weight)&&(identical(other.applicable, applicable) || other.applicable == applicable)&&(identical(other.ratio, ratio) || other.ratio == ratio)&&(identical(other.earned, earned) || other.earned == earned)&&(identical(other.naReason, naReason) || other.naReason == naReason));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,key,label,weight,applicable,ratio,earned,naReason);
+
+@override
+String toString() {
+  return 'HealthComponentDto(key: $key, label: $label, weight: $weight, applicable: $applicable, ratio: $ratio, earned: $earned, naReason: $naReason)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $HealthComponentDtoCopyWith<$Res>  {
+  factory $HealthComponentDtoCopyWith(HealthComponentDto value, $Res Function(HealthComponentDto) _then) = _$HealthComponentDtoCopyWithImpl;
+@useResult
+$Res call({
+ String key, String label, int weight, bool applicable, double ratio, double earned, String? naReason
+});
+
+
+
+
+}
+/// @nodoc
+class _$HealthComponentDtoCopyWithImpl<$Res>
+    implements $HealthComponentDtoCopyWith<$Res> {
+  _$HealthComponentDtoCopyWithImpl(this._self, this._then);
+
+  final HealthComponentDto _self;
+  final $Res Function(HealthComponentDto) _then;
+
+/// Create a copy of HealthComponentDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? key = null,Object? label = null,Object? weight = null,Object? applicable = null,Object? ratio = null,Object? earned = null,Object? naReason = freezed,}) {
+  return _then(_self.copyWith(
+key: null == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
+as String,label: null == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
+as String,weight: null == weight ? _self.weight : weight // ignore: cast_nullable_to_non_nullable
+as int,applicable: null == applicable ? _self.applicable : applicable // ignore: cast_nullable_to_non_nullable
+as bool,ratio: null == ratio ? _self.ratio : ratio // ignore: cast_nullable_to_non_nullable
+as double,earned: null == earned ? _self.earned : earned // ignore: cast_nullable_to_non_nullable
+as double,naReason: freezed == naReason ? _self.naReason : naReason // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [HealthComponentDto].
+extension HealthComponentDtoPatterns on HealthComponentDto {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _HealthComponentDto value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _HealthComponentDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _HealthComponentDto value)  $default,){
+final _that = this;
+switch (_that) {
+case _HealthComponentDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _HealthComponentDto value)?  $default,){
+final _that = this;
+switch (_that) {
+case _HealthComponentDto() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String key,  String label,  int weight,  bool applicable,  double ratio,  double earned,  String? naReason)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _HealthComponentDto() when $default != null:
+return $default(_that.key,_that.label,_that.weight,_that.applicable,_that.ratio,_that.earned,_that.naReason);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String key,  String label,  int weight,  bool applicable,  double ratio,  double earned,  String? naReason)  $default,) {final _that = this;
+switch (_that) {
+case _HealthComponentDto():
+return $default(_that.key,_that.label,_that.weight,_that.applicable,_that.ratio,_that.earned,_that.naReason);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String key,  String label,  int weight,  bool applicable,  double ratio,  double earned,  String? naReason)?  $default,) {final _that = this;
+switch (_that) {
+case _HealthComponentDto() when $default != null:
+return $default(_that.key,_that.label,_that.weight,_that.applicable,_that.ratio,_that.earned,_that.naReason);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _HealthComponentDto extends HealthComponentDto {
+  const _HealthComponentDto({this.key = '', this.label = '', this.weight = 0, this.applicable = false, this.ratio = 0, this.earned = 0, this.naReason}): super._();
+  factory _HealthComponentDto.fromJson(Map<String, dynamic> json) => _$HealthComponentDtoFromJson(json);
+
+@override@JsonKey() final  String key;
+@override@JsonKey() final  String label;
+@override@JsonKey() final  int weight;
+@override@JsonKey() final  bool applicable;
+@override@JsonKey() final  double ratio;
+@override@JsonKey() final  double earned;
+@override final  String? naReason;
+
+/// Create a copy of HealthComponentDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$HealthComponentDtoCopyWith<_HealthComponentDto> get copyWith => __$HealthComponentDtoCopyWithImpl<_HealthComponentDto>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$HealthComponentDtoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HealthComponentDto&&(identical(other.key, key) || other.key == key)&&(identical(other.label, label) || other.label == label)&&(identical(other.weight, weight) || other.weight == weight)&&(identical(other.applicable, applicable) || other.applicable == applicable)&&(identical(other.ratio, ratio) || other.ratio == ratio)&&(identical(other.earned, earned) || other.earned == earned)&&(identical(other.naReason, naReason) || other.naReason == naReason));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,key,label,weight,applicable,ratio,earned,naReason);
+
+@override
+String toString() {
+  return 'HealthComponentDto(key: $key, label: $label, weight: $weight, applicable: $applicable, ratio: $ratio, earned: $earned, naReason: $naReason)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$HealthComponentDtoCopyWith<$Res> implements $HealthComponentDtoCopyWith<$Res> {
+  factory _$HealthComponentDtoCopyWith(_HealthComponentDto value, $Res Function(_HealthComponentDto) _then) = __$HealthComponentDtoCopyWithImpl;
+@override @useResult
+$Res call({
+ String key, String label, int weight, bool applicable, double ratio, double earned, String? naReason
+});
+
+
+
+
+}
+/// @nodoc
+class __$HealthComponentDtoCopyWithImpl<$Res>
+    implements _$HealthComponentDtoCopyWith<$Res> {
+  __$HealthComponentDtoCopyWithImpl(this._self, this._then);
+
+  final _HealthComponentDto _self;
+  final $Res Function(_HealthComponentDto) _then;
+
+/// Create a copy of HealthComponentDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? key = null,Object? label = null,Object? weight = null,Object? applicable = null,Object? ratio = null,Object? earned = null,Object? naReason = freezed,}) {
+  return _then(_HealthComponentDto(
+key: null == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
+as String,label: null == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
+as String,weight: null == weight ? _self.weight : weight // ignore: cast_nullable_to_non_nullable
+as int,applicable: null == applicable ? _self.applicable : applicable // ignore: cast_nullable_to_non_nullable
+as bool,ratio: null == ratio ? _self.ratio : ratio // ignore: cast_nullable_to_non_nullable
+as double,earned: null == earned ? _self.earned : earned // ignore: cast_nullable_to_non_nullable
+as double,naReason: freezed == naReason ? _self.naReason : naReason // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$HealthReasonDto {
+
+ String get severity; String get text; double get deltaPoints;
+/// Create a copy of HealthReasonDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$HealthReasonDtoCopyWith<HealthReasonDto> get copyWith => _$HealthReasonDtoCopyWithImpl<HealthReasonDto>(this as HealthReasonDto, _$identity);
+
+  /// Serializes this HealthReasonDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HealthReasonDto&&(identical(other.severity, severity) || other.severity == severity)&&(identical(other.text, text) || other.text == text)&&(identical(other.deltaPoints, deltaPoints) || other.deltaPoints == deltaPoints));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,severity,text,deltaPoints);
+
+@override
+String toString() {
+  return 'HealthReasonDto(severity: $severity, text: $text, deltaPoints: $deltaPoints)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $HealthReasonDtoCopyWith<$Res>  {
+  factory $HealthReasonDtoCopyWith(HealthReasonDto value, $Res Function(HealthReasonDto) _then) = _$HealthReasonDtoCopyWithImpl;
+@useResult
+$Res call({
+ String severity, String text, double deltaPoints
+});
+
+
+
+
+}
+/// @nodoc
+class _$HealthReasonDtoCopyWithImpl<$Res>
+    implements $HealthReasonDtoCopyWith<$Res> {
+  _$HealthReasonDtoCopyWithImpl(this._self, this._then);
+
+  final HealthReasonDto _self;
+  final $Res Function(HealthReasonDto) _then;
+
+/// Create a copy of HealthReasonDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? severity = null,Object? text = null,Object? deltaPoints = null,}) {
+  return _then(_self.copyWith(
+severity: null == severity ? _self.severity : severity // ignore: cast_nullable_to_non_nullable
+as String,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
+as String,deltaPoints: null == deltaPoints ? _self.deltaPoints : deltaPoints // ignore: cast_nullable_to_non_nullable
+as double,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [HealthReasonDto].
+extension HealthReasonDtoPatterns on HealthReasonDto {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _HealthReasonDto value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _HealthReasonDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _HealthReasonDto value)  $default,){
+final _that = this;
+switch (_that) {
+case _HealthReasonDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _HealthReasonDto value)?  $default,){
+final _that = this;
+switch (_that) {
+case _HealthReasonDto() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String severity,  String text,  double deltaPoints)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _HealthReasonDto() when $default != null:
+return $default(_that.severity,_that.text,_that.deltaPoints);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String severity,  String text,  double deltaPoints)  $default,) {final _that = this;
+switch (_that) {
+case _HealthReasonDto():
+return $default(_that.severity,_that.text,_that.deltaPoints);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String severity,  String text,  double deltaPoints)?  $default,) {final _that = this;
+switch (_that) {
+case _HealthReasonDto() when $default != null:
+return $default(_that.severity,_that.text,_that.deltaPoints);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _HealthReasonDto extends HealthReasonDto {
+  const _HealthReasonDto({this.severity = 'warn', this.text = '', this.deltaPoints = 0}): super._();
+  factory _HealthReasonDto.fromJson(Map<String, dynamic> json) => _$HealthReasonDtoFromJson(json);
+
+@override@JsonKey() final  String severity;
+@override@JsonKey() final  String text;
+@override@JsonKey() final  double deltaPoints;
+
+/// Create a copy of HealthReasonDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$HealthReasonDtoCopyWith<_HealthReasonDto> get copyWith => __$HealthReasonDtoCopyWithImpl<_HealthReasonDto>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$HealthReasonDtoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HealthReasonDto&&(identical(other.severity, severity) || other.severity == severity)&&(identical(other.text, text) || other.text == text)&&(identical(other.deltaPoints, deltaPoints) || other.deltaPoints == deltaPoints));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,severity,text,deltaPoints);
+
+@override
+String toString() {
+  return 'HealthReasonDto(severity: $severity, text: $text, deltaPoints: $deltaPoints)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$HealthReasonDtoCopyWith<$Res> implements $HealthReasonDtoCopyWith<$Res> {
+  factory _$HealthReasonDtoCopyWith(_HealthReasonDto value, $Res Function(_HealthReasonDto) _then) = __$HealthReasonDtoCopyWithImpl;
+@override @useResult
+$Res call({
+ String severity, String text, double deltaPoints
+});
+
+
+
+
+}
+/// @nodoc
+class __$HealthReasonDtoCopyWithImpl<$Res>
+    implements _$HealthReasonDtoCopyWith<$Res> {
+  __$HealthReasonDtoCopyWithImpl(this._self, this._then);
+
+  final _HealthReasonDto _self;
+  final $Res Function(_HealthReasonDto) _then;
+
+/// Create a copy of HealthReasonDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? severity = null,Object? text = null,Object? deltaPoints = null,}) {
+  return _then(_HealthReasonDto(
+severity: null == severity ? _self.severity : severity // ignore: cast_nullable_to_non_nullable
+as String,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
+as String,deltaPoints: null == deltaPoints ? _self.deltaPoints : deltaPoints // ignore: cast_nullable_to_non_nullable
+as double,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$ConditionsContextDto {
+
+ int get count; List<String> get labels;
+/// Create a copy of ConditionsContextDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ConditionsContextDtoCopyWith<ConditionsContextDto> get copyWith => _$ConditionsContextDtoCopyWithImpl<ConditionsContextDto>(this as ConditionsContextDto, _$identity);
+
+  /// Serializes this ConditionsContextDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ConditionsContextDto&&(identical(other.count, count) || other.count == count)&&const DeepCollectionEquality().equals(other.labels, labels));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,count,const DeepCollectionEquality().hash(labels));
+
+@override
+String toString() {
+  return 'ConditionsContextDto(count: $count, labels: $labels)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ConditionsContextDtoCopyWith<$Res>  {
+  factory $ConditionsContextDtoCopyWith(ConditionsContextDto value, $Res Function(ConditionsContextDto) _then) = _$ConditionsContextDtoCopyWithImpl;
+@useResult
+$Res call({
+ int count, List<String> labels
+});
+
+
+
+
+}
+/// @nodoc
+class _$ConditionsContextDtoCopyWithImpl<$Res>
+    implements $ConditionsContextDtoCopyWith<$Res> {
+  _$ConditionsContextDtoCopyWithImpl(this._self, this._then);
+
+  final ConditionsContextDto _self;
+  final $Res Function(ConditionsContextDto) _then;
+
+/// Create a copy of ConditionsContextDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? count = null,Object? labels = null,}) {
+  return _then(_self.copyWith(
+count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
+as int,labels: null == labels ? _self.labels : labels // ignore: cast_nullable_to_non_nullable
+as List<String>,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ConditionsContextDto].
+extension ConditionsContextDtoPatterns on ConditionsContextDto {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ConditionsContextDto value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ConditionsContextDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ConditionsContextDto value)  $default,){
+final _that = this;
+switch (_that) {
+case _ConditionsContextDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ConditionsContextDto value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ConditionsContextDto() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int count,  List<String> labels)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ConditionsContextDto() when $default != null:
+return $default(_that.count,_that.labels);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int count,  List<String> labels)  $default,) {final _that = this;
+switch (_that) {
+case _ConditionsContextDto():
+return $default(_that.count,_that.labels);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int count,  List<String> labels)?  $default,) {final _that = this;
+switch (_that) {
+case _ConditionsContextDto() when $default != null:
+return $default(_that.count,_that.labels);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _ConditionsContextDto extends ConditionsContextDto {
+  const _ConditionsContextDto({this.count = 0, final  List<String> labels = const <String>[]}): _labels = labels,super._();
+  factory _ConditionsContextDto.fromJson(Map<String, dynamic> json) => _$ConditionsContextDtoFromJson(json);
+
+@override@JsonKey() final  int count;
+ final  List<String> _labels;
+@override@JsonKey() List<String> get labels {
+  if (_labels is EqualUnmodifiableListView) return _labels;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_labels);
+}
+
+
+/// Create a copy of ConditionsContextDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ConditionsContextDtoCopyWith<_ConditionsContextDto> get copyWith => __$ConditionsContextDtoCopyWithImpl<_ConditionsContextDto>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ConditionsContextDtoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ConditionsContextDto&&(identical(other.count, count) || other.count == count)&&const DeepCollectionEquality().equals(other._labels, _labels));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,count,const DeepCollectionEquality().hash(_labels));
+
+@override
+String toString() {
+  return 'ConditionsContextDto(count: $count, labels: $labels)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ConditionsContextDtoCopyWith<$Res> implements $ConditionsContextDtoCopyWith<$Res> {
+  factory _$ConditionsContextDtoCopyWith(_ConditionsContextDto value, $Res Function(_ConditionsContextDto) _then) = __$ConditionsContextDtoCopyWithImpl;
+@override @useResult
+$Res call({
+ int count, List<String> labels
+});
+
+
+
+
+}
+/// @nodoc
+class __$ConditionsContextDtoCopyWithImpl<$Res>
+    implements _$ConditionsContextDtoCopyWith<$Res> {
+  __$ConditionsContextDtoCopyWithImpl(this._self, this._then);
+
+  final _ConditionsContextDto _self;
+  final $Res Function(_ConditionsContextDto) _then;
+
+/// Create a copy of ConditionsContextDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? count = null,Object? labels = null,}) {
+  return _then(_ConditionsContextDto(
+count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
+as int,labels: null == labels ? _self._labels : labels // ignore: cast_nullable_to_non_nullable
+as List<String>,
+  ));
+}
+
+
+}
+
 // dart format on

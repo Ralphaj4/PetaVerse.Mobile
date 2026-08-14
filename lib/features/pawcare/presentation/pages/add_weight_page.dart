@@ -77,6 +77,7 @@ class _AddWeightPageState extends ConsumerState<AddWeightPage> {
     result.when(
       success: (_) {
         ref.invalidate(petHealthSnapshotProvider(widget.petId));
+        ref.invalidate(petHealthScoreProvider(widget.petId));
         ref.invalidate(weightHistoryProvider(widget.petId));
         context.showSuccessSnackBar(l10n.healthWeightAddedSuccess);
         context.pop();

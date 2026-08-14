@@ -1202,6 +1202,88 @@ class AppLocalizationsFr extends AppLocalizations {
   String get healthVaccinationsDeleteSuccess => 'Vaccination supprimée';
 
   @override
+  String get healthScoreTitle => 'Score de santé';
+
+  @override
+  String get healthScoreOutOf => 'sur 100';
+
+  @override
+  String get healthScoreViewBreakdown => 'Voir le détail';
+
+  @override
+  String get healthScoreConfidence => 'Fiabilité';
+
+  @override
+  String healthScoreBasedOnSignals(int count) {
+    return 'Basé sur $count des 4 signaux';
+  }
+
+  @override
+  String get healthScoreBandExcellent => 'Excellent';
+
+  @override
+  String get healthScoreBandGood => 'Bon';
+
+  @override
+  String get healthScoreBandFair => 'Moyen';
+
+  @override
+  String get healthScoreBandNeedsAttention => 'À surveiller';
+
+  @override
+  String get healthScoreBandNoData => 'Aucune donnée';
+
+  @override
+  String get healthScoreEmptyGeneric =>
+      'Commencez à enregistrer vaccinations, poids et médicaments pour voir le score de santé de cet animal.';
+
+  @override
+  String healthScoreEmptyNamed(String name) {
+    return 'Commencez à enregistrer vaccinations, poids et médicaments pour voir le score de santé de $name.';
+  }
+
+  @override
+  String get healthScoreBreakdownTitle => 'Détail des composantes';
+
+  @override
+  String get healthScoreWhyTitle => 'Pourquoi ce score';
+
+  @override
+  String get healthScoreNoReasons =>
+      'Aucun signal à expliquer pour l\'instant.';
+
+  @override
+  String get healthScoreNotApplicable => 'N/A';
+
+  @override
+  String get healthScoreRedistributed => 'Poids redistribué aux autres signaux';
+
+  @override
+  String healthScoreRedistributedWith(String reason) {
+    return '$reason — poids redistribué aux autres signaux';
+  }
+
+  @override
+  String healthScoreDeltaPoints(String points) {
+    return '$points pts';
+  }
+
+  @override
+  String healthScoreManagedConditions(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count affections suivies',
+      one: '1 affection suivie',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get healthScoreDisclaimer =>
+      'Ceci mesure le respect des soins préventifs et le suivi des constantes, pas l\'état clinique. Il évalue la variabilité du poids, pas le poids idéal. Les données manquantes sont redistribuées, jamais retenues contre votre animal.';
+
+  @override
   String get photoSavedToGallery => 'Photo enregistrée dans la galerie';
 
   @override

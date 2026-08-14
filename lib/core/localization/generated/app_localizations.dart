@@ -2230,6 +2230,132 @@ abstract class AppLocalizations {
   /// **'Vaccination deleted'**
   String get healthVaccinationsDeleteSuccess;
 
+  /// No description provided for @healthScoreTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Score'**
+  String get healthScoreTitle;
+
+  /// No description provided for @healthScoreOutOf.
+  ///
+  /// In en, this message translates to:
+  /// **'out of 100'**
+  String get healthScoreOutOf;
+
+  /// No description provided for @healthScoreViewBreakdown.
+  ///
+  /// In en, this message translates to:
+  /// **'View breakdown'**
+  String get healthScoreViewBreakdown;
+
+  /// No description provided for @healthScoreConfidence.
+  ///
+  /// In en, this message translates to:
+  /// **'Confidence'**
+  String get healthScoreConfidence;
+
+  /// No description provided for @healthScoreBasedOnSignals.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on {count} of 4 signals'**
+  String healthScoreBasedOnSignals(int count);
+
+  /// No description provided for @healthScoreBandExcellent.
+  ///
+  /// In en, this message translates to:
+  /// **'Excellent'**
+  String get healthScoreBandExcellent;
+
+  /// No description provided for @healthScoreBandGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Good'**
+  String get healthScoreBandGood;
+
+  /// No description provided for @healthScoreBandFair.
+  ///
+  /// In en, this message translates to:
+  /// **'Fair'**
+  String get healthScoreBandFair;
+
+  /// No description provided for @healthScoreBandNeedsAttention.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs Attention'**
+  String get healthScoreBandNeedsAttention;
+
+  /// No description provided for @healthScoreBandNoData.
+  ///
+  /// In en, this message translates to:
+  /// **'No data'**
+  String get healthScoreBandNoData;
+
+  /// No description provided for @healthScoreEmptyGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Start logging vaccinations, weight, and meds to see this pet\'s health score.'**
+  String get healthScoreEmptyGeneric;
+
+  /// No description provided for @healthScoreEmptyNamed.
+  ///
+  /// In en, this message translates to:
+  /// **'Start logging vaccinations, weight, and meds to see {name}\'s health score.'**
+  String healthScoreEmptyNamed(String name);
+
+  /// No description provided for @healthScoreBreakdownTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Component breakdown'**
+  String get healthScoreBreakdownTitle;
+
+  /// No description provided for @healthScoreWhyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Why this score'**
+  String get healthScoreWhyTitle;
+
+  /// No description provided for @healthScoreNoReasons.
+  ///
+  /// In en, this message translates to:
+  /// **'No signals to explain yet.'**
+  String get healthScoreNoReasons;
+
+  /// No description provided for @healthScoreNotApplicable.
+  ///
+  /// In en, this message translates to:
+  /// **'N/A'**
+  String get healthScoreNotApplicable;
+
+  /// No description provided for @healthScoreRedistributed.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight redistributed to the other signals'**
+  String get healthScoreRedistributed;
+
+  /// No description provided for @healthScoreRedistributedWith.
+  ///
+  /// In en, this message translates to:
+  /// **'{reason} — weight redistributed to the other signals'**
+  String healthScoreRedistributedWith(String reason);
+
+  /// No description provided for @healthScoreDeltaPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} pts'**
+  String healthScoreDeltaPoints(String points);
+
+  /// No description provided for @healthScoreManagedConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 managed condition} other{{count} managed conditions}}'**
+  String healthScoreManagedConditions(int count);
+
+  /// No description provided for @healthScoreDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'This measures preventive-care compliance and vitals tracking, not clinical health. It scores weight volatility, not ideal body weight. Missing data is redistributed, never counted against your pet.'**
+  String get healthScoreDisclaimer;
+
   /// No description provided for @photoSavedToGallery.
   ///
   /// In en, this message translates to:

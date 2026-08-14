@@ -94,6 +94,7 @@ class _AddVaccinationPageState extends ConsumerState<AddVaccinationPage> {
     result.when(
       success: (_) {
         ref.invalidate(petHealthSnapshotProvider(widget.petId));
+        ref.invalidate(petHealthScoreProvider(widget.petId));
         ref.invalidate(petVaccinationsProvider(widget.petId));
         context.showSuccessSnackBar(l10n.healthVaccinationsAddedSuccess);
         context.pop();

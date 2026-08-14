@@ -40,6 +40,8 @@ class HealthDashboard extends ConsumerWidget {
       success: (_) {
         ref.invalidate(petHealthSnapshotProvider(petId));
         ref.invalidate(petMedicationsProvider(petId));
+        // The score is live — marking a dose given can move it.
+        ref.invalidate(petHealthScoreProvider(petId));
         context.showSuccessSnackBar(
           l10n.healthMedicationsGivenConfirmed(med.name),
         );

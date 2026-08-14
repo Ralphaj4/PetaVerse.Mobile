@@ -11,6 +11,7 @@ import '../../data/repositories/pawcare_repository_impl.dart';
 import '../../domain/entities/health_lookup.dart';
 import '../../domain/entities/health_reminder.dart';
 import '../../domain/entities/medication.dart';
+import '../../domain/entities/pet_health_score.dart';
 import '../../domain/entities/vaccination.dart';
 import '../../domain/entities/weight_record.dart';
 import '../../domain/repositories/pawcare_repository.dart';
@@ -162,5 +163,15 @@ Future<List<HealthLookup>> medicationLookups(Ref ref) async {
 Future<List<HealthLookup>> vaccineLookups(Ref ref) async {
   return _unwrap(
     await ref.watch(pawCareRepositoryProvider).getVaccineLookups(),
+  );
+}
+
+/// The pet's server-computed health score. Family-keyed per pet. Invalidate it
+/// alongside [petHealthSnapshotProvider] after the user logs data — the score
+/// is live and will move.
+@riverpod
+Future<PetHealthScore> petHealthScore(Ref ref, int petId) async {
+  return _unwrap(
+    await ref.watch(pawCareRepositoryProvider).getHealthScore(petId),
   );
 }

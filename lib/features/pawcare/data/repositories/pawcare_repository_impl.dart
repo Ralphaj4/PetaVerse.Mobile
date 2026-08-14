@@ -4,6 +4,7 @@ import '../../../../core/errors/result.dart';
 import '../../domain/entities/health_lookup.dart';
 import '../../domain/entities/health_reminder.dart';
 import '../../domain/entities/medication.dart';
+import '../../domain/entities/pet_health_score.dart';
 import '../../domain/entities/vaccination.dart';
 import '../../domain/entities/weight_record.dart';
 import '../../domain/repositories/pawcare_repository.dart';
@@ -195,6 +196,14 @@ class PawCareRepositoryImpl implements PawCareRepository {
   Future<Result<List<HealthLookup>>> getVaccineLookups() => _guard(() async {
         final dtos = await _remote.getVaccineLookups();
         return dtos.map((e) => e.toEntity()).toList(growable: false);
+      });
+
+  // ── Health score ──────────────────────────────────────────────────────────
+
+  @override
+  Future<Result<PetHealthScore>> getHealthScore(int petId) => _guard(() async {
+        final dto = await _remote.getHealthScore(petId);
+        return dto.toEntity();
       });
 
   // ── Reminder caching ──────────────────────────────────────────────────────

@@ -706,3 +706,97 @@ final class VaccineLookupsProvider
 }
 
 String _$vaccineLookupsHash() => r'eca444075e407435838c8b6d2368f0d1823fe233';
+
+/// The pet's server-computed health score. Family-keyed per pet. Invalidate it
+/// alongside [petHealthSnapshotProvider] after the user logs data — the score
+/// is live and will move.
+
+@ProviderFor(petHealthScore)
+final petHealthScoreProvider = PetHealthScoreFamily._();
+
+/// The pet's server-computed health score. Family-keyed per pet. Invalidate it
+/// alongside [petHealthSnapshotProvider] after the user logs data — the score
+/// is live and will move.
+
+final class PetHealthScoreProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<PetHealthScore>,
+          PetHealthScore,
+          FutureOr<PetHealthScore>
+        >
+    with $FutureModifier<PetHealthScore>, $FutureProvider<PetHealthScore> {
+  /// The pet's server-computed health score. Family-keyed per pet. Invalidate it
+  /// alongside [petHealthSnapshotProvider] after the user logs data — the score
+  /// is live and will move.
+  PetHealthScoreProvider._({
+    required PetHealthScoreFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'petHealthScoreProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$petHealthScoreHash();
+
+  @override
+  String toString() {
+    return r'petHealthScoreProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<PetHealthScore> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<PetHealthScore> create(Ref ref) {
+    final argument = this.argument as int;
+    return petHealthScore(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is PetHealthScoreProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$petHealthScoreHash() => r'28c2beaf4e1737d66604dda58c0aae98adb1d3e7';
+
+/// The pet's server-computed health score. Family-keyed per pet. Invalidate it
+/// alongside [petHealthSnapshotProvider] after the user logs data — the score
+/// is live and will move.
+
+final class PetHealthScoreFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<PetHealthScore>, int> {
+  PetHealthScoreFamily._()
+    : super(
+        retry: null,
+        name: r'petHealthScoreProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// The pet's server-computed health score. Family-keyed per pet. Invalidate it
+  /// alongside [petHealthSnapshotProvider] after the user logs data — the score
+  /// is live and will move.
+
+  PetHealthScoreProvider call(int petId) =>
+      PetHealthScoreProvider._(argument: petId, from: this);
+
+  @override
+  String toString() => r'petHealthScoreProvider';
+}

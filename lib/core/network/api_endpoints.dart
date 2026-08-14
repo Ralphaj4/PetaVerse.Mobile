@@ -77,6 +77,9 @@ abstract final class ApiEndpoints {
   static const String medicationLookups = '/lookups/medications';
   static const String vaccineLookups = '/lookups/vaccines';
 
+  // PawCare — health score (server-computed, read-only)
+  static String petHealthScore(int petId) => '/pets/$petId/health-score';
+
   // Lost & Found
   static const String lostFoundDashboard = '/lost-found/dashboard';
   static const String lostFoundListings = '/lost-found/listings';

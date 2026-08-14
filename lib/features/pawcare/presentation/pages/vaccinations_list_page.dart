@@ -54,6 +54,7 @@ class VaccinationsListPage extends ConsumerWidget {
       success: (_) {
         ref.invalidate(petVaccinationsProvider(petId));
         ref.invalidate(petHealthSnapshotProvider(petId));
+        ref.invalidate(petHealthScoreProvider(petId));
         context.showSuccessSnackBar(l10n.healthVaccinationsDeleteSuccess);
       },
       failure: (f) => context.showErrorSnackBar(

@@ -53,6 +53,7 @@ class WeightHistoryPage extends ConsumerWidget {
       success: (_) {
         ref.invalidate(weightHistoryProvider(petId));
         ref.invalidate(petHealthSnapshotProvider(petId));
+        ref.invalidate(petHealthScoreProvider(petId));
         context.showSuccessSnackBar(l10n.healthWeightDeleteSuccess);
       },
       failure: (f) => context.showErrorSnackBar(

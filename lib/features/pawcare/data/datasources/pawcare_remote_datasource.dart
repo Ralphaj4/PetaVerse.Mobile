@@ -207,4 +207,16 @@ class PawCareRemoteDataSource {
     );
     return _mapList(data, VaccineLookupDto.fromJson);
   }
+
+  // ── Health score ──────────────────────────────────────────────────────────
+
+  /// GET /pets/{petId}/health-score → the server-computed score. Computed fresh
+  /// on every call; call it whenever the health screen shows and re-fetch after
+  /// the owner logs a vaccination / medication / weight / activity.
+  Future<PetHealthScoreDto> getHealthScore(int petId) async {
+    final json = await _client.get<Map<String, dynamic>>(
+      ApiEndpoints.petHealthScore(petId),
+    );
+    return PetHealthScoreDto.fromJson(json);
+  }
 }

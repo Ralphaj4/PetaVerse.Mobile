@@ -1190,6 +1190,88 @@ class AppLocalizationsAr extends AppLocalizations {
   String get healthVaccinationsDeleteSuccess => 'تم حذف التطعيم';
 
   @override
+  String get healthScoreTitle => 'مؤشر الصحة';
+
+  @override
+  String get healthScoreOutOf => 'من ١٠٠';
+
+  @override
+  String get healthScoreViewBreakdown => 'عرض التفاصيل';
+
+  @override
+  String get healthScoreConfidence => 'الموثوقية';
+
+  @override
+  String healthScoreBasedOnSignals(int count) {
+    return 'بناءً على $count من ٤ مؤشرات';
+  }
+
+  @override
+  String get healthScoreBandExcellent => 'ممتاز';
+
+  @override
+  String get healthScoreBandGood => 'جيد';
+
+  @override
+  String get healthScoreBandFair => 'مقبول';
+
+  @override
+  String get healthScoreBandNeedsAttention => 'يحتاج إلى اهتمام';
+
+  @override
+  String get healthScoreBandNoData => 'لا توجد بيانات';
+
+  @override
+  String get healthScoreEmptyGeneric =>
+      'ابدأ بتسجيل التطعيمات والوزن والأدوية لعرض مؤشر صحة حيوانك الأليف.';
+
+  @override
+  String healthScoreEmptyNamed(String name) {
+    return 'ابدأ بتسجيل التطعيمات والوزن والأدوية لعرض مؤشر صحة $name.';
+  }
+
+  @override
+  String get healthScoreBreakdownTitle => 'تفاصيل المكوّنات';
+
+  @override
+  String get healthScoreWhyTitle => 'أسباب هذا المؤشر';
+
+  @override
+  String get healthScoreNoReasons => 'لا توجد مؤشرات لشرحها بعد.';
+
+  @override
+  String get healthScoreNotApplicable => 'غير متاح';
+
+  @override
+  String get healthScoreRedistributed =>
+      'أُعيد توزيع الوزن على المؤشرات الأخرى';
+
+  @override
+  String healthScoreRedistributedWith(String reason) {
+    return '$reason — أُعيد توزيع الوزن على المؤشرات الأخرى';
+  }
+
+  @override
+  String healthScoreDeltaPoints(String points) {
+    return '$points نقطة';
+  }
+
+  @override
+  String healthScoreManagedConditions(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count حالات مزمنة قيد المتابعة',
+      one: 'حالة مزمنة واحدة قيد المتابعة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get healthScoreDisclaimer =>
+      'يقيس هذا المؤشر الالتزام بالرعاية الوقائية ومتابعة المؤشرات الحيوية، وليس الحالة الصحية السريرية. يقيس تقلّب الوزن وليس الوزن المثالي. البيانات الناقصة يُعاد توزيعها ولا تُحتسب ضد حيوانك الأليف.';
+
+  @override
   String get photoSavedToGallery => 'تم حفظ الصورة في المعرض';
 
   @override

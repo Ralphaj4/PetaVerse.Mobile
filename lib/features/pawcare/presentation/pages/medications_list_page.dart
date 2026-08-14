@@ -38,6 +38,7 @@ class _MedicationsListPageState extends ConsumerState<MedicationsListPage> {
   void _refresh() {
     ref.invalidate(petMedicationsProvider(widget.petId));
     ref.invalidate(petHealthSnapshotProvider(widget.petId));
+    ref.invalidate(petHealthScoreProvider(widget.petId));
   }
 
   Future<void> _markGiven(Medication med) async {

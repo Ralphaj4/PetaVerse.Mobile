@@ -492,6 +492,42 @@
     "placeholders": { "name": { "type": "String" } }
   },
   "healthVaccinationsDeleteSuccess": "Vaccination supprimée",
+  "healthScoreTitle": "Score de santé",
+  "healthScoreOutOf": "sur 100",
+  "healthScoreViewBreakdown": "Voir le détail",
+  "healthScoreConfidence": "Fiabilité",
+  "healthScoreBasedOnSignals": "Basé sur {count} des 4 signaux",
+  "@healthScoreBasedOnSignals": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "healthScoreBandExcellent": "Excellent",
+  "healthScoreBandGood": "Bon",
+  "healthScoreBandFair": "Moyen",
+  "healthScoreBandNeedsAttention": "À surveiller",
+  "healthScoreBandNoData": "Aucune donnée",
+  "healthScoreEmptyGeneric": "Commencez à enregistrer vaccinations, poids et médicaments pour voir le score de santé de cet animal.",
+  "healthScoreEmptyNamed": "Commencez à enregistrer vaccinations, poids et médicaments pour voir le score de santé de {name}.",
+  "@healthScoreEmptyNamed": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "healthScoreBreakdownTitle": "Détail des composantes",
+  "healthScoreWhyTitle": "Pourquoi ce score",
+  "healthScoreNoReasons": "Aucun signal à expliquer pour l'instant.",
+  "healthScoreNotApplicable": "N/A",
+  "healthScoreRedistributed": "Poids redistribué aux autres signaux",
+  "healthScoreRedistributedWith": "{reason} — poids redistribué aux autres signaux",
+  "@healthScoreRedistributedWith": {
+    "placeholders": { "reason": { "type": "String" } }
+  },
+  "healthScoreDeltaPoints": "{points} pts",
+  "@healthScoreDeltaPoints": {
+    "placeholders": { "points": { "type": "String" } }
+  },
+  "healthScoreManagedConditions": "{count, plural, one{1 affection suivie} other{{count} affections suivies}}",
+  "@healthScoreManagedConditions": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "healthScoreDisclaimer": "Ceci mesure le respect des soins préventifs et le suivi des constantes, pas l'état clinique. Il évalue la variabilité du poids, pas le poids idéal. Les données manquantes sont redistribuées, jamais retenues contre votre animal.",
   "photoSavedToGallery": "Photo enregistrée dans la galerie",
   "couldNotSavePhoto": "Impossible d'enregistrer la photo",
   "didYouKnow": "Le saviez-vous?",

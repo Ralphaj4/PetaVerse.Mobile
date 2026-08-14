@@ -492,6 +492,42 @@
     "placeholders": { "name": { "type": "String" } }
   },
   "healthVaccinationsDeleteSuccess": "Vaccination deleted",
+  "healthScoreTitle": "Health Score",
+  "healthScoreOutOf": "out of 100",
+  "healthScoreViewBreakdown": "View breakdown",
+  "healthScoreConfidence": "Confidence",
+  "healthScoreBasedOnSignals": "Based on {count} of 4 signals",
+  "@healthScoreBasedOnSignals": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "healthScoreBandExcellent": "Excellent",
+  "healthScoreBandGood": "Good",
+  "healthScoreBandFair": "Fair",
+  "healthScoreBandNeedsAttention": "Needs Attention",
+  "healthScoreBandNoData": "No data",
+  "healthScoreEmptyGeneric": "Start logging vaccinations, weight, and meds to see this pet's health score.",
+  "healthScoreEmptyNamed": "Start logging vaccinations, weight, and meds to see {name}'s health score.",
+  "@healthScoreEmptyNamed": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "healthScoreBreakdownTitle": "Component breakdown",
+  "healthScoreWhyTitle": "Why this score",
+  "healthScoreNoReasons": "No signals to explain yet.",
+  "healthScoreNotApplicable": "N/A",
+  "healthScoreRedistributed": "Weight redistributed to the other signals",
+  "healthScoreRedistributedWith": "{reason} — weight redistributed to the other signals",
+  "@healthScoreRedistributedWith": {
+    "placeholders": { "reason": { "type": "String" } }
+  },
+  "healthScoreDeltaPoints": "{points} pts",
+  "@healthScoreDeltaPoints": {
+    "placeholders": { "points": { "type": "String" } }
+  },
+  "healthScoreManagedConditions": "{count, plural, one{1 managed condition} other{{count} managed conditions}}",
+  "@healthScoreManagedConditions": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "healthScoreDisclaimer": "This measures preventive-care compliance and vitals tracking, not clinical health. It scores weight volatility, not ideal body weight. Missing data is redistributed, never counted against your pet.",
   "photoSavedToGallery": "Photo saved to gallery",
   "couldNotSavePhoto": "Could not save photo",
   "didYouKnow": "Did you know?",

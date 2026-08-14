@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/entities/health_lookup.dart';
 import '../../domain/entities/medication.dart';
+import '../../domain/entities/pet_health_score.dart';
 import '../../domain/entities/vaccination.dart';
 import '../../domain/entities/weight_record.dart';
 
@@ -174,4 +175,108 @@ abstract class VaccineLookupDto with _$VaccineLookupDto {
 
   HealthLookup toEntity() =>
       HealthLookup(id: id, name: name, syndicateCode: syndicateCode);
+}
+
+// ── Health score ───────────────────────────────────────────────────────────
+
+/// Wire shape of `GET /api/pets/{petId}/health-score`. Server-computed and
+/// read-only. See `docs/Pet-Health-Score-Mobile-Guide.md`.
+@freezed
+abstract class PetHealthScoreDto with _$PetHealthScoreDto {
+  const factory PetHealthScoreDto({
+    required int petId,
+    @Default(0) int value,
+    @Default('No data') String band,
+    @Default(0) double confidence,
+    @Default(0) int applicableCount,
+    @Default(<HealthComponentDto>[]) List<HealthComponentDto> components,
+    @Default(<HealthReasonDto>[]) List<HealthReasonDto> reasons,
+    ConditionsContextDto? conditionsContext,
+    required DateTime computedAt,
+  }) = _PetHealthScoreDto;
+
+  const PetHealthScoreDto._();
+
+  factory PetHealthScoreDto.fromJson(Map<String, dynamic> json) =>
+      _$PetHealthScoreDtoFromJson(json);
+
+  PetHealthScore toEntity() => PetHealthScore(
+        petId: petId,
+        value: value,
+        band: HealthBand.fromWire(band),
+        confidence: confidence,
+        applicableCount: applicableCount,
+        components: components.map((e) => e.toEntity()).toList(growable: false),
+        reasons: reasons.map((e) => e.toEntity()).toList(growable: false),
+        conditions: (conditionsContext ?? const ConditionsContextDto())
+            .toEntity(),
+        computedAt: computedAt.toLocal(),
+      );
+}
+
+/// Wire shape of a single scored signal.
+@freezed
+abstract class HealthComponentDto with _$HealthComponentDto {
+  const factory HealthComponentDto({
+    @Default('') String key,
+    @Default('') String label,
+    @Default(0) int weight,
+    @Default(false) bool applicable,
+    @Default(0) double ratio,
+    @Default(0) double earned,
+    String? naReason,
+  }) = _HealthComponentDto;
+
+  const HealthComponentDto._();
+
+  factory HealthComponentDto.fromJson(Map<String, dynamic> json) =>
+      _$HealthComponentDtoFromJson(json);
+
+  HealthComponent toEntity() => HealthComponent(
+        key: key,
+        label: label,
+        weight: weight,
+        applicable: applicable,
+        ratio: ratio,
+        earned: earned,
+        naReason: naReason,
+      );
+}
+
+/// Wire shape of a "why this score" line.
+@freezed
+abstract class HealthReasonDto with _$HealthReasonDto {
+  const factory HealthReasonDto({
+    @Default('warn') String severity,
+    @Default('') String text,
+    @Default(0) double deltaPoints,
+  }) = _HealthReasonDto;
+
+  const HealthReasonDto._();
+
+  factory HealthReasonDto.fromJson(Map<String, dynamic> json) =>
+      _$HealthReasonDtoFromJson(json);
+
+  HealthReason toEntity() => HealthReason(
+        severity: HealthReasonSeverity.fromWire(severity),
+        text: text,
+        deltaPoints: deltaPoints,
+      );
+}
+
+/// Wire shape of the chronic-conditions context block.
+@freezed
+abstract class ConditionsContextDto with _$ConditionsContextDto {
+  const factory ConditionsContextDto({
+    @Default(0) int count,
+    @Default(<String>[]) List<String> labels,
+  }) = _ConditionsContextDto;
+
+  const ConditionsContextDto._();
+
+  factory ConditionsContextDto.fromJson(Map<String, dynamic> json) =>
+      _$ConditionsContextDtoFromJson(json);
+
+  ConditionsContext toEntity() =>
+      ConditionsContext(count: count, labels: labels);
 }

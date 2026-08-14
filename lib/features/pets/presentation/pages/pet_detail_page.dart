@@ -21,6 +21,7 @@ import '../../../../shared/widgets/app_confirm_dialog.dart';
 import '../../../../shared/widgets/shimmer.dart';
 import '../../../co_ownership/presentation/providers/co_ownership_providers.dart';
 import '../../../pawcare/presentation/widgets/health_dashboard.dart';
+import '../../../pawcare/presentation/widgets/health_score_card.dart';
 import '../../../profile/presentation/providers/user_provider.dart';
 import '../../domain/entities/pet.dart';
 import '../providers/delete_pet_provider.dart';
@@ -576,6 +577,11 @@ class _PetContent extends ConsumerWidget {
               icon: FluentIcons.heart_pulse_24_regular,
               title: context.l10n.petDetailSectionHealth,
             ),
+            const SizedBox(height: AppSpacing.md),
+
+            // Server-computed health score summary, tapping through to the full
+            // breakdown page.
+            HealthScoreCard(petId: petId, petName: displayed!.name),
             const SizedBox(height: AppSpacing.md),
 
             // Health dashboard: weight, medications, vaccinations.

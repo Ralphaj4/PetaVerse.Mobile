@@ -88,6 +88,7 @@ class _AddMedicationPageState extends ConsumerState<AddMedicationPage> {
     result.when(
       success: (_) {
         ref.invalidate(petHealthSnapshotProvider(widget.petId));
+        ref.invalidate(petHealthScoreProvider(widget.petId));
         ref.invalidate(petMedicationsProvider(widget.petId));
         context.showSuccessSnackBar(l10n.healthMedicationsAddedSuccess);
         context.pop();
