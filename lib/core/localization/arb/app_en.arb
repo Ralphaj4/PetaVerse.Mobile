@@ -743,7 +743,8 @@
   "adoptionTraitNeutered": "Neutered",
   "adoptionTraitGoodWithKids": "Good with kids",
   "adoptionApply": "Apply to adopt",
-  "adoptionApplied": "Applied",
+  "adoptionApplied": "Application sent",
+  "adoptionAppliedSubtitle": "The owner will review your application",
   "adoptionManageCount": "{count, plural, =0{Manage listing} =1{Manage · 1 applicant} other{Manage · {count} applicants}}",
   "@adoptionManageCount": {
     "placeholders": { "count": { "type": "int" } }

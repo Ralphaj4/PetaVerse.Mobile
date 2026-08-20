@@ -1834,7 +1834,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get adoptionApply => 'تقدّم للتبنّي';
 
   @override
-  String get adoptionApplied => 'تم التقديم';
+  String get adoptionApplied => 'تم إرسال الطلب';
+
+  @override
+  String get adoptionAppliedSubtitle => 'سيقوم المالك بمراجعة طلبك';
 
   @override
   String adoptionManageCount(int count) {

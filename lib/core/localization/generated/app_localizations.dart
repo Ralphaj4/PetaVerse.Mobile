@@ -3277,8 +3277,14 @@ abstract class AppLocalizations {
   /// No description provided for @adoptionApplied.
   ///
   /// In en, this message translates to:
-  /// **'Applied'**
+  /// **'Application sent'**
   String get adoptionApplied;
+
+  /// No description provided for @adoptionAppliedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The owner will review your application'**
+  String get adoptionAppliedSubtitle;
 
   /// No description provided for @adoptionManageCount.
   ///

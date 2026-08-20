@@ -708,6 +708,7 @@
   "adoptionTraitGoodWithKids": "Aime les enfants",
   "adoptionApply": "Demander à adopter",
   "adoptionApplied": "Demande envoyée",
+  "adoptionAppliedSubtitle": "Le propriétaire examinera votre demande",
   "adoptionManageCount": "{count, plural, =0{Gérer l'annonce} =1{Gérer · 1 candidat} other{Gérer · {count} candidats}}",
   "adoptionManageTitle": "Candidats",
   "adoptionManageSubtitle": "{count, plural, =0{Aucun candidat pour l'instant} =1{1 personne souhaite adopter {petName}} other{{count} personnes souhaitent adopter {petName}}}",

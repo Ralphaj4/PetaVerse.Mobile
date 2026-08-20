@@ -13,8 +13,8 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_button.dart';
+import '../../../../shared/widgets/app_cached_image.dart';
 import '../../../../shared/widgets/app_confirm_dialog.dart';
 import '../../../../shared/widgets/error_state_widget.dart';
 import '../../../pets/domain/entities/pet_ref.dart';
@@ -23,6 +23,7 @@ import '../../../pets/presentation/providers/pets_provider.dart';
 import '../../domain/entities/adoption_listing.dart';
 import '../providers/adoption_providers.dart';
 import '../widgets/adoption_card.dart';
+import '../widgets/adoption_format.dart';
 import 'adoption_welcome_page.dart';
 
 /// The user's "My adoptions" hub: two segments — listings they created (owner)
@@ -492,6 +493,7 @@ class _MyApplicationsTabState extends ConsumerState<_MyApplicationsTab> {
             message: l10n.adoptionMyApplicationsEmptyMessage,
           );
         }
+        final now = DateTime.now();
         return RefreshIndicator(
           color: AppColors.primary,
           onRefresh: () =>
@@ -504,8 +506,12 @@ class _MyApplicationsTabState extends ConsumerState<_MyApplicationsTab> {
               final req = requests[i];
               return _ApplicationCard(
                 request: req,
+                now: now,
                 busy: _busyId == req.id,
                 actionsEnabled: _busyId == null,
+                onTap: () => context.push(
+                  AppRoutes.adoptionDetailPath(req.listingId),
+                ),
                 onAccept: () => _accept(req),
                 onCancel: () => _cancel(req),
               );
@@ -517,102 +523,135 @@ class _MyApplicationsTabState extends ConsumerState<_MyApplicationsTab> {
   }
 }
 
+/// Visual identity for a request status: label, accent color, and icon. Shared
+/// by the top-right chip and the status strip so they always agree.
+({String label, Color color, IconData icon}) _statusStyle(
+  AppLocalizations l10n,
+  AdoptionRequestStatus status,
+) =>
+    switch (status) {
+      AdoptionRequestStatus.pending => (
+          label: l10n.adoptionRequestStatusPending,
+          color: AppColors.warning,
+          icon: FluentIcons.hourglass_24_filled,
+        ),
+      AdoptionRequestStatus.approved => (
+          label: l10n.adoptionRequestStatusApproved,
+          color: AppColors.success,
+          icon: FluentIcons.checkmark_circle_24_filled,
+        ),
+      AdoptionRequestStatus.rejected => (
+          label: l10n.adoptionRequestStatusRejected,
+          color: AppColors.error,
+          icon: FluentIcons.dismiss_circle_24_filled,
+        ),
+      AdoptionRequestStatus.cancelled => (
+          label: l10n.adoptionRequestStatusCancelled,
+          color: AppColors.textSecondary,
+          icon: FluentIcons.dismiss_circle_24_filled,
+        ),
+      AdoptionRequestStatus.completed => (
+          label: l10n.adoptionRequestStatusCompleted,
+          color: AppColors.secondaryDark,
+          icon: FluentIcons.home_24_filled,
+        ),
+      AdoptionRequestStatus.expired => (
+          label: l10n.adoptionRequestStatusExpired,
+          color: AppColors.textSecondary,
+          icon: FluentIcons.clock_dismiss_24_filled,
+        ),
+    };
+
+/// A single submitted application, styled as a sibling of the board
+/// [AdoptionCard]: a soft-shadowed rounded card with a hero pet thumbnail, a
+/// name + meta line, a status chip, a tinted status strip explaining the next
+/// step, and any state-adaptive actions. Tapping opens the listing.
 class _ApplicationCard extends StatelessWidget {
   const _ApplicationCard({
     required this.request,
+    required this.now,
     required this.busy,
     required this.actionsEnabled,
+    required this.onTap,
     required this.onAccept,
     required this.onCancel,
   });
 
   final MyAdoptionRequest request;
+  final DateTime now;
   final bool busy;
   final bool actionsEnabled;
+  final VoidCallback onTap;
   final VoidCallback onAccept;
   final VoidCallback onCancel;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final status = _statusStyle(l10n, request.status);
 
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: AppRadius.lgAll,
-        border: Border.all(color: AppColors.divider),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              AppAvatar(
-                imageUrl: request.pet.avatarUrl,
-                name: request.pet.name,
-                radius: 24,
+    return Semantics(
+      button: true,
+      label: '${request.pet.name}, ${status.label}',
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: AppRadius.lgAll,
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.textPrimary.withValues(alpha: 0.06),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _Header(request: request, now: now, status: status),
+                  ..._buildBody(context, l10n, status),
+                ],
               ),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      request.pet.name,
-                      style: AppTextStyles.titleSmall,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      l10n.adoptionApplicationFrom(request.lister.fullName),
-                      style: AppTextStyles.bodySmall,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-              _StatusChip(status: request.status),
-            ],
+            ),
           ),
-          ..._buildActions(context, l10n),
-        ],
+        ),
       ),
     );
   }
 
-  List<Widget> _buildActions(BuildContext context, AppLocalizations l10n) {
+  /// The status strip + any state-adaptive actions below the header.
+  List<Widget> _buildBody(
+    BuildContext context,
+    AppLocalizations l10n,
+    ({String label, Color color, IconData icon}) status,
+  ) {
     // Approved but not yet accepted → the adopter's turn to opt in.
     if (request.awaitingMyAcceptance) {
       return [
-        const SizedBox(height: AppSpacing.sm),
-        _HintRow(
-          icon: FluentIcons.checkmark_circle_24_regular,
-          label: l10n.adoptionAcceptHint,
+        const SizedBox(height: AppSpacing.md),
+        _StatusStrip(
+          color: AppColors.success,
+          icon: FluentIcons.checkmark_circle_24_filled,
+          text: l10n.adoptionAcceptHint,
         ),
         const SizedBox(height: AppSpacing.md),
-        Row(
-          children: [
-            Expanded(
-              child: AppButton(
-                label: l10n.adoptionCancelApplication,
-                variant: AppButtonVariant.outlined,
-                onPressed: actionsEnabled ? onCancel : null,
-              ),
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: AppButton(
-                label: l10n.adoptionAcceptCta,
-                icon: FluentIcons.heart_24_regular,
-                variant: AppButtonVariant.primary,
-                isLoading: busy,
-                onPressed: actionsEnabled ? onAccept : null,
-              ),
-            ),
-          ],
+        AppButton(
+          label: l10n.adoptionAcceptCta,
+          icon: FluentIcons.heart_24_regular,
+          variant: AppButtonVariant.primary,
+          isLoading: busy,
+          onPressed: actionsEnabled ? onAccept : null,
+        ),
+        _WithdrawFooter(
+          label: l10n.adoptionCancelApplication,
+          onPressed: actionsEnabled ? onCancel : null,
         ),
       ];
     }
@@ -620,10 +659,11 @@ class _ApplicationCard extends StatelessWidget {
     // Accepted, waiting for the owner to hand over.
     if (request.awaitingHandover) {
       return [
-        const SizedBox(height: AppSpacing.sm),
-        _HintRow(
-          icon: FluentIcons.hourglass_24_regular,
-          label: l10n.adoptionAwaitingHandover,
+        const SizedBox(height: AppSpacing.md),
+        _StatusStrip(
+          color: AppColors.secondaryDark,
+          icon: FluentIcons.hourglass_24_filled,
+          text: l10n.adoptionAwaitingHandover,
         ),
       ];
     }
@@ -631,42 +671,141 @@ class _ApplicationCard extends StatelessWidget {
     // Still pending owner review → can withdraw.
     if (request.status == AdoptionRequestStatus.pending) {
       return [
-        const SizedBox(height: AppSpacing.sm),
-        _HintRow(
-          icon: FluentIcons.hourglass_24_regular,
-          label: l10n.adoptionAwaitingReview,
-        ),
         const SizedBox(height: AppSpacing.md),
-        AppButton(
+        _StatusStrip(
+          color: AppColors.warning,
+          icon: FluentIcons.hourglass_24_filled,
+          text: l10n.adoptionAwaitingReview,
+        ),
+        _WithdrawFooter(
           label: l10n.adoptionCancelApplication,
-          variant: AppButtonVariant.outlined,
           onPressed: actionsEnabled ? onCancel : null,
         ),
       ];
     }
 
-    // Terminal (rejected / cancelled / completed / expired): chip only.
-    return const [];
+    // Terminal (rejected / cancelled / completed / expired): a status strip
+    // that restates the outcome, so the card never ends abruptly on the header.
+    return [
+      const SizedBox(height: AppSpacing.md),
+      _StatusStrip(
+        color: status.color,
+        icon: status.icon,
+        text: status.label,
+      ),
+    ];
   }
 }
 
-class _HintRow extends StatelessWidget {
-  const _HintRow({required this.icon, required this.label});
+/// Pet thumbnail + name/meta + status chip.
+class _Header extends StatelessWidget {
+  const _Header({
+    required this.request,
+    required this.now,
+    required this.status,
+  });
 
-  final IconData icon;
-  final String label;
+  final MyAdoptionRequest request;
+  final DateTime now;
+  final ({String label, Color color, IconData icon}) status;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final pet = request.pet;
+    final meta = <String>[
+      ?pet.speciesName,
+      ?AdoptionFormat.sex(l10n, pet.gender),
+      ?AdoptionFormat.age(l10n, pet.dateOfBirth, now: now),
+    ].join('  ·  ');
+
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 16, color: AppColors.textSecondary),
-        const SizedBox(width: AppSpacing.xs),
+        ClipRRect(
+          borderRadius: AppRadius.mdAll,
+          child: Hero(
+            tag: adoptionHeroTag(request.listingId),
+            child: AppCachedImage(
+              imageUrl: pet.avatarUrl,
+              width: 60,
+              height: 60,
+              borderRadius: BorderRadius.zero,
+              semanticLabel: pet.name,
+            ),
+          ),
+        ),
+        const SizedBox(width: AppSpacing.md),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                pet.name,
+                style: AppTextStyles.titleMedium,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              if (meta.isNotEmpty) ...[
+                const SizedBox(height: 2),
+                Text(
+                  meta,
+                  style: AppTextStyles.labelMedium.copyWith(
+                    color: AppColors.secondaryDark,
+                    letterSpacing: 0,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+              const SizedBox(height: 2),
+              Text(
+                l10n.adoptionApplicationFrom(request.lister.fullName),
+                style: AppTextStyles.bodySmall,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: AppSpacing.sm),
+        _StatusChip(label: status.label, color: status.color),
+      ],
+    );
+  }
+}
+
+/// A soft-tinted band with an icon + text explaining where the application is
+/// in its journey. Replaces the old bare hint row so every state reads as a
+/// deliberate status, not leftover text.
+class _StatusStrip extends StatelessWidget {
+  const _StatusStrip({
+    required this.color,
+    required this.icon,
+    required this.text,
+  });
+
+  final Color color;
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    // A plain icon + muted text line (no tinted pill) so it doesn't compete
+    // with the withdraw button below or duplicate the status chip in the
+    // header — the color lives in the icon, the message stays quiet.
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 18, color: color),
+        const SizedBox(width: AppSpacing.sm),
         Expanded(
           child: Text(
-            label,
-            style: AppTextStyles.bodySmall
-                .copyWith(color: AppColors.textSecondary),
+            text,
+            style: AppTextStyles.bodySmall.copyWith(
+              color: AppColors.textSecondary,
+              height: 1.35,
+            ),
           ),
         ),
       ],
@@ -675,40 +814,13 @@ class _HintRow extends StatelessWidget {
 }
 
 class _StatusChip extends StatelessWidget {
-  const _StatusChip({required this.status});
+  const _StatusChip({required this.label, required this.color});
 
-  final AdoptionRequestStatus status;
+  final String label;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final (label, color) = switch (status) {
-      AdoptionRequestStatus.pending => (
-          l10n.adoptionRequestStatusPending,
-          AppColors.warning,
-        ),
-      AdoptionRequestStatus.approved => (
-          l10n.adoptionRequestStatusApproved,
-          AppColors.success,
-        ),
-      AdoptionRequestStatus.rejected => (
-          l10n.adoptionRequestStatusRejected,
-          AppColors.error,
-        ),
-      AdoptionRequestStatus.cancelled => (
-          l10n.adoptionRequestStatusCancelled,
-          AppColors.textSecondary,
-        ),
-      AdoptionRequestStatus.completed => (
-          l10n.adoptionRequestStatusCompleted,
-          AppColors.secondaryDark,
-        ),
-      AdoptionRequestStatus.expired => (
-          l10n.adoptionRequestStatusExpired,
-          AppColors.textSecondary,
-        ),
-    };
-
     return Container(
       padding:
           const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 4),
@@ -720,6 +832,63 @@ class _StatusChip extends StatelessWidget {
         label,
         style: AppTextStyles.labelSmall.copyWith(color: color),
       ),
+    );
+  }
+}
+
+/// Card footer for the withdraw action: a divider separating it from the card
+/// body, then a full-width soft-red pill button — tinted like the status strip
+/// so it reads as an intentional destructive action, not leftover text.
+class _WithdrawFooter extends StatelessWidget {
+  const _WithdrawFooter({required this.label, required this.onPressed});
+
+  final String label;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = onPressed != null;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: AppSpacing.lg),
+        const Divider(height: 1, thickness: 1, color: AppColors.divider),
+        const SizedBox(height: AppSpacing.lg),
+        Opacity(
+          opacity: enabled ? 1 : 0.5,
+          child: Material(
+            color: AppColors.error.withValues(alpha: 0.1),
+            borderRadius: AppRadius.mdAll,
+            child: InkWell(
+              onTap: onPressed,
+              borderRadius: AppRadius.mdAll,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      FluentIcons.dismiss_circle_24_regular,
+                      size: 18,
+                      color: AppColors.error,
+                    ),
+                    const SizedBox(width: AppSpacing.sm),
+                    Flexible(
+                      child: Text(
+                        label,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyles.labelLarge
+                            .copyWith(color: AppColors.error),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

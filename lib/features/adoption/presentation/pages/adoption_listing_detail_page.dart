@@ -425,12 +425,7 @@ class _PrimaryAction extends StatelessWidget {
     }
 
     if (applied) {
-      return AppButton(
-        label: l10n.adoptionApplied,
-        icon: FluentIcons.checkmark_circle_24_filled,
-        variant: AppButtonVariant.outlined,
-        onPressed: null,
-      );
+      return const _AppliedConfirmation();
     }
 
     return AppButton(
@@ -439,6 +434,71 @@ class _PrimaryAction extends StatelessWidget {
       variant: AppButtonVariant.secondary,
       isLoading: applying,
       onPressed: onApply,
+    );
+  }
+}
+
+/// Success confirmation shown once the user has applied. A soft-green banner
+/// with a filled check and a review-pending subtitle — a positive "done" state
+/// rather than a greyed-out disabled button.
+class _AppliedConfirmation extends StatelessWidget {
+  const _AppliedConfirmation();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return Padding(
+      // A little breathing room above so the banner isn't clipped by the
+      // content spacing that sat above the shorter button it replaced.
+      padding: const EdgeInsets.only(top: AppSpacing.sm),
+      child: Semantics(
+        label: l10n.adoptionApplied,
+        container: true,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.md,
+          ),
+        decoration: BoxDecoration(
+          color: AppColors.success.withValues(alpha: 0.12),
+          borderRadius: AppRadius.mdAll,
+          border: Border.all(
+            color: AppColors.success.withValues(alpha: 0.35),
+          ),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              FluentIcons.checkmark_circle_24_filled,
+              color: AppColors.success,
+              size: 24,
+            ),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    l10n.adoptionApplied,
+                    style: AppTextStyles.titleSmall
+                        .copyWith(color: AppColors.success),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    l10n.adoptionAppliedSubtitle,
+                    style: AppTextStyles.bodySmall
+                        .copyWith(color: AppColors.textSecondary),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        ),
+      ),
     );
   }
 }

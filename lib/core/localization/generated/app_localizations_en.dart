@@ -1821,7 +1821,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adoptionApply => 'Apply to adopt';
 
   @override
-  String get adoptionApplied => 'Applied';
+  String get adoptionApplied => 'Application sent';
+
+  @override
+  String get adoptionAppliedSubtitle =>
+      'The owner will review your application';
 
   @override
   String adoptionManageCount(int count) {

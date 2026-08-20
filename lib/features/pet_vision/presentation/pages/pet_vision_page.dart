@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:io';
-import 'dart:ui' as ui;
 
 import 'package:camera/camera.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
@@ -80,7 +78,15 @@ class _PetVisionPageState extends ConsumerState<PetVisionPage>
     final controller = _controller;
     if (controller == null || !controller.value.isInitialized) return;
     if (state == AppLifecycleState.inactive) {
+      // Tear the preview down cleanly so build() stops handing a
+      // disposed controller to CameraPreview while backgrounded.
       controller.dispose();
+      if (mounted) {
+        setState(() {
+          _controller = null;
+          _cameraReady = false;
+        });
+      }
     } else if (state == AppLifecycleState.resumed) {
       _initCamera();
     }
@@ -97,9 +103,12 @@ class _PetVisionPageState extends ConsumerState<PetVisionPage>
         (c) => c.lensDirection == CameraLensDirection.back,
         orElse: () => _cameras.first,
       );
+      // Medium is plenty for a full-screen preview and keeps the per-frame
+      // ColorFilter cheap; the capture path re-decodes the still separately so
+      // saved photos aren't limited by this.
       final controller = CameraController(
         back,
-        ResolutionPreset.high,
+        ResolutionPreset.medium,
         enableAudio: false,
         imageFormatGroup: ImageFormatGroup.jpeg,
       );
@@ -269,9 +278,8 @@ class _PetVisionBody extends ConsumerWidget {
             color: Colors.white54, size: 48),
       ),
       data: (pet) {
-        log('🐾 Pet loaded: ${pet.name}, species: ${pet.speciesName}');
-        final profileAsync = ref.watch(visionProfileByNameProvider(pet.speciesName ?? ''));
-        log('👁️ Watching visionProfileByNameProvider(${pet.speciesName ?? "null"})');
+        final profileAsync =
+            ref.watch(visionProfileByNameProvider(pet.speciesName ?? ''));
         return profileAsync.when(
           loading: () => const Center(
             child: CircularProgressIndicator(color: AppColors.primary),
@@ -546,15 +554,21 @@ class _LiveViewport extends StatelessWidget {
       );
     }
 
-    return ColorFiltered(
-      colorFilter: colorFilter,
-      child: SizedBox.expand(
-        child: FittedBox(
-          fit: BoxFit.cover,
-          child: SizedBox(
-            width: controller!.value.previewSize?.height ?? 1,
-            height: controller!.value.previewSize?.width ?? 1,
-            child: CameraPreview(controller!),
+    // Isolate the live preview + its per-frame ColorFilter in its own layer so
+    // overlay rebuilds (pet-selector animation, control toggles, dialogs) don't
+    // re-composite the camera. The ColorFilter is the one unavoidable per-frame
+    // cost of this feature; everything else is kept off its layer.
+    return RepaintBoundary(
+      child: ColorFiltered(
+        colorFilter: colorFilter,
+        child: SizedBox.expand(
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: SizedBox(
+              width: controller!.value.previewSize?.height ?? 1,
+              height: controller!.value.previewSize?.width ?? 1,
+              child: CameraPreview(controller!),
+            ),
           ),
         ),
       ),
@@ -605,39 +619,34 @@ class _InfoBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final perspectiveLabel = showOriginal ? 'Your perspective' : "${pet.name}'s perspective";
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(AppRadius.md),
-      child: BackdropFilter(
-        filter: ui.ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
-            vertical: AppSpacing.sm,
+    // Solid translucent surface (not a BackdropFilter): over a live camera a
+    // blur forces a full-screen saveLayer every frame, which is a major source
+    // of preview lag. The look is near-identical at 55% opacity.
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.sm,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.55),
+        borderRadius: BorderRadius.circular(AppRadius.md),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            profile.displayName,
+            style: AppTextStyles.titleSmall.copyWith(color: Colors.white),
           ),
-          decoration: BoxDecoration(
-            color: Colors.black.withValues(alpha: 0.35),
-            borderRadius: BorderRadius.circular(AppRadius.md),
+          Text(
+            perspectiveLabel,
+            style: AppTextStyles.bodySmall.copyWith(
+              color: showOriginal ? Colors.white70 : AppColors.primary,
+              fontWeight: showOriginal ? FontWeight.w600 : FontWeight.w400,
+            ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                profile.displayName,
-                style: AppTextStyles.titleSmall
-                    .copyWith(color: Colors.white),
-              ),
-              Text(
-                perspectiveLabel,
-                style: AppTextStyles.bodySmall
-                    .copyWith(
-                      color: showOriginal ? Colors.white70 : AppColors.primary,
-                      fontWeight: showOriginal ? FontWeight.w600 : FontWeight.w400,
-                    ),
-              ),
-            ],
-          ),
-        ),
+        ],
       ),
     );
   }
@@ -959,24 +968,20 @@ class _GlassButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Solid translucent (no BackdropFilter): several of these sit over the live
+    // camera at once, and each blur is a per-frame full-screen saveLayer.
     return GestureDetector(
       onTap: onTap,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppRadius.md),
-        child: BackdropFilter(
-          filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: Colors.black.withValues(alpha: 0.35),
-              borderRadius: BorderRadius.circular(AppRadius.md),
-              border: Border.all(color: Colors.white12),
-            ),
-            alignment: Alignment.center,
-            child: child,
-          ),
+      child: Container(
+        width: 48,
+        height: 48,
+        decoration: BoxDecoration(
+          color: Colors.black.withValues(alpha: 0.5),
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          border: Border.all(color: Colors.white12),
         ),
+        alignment: Alignment.center,
+        child: child,
       ),
     );
   }

@@ -1841,6 +1841,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adoptionApplied => 'Demande envoyée';
 
   @override
+  String get adoptionAppliedSubtitle =>
+      'Le propriétaire examinera votre demande';
+
+  @override
   String adoptionManageCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
