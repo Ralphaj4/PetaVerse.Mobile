@@ -18,15 +18,64 @@ extension BuildContextX on BuildContext {
 
   bool get isRtl => Directionality.of(this) == TextDirection.rtl;
 
-  void showSnackBar(String message) =>
-      AppSnackBar.show(this, message);
+  /// Neutral (info) toast. Optional [subtitle] adds a muted second line and
+  /// [actionLabel]/[onAction] add a trailing orange action.
+  void showSnackBar(
+    String message, {
+    String? subtitle,
+    String? actionLabel,
+    VoidCallback? onAction,
+  }) =>
+      AppSnackBar.show(
+        this,
+        message,
+        subtitle: subtitle,
+        actionLabel: actionLabel,
+        onAction: onAction,
+      );
 
-  void showSuccessSnackBar(String message) =>
-      AppSnackBar.show(this, message, variant: AppSnackBarVariant.success);
+  void showSuccessSnackBar(
+    String message, {
+    String? subtitle,
+    String? actionLabel,
+    VoidCallback? onAction,
+  }) =>
+      AppSnackBar.show(
+        this,
+        message,
+        variant: AppSnackBarVariant.success,
+        subtitle: subtitle,
+        actionLabel: actionLabel,
+        onAction: onAction,
+      );
 
-  void showErrorSnackBar(String message) =>
-      AppSnackBar.show(this, message, variant: AppSnackBarVariant.error);
+  void showErrorSnackBar(
+    String message, {
+    String? subtitle,
+    String? actionLabel,
+    VoidCallback? onAction,
+  }) =>
+      AppSnackBar.show(
+        this,
+        message,
+        variant: AppSnackBarVariant.error,
+        subtitle: subtitle,
+        actionLabel: actionLabel,
+        onAction: onAction,
+      );
 
-  void showWarningSnackBar(String message) =>
-      AppSnackBar.show(this, message, variant: AppSnackBarVariant.warning);
+  void showWarningSnackBar(
+    String message, {
+    String? subtitle,
+    String? actionLabel,
+    VoidCallback? onAction,
+  }) =>
+      AppSnackBar.show(
+        this,
+        message,
+        variant: AppSnackBarVariant.warning,
+        subtitle: subtitle,
+        actionLabel: actionLabel,
+        onAction: onAction,
+      );
 }

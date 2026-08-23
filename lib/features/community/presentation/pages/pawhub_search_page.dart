@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/errors/failure.dart';
+import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
@@ -203,7 +205,9 @@ class _PawHubSearchPageState extends ConsumerState<PawHubSearchPage> {
     return async.when(
       loading: () => const _ResultsSkeleton(),
       error: (e, _) => _ErrorState(
-        message: e.toString(),
+        message: e is Failure
+            ? e.localizedMessage(context.l10n)
+            : context.l10n.errorUnknown,
         onRetry: () => ref.invalidate(communitySearchProvider),
       ),
       data: (page) {

@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/network/dtos/media_dtos.dart';
 import '../../../../core/network/providers/media_datasource_provider.dart';
@@ -141,7 +142,7 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
         ref.read(communityPollsProvider(_id).notifier).remove(poll.id);
         _snack(l10n.pollDeletedToast);
       },
-      failure: (f) => _snack(f.message ?? l10n.errorUnknown),
+      failure: (f) => _snack(f.localizedMessage(l10n)),
     );
   }
 
@@ -168,7 +169,7 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
         ref.read(communityEventsProvider(_id).notifier).remove(event.id);
         _snack(l10n.eventDeletedToast);
       },
-      failure: (f) => _snack(f.message ?? l10n.errorUnknown),
+      failure: (f) => _snack(f.localizedMessage(l10n)),
     );
   }
 

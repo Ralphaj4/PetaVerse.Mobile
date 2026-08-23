@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/errors/failure.dart';
+import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
@@ -57,7 +58,7 @@ class WeightHistoryPage extends ConsumerWidget {
         context.showSuccessSnackBar(l10n.healthWeightDeleteSuccess);
       },
       failure: (f) => context.showErrorSnackBar(
-        f.message?.isNotEmpty == true ? f.message! : l10n.errorUnknown,
+        f.localizedMessage(l10n),
       ),
     );
   }

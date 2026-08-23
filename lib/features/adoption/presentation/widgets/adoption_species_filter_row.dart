@@ -86,8 +86,8 @@ class _AdoptionSpeciesFilterRowState extends State<AdoptionSpeciesFilterRow> {
           return _SpeciesChip(
             key: _keyFor(e.id),
             label: e.label,
-            icon: e.id == null
-                ? FluentIcons.animal_paw_print_24_filled
+            glyph: e.id == null
+                ? const SpeciesGlyph.icon(FluentIcons.animal_paw_print_24_filled)
                 : AdoptionFormat.speciesIcon(e.label),
             isSelected: e.id == widget.selectedId,
             onTap: () => widget.onSelected(e.id),
@@ -101,14 +101,14 @@ class _AdoptionSpeciesFilterRowState extends State<AdoptionSpeciesFilterRow> {
 class _SpeciesChip extends StatelessWidget {
   const _SpeciesChip({
     required this.label,
-    required this.icon,
+    required this.glyph,
     required this.isSelected,
     required this.onTap,
     super.key,
   });
 
   final String label;
-  final IconData icon;
+  final SpeciesGlyph glyph;
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -148,8 +148,8 @@ class _SpeciesChip extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                icon,
+              SpeciesGlyphIcon(
+                glyph: glyph,
                 size: 17,
                 color: isSelected ? AppColors.onPrimary : accent,
               ),

@@ -9,6 +9,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
@@ -74,9 +75,7 @@ class EventDetailPage extends ConsumerWidget {
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
           ..showSnackBar(SnackBar(
-            content: Text(f.message?.isNotEmpty == true
-                ? f.message!
-                : context.l10n.eventRsvpFailed),
+            content: Text(f.localizedMessage(context.l10n)),
           ));
       },
     );
@@ -129,7 +128,7 @@ class EventDetailPage extends ConsumerWidget {
       failure: (f) => ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(SnackBar(
-          content: Text(f.message ?? l10n.errorUnknown),
+          content: Text(f.localizedMessage(l10n)),
         )),
     );
   }

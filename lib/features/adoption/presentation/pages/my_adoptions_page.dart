@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/errors/failure.dart';
+import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -408,7 +409,7 @@ class _MyApplicationsTabState extends ConsumerState<_MyApplicationsTab> {
         }
       },
       failure: (f) => context.showErrorSnackBar(
-        f.message?.isNotEmpty == true ? f.message! : l10n.errorUnknown,
+        f.localizedMessage(l10n),
       ),
     );
   }
@@ -438,7 +439,7 @@ class _MyApplicationsTabState extends ConsumerState<_MyApplicationsTab> {
         context.showSuccessSnackBar(l10n.adoptionCancelSuccess);
       },
       failure: (f) => context.showErrorSnackBar(
-        f.message?.isNotEmpty == true ? f.message! : l10n.errorUnknown,
+        f.localizedMessage(l10n),
       ),
     );
   }

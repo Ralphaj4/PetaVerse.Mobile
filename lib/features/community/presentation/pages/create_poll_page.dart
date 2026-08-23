@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -138,9 +139,7 @@ class _CreatePollPageState extends ConsumerState<CreatePollPage> {
       failure: (f) => ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(SnackBar(
-          content: Text(f.message?.isNotEmpty == true
-              ? f.message!
-              : l10n.pollCreateFailed),
+          content: Text(f.localizedMessage(l10n)),
         )),
     );
   }

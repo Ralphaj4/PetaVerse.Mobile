@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/app/router/app_router.dart';
+import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
@@ -79,7 +80,7 @@ class _AdoptionListingDetailPageState
         context.showSuccessSnackBar(l10n.adoptionApplySuccess);
       },
       failure: (f) => context.showErrorSnackBar(
-        f.message?.isNotEmpty == true ? f.message! : l10n.errorUnknown,
+        f.localizedMessage(l10n),
       ),
     );
   }
@@ -128,7 +129,7 @@ class _AdoptionListingDetailPageState
         context.pop();
       },
       failure: (f) => context.showErrorSnackBar(
-        f.message?.isNotEmpty == true ? f.message! : l10n.errorUnknown,
+        f.localizedMessage(l10n),
       ),
     );
   }
@@ -553,7 +554,7 @@ class _FactsGrid extends StatelessWidget {
     final ageLabel = AdoptionFormat.age(l10n, pet.dateOfBirth, now: now);
     final sexLabel = AdoptionFormat.sex(l10n, pet.gender);
 
-    final facts = <(IconData, String, String)>[
+    final facts = <(SpeciesGlyph, String, String)>[
       if (pet.speciesName != null && pet.speciesName!.isNotEmpty)
         (
           AdoptionFormat.speciesIcon(pet.speciesName),
@@ -561,10 +562,14 @@ class _FactsGrid extends StatelessWidget {
           pet.speciesName!,
         ),
       if (ageLabel != null)
-        (FluentIcons.calendar_24_regular, l10n.adoptionFactAge, ageLabel),
+        (
+          const SpeciesGlyph.icon(FluentIcons.calendar_24_regular),
+          l10n.adoptionFactAge,
+          ageLabel,
+        ),
       if (sexLabel != null)
         (
-          FluentIcons.animal_paw_print_24_regular,
+          const SpeciesGlyph.icon(FluentIcons.animal_paw_print_24_regular),
           l10n.adoptionFactSex,
           sexLabel,
         ),
@@ -597,7 +602,7 @@ class _FactTile extends StatelessWidget {
     required this.value,
   });
 
-  final IconData icon;
+  final SpeciesGlyph icon;
   final String label;
   final String value;
 
@@ -612,7 +617,7 @@ class _FactTile extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: AppColors.primary),
+          SpeciesGlyphIcon(glyph: icon, size: 20, color: AppColors.primary),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Column(

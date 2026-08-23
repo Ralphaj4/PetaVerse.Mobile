@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
@@ -87,9 +88,7 @@ class _PollCardState extends ConsumerState<PollCard> {
       success: (updated) => ref
           .read(communityPollsProvider(widget.communityId).notifier)
           .replace(updated),
-      failure: (f) => _snack(
-        f.message?.isNotEmpty == true ? f.message! : l10n.pollVoteFailed,
-      ),
+      failure: (f) => _snack(f.localizedMessage(l10n)),
     );
   }
 

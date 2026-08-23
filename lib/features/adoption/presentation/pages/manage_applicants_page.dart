@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/app/router/app_router.dart';
+import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -86,7 +87,7 @@ class _ManageApplicantsPageState extends ConsumerState<ManageApplicantsPage> {
         );
       },
       failure: (f) => context.showErrorSnackBar(
-        f.message?.isNotEmpty == true ? f.message! : l10n.errorUnknown,
+        f.localizedMessage(l10n),
       ),
     );
   }
@@ -117,7 +118,7 @@ class _ManageApplicantsPageState extends ConsumerState<ManageApplicantsPage> {
         context.showSuccessSnackBar(l10n.adoptionRejectSuccess);
       },
       failure: (f) => context.showErrorSnackBar(
-        f.message?.isNotEmpty == true ? f.message! : l10n.errorUnknown,
+        f.localizedMessage(l10n),
       ),
     );
   }
@@ -166,7 +167,7 @@ class _ManageApplicantsPageState extends ConsumerState<ManageApplicantsPage> {
         );
       },
       failure: (f) => context.showErrorSnackBar(
-        f.message?.isNotEmpty == true ? f.message! : l10n.errorUnknown,
+        f.localizedMessage(l10n),
       ),
     );
   }
