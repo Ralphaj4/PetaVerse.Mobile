@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../domain/entities/appointment.dart';
 import '../../domain/entities/health_lookup.dart';
 import '../../domain/entities/medication.dart';
 import '../../domain/entities/pet_health_score.dart';
@@ -279,4 +280,33 @@ abstract class ConditionsContextDto with _$ConditionsContextDto {
 
   ConditionsContext toEntity() =>
       ConditionsContext(count: count, labels: labels);
+}
+
+// ── Appointments ─────────────────────────────────────────────────────────────
+
+/// Wire shape of an appointment record from `GET/POST /pets/{petId}/appointments`.
+@freezed
+abstract class AppointmentDto with _$AppointmentDto {
+  const factory AppointmentDto({
+    required int id,
+    required int petId,
+    required String title,
+    required DateTime scheduledAt,
+    String? location,
+    String? notes,
+  }) = _AppointmentDto;
+
+  const AppointmentDto._();
+
+  factory AppointmentDto.fromJson(Map<String, dynamic> json) =>
+      _$AppointmentDtoFromJson(json);
+
+  Appointment toEntity() => Appointment(
+        id: id,
+        petId: petId,
+        title: title,
+        scheduledAt: scheduledAt,
+        location: location,
+        notes: notes,
+      );
 }

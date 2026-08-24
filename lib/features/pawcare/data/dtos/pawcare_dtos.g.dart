@@ -227,3 +227,23 @@ _ConditionsContextDto _$ConditionsContextDtoFromJson(
 Map<String, dynamic> _$ConditionsContextDtoToJson(
   _ConditionsContextDto instance,
 ) => <String, dynamic>{'count': instance.count, 'labels': instance.labels};
+
+_AppointmentDto _$AppointmentDtoFromJson(Map<String, dynamic> json) =>
+    _AppointmentDto(
+      id: (json['id'] as num).toInt(),
+      petId: (json['petId'] as num).toInt(),
+      title: json['title'] as String,
+      scheduledAt: DateTime.parse(json['scheduledAt'] as String),
+      location: json['location'] as String?,
+      notes: json['notes'] as String?,
+    );
+
+Map<String, dynamic> _$AppointmentDtoToJson(_AppointmentDto instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'petId': instance.petId,
+      'title': instance.title,
+      'scheduledAt': instance.scheduledAt.toIso8601String(),
+      'location': instance.location,
+      'notes': instance.notes,
+    };

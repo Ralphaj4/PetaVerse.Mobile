@@ -174,7 +174,7 @@ final class PetHealthSnapshotProvider
   }
 }
 
-String _$petHealthSnapshotHash() => r'68189819b88c0b759f6205dac2a30b951451ef7e';
+String _$petHealthSnapshotHash() => r'4aa1de7a83011377e87c1d51df1fa065ca1dc12f';
 
 /// Loads the health snapshot for a pet — the three sections in parallel, with a
 /// single loading / error surface for the dashboard. Family-keyed so each pet
@@ -706,6 +706,92 @@ final class VaccineLookupsProvider
 }
 
 String _$vaccineLookupsHash() => r'eca444075e407435838c8b6d2368f0d1823fe233';
+
+/// Appointments for a pet, soonest first. Family-keyed per pet.
+
+@ProviderFor(petAppointments)
+final petAppointmentsProvider = PetAppointmentsFamily._();
+
+/// Appointments for a pet, soonest first. Family-keyed per pet.
+
+final class PetAppointmentsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Appointment>>,
+          List<Appointment>,
+          FutureOr<List<Appointment>>
+        >
+    with
+        $FutureModifier<List<Appointment>>,
+        $FutureProvider<List<Appointment>> {
+  /// Appointments for a pet, soonest first. Family-keyed per pet.
+  PetAppointmentsProvider._({
+    required PetAppointmentsFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'petAppointmentsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$petAppointmentsHash();
+
+  @override
+  String toString() {
+    return r'petAppointmentsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<Appointment>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<Appointment>> create(Ref ref) {
+    final argument = this.argument as int;
+    return petAppointments(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is PetAppointmentsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$petAppointmentsHash() => r'1b34493a260209b3e4dbfd45e9a04b843fc34a1d';
+
+/// Appointments for a pet, soonest first. Family-keyed per pet.
+
+final class PetAppointmentsFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<Appointment>>, int> {
+  PetAppointmentsFamily._()
+    : super(
+        retry: null,
+        name: r'petAppointmentsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Appointments for a pet, soonest first. Family-keyed per pet.
+
+  PetAppointmentsProvider call(int petId) =>
+      PetAppointmentsProvider._(argument: petId, from: this);
+
+  @override
+  String toString() => r'petAppointmentsProvider';
+}
 
 /// The pet's server-computed health score. Family-keyed per pet. Invalidate it
 /// alongside [petHealthSnapshotProvider] after the user logs data — the score

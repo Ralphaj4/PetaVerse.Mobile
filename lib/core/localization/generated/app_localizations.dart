@@ -3916,6 +3916,120 @@ abstract class AppLocalizations {
   /// **'Walks older than 2 days can\'t be deleted'**
   String get walkDeleteTooOld;
 
+  /// No description provided for @appointmentsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointments'**
+  String get appointmentsTitle;
+
+  /// No description provided for @appointmentsAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add appointment'**
+  String get appointmentsAdd;
+
+  /// No description provided for @appointmentsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming appointments. Add one to stay on schedule.'**
+  String get appointmentsEmpty;
+
+  /// No description provided for @appointmentsTitleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get appointmentsTitleLabel;
+
+  /// No description provided for @appointmentsTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Annual Check-up'**
+  String get appointmentsTitleHint;
+
+  /// No description provided for @appointmentsTitleRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an appointment title'**
+  String get appointmentsTitleRequired;
+
+  /// No description provided for @appointmentsDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date & time'**
+  String get appointmentsDateLabel;
+
+  /// No description provided for @appointmentsLocationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Location (optional)'**
+  String get appointmentsLocationLabel;
+
+  /// No description provided for @appointmentsLocationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. City Vet Clinic'**
+  String get appointmentsLocationHint;
+
+  /// No description provided for @appointmentsAddedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment added'**
+  String get appointmentsAddedSuccess;
+
+  /// No description provided for @appointmentsDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this appointment?'**
+  String get appointmentsDeleteTitle;
+
+  /// No description provided for @appointmentsDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{title} will be permanently removed.'**
+  String appointmentsDeleteMessage(String title);
+
+  /// No description provided for @appointmentsDeleteSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment deleted'**
+  String get appointmentsDeleteSuccess;
+
+  /// No description provided for @appointmentInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'In {days}d'**
+  String appointmentInDays(int days);
+
+  /// No description provided for @appointmentsEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Appointment'**
+  String get appointmentsEdit;
+
+  /// No description provided for @appointmentsUpdatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment updated'**
+  String get appointmentsUpdatedSuccess;
+
+  /// No description provided for @upcomingEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'All clear for now'**
+  String get upcomingEmptyTitle;
+
+  /// No description provided for @upcomingEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Medications, vaccinations, and appointments will appear here.'**
+  String get upcomingEmptySubtitle;
+
+  /// No description provided for @reminderAppointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment · {petName}'**
+  String reminderAppointment(Object petName);
+
   /// No description provided for @reminderMedicationDose.
   ///
   /// In en, this message translates to:

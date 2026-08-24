@@ -1,6 +1,7 @@
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
+import '../../domain/entities/appointment.dart';
 import '../../domain/entities/health_lookup.dart';
 import '../../domain/entities/health_reminder.dart';
 import '../../domain/entities/medication.dart';
@@ -184,6 +185,75 @@ class PawCareRepositoryImpl implements PawCareRepository {
   Future<Result<void>> deleteVaccination(int petId, int vaccinationId) =>
       _guard(() => _remote.deleteVaccination(petId, vaccinationId));
 
+  // ── Appointments ─────────────────────────────────────────────────────────
+
+  @override
+  Future<Result<List<Appointment>>> getAppointments(int petId) =>
+      _guard(() async {
+        final dtos = await _remote.getAppointments(petId);
+        final appts = dtos.map((e) => e.toEntity()).toList(growable: false);
+        await _cacheAppointmentReminders(petId, appts);
+        return appts;
+      });
+
+  @override
+  Future<Result<Appointment>> addAppointment(
+    int petId, {
+    required String title,
+    required DateTime scheduledAt,
+    String? location,
+    String? notes,
+  }) =>
+      _guard(() async {
+        final dto = await _remote.addAppointment(
+          petId,
+          title: title,
+          scheduledAt: scheduledAt,
+          location: location,
+          notes: notes,
+        );
+        return dto.toEntity();
+      });
+
+  @override
+  Future<Result<Appointment>> updateAppointment(
+    int petId,
+    int appointmentId, {
+    required String title,
+    required DateTime scheduledAt,
+    String? location,
+    String? notes,
+  }) =>
+      _guard(() async {
+        final dto = await _remote.updateAppointment(
+          petId,
+          appointmentId,
+          title: title,
+          scheduledAt: scheduledAt,
+          location: location,
+          notes: notes,
+        );
+        // Re-fetch to refresh the reminder cache with the updated list.
+        final all = await _remote.getAppointments(petId);
+        await _cacheAppointmentReminders(
+          petId,
+          all.map((e) => e.toEntity()).toList(growable: false),
+        );
+        return dto.toEntity();
+      });
+
+  @override
+  Future<Result<void>> deleteAppointment(int petId, int appointmentId) =>
+      _guard(() async {
+        await _remote.deleteAppointment(petId, appointmentId);
+        // Re-fetch to refresh the reminder cache without the deleted entry.
+        final all = await _remote.getAppointments(petId);
+        await _cacheAppointmentReminders(
+          petId,
+          all.map((e) => e.toEntity()).toList(growable: false),
+        );
+      });
+
   // ── Lookups ─────────────────────────────────────────────────────────────
 
   @override
@@ -235,6 +305,32 @@ class PawCareRepositoryImpl implements PawCareRepository {
     } catch (_) {
       // Ignore — reminders are a convenience cache, not source of truth.
     }
+  }
+
+  /// Caches upcoming (non-past) appointments as reminders. Best-effort.
+  Future<void> _cacheAppointmentReminders(
+    int petId,
+    List<Appointment> appts,
+  ) async {
+    try {
+      final reminders = [
+        for (final a in appts)
+          if (!a.isPast)
+            HealthReminder(
+              kind: HealthReminderKind.appointment,
+              sourceId: a.id,
+              petId: petId,
+              petName: '',
+              title: a.title,
+              dueDate: a.scheduledAt,
+            ),
+      ];
+      await _reminderCache.writeForPet(
+        petId,
+        HealthReminderKind.appointment,
+        reminders,
+      );
+    } catch (_) {}
   }
 
   /// Caches vaccinations that have a booster due date. Best-effort.

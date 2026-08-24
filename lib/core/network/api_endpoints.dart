@@ -218,6 +218,11 @@ abstract final class ApiEndpoints {
   static String mediaConfirm(String assetId) => '/media/$assetId/confirm';
   static String media(String assetId) => '/media/$assetId';
 
+  // PawCare — appointments (under a pet)
+  static String petAppointments(int petId) => '/pets/$petId/appointments';
+  static String petAppointment(int petId, int appointmentId) =>
+      '/pets/$petId/appointments/$appointmentId';
+
   // Walk activities (under a pet)
   static String petActivities(int petId) => '/pets/$petId/activities';
   static String petActivity(int petId, int activityId) =>

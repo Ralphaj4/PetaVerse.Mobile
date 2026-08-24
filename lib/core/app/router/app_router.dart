@@ -10,6 +10,7 @@ import '../../../features/auth/presentation/pages/otp_verification_page.dart';
 import '../../../features/auth/presentation/pages/register_page.dart';
 import '../../../features/assistant/presentation/pages/assistant_page.dart';
 import '../../../features/home/presentation/pages/home_page.dart';
+import '../../../features/home/presentation/pages/upcoming_reminders_page.dart';
 import '../../../features/lost_and_found/presentation/models/pet_alert.dart';
 import '../../../features/lost_and_found/presentation/pages/lost_and_found_detail_page.dart';
 import '../../../features/lost_and_found/presentation/pages/lost_and_found_page.dart';
@@ -52,9 +53,13 @@ import '../../../features/pets/presentation/pages/pet_onboarding_page.dart';
 import '../../../features/pets/presentation/pages/select_pet_page.dart';
 import '../../../features/pet_vision/presentation/pages/pet_vision_page.dart';
 import '../../../features/activity/presentation/pages/walk_history_page.dart';
+import '../../../features/pawcare/presentation/pages/add_appointment_page.dart';
+import '../../../features/pawcare/presentation/pages/edit_appointment_page.dart';
 import '../../../features/pawcare/presentation/pages/add_medication_page.dart';
 import '../../../features/pawcare/presentation/pages/add_vaccination_page.dart';
 import '../../../features/pawcare/presentation/pages/add_weight_page.dart';
+import '../../../features/pawcare/presentation/pages/appointments_list_page.dart';
+import '../../../features/pawcare/domain/entities/appointment.dart';
 import '../../../features/pawcare/presentation/pages/health_score_page.dart';
 import '../../../features/pawcare/presentation/pages/medications_list_page.dart';
 import '../../../features/pawcare/presentation/pages/vaccinations_list_page.dart';
@@ -125,6 +130,15 @@ abstract final class AppRoutes {
   static const String sandbox = '/sandbox';
   static const String tagPets = '/community/tag-pets';
 
+  // PawCare — appointments (under a pet)
+  static String addAppointmentPath(int petId) => '/pet/$petId/appointments/add';
+  static const String addAppointment = '/pet/:id/appointments/add';
+  static String appointmentsPath(int petId) => '/pet/$petId/appointments';
+  static const String appointments = '/pet/:id/appointments';
+  static String editAppointmentPath(int petId, int appointmentId) =>
+      '/pet/$petId/appointments/$appointmentId/edit';
+  static const String editAppointment = '/pet/:id/appointments/:apptId/edit';
+
   // PawCare health (under a pet)
   static String addWeightPath(int petId) => '/pet/$petId/weight/add';
   static const String addWeight = '/pet/:id/weight/add';
@@ -145,6 +159,9 @@ abstract final class AppRoutes {
   // Walk activity
   static String walkHistoryPath(int petId) => '/pet/$petId/walks';
   static const String walkHistory = '/pet/:id/walks';
+
+  // Upcoming reminders (home)
+  static const String upcomingReminders = '/upcoming';
 }
 
 /// The route a logged-in user should land on, given the RESOLVED pet gate.
@@ -490,6 +507,40 @@ GoRouter appRouter(Ref ref) {
         ),
       ),
       GoRoute(
+        path: AppRoutes.addAppointment,
+        name: 'addAppointment',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppSlideUpTransitionPage(
+          key: state.pageKey,
+          child: AddAppointmentPage(
+            petId: int.parse(state.pathParameters['id']!),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.editAppointment,
+        name: 'editAppointment',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppSlideUpTransitionPage(
+          key: state.pageKey,
+          child: EditAppointmentPage(
+            petId: int.parse(state.pathParameters['id']!),
+            appointment: state.extra as Appointment,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.appointments,
+        name: 'appointments',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+          key: state.pageKey,
+          child: AppointmentsListPage(
+            petId: int.parse(state.pathParameters['id']!),
+          ),
+        ),
+      ),
+      GoRoute(
         path: AppRoutes.healthScore,
         name: 'healthScore',
         parentNavigatorKey: _rootNavigatorKey,
@@ -498,6 +549,15 @@ GoRouter appRouter(Ref ref) {
           child: HealthScorePage(
             petId: int.parse(state.pathParameters['id']!),
           ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.upcomingReminders,
+        name: 'upcomingReminders',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+          key: state.pageKey,
+          child: const UpcomingRemindersPage(),
         ),
       ),
       GoRoute(

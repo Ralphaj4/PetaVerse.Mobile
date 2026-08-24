@@ -2241,6 +2241,70 @@ class AppLocalizationsAr extends AppLocalizations {
   String get walkDeleteTooOld => 'لا يمكن حذف النزهات الأقدم من يومين';
 
   @override
+  String get appointmentsTitle => 'المواعيد';
+
+  @override
+  String get appointmentsAdd => 'إضافة موعد';
+
+  @override
+  String get appointmentsEmpty =>
+      'لا توجد مواعيد قادمة. أضف موعداً للبقاء على المسار الصحيح.';
+
+  @override
+  String get appointmentsTitleLabel => 'العنوان';
+
+  @override
+  String get appointmentsTitleHint => 'مثال: الفحص السنوي';
+
+  @override
+  String get appointmentsTitleRequired => 'أدخل عنوان الموعد';
+
+  @override
+  String get appointmentsDateLabel => 'التاريخ والوقت';
+
+  @override
+  String get appointmentsLocationLabel => 'الموقع (اختياري)';
+
+  @override
+  String get appointmentsLocationHint => 'مثال: عيادة المدينة البيطرية';
+
+  @override
+  String get appointmentsAddedSuccess => 'تم إضافة الموعد';
+
+  @override
+  String get appointmentsDeleteTitle => 'حذف هذا الموعد؟';
+
+  @override
+  String appointmentsDeleteMessage(String title) {
+    return 'سيتم حذف $title نهائياً.';
+  }
+
+  @override
+  String get appointmentsDeleteSuccess => 'تم حذف الموعد';
+
+  @override
+  String appointmentInDays(int days) {
+    return 'بعد $days يوم';
+  }
+
+  @override
+  String get appointmentsEdit => 'تعديل الموعد';
+
+  @override
+  String get appointmentsUpdatedSuccess => 'تم تحديث الموعد';
+
+  @override
+  String get upcomingEmptyTitle => 'كل شيء على ما يرام';
+
+  @override
+  String get upcomingEmptySubtitle => 'ستظهر هنا الأدوية والتطعيمات والمواعيد.';
+
+  @override
+  String reminderAppointment(Object petName) {
+    return 'موعد · $petName';
+  }
+
+  @override
   String reminderMedicationDose(Object petName) {
     return 'دواء · $petName';
   }

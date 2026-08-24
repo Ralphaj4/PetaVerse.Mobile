@@ -14,9 +14,15 @@ import '../../../pawcare/domain/entities/health_reminder.dart';
 /// vaccination booster. Shares the [AppointmentCard] shape (date block +
 /// details + trailing icon) so the section reads consistently.
 class HealthReminderCard extends StatelessWidget {
-  const HealthReminderCard({required this.reminder, this.onTap, super.key});
+  const HealthReminderCard({
+    required this.reminder,
+    this.index = 0,
+    this.onTap,
+    super.key,
+  });
 
   final HealthReminder reminder;
+  final int index;
   final VoidCallback? onTap;
 
   @override
@@ -25,11 +31,15 @@ class HealthReminderCard extends StatelessWidget {
     final locale = Localizations.localeOf(context).toString();
     final due = reminder.dueDate;
     final isVaccine = reminder.kind == HealthReminderKind.vaccination;
-    final accent = isVaccine ? AppColors.secondary : AppColors.primary;
+    final isAppointment = reminder.kind == HealthReminderKind.appointment;
+    // Alternate orange/blue by position so no two adjacent cards share a color.
+    final accent = index.isEven ? AppColors.primary : AppColors.secondary;
 
     final subtitle = isVaccine
         ? l10n.reminderVaccinationBooster(reminder.petName)
-        : l10n.reminderMedicationDose(reminder.petName);
+        : isAppointment
+            ? l10n.reminderAppointment(reminder.petName)
+            : l10n.reminderMedicationDose(reminder.petName);
 
     final String status;
     final Color statusColor;
@@ -87,7 +97,9 @@ class HealthReminderCard extends StatelessWidget {
           Icon(
             isVaccine
                 ? FluentIcons.syringe_24_regular
-                : FluentIcons.pill_24_regular,
+                : isAppointment
+                    ? FluentIcons.calendar_ltr_24_regular
+                    : FluentIcons.pill_24_regular,
             color: accent,
           ),
         ],

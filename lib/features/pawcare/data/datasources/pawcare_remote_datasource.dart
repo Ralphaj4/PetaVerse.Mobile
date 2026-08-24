@@ -208,6 +208,64 @@ class PawCareRemoteDataSource {
     return _mapList(data, VaccineLookupDto.fromJson);
   }
 
+  // ── Appointments ─────────────────────────────────────────────────────────
+
+  /// GET /pets/{petId}/appointments → list, soonest first.
+  Future<List<AppointmentDto>> getAppointments(int petId) async {
+    final data = await _client.get<List<dynamic>>(
+      ApiEndpoints.petAppointments(petId),
+    );
+    return _mapList(data, AppointmentDto.fromJson);
+  }
+
+  /// POST /pets/{petId}/appointments → the created appointment.
+  Future<AppointmentDto> addAppointment(
+    int petId, {
+    required String title,
+    required DateTime scheduledAt,
+    String? location,
+    String? notes,
+  }) async {
+    final json = await _client.post<Map<String, dynamic>>(
+      ApiEndpoints.petAppointments(petId),
+      data: {
+        'title': title,
+        'scheduledAt': scheduledAt.toUtc().toIso8601String(),
+        if (location != null && location.isNotEmpty) 'location': location,
+        if (notes != null && notes.isNotEmpty) 'notes': notes,
+      },
+    );
+    return AppointmentDto.fromJson(json);
+  }
+
+  /// PUT /pets/{petId}/appointments/{appointmentId} → the updated appointment.
+  Future<AppointmentDto> updateAppointment(
+    int petId,
+    int appointmentId, {
+    required String title,
+    required DateTime scheduledAt,
+    String? location,
+    String? notes,
+  }) async {
+    final json = await _client.put<Map<String, dynamic>>(
+      ApiEndpoints.petAppointment(petId, appointmentId),
+      data: {
+        'title': title,
+        'scheduledAt': scheduledAt.toUtc().toIso8601String(),
+        'location': location?.isNotEmpty == true ? location : null,
+        'notes': notes?.isNotEmpty == true ? notes : null,
+      },
+    );
+    return AppointmentDto.fromJson(json);
+  }
+
+  /// DELETE /pets/{petId}/appointments/{appointmentId} → 204.
+  Future<void> deleteAppointment(int petId, int appointmentId) async {
+    await _client.delete<void>(
+      ApiEndpoints.petAppointment(petId, appointmentId),
+    );
+  }
+
   // ── Health score ──────────────────────────────────────────────────────────
 
   /// GET /pets/{petId}/health-score → the server-computed score. Computed fresh

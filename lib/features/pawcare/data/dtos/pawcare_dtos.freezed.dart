@@ -2827,4 +2827,282 @@ as List<String>,
 
 }
 
+
+/// @nodoc
+mixin _$AppointmentDto {
+
+ int get id; int get petId; String get title; DateTime get scheduledAt; String? get location; String? get notes;
+/// Create a copy of AppointmentDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AppointmentDtoCopyWith<AppointmentDto> get copyWith => _$AppointmentDtoCopyWithImpl<AppointmentDto>(this as AppointmentDto, _$identity);
+
+  /// Serializes this AppointmentDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppointmentDto&&(identical(other.id, id) || other.id == id)&&(identical(other.petId, petId) || other.petId == petId)&&(identical(other.title, title) || other.title == title)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.location, location) || other.location == location)&&(identical(other.notes, notes) || other.notes == notes));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,petId,title,scheduledAt,location,notes);
+
+@override
+String toString() {
+  return 'AppointmentDto(id: $id, petId: $petId, title: $title, scheduledAt: $scheduledAt, location: $location, notes: $notes)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AppointmentDtoCopyWith<$Res>  {
+  factory $AppointmentDtoCopyWith(AppointmentDto value, $Res Function(AppointmentDto) _then) = _$AppointmentDtoCopyWithImpl;
+@useResult
+$Res call({
+ int id, int petId, String title, DateTime scheduledAt, String? location, String? notes
+});
+
+
+
+
+}
+/// @nodoc
+class _$AppointmentDtoCopyWithImpl<$Res>
+    implements $AppointmentDtoCopyWith<$Res> {
+  _$AppointmentDtoCopyWithImpl(this._self, this._then);
+
+  final AppointmentDto _self;
+  final $Res Function(AppointmentDto) _then;
+
+/// Create a copy of AppointmentDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? petId = null,Object? title = null,Object? scheduledAt = null,Object? location = freezed,Object? notes = freezed,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,petId: null == petId ? _self.petId : petId // ignore: cast_nullable_to_non_nullable
+as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,scheduledAt: null == scheduledAt ? _self.scheduledAt : scheduledAt // ignore: cast_nullable_to_non_nullable
+as DateTime,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
+as String?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [AppointmentDto].
+extension AppointmentDtoPatterns on AppointmentDto {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AppointmentDto value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _AppointmentDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AppointmentDto value)  $default,){
+final _that = this;
+switch (_that) {
+case _AppointmentDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AppointmentDto value)?  $default,){
+final _that = this;
+switch (_that) {
+case _AppointmentDto() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int petId,  String title,  DateTime scheduledAt,  String? location,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _AppointmentDto() when $default != null:
+return $default(_that.id,_that.petId,_that.title,_that.scheduledAt,_that.location,_that.notes);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int petId,  String title,  DateTime scheduledAt,  String? location,  String? notes)  $default,) {final _that = this;
+switch (_that) {
+case _AppointmentDto():
+return $default(_that.id,_that.petId,_that.title,_that.scheduledAt,_that.location,_that.notes);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int petId,  String title,  DateTime scheduledAt,  String? location,  String? notes)?  $default,) {final _that = this;
+switch (_that) {
+case _AppointmentDto() when $default != null:
+return $default(_that.id,_that.petId,_that.title,_that.scheduledAt,_that.location,_that.notes);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _AppointmentDto extends AppointmentDto {
+  const _AppointmentDto({required this.id, required this.petId, required this.title, required this.scheduledAt, this.location, this.notes}): super._();
+  factory _AppointmentDto.fromJson(Map<String, dynamic> json) => _$AppointmentDtoFromJson(json);
+
+@override final  int id;
+@override final  int petId;
+@override final  String title;
+@override final  DateTime scheduledAt;
+@override final  String? location;
+@override final  String? notes;
+
+/// Create a copy of AppointmentDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AppointmentDtoCopyWith<_AppointmentDto> get copyWith => __$AppointmentDtoCopyWithImpl<_AppointmentDto>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$AppointmentDtoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppointmentDto&&(identical(other.id, id) || other.id == id)&&(identical(other.petId, petId) || other.petId == petId)&&(identical(other.title, title) || other.title == title)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.location, location) || other.location == location)&&(identical(other.notes, notes) || other.notes == notes));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,petId,title,scheduledAt,location,notes);
+
+@override
+String toString() {
+  return 'AppointmentDto(id: $id, petId: $petId, title: $title, scheduledAt: $scheduledAt, location: $location, notes: $notes)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AppointmentDtoCopyWith<$Res> implements $AppointmentDtoCopyWith<$Res> {
+  factory _$AppointmentDtoCopyWith(_AppointmentDto value, $Res Function(_AppointmentDto) _then) = __$AppointmentDtoCopyWithImpl;
+@override @useResult
+$Res call({
+ int id, int petId, String title, DateTime scheduledAt, String? location, String? notes
+});
+
+
+
+
+}
+/// @nodoc
+class __$AppointmentDtoCopyWithImpl<$Res>
+    implements _$AppointmentDtoCopyWith<$Res> {
+  __$AppointmentDtoCopyWithImpl(this._self, this._then);
+
+  final _AppointmentDto _self;
+  final $Res Function(_AppointmentDto) _then;
+
+/// Create a copy of AppointmentDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? petId = null,Object? title = null,Object? scheduledAt = null,Object? location = freezed,Object? notes = freezed,}) {
+  return _then(_AppointmentDto(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,petId: null == petId ? _self.petId : petId // ignore: cast_nullable_to_non_nullable
+as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,scheduledAt: null == scheduledAt ? _self.scheduledAt : scheduledAt // ignore: cast_nullable_to_non_nullable
+as DateTime,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
+as String?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
 // dart format on

@@ -1,4 +1,5 @@
 import '../../../../core/errors/result.dart';
+import '../entities/appointment.dart';
 import '../entities/health_lookup.dart';
 import '../entities/medication.dart';
 import '../entities/pet_health_score.dart';
@@ -99,6 +100,33 @@ abstract interface class PawCareRepository {
 
   /// Known vaccines for the add-vaccination picker.
   Future<Result<List<HealthLookup>>> getVaccineLookups();
+
+  // ── Appointments ─────────────────────────────────────────────────────────
+
+  /// Appointments for a pet, soonest first.
+  Future<Result<List<Appointment>>> getAppointments(int petId);
+
+  /// Adds an appointment. [scheduledAt] must be in the future.
+  Future<Result<Appointment>> addAppointment(
+    int petId, {
+    required String title,
+    required DateTime scheduledAt,
+    String? location,
+    String? notes,
+  });
+
+  /// Updates an existing appointment.
+  Future<Result<Appointment>> updateAppointment(
+    int petId,
+    int appointmentId, {
+    required String title,
+    required DateTime scheduledAt,
+    String? location,
+    String? notes,
+  });
+
+  /// Deletes an appointment.
+  Future<Result<void>> deleteAppointment(int petId, int appointmentId);
 
   // ── Health score ──────────────────────────────────────────────────────────
 

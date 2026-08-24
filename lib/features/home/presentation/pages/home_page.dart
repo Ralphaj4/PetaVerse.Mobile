@@ -10,6 +10,8 @@ import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
+
 import '../../../../shared/widgets/section_header.dart';
 import '../../../activity/presentation/widgets/walk_banner.dart';
 import '../../../community/presentation/providers/pawhub_tab_provider.dart';
@@ -17,7 +19,6 @@ import '../../../pawcare/domain/entities/health_reminder.dart';
 import '../../../pawcare/presentation/providers/pawcare_providers.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
 import '../../../profile/presentation/providers/user_provider.dart';
-import '../widgets/appointment_card.dart';
 import '../widgets/health_reminder_card.dart';
 import '../widgets/home_hero_banner.dart';
 import '../widgets/pet_stat_card.dart';
@@ -83,7 +84,7 @@ class HomePage extends ConsumerWidget {
                       ),
                       const SizedBox(height: AppSpacing.xl),
                     ],
-                    SectionHeader(title: l10n.upcoming, onSeeAll: () {}),
+                    const _UpcomingSectionHeader(),
                     const SizedBox(height: AppSpacing.sm),
                     const _UpcomingSection(),
                     const SizedBox(height: AppSpacing.xl),
@@ -101,15 +102,29 @@ class HomePage extends ConsumerWidget {
   }
 }
 
-/// The "Upcoming" section body: cached health reminders (medication doses +
-/// vaccination boosters), soonest first. Falls back to a placeholder
-/// appointment card while there are none cached (the real home feed lands with
-/// the backend later).
+/// Section header for Upcoming — shows "See all" only when there are more
+/// than 3 reminders cached.
+class _UpcomingSectionHeader extends ConsumerWidget {
+  const _UpcomingSectionHeader();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final count = ref.watch(
+      upcomingHealthRemindersProvider.select((a) => a.value?.length ?? 0),
+    );
+    return SectionHeader(
+      title: l10n.upcoming,
+      onSeeAll: count > 3
+          ? () => context.push(AppRoutes.upcomingReminders)
+          : null,
+    );
+  }
+}
+
+/// The "Upcoming" section body: up to 3 cached health reminders, soonest first.
 class _UpcomingSection extends ConsumerWidget {
   const _UpcomingSection();
-
-  /// How many reminders to show inline before the "See all" affordance.
-  static const int _maxShown = 3;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -117,26 +132,55 @@ class _UpcomingSection extends ConsumerWidget {
 
     final reminders = remindersAsync.value ?? const <HealthReminder>[];
     if (reminders.isEmpty) {
-      // No cached reminders yet — keep the section populated with the sample
-      // appointment until the home backend feed exists.
-      return AppointmentCard(
-        monthLabel: 'May',
-        dayLabel: '24',
-        title: 'Vet Check-up',
-        subtitle: '10:30 AM • Dr. Sophia Williams',
-        location: 'Pet Care Center',
-        onTap: () {},
-      );
+      return _UpcomingEmpty();
     }
 
-    final shown = reminders.take(_maxShown).toList(growable: false);
+    final shown = reminders.take(3).toList(growable: false);
     return Column(
       children: [
         for (var i = 0; i < shown.length; i++) ...[
           if (i > 0) const SizedBox(height: AppSpacing.sm),
-          HealthReminderCard(reminder: shown[i]),
+          HealthReminderCard(reminder: shown[i], index: i),
         ],
       ],
+    );
+  }
+}
+
+/// Shown when there are no cached health reminders yet.
+class _UpcomingEmpty extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        border: Border.all(color: AppColors.divider),
+      ),
+      child: Row(
+        children: [
+          const Icon(
+            FluentIcons.checkmark_circle_24_regular,
+            color: AppColors.secondary,
+            size: 28,
+          ),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l10n.upcomingEmptyTitle,
+                    style: AppTextStyles.titleSmall),
+                const SizedBox(height: 2),
+                Text(l10n.upcomingEmptySubtitle,
+                    style: AppTextStyles.bodySmall),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -216,7 +260,12 @@ class _QuickActionsRow extends ConsumerWidget {
             icon: FluentIcons.calendar_add_24_regular,
             color: AppColors.primary,
             label: l10n.bookAppointment,
-            onTap: () {},
+            onTap: () {
+              final pet = ref.read(petsProvider).currentPet;
+              if (pet != null) {
+                context.push(AppRoutes.appointmentsPath(pet.id));
+              }
+            },
           ),
         ),
         Expanded(

@@ -843,6 +843,35 @@
   "@walkDeleteSuccess": {},
   "walkDeleteTooOld": "Les promenades de plus de 2 jours ne peuvent pas être supprimées",
   "@walkDeleteTooOld": {},
+  "appointmentsTitle": "Rendez-vous",
+  "appointmentsAdd": "Ajouter un rendez-vous",
+  "appointmentsEmpty": "Aucun rendez-vous à venir. Ajoutez-en un pour rester organisé.",
+  "appointmentsTitleLabel": "Titre",
+  "appointmentsTitleHint": "ex. Bilan annuel",
+  "appointmentsTitleRequired": "Saisissez un titre pour le rendez-vous",
+  "appointmentsDateLabel": "Date et heure",
+  "appointmentsLocationLabel": "Lieu (optionnel)",
+  "appointmentsLocationHint": "ex. Clinique vétérinaire de la ville",
+  "appointmentsAddedSuccess": "Rendez-vous ajouté",
+  "appointmentsDeleteTitle": "Supprimer ce rendez-vous ?",
+  "appointmentsDeleteMessage": "{title} sera définitivement supprimé.",
+  "@appointmentsDeleteMessage": {
+    "placeholders": { "title": { "type": "String" } }
+  },
+  "appointmentsDeleteSuccess": "Rendez-vous supprimé",
+  "appointmentInDays": "Dans {days}j",
+  "@appointmentInDays": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+  "appointmentsEdit": "Modifier le rendez-vous",
+  "appointmentsUpdatedSuccess": "Rendez-vous mis à jour",
+  "upcomingEmptyTitle": "Tout est en ordre",
+  "upcomingEmptySubtitle": "Les médicaments, vaccinations et rendez-vous apparaîtront ici.",
+
+  "reminderAppointment": "Rendez-vous · {petName}",
+  "@reminderAppointment": {
+    "placeholders": { "petName": {} }
+  },
   "reminderMedicationDose": "Médicament · {petName}",
   "@reminderMedicationDose": {
     "placeholders": { "petName": {} }

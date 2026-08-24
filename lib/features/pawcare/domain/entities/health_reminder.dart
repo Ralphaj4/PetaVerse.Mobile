@@ -4,7 +4,7 @@
 /// Built from the per-pet medication / vaccination lists at fetch time and
 /// stored locally, so the home screen can render reminders before a dedicated
 /// home endpoint exists. Reconciliation with a server feed happens later.
-enum HealthReminderKind { medication, vaccination }
+enum HealthReminderKind { medication, vaccination, appointment }
 
 class HealthReminder {
   const HealthReminder({

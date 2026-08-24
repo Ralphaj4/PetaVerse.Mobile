@@ -2246,6 +2246,72 @@ class AppLocalizationsFr extends AppLocalizations {
       'Les promenades de plus de 2 jours ne peuvent pas être supprimées';
 
   @override
+  String get appointmentsTitle => 'Rendez-vous';
+
+  @override
+  String get appointmentsAdd => 'Ajouter un rendez-vous';
+
+  @override
+  String get appointmentsEmpty =>
+      'Aucun rendez-vous à venir. Ajoutez-en un pour rester organisé.';
+
+  @override
+  String get appointmentsTitleLabel => 'Titre';
+
+  @override
+  String get appointmentsTitleHint => 'ex. Bilan annuel';
+
+  @override
+  String get appointmentsTitleRequired =>
+      'Saisissez un titre pour le rendez-vous';
+
+  @override
+  String get appointmentsDateLabel => 'Date et heure';
+
+  @override
+  String get appointmentsLocationLabel => 'Lieu (optionnel)';
+
+  @override
+  String get appointmentsLocationHint => 'ex. Clinique vétérinaire de la ville';
+
+  @override
+  String get appointmentsAddedSuccess => 'Rendez-vous ajouté';
+
+  @override
+  String get appointmentsDeleteTitle => 'Supprimer ce rendez-vous ?';
+
+  @override
+  String appointmentsDeleteMessage(String title) {
+    return '$title sera définitivement supprimé.';
+  }
+
+  @override
+  String get appointmentsDeleteSuccess => 'Rendez-vous supprimé';
+
+  @override
+  String appointmentInDays(int days) {
+    return 'Dans ${days}j';
+  }
+
+  @override
+  String get appointmentsEdit => 'Modifier le rendez-vous';
+
+  @override
+  String get appointmentsUpdatedSuccess => 'Rendez-vous mis à jour';
+
+  @override
+  String get upcomingEmptyTitle => 'Tout est en ordre';
+
+  @override
+  String get upcomingEmptySubtitle =>
+      'Les médicaments, vaccinations et rendez-vous apparaîtront ici.';
+
+  @override
+  String reminderAppointment(Object petName) {
+    return 'Rendez-vous · $petName';
+  }
+
+  @override
   String reminderMedicationDose(Object petName) {
     return 'Médicament · $petName';
   }

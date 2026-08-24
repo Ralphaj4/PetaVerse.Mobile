@@ -10,6 +10,7 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/error_state_widget.dart';
 import '../../domain/entities/medication.dart';
 import '../providers/pawcare_providers.dart';
+import 'appointments_card.dart';
 import 'health_section_skeleton.dart';
 import 'medications_card.dart';
 import 'vaccinations_card.dart';
@@ -65,6 +66,8 @@ class HealthDashboard extends ConsumerWidget {
           HealthSectionSkeleton(rows: 3),
           SizedBox(height: AppSpacing.md),
           HealthSectionSkeleton(rows: 3),
+          SizedBox(height: AppSpacing.md),
+          HealthSectionSkeleton(rows: 2),
         ],
       ),
       error: (e, _) => ErrorStateWidget(
@@ -90,6 +93,12 @@ class HealthDashboard extends ConsumerWidget {
             vaccinations: snapshot.vaccinations,
             onAdd: () => context.push(AppRoutes.addVaccinationPath(petId)),
             onOpen: () => context.push(AppRoutes.vaccinationsPath(petId)),
+          ),
+          const SizedBox(height: AppSpacing.md),
+          AppointmentsCard(
+            appointments: snapshot.appointments,
+            onAdd: () => context.push(AppRoutes.addAppointmentPath(petId)),
+            onOpen: () => context.push(AppRoutes.appointmentsPath(petId)),
           ),
         ],
       ),

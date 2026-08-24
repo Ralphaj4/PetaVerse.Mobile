@@ -942,6 +942,35 @@
   "@walkDeleteSuccess": {},
   "walkDeleteTooOld": "Walks older than 2 days can't be deleted",
   "@walkDeleteTooOld": {},
+  "appointmentsTitle": "Appointments",
+  "appointmentsAdd": "Add appointment",
+  "appointmentsEmpty": "No upcoming appointments. Add one to stay on schedule.",
+  "appointmentsTitleLabel": "Title",
+  "appointmentsTitleHint": "e.g. Annual Check-up",
+  "appointmentsTitleRequired": "Enter an appointment title",
+  "appointmentsDateLabel": "Date & time",
+  "appointmentsLocationLabel": "Location (optional)",
+  "appointmentsLocationHint": "e.g. City Vet Clinic",
+  "appointmentsAddedSuccess": "Appointment added",
+  "appointmentsDeleteTitle": "Delete this appointment?",
+  "appointmentsDeleteMessage": "{title} will be permanently removed.",
+  "@appointmentsDeleteMessage": {
+    "placeholders": { "title": { "type": "String" } }
+  },
+  "appointmentsDeleteSuccess": "Appointment deleted",
+  "appointmentInDays": "In {days}d",
+  "@appointmentInDays": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+  "appointmentsEdit": "Edit Appointment",
+  "appointmentsUpdatedSuccess": "Appointment updated",
+  "upcomingEmptyTitle": "All clear for now",
+  "upcomingEmptySubtitle": "Medications, vaccinations, and appointments will appear here.",
+
+  "reminderAppointment": "Appointment · {petName}",
+  "@reminderAppointment": {
+    "placeholders": { "petName": {} }
+  },
   "reminderMedicationDose": "Medication · {petName}",
   "@reminderMedicationDose": {
     "placeholders": { "petName": {} }

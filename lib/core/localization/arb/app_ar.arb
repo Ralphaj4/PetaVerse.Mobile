@@ -843,6 +843,35 @@
   "@walkDeleteSuccess": {},
   "walkDeleteTooOld": "لا يمكن حذف النزهات الأقدم من يومين",
   "@walkDeleteTooOld": {},
+  "appointmentsTitle": "المواعيد",
+  "appointmentsAdd": "إضافة موعد",
+  "appointmentsEmpty": "لا توجد مواعيد قادمة. أضف موعداً للبقاء على المسار الصحيح.",
+  "appointmentsTitleLabel": "العنوان",
+  "appointmentsTitleHint": "مثال: الفحص السنوي",
+  "appointmentsTitleRequired": "أدخل عنوان الموعد",
+  "appointmentsDateLabel": "التاريخ والوقت",
+  "appointmentsLocationLabel": "الموقع (اختياري)",
+  "appointmentsLocationHint": "مثال: عيادة المدينة البيطرية",
+  "appointmentsAddedSuccess": "تم إضافة الموعد",
+  "appointmentsDeleteTitle": "حذف هذا الموعد؟",
+  "appointmentsDeleteMessage": "سيتم حذف {title} نهائياً.",
+  "@appointmentsDeleteMessage": {
+    "placeholders": { "title": { "type": "String" } }
+  },
+  "appointmentsDeleteSuccess": "تم حذف الموعد",
+  "appointmentInDays": "بعد {days} يوم",
+  "@appointmentInDays": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+  "appointmentsEdit": "تعديل الموعد",
+  "appointmentsUpdatedSuccess": "تم تحديث الموعد",
+  "upcomingEmptyTitle": "كل شيء على ما يرام",
+  "upcomingEmptySubtitle": "ستظهر هنا الأدوية والتطعيمات والمواعيد.",
+
+  "reminderAppointment": "موعد · {petName}",
+  "@reminderAppointment": {
+    "placeholders": { "petName": {} }
+  },
   "reminderMedicationDose": "دواء · {petName}",
   "@reminderMedicationDose": {
     "placeholders": { "petName": {} }

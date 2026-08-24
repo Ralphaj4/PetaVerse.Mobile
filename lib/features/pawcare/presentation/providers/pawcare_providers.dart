@@ -8,6 +8,7 @@ import '../../../pets/presentation/providers/pets_provider.dart';
 import '../../data/datasources/health_reminder_local_datasource.dart';
 import '../../data/datasources/pawcare_remote_datasource.dart';
 import '../../data/repositories/pawcare_repository_impl.dart';
+import '../../domain/entities/appointment.dart';
 import '../../domain/entities/health_lookup.dart';
 import '../../domain/entities/health_reminder.dart';
 import '../../domain/entities/medication.dart';
@@ -28,13 +29,14 @@ PawCareRepository pawCareRepository(Ref ref) => PawCareRepositoryImpl(
       ref.watch(healthReminderCacheProvider),
     );
 
-/// The three health sections a pet profile shows, fetched together so the
+/// The health sections a pet profile shows, fetched together so the
 /// dashboard has a single loading / error surface.
 class PetHealthSnapshot {
   const PetHealthSnapshot({
     required this.weights,
     required this.medications,
     required this.vaccinations,
+    required this.appointments,
   });
 
   /// Weight history, oldest first.
@@ -45,6 +47,9 @@ class PetHealthSnapshot {
 
   /// Vaccination records, most recent first.
   final List<Vaccination> vaccinations;
+
+  /// Upcoming appointments, soonest first.
+  final List<Appointment> appointments;
 
   WeightRecord? get latestWeight => weights.isEmpty ? null : weights.last;
 }
@@ -68,16 +73,18 @@ List<T> _listOrEmptyOnNotFound<T>(Result<List<T>> result) => result.when(
 @riverpod
 Future<PetHealthSnapshot> petHealthSnapshot(Ref ref, int petId) async {
   final repo = ref.watch(pawCareRepositoryProvider);
-  final (weights, medications, vaccinations) = await (
+  final (weights, medications, vaccinations, appointments) = await (
     repo.getWeightHistory(petId),
     repo.getMedications(petId),
     repo.getVaccinations(petId),
+    repo.getAppointments(petId),
   ).wait;
 
   return PetHealthSnapshot(
     weights: _listOrEmptyOnNotFound(weights),
     medications: _listOrEmptyOnNotFound(medications),
     vaccinations: _listOrEmptyOnNotFound(vaccinations),
+    appointments: _listOrEmptyOnNotFound(appointments),
   );
 }
 
@@ -163,6 +170,14 @@ Future<List<HealthLookup>> medicationLookups(Ref ref) async {
 Future<List<HealthLookup>> vaccineLookups(Ref ref) async {
   return _unwrap(
     await ref.watch(pawCareRepositoryProvider).getVaccineLookups(),
+  );
+}
+
+/// Appointments for a pet, soonest first. Family-keyed per pet.
+@riverpod
+Future<List<Appointment>> petAppointments(Ref ref, int petId) async {
+  return _listOrEmptyOnNotFound(
+    await ref.watch(pawCareRepositoryProvider).getAppointments(petId),
   );
 }
 

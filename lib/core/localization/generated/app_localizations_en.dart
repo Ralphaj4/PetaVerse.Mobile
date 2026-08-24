@@ -2222,6 +2222,71 @@ class AppLocalizationsEn extends AppLocalizations {
   String get walkDeleteTooOld => 'Walks older than 2 days can\'t be deleted';
 
   @override
+  String get appointmentsTitle => 'Appointments';
+
+  @override
+  String get appointmentsAdd => 'Add appointment';
+
+  @override
+  String get appointmentsEmpty =>
+      'No upcoming appointments. Add one to stay on schedule.';
+
+  @override
+  String get appointmentsTitleLabel => 'Title';
+
+  @override
+  String get appointmentsTitleHint => 'e.g. Annual Check-up';
+
+  @override
+  String get appointmentsTitleRequired => 'Enter an appointment title';
+
+  @override
+  String get appointmentsDateLabel => 'Date & time';
+
+  @override
+  String get appointmentsLocationLabel => 'Location (optional)';
+
+  @override
+  String get appointmentsLocationHint => 'e.g. City Vet Clinic';
+
+  @override
+  String get appointmentsAddedSuccess => 'Appointment added';
+
+  @override
+  String get appointmentsDeleteTitle => 'Delete this appointment?';
+
+  @override
+  String appointmentsDeleteMessage(String title) {
+    return '$title will be permanently removed.';
+  }
+
+  @override
+  String get appointmentsDeleteSuccess => 'Appointment deleted';
+
+  @override
+  String appointmentInDays(int days) {
+    return 'In ${days}d';
+  }
+
+  @override
+  String get appointmentsEdit => 'Edit Appointment';
+
+  @override
+  String get appointmentsUpdatedSuccess => 'Appointment updated';
+
+  @override
+  String get upcomingEmptyTitle => 'All clear for now';
+
+  @override
+  String get upcomingEmptySubtitle =>
+      'Medications, vaccinations, and appointments will appear here.';
+
+  @override
+  String reminderAppointment(Object petName) {
+    return 'Appointment · $petName';
+  }
+
+  @override
   String reminderMedicationDose(Object petName) {
     return 'Medication · $petName';
   }
