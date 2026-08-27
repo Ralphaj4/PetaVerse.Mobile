@@ -2531,6 +2531,99 @@ class AppLocalizationsAr extends AppLocalizations {
   String get notificationsAllCaughtUp => 'أنت في الموعد';
 
   @override
+  String get notificationSettings => 'إعدادات الإشعارات';
+
+  @override
+  String get notificationSettingsSubtitle => 'اختر ما تريد الإشعار به';
+
+  @override
+  String get notifGroupHealth => 'تذكيرات الصحة';
+
+  @override
+  String get notifGroupSocial => 'المجتمع';
+
+  @override
+  String get notifGroupAdoption => 'التبني';
+
+  @override
+  String get notifGroupCoOwnership => 'الملكية المشتركة';
+
+  @override
+  String get notifGroupNearby => 'القريب';
+
+  @override
+  String get notifGroupSecurity => 'الأمان';
+
+  @override
+  String get notifMedication => 'تذكيرات الأدوية';
+
+  @override
+  String get notifMedicationDesc =>
+      'تنبيهات الأدوية المتأخرة والقادمة لحيواناتك الأليفة';
+
+  @override
+  String get notifVaccination => 'تذكيرات التطعيم';
+
+  @override
+  String get notifVaccinationDesc =>
+      'تنبيهات الجرعات المنشطة والتطعيمات القادمة';
+
+  @override
+  String get notifAppointment => 'تذكيرات المواعيد';
+
+  @override
+  String get notifAppointmentDesc =>
+      'تذكيرات قبل 24 ساعة وساعة واحدة من المواعيد المجدولة';
+
+  @override
+  String get notifCommunityInteractions => 'الإعجابات والتعليقات والردود';
+
+  @override
+  String get notifCommunityInteractionsDesc =>
+      'عندما يعجب أحدهم بمنشوراتك أو يعلق عليها';
+
+  @override
+  String get notifNewFollower => 'متابعون جدد';
+
+  @override
+  String get notifNewFollowerDesc =>
+      'عندما يبدأ حيوان أليف في متابعة أحد حيواناتك';
+
+  @override
+  String get notifMentions => 'الإشارات';
+
+  @override
+  String get notifMentionsDesc =>
+      'عندما يشير أحدهم إلى حيوانك الأليف في منشور أو تعليق';
+
+  @override
+  String get notifAdoption => 'تحديثات التبني';
+
+  @override
+  String get notifAdoptionDesc => 'الطلبات والموافقات وإتمام نقل الملكية';
+
+  @override
+  String get notifCoOwnership => 'دعوات الملكية المشتركة';
+
+  @override
+  String get notifCoOwnershipDesc =>
+      'الدعوات لمشاركة ملكية حيوان أليف والردود على دعواتك';
+
+  @override
+  String get notifLostPetNearby => 'حيوان ضائع قريب';
+
+  @override
+  String get notifLostPetNearbyDesc =>
+      'عند الإبلاغ عن حيوان ضائع في نطاق 10 كم من موقعك';
+
+  @override
+  String get notifSecurityAlerts => 'تنبيهات الأمان';
+
+  @override
+  String get notifSecurityAlertsDesc =>
+      'تغييرات كلمة المرور وتسجيل الدخول من أجهزة جديدة — دائماً مفعّلة';
+
+  @override
   String get pawHubPostLike => 'إعجاب';
 
   @override

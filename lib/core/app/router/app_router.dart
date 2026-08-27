@@ -54,6 +54,7 @@ import '../../../features/pets/presentation/pages/select_pet_page.dart';
 import '../../../features/pet_vision/presentation/pages/pet_vision_page.dart';
 import '../../../features/activity/presentation/pages/walk_history_page.dart';
 import '../../../features/notifications/presentation/pages/notifications_page.dart';
+import '../../../features/profile/presentation/pages/notification_settings_page.dart';
 import '../../../features/pawcare/presentation/pages/add_appointment_page.dart';
 import '../../../features/pawcare/presentation/pages/edit_appointment_page.dart';
 import '../../../features/pawcare/presentation/pages/add_medication_page.dart';
@@ -166,6 +167,9 @@ abstract final class AppRoutes {
 
   // Notification center
   static const String notifications = '/notifications';
+
+  // Notification preferences
+  static const String notificationSettings = '/notification-settings';
 }
 
 /// The route a logged-in user should land on, given the RESOLVED pet gate.
@@ -1039,6 +1043,15 @@ GoRouter appRouter(Ref ref) {
         pageBuilder: (context, state) => AppTransitionPage(
               key: state.pageKey,
               child: const NotificationsPage(),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.notificationSettings,
+        name: 'notificationSettings',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+              key: state.pageKey,
+              child: const NotificationSettingsPage(),
             ),
       ),
     ],

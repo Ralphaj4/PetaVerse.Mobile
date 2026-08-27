@@ -4432,6 +4432,174 @@ abstract class AppLocalizations {
   /// **'You\'re all caught up'**
   String get notificationsAllCaughtUp;
 
+  /// No description provided for @notificationSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Settings'**
+  String get notificationSettings;
+
+  /// No description provided for @notificationSettingsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose what you want to be notified about'**
+  String get notificationSettingsSubtitle;
+
+  /// No description provided for @notifGroupHealth.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Reminders'**
+  String get notifGroupHealth;
+
+  /// No description provided for @notifGroupSocial.
+  ///
+  /// In en, this message translates to:
+  /// **'Community'**
+  String get notifGroupSocial;
+
+  /// No description provided for @notifGroupAdoption.
+  ///
+  /// In en, this message translates to:
+  /// **'Adoption'**
+  String get notifGroupAdoption;
+
+  /// No description provided for @notifGroupCoOwnership.
+  ///
+  /// In en, this message translates to:
+  /// **'Co-ownership'**
+  String get notifGroupCoOwnership;
+
+  /// No description provided for @notifGroupNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby'**
+  String get notifGroupNearby;
+
+  /// No description provided for @notifGroupSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get notifGroupSecurity;
+
+  /// No description provided for @notifMedication.
+  ///
+  /// In en, this message translates to:
+  /// **'Medication reminders'**
+  String get notifMedication;
+
+  /// No description provided for @notifMedicationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue and upcoming medication alerts for your pets'**
+  String get notifMedicationDesc;
+
+  /// No description provided for @notifVaccination.
+  ///
+  /// In en, this message translates to:
+  /// **'Vaccination reminders'**
+  String get notifVaccination;
+
+  /// No description provided for @notifVaccinationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Booster and upcoming vaccination alerts for your pets'**
+  String get notifVaccinationDesc;
+
+  /// No description provided for @notifAppointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment reminders'**
+  String get notifAppointment;
+
+  /// No description provided for @notifAppointmentDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'24-hour and 1-hour reminders before scheduled appointments'**
+  String get notifAppointmentDesc;
+
+  /// No description provided for @notifCommunityInteractions.
+  ///
+  /// In en, this message translates to:
+  /// **'Likes, comments & replies'**
+  String get notifCommunityInteractions;
+
+  /// No description provided for @notifCommunityInteractionsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'When someone likes or comments on your posts'**
+  String get notifCommunityInteractionsDesc;
+
+  /// No description provided for @notifNewFollower.
+  ///
+  /// In en, this message translates to:
+  /// **'New followers'**
+  String get notifNewFollower;
+
+  /// No description provided for @notifNewFollowerDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'When a pet starts following one of your pets'**
+  String get notifNewFollowerDesc;
+
+  /// No description provided for @notifMentions.
+  ///
+  /// In en, this message translates to:
+  /// **'Mentions'**
+  String get notifMentions;
+
+  /// No description provided for @notifMentionsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'When someone mentions your pet in a post or comment'**
+  String get notifMentionsDesc;
+
+  /// No description provided for @notifAdoption.
+  ///
+  /// In en, this message translates to:
+  /// **'Adoption updates'**
+  String get notifAdoption;
+
+  /// No description provided for @notifAdoptionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Applications, approvals, and transfer completions'**
+  String get notifAdoptionDesc;
+
+  /// No description provided for @notifCoOwnership.
+  ///
+  /// In en, this message translates to:
+  /// **'Co-ownership invites'**
+  String get notifCoOwnership;
+
+  /// No description provided for @notifCoOwnershipDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Invitations to co-own a pet and responses to your invites'**
+  String get notifCoOwnershipDesc;
+
+  /// No description provided for @notifLostPetNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Lost pet nearby'**
+  String get notifLostPetNearby;
+
+  /// No description provided for @notifLostPetNearbyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'When a lost pet is reported within 10 km of your location'**
+  String get notifLostPetNearbyDesc;
+
+  /// No description provided for @notifSecurityAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Security alerts'**
+  String get notifSecurityAlerts;
+
+  /// No description provided for @notifSecurityAlertsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Password changes and new device sign-ins — always enabled'**
+  String get notifSecurityAlertsDesc;
+
   /// No description provided for @pawHubPostLike.
   ///
   /// In en, this message translates to:

@@ -14,6 +14,10 @@ abstract final class ApiEndpoints {
   // FCM device tokens
   static const String fcmToken = '/users/me/fcm-token';
 
+  // Notification preferences
+  static const String notificationPreferences =
+      '/users/me/notification-preferences';
+
   // Users
   static const String usersMe = '/users/me';
   static const String usersProfile = '/users/profile';

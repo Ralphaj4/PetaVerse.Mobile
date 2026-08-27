@@ -2540,6 +2540,101 @@ class AppLocalizationsFr extends AppLocalizations {
   String get notificationsAllCaughtUp => 'Vous êtes à jour';
 
   @override
+  String get notificationSettings => 'Paramètres de notifications';
+
+  @override
+  String get notificationSettingsSubtitle =>
+      'Choisissez ce dont vous souhaitez être notifié';
+
+  @override
+  String get notifGroupHealth => 'Rappels de santé';
+
+  @override
+  String get notifGroupSocial => 'Communauté';
+
+  @override
+  String get notifGroupAdoption => 'Adoption';
+
+  @override
+  String get notifGroupCoOwnership => 'Co-propriété';
+
+  @override
+  String get notifGroupNearby => 'À proximité';
+
+  @override
+  String get notifGroupSecurity => 'Sécurité';
+
+  @override
+  String get notifMedication => 'Rappels de médicaments';
+
+  @override
+  String get notifMedicationDesc =>
+      'Alertes pour les médicaments en retard ou à venir';
+
+  @override
+  String get notifVaccination => 'Rappels de vaccination';
+
+  @override
+  String get notifVaccinationDesc =>
+      'Alertes pour les rappels et vaccinations à venir';
+
+  @override
+  String get notifAppointment => 'Rappels de rendez-vous';
+
+  @override
+  String get notifAppointmentDesc =>
+      'Rappels 24h et 1h avant les rendez-vous programmés';
+
+  @override
+  String get notifCommunityInteractions => 'J\'aime, commentaires et réponses';
+
+  @override
+  String get notifCommunityInteractionsDesc =>
+      'Quand quelqu\'un aime ou commente vos publications';
+
+  @override
+  String get notifNewFollower => 'Nouveaux abonnés';
+
+  @override
+  String get notifNewFollowerDesc =>
+      'Quand un animal commence à suivre l\'un de vos animaux';
+
+  @override
+  String get notifMentions => 'Mentions';
+
+  @override
+  String get notifMentionsDesc =>
+      'Quand quelqu\'un mentionne votre animal dans une publication';
+
+  @override
+  String get notifAdoption => 'Mises à jour d\'adoption';
+
+  @override
+  String get notifAdoptionDesc =>
+      'Candidatures, approbations et transferts de propriété';
+
+  @override
+  String get notifCoOwnership => 'Invitations de co-propriété';
+
+  @override
+  String get notifCoOwnershipDesc =>
+      'Invitations à co-posséder un animal et réponses à vos invitations';
+
+  @override
+  String get notifLostPetNearby => 'Animal perdu à proximité';
+
+  @override
+  String get notifLostPetNearbyDesc =>
+      'Quand un animal perdu est signalé dans un rayon de 10 km';
+
+  @override
+  String get notifSecurityAlerts => 'Alertes de sécurité';
+
+  @override
+  String get notifSecurityAlertsDesc =>
+      'Changements de mot de passe et connexions depuis un nouvel appareil — toujours activées';
+
+  @override
   String get pawHubPostLike => 'J\'aime';
 
   @override

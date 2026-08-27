@@ -5,6 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'router/app_router.dart';
+import '../notifications/notification_prefs_store.dart';
 import '../utils/logger_service.dart';
 import '../storage/sync_flag_store.dart';
 import 'notification_service.dart';
@@ -127,12 +128,68 @@ class FcmHandler {
     await authRepo.registerFcmToken(token);
   }
 
+  /// Reads a notification pref synchronously from the already-open Hive box.
+  /// Defaults to `true` (enabled) if the box isn't open or the key is absent.
+  static bool _isPrefEnabled(String key) {
+    try {
+      final box = Hive.box<bool>('notification_prefs');
+      return box.get(key, defaultValue: true) ?? true;
+    } catch (_) {
+      return true; // box not open yet — allow through
+    }
+  }
+
+  /// Maps a FCM message to the pref key that controls its visibility.
+  /// Returns null for security-category messages — they are always allowed.
+  static String? _prefKeyForMessage(RemoteMessage message) {
+    final category = message.data[FcmPayloadKeys.category] as String?;
+    final type = message.data['type'] as String?;
+
+    // Emergency: only lost-pet is toggleable; security alerts always pass.
+    if (category == 'emergency') {
+      if (type == 'lost_pet_nearby') return NotifPrefKeys.lostPetNearby;
+      return null; // security alerts — always allowed
+    }
+
+    // Social sub-types
+    if (category == 'social') {
+      return switch (type) {
+        'post_liked' || 'post_commented' || 'comment_replied' =>
+          NotifPrefKeys.communityInteractions,
+        'new_follower' => NotifPrefKeys.newFollower,
+        'mention' => NotifPrefKeys.mentions,
+        'adoption_application' ||
+        'adoption_approved' ||
+        'adoption_rejected' ||
+        'adoption_confirmed' ||
+        'adoption_complete' ||
+        'adoption_withdrawn' =>
+          NotifPrefKeys.adoption,
+        'co_ownership_invite' ||
+        'co_ownership_accepted' ||
+        'co_ownership_declined' =>
+          NotifPrefKeys.coOwnership,
+        _ => NotifPrefKeys.communityInteractions,
+      };
+    }
+
+    return switch (category) {
+      'medication' => NotifPrefKeys.medication,
+      'vaccination' => NotifPrefKeys.vaccination,
+      'appointment' => NotifPrefKeys.appointment,
+      _ => null, // unknown/marketplace — always allow
+    };
+  }
+
   static void _showLocalDirect(
     NotificationService notificationService,
     RemoteMessage message,
   ) {
     final notification = message.notification;
     if (notification == null) return;
+
+    final prefKey = _prefKeyForMessage(message);
+    if (prefKey != null && !_isPrefEnabled(prefKey)) return;
 
     final category = NotificationCategory.fromString(
           message.data[FcmPayloadKeys.category],
@@ -149,6 +206,11 @@ class FcmHandler {
   }
 
   static void _navigateDirect(GoRouter router, RemoteMessage message) {
+    // Respect the user's pref even on tap — don't navigate to a screen for a
+    // category they've disabled (security alerts always navigate through).
+    final prefKey = _prefKeyForMessage(message);
+    if (prefKey != null && !_isPrefEnabled(prefKey)) return;
+
     final data = message.data;
 
     // Explicit route takes priority over category-based routing.

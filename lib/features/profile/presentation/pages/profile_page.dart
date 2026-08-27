@@ -132,8 +132,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 icon: FluentIcons.alert_24_regular,
                 iconColor: AppColors.secondary,
                 label: l10n.notifications,
-                statusLabel: l10n.toggleOn,
-                onTap: () {},
+                onTap: () => context.push(AppRoutes.notificationSettings),
               ),
               const SizedBox(height: AppSpacing.sm),
               SettingsTile(
