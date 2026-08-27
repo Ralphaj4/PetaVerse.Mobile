@@ -657,6 +657,21 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get aiStartingSession => 'جارٍ بدء محادثة جديدة…';
+
+  @override
+  String get aiSessionError => 'تعذّر بدء المحادثة. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get aiResponseError => 'فشل الرد. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get aiRateLimitError => 'رسائل كثيرة جداً. يرجى الانتظار لحظة.';
+
+  @override
+  String get aiAttach => 'إرفاق';
+
+  @override
   String get fieldRequired => 'هذا الحقل مطلوب';
 
   @override

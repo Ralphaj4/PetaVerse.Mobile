@@ -659,6 +659,22 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get aiStartingSession => 'Starting a new conversation…';
+
+  @override
+  String get aiSessionError =>
+      'Couldn\'t start a conversation. Please try again.';
+
+  @override
+  String get aiResponseError => 'Response failed. Please try again.';
+
+  @override
+  String get aiRateLimitError => 'Too many messages. Please wait a moment.';
+
+  @override
+  String get aiAttach => 'Attach';
+
+  @override
   String get fieldRequired => 'This field is required';
 
   @override

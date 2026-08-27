@@ -125,6 +125,10 @@ abstract final class ApiEndpoints {
 
   // AI Assistant
   static const String aiChat = '/ai/chat';
+  static const String aiChatSessions = '/ai/chat/sessions';
+  static String aiChatSession(int id) => '/ai/chat/sessions/$id';
+  static String aiChatMessages(int sessionId) =>
+      '/ai/chat/sessions/$sessionId/messages';
 
   // Services directory
   static const String services = '/services';

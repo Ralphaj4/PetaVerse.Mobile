@@ -281,6 +281,11 @@
       "petName": { "type": "String" }
     }
   },
+  "aiStartingSession": "Starting a new conversation…",
+  "aiSessionError": "Couldn't start a conversation. Please try again.",
+  "aiResponseError": "Response failed. Please try again.",
+  "aiRateLimitError": "Too many messages. Please wait a moment.",
+  "aiAttach": "Attach",
   "fieldRequired": "This field is required",
   "passwordTooShort": "Password must be at least 8 characters",
   "confirmPassword": "Confirm Password",

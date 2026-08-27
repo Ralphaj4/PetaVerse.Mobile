@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart'; // send icon
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -10,13 +10,11 @@ class ChatInputBar extends StatefulWidget {
   const ChatInputBar({
     required this.hint,
     required this.onSend,
-    this.onAttach,
     super.key,
   });
 
   final String hint;
   final ValueChanged<String> onSend;
-  final VoidCallback? onAttach;
 
   @override
   State<ChatInputBar> createState() => _ChatInputBarState();
@@ -60,14 +58,6 @@ class _ChatInputBarState extends State<ChatInputBar> {
       ),
       child: Row(
         children: [
-          IconButton(
-            onPressed: widget.onAttach,
-            icon: const Icon(
-              FluentIcons.add_24_regular,
-              color: AppColors.textSecondary,
-            ),
-            tooltip: 'Attach',
-          ),
           Expanded(
             child: Container(
               padding: const EdgeInsets.symmetric(
@@ -84,11 +74,18 @@ class _ChatInputBarState extends State<ChatInputBar> {
                 maxLines: 4,
                 textInputAction: TextInputAction.send,
                 onSubmitted: (_) => _send(),
-                decoration: InputDecoration.collapsed(
+                decoration: InputDecoration(
                   hintText: widget.hint,
                   hintStyle: AppTextStyles.bodyMedium.copyWith(
                     color: AppColors.textTertiary,
                   ),
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  filled: true,
+                  fillColor: AppColors.background,
+                  isDense: true,
+                  contentPadding: EdgeInsets.zero,
                 ),
                 style: AppTextStyles.bodyMedium,
               ),

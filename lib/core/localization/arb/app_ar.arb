@@ -281,6 +281,11 @@
       "petName": { "type": "String" }
     }
   },
+  "aiStartingSession": "جارٍ بدء محادثة جديدة…",
+  "aiSessionError": "تعذّر بدء المحادثة. يرجى المحاولة مرة أخرى.",
+  "aiResponseError": "فشل الرد. يرجى المحاولة مرة أخرى.",
+  "aiRateLimitError": "رسائل كثيرة جداً. يرجى الانتظار لحظة.",
+  "aiAttach": "إرفاق",
   "fieldRequired": "هذا الحقل مطلوب",
   "passwordTooShort": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
   "confirmPassword": "تأكيد كلمة المرور",

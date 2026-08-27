@@ -665,6 +665,22 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get aiStartingSession => 'Démarrage d\'une nouvelle conversation…';
+
+  @override
+  String get aiSessionError =>
+      'Impossible de démarrer une conversation. Veuillez réessayer.';
+
+  @override
+  String get aiResponseError => 'Réponse échouée. Veuillez réessayer.';
+
+  @override
+  String get aiRateLimitError => 'Trop de messages. Veuillez patienter.';
+
+  @override
+  String get aiAttach => 'Joindre';
+
+  @override
   String get fieldRequired => 'Ce champ est requis';
 
   @override

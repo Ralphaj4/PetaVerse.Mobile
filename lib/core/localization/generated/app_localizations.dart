@@ -1276,6 +1276,36 @@ abstract class AppLocalizations {
   /// **'Store vaccination records and medical history for {petName}.'**
   String aiHealthVaultSubtitle(String petName);
 
+  /// No description provided for @aiStartingSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting a new conversation…'**
+  String get aiStartingSession;
+
+  /// No description provided for @aiSessionError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t start a conversation. Please try again.'**
+  String get aiSessionError;
+
+  /// No description provided for @aiResponseError.
+  ///
+  /// In en, this message translates to:
+  /// **'Response failed. Please try again.'**
+  String get aiResponseError;
+
+  /// No description provided for @aiRateLimitError.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many messages. Please wait a moment.'**
+  String get aiRateLimitError;
+
+  /// No description provided for @aiAttach.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach'**
+  String get aiAttach;
+
   /// No description provided for @fieldRequired.
   ///
   /// In en, this message translates to:

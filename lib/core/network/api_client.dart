@@ -81,6 +81,43 @@ class ApiClient {
   Future<T> deleteWithBody<T>(String path, {Object? data, Options? options}) =>
       _request(() => _dio.delete<T>(path, data: data, options: options));
 
+  /// POST to a Server-Sent Events endpoint and yield raw SSE frame strings.
+  ///
+  /// Uses [ResponseType.stream] so the auth/culture interceptors still apply.
+  /// Each yielded string is one complete SSE frame (event + data + blank line).
+  /// The caller (datasource) is responsible for parsing the frames.
+  Stream<String> postSse(String path, {Object? data}) async* {
+    final response = await _dio.post<ResponseBody>(
+      path,
+      data: data,
+      options: Options(
+        responseType: ResponseType.stream,
+        headers: {'Accept': 'text/event-stream'},
+      ),
+    );
+
+    final stream = response.data!.stream;
+    final buffer = StringBuffer();
+
+    await for (final chunk in stream) {
+      buffer.write(String.fromCharCodes(chunk));
+      final raw = buffer.toString();
+      // SSE frames are separated by blank lines (\n\n).
+      final frames = raw.split('\n\n');
+      // Keep the last (potentially incomplete) fragment in the buffer.
+      buffer
+        ..clear()
+        ..write(frames.removeLast());
+      for (final frame in frames) {
+        final trimmed = frame.trim();
+        if (trimmed.isNotEmpty) yield trimmed;
+      }
+    }
+    // Flush any remaining content (stream closed without trailing \n\n).
+    final remaining = buffer.toString().trim();
+    if (remaining.isNotEmpty) yield remaining;
+  }
+
   Future<T> _request<T>(Future<Response<T>> Function() send) async {
     try {
       final response = await send();
