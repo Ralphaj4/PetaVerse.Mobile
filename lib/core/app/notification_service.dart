@@ -7,8 +7,8 @@ import '../utils/logger_service.dart';
 
 part 'notification_service.g.dart';
 
-/// Notification categories — each gets its own channel so users can
-/// control them independently (never one channel for everything).
+/// Notification categories — each gets its own Android channel so users
+/// can control them independently in system settings.
 enum NotificationCategory {
   medication('medication', 'Medication'),
   vaccination('vaccination', 'Vaccination'),
@@ -21,22 +21,37 @@ enum NotificationCategory {
 
   final String channelId;
   final String channelName;
+
+  static NotificationCategory? fromString(String? value) {
+    if (value == null) return null;
+    for (final c in values) {
+      if (c.channelId == value) return c;
+    }
+    return null;
+  }
 }
 
-/// Schedules and cancels local notifications (reminders).
-///
-/// Push notifications will additionally arrive through Firebase Messaging
-/// once the Firebase project is configured.
-class NotificationService {
-  NotificationService(this._logger);
+// Module-level singleton so main.dart can call init() before the provider
+// container exists, and the provider shares the same instance.
+final _instance = NotificationService._();
 
-  final LoggerService _logger;
+/// Handles both scheduled local notifications (reminders) and immediate
+/// display of incoming FCM push messages while the app is in the foreground.
+class NotificationService {
+  NotificationService._();
+
+  static const _logger = LoggerService();
+
   final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
 
   bool _initialized = false;
 
-  Future<void> init() async {
+  /// Called once from main() before runApp — initializes channels and
+  /// requests Android 13+ permission.
+  static Future<void> staticInit() => _instance._init();
+
+  Future<void> _init() async {
     if (_initialized) return;
     try {
       tz_data.initializeTimeZones();
@@ -55,6 +70,40 @@ class NotificationService {
     }
   }
 
+  /// Shows an immediate notification — used for FCM foreground messages.
+  Future<void> show({
+    required int id,
+    required String title,
+    required String body,
+    required NotificationCategory category,
+    String? payload,
+  }) async {
+    if (!_initialized) return;
+    try {
+      await _plugin.show(
+        id: id,
+        title: title,
+        body: body,
+        notificationDetails: NotificationDetails(
+          android: AndroidNotificationDetails(
+            category.channelId,
+            category.channelName,
+            importance: category == NotificationCategory.emergency
+                ? Importance.max
+                : Importance.high,
+            priority: Priority.high,
+          ),
+          iOS: const DarwinNotificationDetails(),
+        ),
+        payload: payload,
+      );
+    } catch (e, st) {
+      _logger.error('Failed to show notification $id', error: e, stackTrace: st);
+    }
+  }
+
+  /// Schedules a future local notification. No-ops silently if [when] is
+  /// already in the past — safe to call without a date guard at the call site.
   Future<void> schedule({
     required int id,
     required String title,
@@ -92,5 +141,4 @@ class NotificationService {
 }
 
 @Riverpod(keepAlive: true)
-NotificationService notificationService(Ref ref) =>
-    NotificationService(const LoggerService());
+NotificationService notificationService(Ref ref) => _instance;

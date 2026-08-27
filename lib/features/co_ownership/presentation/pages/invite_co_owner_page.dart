@@ -203,7 +203,7 @@ class _InviteCoOwnerPageState extends ConsumerState<InviteCoOwnerPage> {
         elevation: 0,
         scrolledUnderElevation: 0,
         leading: IconButton(
-          onPressed: () => context.pop(),
+          onPressed: () => context.popOrHome(),
           tooltip: l10n.close,
           icon: Icon(
             context.isRtl

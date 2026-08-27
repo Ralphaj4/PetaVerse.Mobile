@@ -323,16 +323,18 @@ abstract class _$AdoptionListingsNotifier
   }
 }
 
-/// A single listing by id, for the detail screen. Seeded instantly from the
-/// already-loaded board list when present (so the detail opens with no spinner),
-/// otherwise fetched by id.
+/// A single listing by id, for the detail screen. Always fetches fresh from the
+/// server so the detail reflects the latest applicant count and status. The
+/// [initialListing] passed via GoRouter extra seeds the Hero/header immediately
+/// while the fetch completes — no blank frame, no stale data.
 
 @ProviderFor(adoptionListing)
 final adoptionListingProvider = AdoptionListingFamily._();
 
-/// A single listing by id, for the detail screen. Seeded instantly from the
-/// already-loaded board list when present (so the detail opens with no spinner),
-/// otherwise fetched by id.
+/// A single listing by id, for the detail screen. Always fetches fresh from the
+/// server so the detail reflects the latest applicant count and status. The
+/// [initialListing] passed via GoRouter extra seeds the Hero/header immediately
+/// while the fetch completes — no blank frame, no stale data.
 
 final class AdoptionListingProvider
     extends
@@ -342,9 +344,10 @@ final class AdoptionListingProvider
           FutureOr<AdoptionListing>
         >
     with $FutureModifier<AdoptionListing>, $FutureProvider<AdoptionListing> {
-  /// A single listing by id, for the detail screen. Seeded instantly from the
-  /// already-loaded board list when present (so the detail opens with no spinner),
-  /// otherwise fetched by id.
+  /// A single listing by id, for the detail screen. Always fetches fresh from the
+  /// server so the detail reflects the latest applicant count and status. The
+  /// [initialListing] passed via GoRouter extra seeds the Hero/header immediately
+  /// while the fetch completes — no blank frame, no stale data.
   AdoptionListingProvider._({
     required AdoptionListingFamily super.from,
     required int super.argument,
@@ -389,11 +392,12 @@ final class AdoptionListingProvider
   }
 }
 
-String _$adoptionListingHash() => r'696b3f73d3fad6966dbf0e3acfaedcfe611713fe';
+String _$adoptionListingHash() => r'028e09c11f39889d8c580862344427f9dd40ab5a';
 
-/// A single listing by id, for the detail screen. Seeded instantly from the
-/// already-loaded board list when present (so the detail opens with no spinner),
-/// otherwise fetched by id.
+/// A single listing by id, for the detail screen. Always fetches fresh from the
+/// server so the detail reflects the latest applicant count and status. The
+/// [initialListing] passed via GoRouter extra seeds the Hero/header immediately
+/// while the fetch completes — no blank frame, no stale data.
 
 final class AdoptionListingFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<AdoptionListing>, int> {
@@ -406,9 +410,10 @@ final class AdoptionListingFamily extends $Family
         isAutoDispose: true,
       );
 
-  /// A single listing by id, for the detail screen. Seeded instantly from the
-  /// already-loaded board list when present (so the detail opens with no spinner),
-  /// otherwise fetched by id.
+  /// A single listing by id, for the detail screen. Always fetches fresh from the
+  /// server so the detail reflects the latest applicant count and status. The
+  /// [initialListing] passed via GoRouter extra seeds the Hero/header immediately
+  /// while the fetch completes — no blank frame, no stale data.
 
   AdoptionListingProvider call(int id) =>
       AdoptionListingProvider._(argument: id, from: this);
@@ -638,6 +643,111 @@ final class AdoptionListingRequestsFamily extends $Family
   String toString() => r'adoptionListingRequestsProvider';
 }
 
+/// The current user's own request for a specific listing, or null if they
+/// haven't applied. Derived from [myAdoptionRequestsProvider] so it stays in
+/// sync with any accept/cancel actions without an extra network call.
+
+@ProviderFor(myAdoptionRequestForListing)
+final myAdoptionRequestForListingProvider =
+    MyAdoptionRequestForListingFamily._();
+
+/// The current user's own request for a specific listing, or null if they
+/// haven't applied. Derived from [myAdoptionRequestsProvider] so it stays in
+/// sync with any accept/cancel actions without an extra network call.
+
+final class MyAdoptionRequestForListingProvider
+    extends
+        $FunctionalProvider<
+          MyAdoptionRequest?,
+          MyAdoptionRequest?,
+          MyAdoptionRequest?
+        >
+    with $Provider<MyAdoptionRequest?> {
+  /// The current user's own request for a specific listing, or null if they
+  /// haven't applied. Derived from [myAdoptionRequestsProvider] so it stays in
+  /// sync with any accept/cancel actions without an extra network call.
+  MyAdoptionRequestForListingProvider._({
+    required MyAdoptionRequestForListingFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'myAdoptionRequestForListingProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$myAdoptionRequestForListingHash();
+
+  @override
+  String toString() {
+    return r'myAdoptionRequestForListingProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<MyAdoptionRequest?> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  MyAdoptionRequest? create(Ref ref) {
+    final argument = this.argument as int;
+    return myAdoptionRequestForListing(ref, argument);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(MyAdoptionRequest? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<MyAdoptionRequest?>(value),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is MyAdoptionRequestForListingProvider &&
+        other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$myAdoptionRequestForListingHash() =>
+    r'4e667c2c6bada54f175717230c1cb5edfdc62326';
+
+/// The current user's own request for a specific listing, or null if they
+/// haven't applied. Derived from [myAdoptionRequestsProvider] so it stays in
+/// sync with any accept/cancel actions without an extra network call.
+
+final class MyAdoptionRequestForListingFamily extends $Family
+    with $FunctionalFamilyOverride<MyAdoptionRequest?, int> {
+  MyAdoptionRequestForListingFamily._()
+    : super(
+        retry: null,
+        name: r'myAdoptionRequestForListingProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// The current user's own request for a specific listing, or null if they
+  /// haven't applied. Derived from [myAdoptionRequestsProvider] so it stays in
+  /// sync with any accept/cancel actions without an extra network call.
+
+  MyAdoptionRequestForListingProvider call(int listingId) =>
+      MyAdoptionRequestForListingProvider._(argument: listingId, from: this);
+
+  @override
+  String toString() => r'myAdoptionRequestForListingProvider';
+}
+
 /// Creates an adoption listing for one of the current user's pets.
 ///
 /// `keepAlive` so the notifier isn't auto-disposed mid-await (which would hang
@@ -676,7 +786,7 @@ final class CreateAdoptionListingProvider
 }
 
 String _$createAdoptionListingHash() =>
-    r'c1802815ca6167e41346579e9b1fe13f2d6da162';
+    r'7901bdd0b10bb7869cf950eb0b40f7ae9b84c241';
 
 /// Creates an adoption listing for one of the current user's pets.
 ///

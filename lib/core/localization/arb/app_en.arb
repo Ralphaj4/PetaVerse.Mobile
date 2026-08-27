@@ -731,6 +731,8 @@
   "adoptionStatusPending": "Pending",
   "adoptionStatusAdopted": "Adopted",
   "adoptionStatusUnavailable": "Unavailable",
+  "adoptionStatusAdoptedSubtitle": "This pet has found a forever home.",
+  "adoptionStatusUnavailableSubtitle": "This listing is no longer accepting applications.",
   "adoptionPostedDaysAgo": "{days, plural, =1{1 day ago} other{{days} days ago}}",
   "@adoptionPostedDaysAgo": {
     "placeholders": { "days": { "type": "int" } }
@@ -1116,6 +1118,17 @@
   "@pawHubNotificationsTitle": {},
   "pawHubMarkAllRead": "Mark all read",
   "@pawHubMarkAllRead": {},
+
+  "notificationsEmptyTitle": "You're all caught up",
+  "@notificationsEmptyTitle": {},
+  "notificationsEmptyMessage": "No notifications yet. We'll let you know when something happens.",
+  "@notificationsEmptyMessage": {},
+  "notificationsSectionToday": "Today",
+  "@notificationsSectionToday": {},
+  "notificationsSectionEarlier": "Earlier",
+  "@notificationsSectionEarlier": {},
+  "notificationsAllCaughtUp": "You're all caught up",
+  "@notificationsAllCaughtUp": {},
 
   "pawHubPostLike": "Like",
   "@pawHubPostLike": {},

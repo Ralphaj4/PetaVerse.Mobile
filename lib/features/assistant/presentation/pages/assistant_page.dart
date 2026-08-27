@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
-import 'package:go_router/go_router.dart';
-
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -129,7 +127,7 @@ class _AssistantPageState extends State<AssistantPage> {
         leading: IconButton(
           icon: const Icon(FluentIcons.dismiss_24_regular),
           tooltip: l10n.close,
-          onPressed: () => context.pop(),
+          onPressed: () => context.popOrHome(),
         ),
         title: Row(
           children: [

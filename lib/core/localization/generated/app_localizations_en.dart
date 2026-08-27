@@ -1786,6 +1786,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adoptionStatusUnavailable => 'Unavailable';
 
   @override
+  String get adoptionStatusAdoptedSubtitle =>
+      'This pet has found a forever home.';
+
+  @override
+  String get adoptionStatusUnavailableSubtitle =>
+      'This listing is no longer accepting applications.';
+
+  @override
   String adoptionPostedDaysAgo(int days) {
     String _temp0 = intl.Intl.pluralLogic(
       days,
@@ -2488,6 +2496,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pawHubMarkAllRead => 'Mark all read';
+
+  @override
+  String get notificationsEmptyTitle => 'You\'re all caught up';
+
+  @override
+  String get notificationsEmptyMessage =>
+      'No notifications yet. We\'ll let you know when something happens.';
+
+  @override
+  String get notificationsSectionToday => 'Today';
+
+  @override
+  String get notificationsSectionEarlier => 'Earlier';
+
+  @override
+  String get notificationsAllCaughtUp => 'You\'re all caught up';
 
   @override
   String get pawHubPostLike => 'Like';

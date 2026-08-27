@@ -80,7 +80,7 @@ class _MyAdoptionsPageState extends ConsumerState<MyAdoptionsPage> {
                 ? FluentIcons.arrow_right_24_regular
                 : FluentIcons.arrow_left_24_regular,
           ),
-          onPressed: () => context.pop(),
+          onPressed: () => context.popOrHome(),
         ),
         actions: [
           Padding(
@@ -399,9 +399,10 @@ class _MyApplicationsTabState extends ConsumerState<_MyApplicationsTab> {
     result.when(
       success: (updated) {
         _refresh();
-        // Completion can't happen here (that's the owner's step); acceptance
-        // just records consent. If the backend returns a completed request
-        // (owner already handed over), land the pet + celebrate.
+        // Invalidate the listing detail and board so the lister sees that the
+        // adopter has confirmed (unlocks "Complete transfer" on their side).
+        ref.invalidate(adoptionListingProvider(req.listingId));
+        unawaited(ref.read(adoptionListingsProvider.notifier).refresh());
         if (updated.isCompleted) {
           _onTransferred(updated);
         } else {
@@ -436,6 +437,10 @@ class _MyApplicationsTabState extends ConsumerState<_MyApplicationsTab> {
     result.when(
       success: (_) {
         _refresh();
+        // Refresh the board and listing detail so the lister sees the
+        // withdrawn application and the listing reopens to other applicants.
+        ref.invalidate(adoptionListingProvider(req.listingId));
+        unawaited(ref.read(adoptionListingsProvider.notifier).refresh());
         context.showSuccessSnackBar(l10n.adoptionCancelSuccess);
       },
       failure: (f) => context.showErrorSnackBar(
@@ -453,7 +458,7 @@ class _MyApplicationsTabState extends ConsumerState<_MyApplicationsTab> {
       ref.read(petsProvider.notifier).addCreatedPet(
             PetRef(id: petId, name: req.pet.name, imagePath: req.pet.avatarUrl),
           );
-      ref.read(petListProvider.notifier).refresh();
+      ref.invalidate(petListProvider);
       context.push(
         AppRoutes.adoptionWelcome,
         extra: AdoptionWelcomeArgs(petId: petId, petName: req.pet.name),

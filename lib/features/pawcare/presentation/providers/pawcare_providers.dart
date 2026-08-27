@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/app/notification_service.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
 import '../../../../core/network/api_client.dart';
@@ -27,6 +28,8 @@ HealthReminderLocalDataSource healthReminderCache(Ref ref) =>
 PawCareRepository pawCareRepository(Ref ref) => PawCareRepositoryImpl(
       PawCareRemoteDataSource(ref.watch(apiClientProvider)),
       ref.watch(healthReminderCacheProvider),
+      ref.watch(notificationServiceProvider),
+      ref.watch(syncFlagStoreProvider),
     );
 
 /// The health sections a pet profile shows, fetched together so the

@@ -1793,6 +1793,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get adoptionStatusUnavailable => 'غير متاح';
 
   @override
+  String get adoptionStatusAdoptedSubtitle => 'وجد هذا الحيوان منزلاً للأبد.';
+
+  @override
+  String get adoptionStatusUnavailableSubtitle =>
+      'لم يعد هذا الإعلان يقبل طلبات التبنّي.';
+
+  @override
   String adoptionPostedDaysAgo(int days) {
     String _temp0 = intl.Intl.pluralLogic(
       days,
@@ -2506,6 +2513,22 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pawHubMarkAllRead => 'تعيين الكل كمقروء';
+
+  @override
+  String get notificationsEmptyTitle => 'أنت في الموعد';
+
+  @override
+  String get notificationsEmptyMessage =>
+      'لا إشعارات بعد. سنخبرك عندما يحدث شيء ما.';
+
+  @override
+  String get notificationsSectionToday => 'اليوم';
+
+  @override
+  String get notificationsSectionEarlier => 'سابقاً';
+
+  @override
+  String get notificationsAllCaughtUp => 'أنت في الموعد';
 
   @override
   String get pawHubPostLike => 'إعجاب';

@@ -52,12 +52,14 @@ class _ManageApplicantsPageState extends ConsumerState<ManageApplicantsPage> {
   /// spinner and the others disable while it's in flight.
   int? _busyRequestId;
 
-  /// Kicks off a background refresh of the board, this listing, and its
-  /// applicant list. Fire-and-forget — callers don't wait on it.
+  /// Kicks off a background refresh of the board, this listing, its applicant
+  /// list, and the lister's own listings tab. Fire-and-forget — callers don't
+  /// wait on it.
   void _refreshBoard() {
     unawaited(ref.read(adoptionListingsProvider.notifier).refresh());
     ref.invalidate(adoptionListingProvider(widget.listingId));
     ref.invalidate(adoptionListingRequestsProvider(widget.listingId));
+    ref.invalidate(myAdoptionListingsProvider);
   }
 
   Future<void> _approve(AdoptionRequest req, String petName) async {
@@ -153,7 +155,7 @@ class _ManageApplicantsPageState extends ConsumerState<ManageApplicantsPage> {
         if (transferredId != null) {
           ref.read(petsProvider.notifier).removePet(transferredId);
         }
-        ref.read(petListProvider.notifier).refresh();
+        ref.invalidate(petListProvider);
         _refreshBoard();
 
         // Replace this screen with the celebration (no "back" into a now-empty
@@ -195,7 +197,7 @@ class _ManageApplicantsPageState extends ConsumerState<ManageApplicantsPage> {
                 ? FluentIcons.arrow_right_24_regular
                 : FluentIcons.arrow_left_24_regular,
           ),
-          onPressed: () => context.pop(),
+          onPressed: () => context.popOrHome(),
         ),
       ),
       body: RefreshIndicator(

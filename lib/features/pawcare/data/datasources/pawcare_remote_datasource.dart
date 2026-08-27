@@ -1,3 +1,6 @@
+import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_endpoints.dart';
 import '../dtos/pawcare_dtos.dart';
@@ -17,6 +20,18 @@ class PawCareRemoteDataSource {
       data
           .map((e) => fromJson(e as Map<String, dynamic>))
           .toList(growable: false);
+
+  /// Builds Dio [Options] carrying the current FCM token so the backend can
+  /// exclude this device when fanning out a silent sync push to co-owners /
+  /// other sessions of the same user.
+  static Future<Options> _mutationOptions() async {
+    final token = await FirebaseMessaging.instance.getToken();
+    return Options(
+      headers: {
+        'X-Device-Token': ?token,
+      },
+    );
+  }
 
   // ── Weight ────────────────────────────────────────────────────────────────
 
@@ -44,13 +59,17 @@ class PawCareRemoteDataSource {
         'recordedDate': recordedDate.toUtc().toIso8601String(),
         if (notes != null && notes.isNotEmpty) 'notes': notes,
       },
+      options: await _mutationOptions(),
     );
     return WeightRecordDto.fromJson(json);
   }
 
   /// DELETE /pets/{petId}/weight/{weightId} → 204.
   Future<void> deleteWeight(int petId, int weightId) async {
-    await _client.delete<void>(ApiEndpoints.petWeightRecord(petId, weightId));
+    await _client.delete<void>(
+      ApiEndpoints.petWeightRecord(petId, weightId),
+      options: await _mutationOptions(),
+    );
   }
 
   // ── Medications ─────────────────────────────────────────────────────────
@@ -84,6 +103,7 @@ class PawCareRemoteDataSource {
         'endDate': endDate?.toUtc().toIso8601String(),
         if (notes != null && notes.isNotEmpty) 'notes': notes,
       },
+      options: await _mutationOptions(),
     );
     return MedicationDto.fromJson(json);
   }
@@ -99,6 +119,7 @@ class PawCareRemoteDataSource {
       data: {
         'givenDate': ?givenDate?.toUtc().toIso8601String(),
       },
+      options: await _mutationOptions(),
     );
     return MedicationDto.fromJson(json);
   }
@@ -128,13 +149,17 @@ class PawCareRemoteDataSource {
         'endDate': endDate?.toUtc().toIso8601String(),
         'notes': ?notes,
       },
+      options: await _mutationOptions(),
     );
     return MedicationDto.fromJson(json);
   }
 
   /// DELETE /pets/{petId}/medications/{medicationId} → 204.
   Future<void> deleteMedication(int petId, int medicationId) async {
-    await _client.delete<void>(ApiEndpoints.petMedication(petId, medicationId));
+    await _client.delete<void>(
+      ApiEndpoints.petMedication(petId, medicationId),
+      options: await _mutationOptions(),
+    );
   }
 
   /// GET /medications/upcoming?daysAhead=N → upcoming meds across all pets.
@@ -179,6 +204,7 @@ class PawCareRemoteDataSource {
         if (documentUrl != null && documentUrl.isNotEmpty)
           'documentUrl': documentUrl,
       },
+      options: await _mutationOptions(),
     );
     return VaccinationDto.fromJson(json);
   }
@@ -187,6 +213,7 @@ class PawCareRemoteDataSource {
   Future<void> deleteVaccination(int petId, int vaccinationId) async {
     await _client.delete<void>(
       ApiEndpoints.petVaccination(petId, vaccinationId),
+      options: await _mutationOptions(),
     );
   }
 
@@ -234,6 +261,7 @@ class PawCareRemoteDataSource {
         if (location != null && location.isNotEmpty) 'location': location,
         if (notes != null && notes.isNotEmpty) 'notes': notes,
       },
+      options: await _mutationOptions(),
     );
     return AppointmentDto.fromJson(json);
   }
@@ -255,6 +283,7 @@ class PawCareRemoteDataSource {
         'location': location?.isNotEmpty == true ? location : null,
         'notes': notes?.isNotEmpty == true ? notes : null,
       },
+      options: await _mutationOptions(),
     );
     return AppointmentDto.fromJson(json);
   }
@@ -263,6 +292,7 @@ class PawCareRemoteDataSource {
   Future<void> deleteAppointment(int petId, int appointmentId) async {
     await _client.delete<void>(
       ApiEndpoints.petAppointment(petId, appointmentId),
+      options: await _mutationOptions(),
     );
   }
 

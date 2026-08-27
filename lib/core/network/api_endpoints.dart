@@ -11,6 +11,9 @@ abstract final class ApiEndpoints {
   static const String resetPassword = '/auth/reset-password';
   static const String changePassword = '/auth/change-password';
 
+  // FCM device tokens
+  static const String fcmToken = '/users/me/fcm-token';
+
   // Users
   static const String usersMe = '/users/me';
   static const String usersProfile = '/users/profile';
@@ -164,6 +167,12 @@ abstract final class ApiEndpoints {
       '/community/notifications/$id';
   static const String communityNotificationsMarkAll =
       '/community/notifications/mark-all-read';
+
+  // Notification center — /api/notifications
+  static const String notifications = '/notifications';
+  static const String notificationsUnreadCount = '/notifications/unread-count';
+  static const String notificationsReadAll = '/notifications/read-all';
+  static String notificationRead(int id) => '/notifications/$id/read';
 
   // Moderation — reporting & blocking
   static String communityReportPost(int postId) =>

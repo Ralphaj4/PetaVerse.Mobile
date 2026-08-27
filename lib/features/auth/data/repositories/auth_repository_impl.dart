@@ -138,6 +138,24 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<void> registerFcmToken(String token) async {
+    try {
+      await _remote.registerFcmToken(token);
+    } catch (_) {
+      // Best-effort — a token registration failure must never break login.
+    }
+  }
+
+  @override
+  Future<void> unregisterFcmToken(String token) async {
+    try {
+      await _remote.unregisterFcmToken(token);
+    } catch (_) {
+      // Best-effort — logout proceeds regardless.
+    }
+  }
+
+  @override
   Future<bool> hasSession() async {
     final token = await _secureStorage.readAccessToken();
     if (token == null || token.isEmpty) return false;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../app/notification_service.dart';
 import '../storage/secure_storage_service.dart';
 import '../utils/jwt_utils.dart';
 
@@ -19,6 +20,9 @@ class SandboxPage extends ConsumerWidget {
         children: const [
           _SectionHeader('Auth'),
           _ExpireAccessTokenTile(),
+          SizedBox(height: 24),
+          _SectionHeader('Notifications'),
+          _LocalNotificationTile(),
         ],
       ),
     );
@@ -110,6 +114,110 @@ class _ExpireAccessTokenTileState
               )
             : const Icon(Icons.chevron_right),
         onTap: _busy ? null : _expire,
+      ),
+    );
+  }
+}
+
+/// Fires one immediate local notification per category so you can verify
+/// channels, icons, and sounds without waiting for a real health event.
+class _LocalNotificationTile extends ConsumerStatefulWidget {
+  const _LocalNotificationTile();
+
+  @override
+  ConsumerState<_LocalNotificationTile> createState() =>
+      _LocalNotificationTileState();
+}
+
+class _LocalNotificationTileState
+    extends ConsumerState<_LocalNotificationTile> {
+  bool _busy = false;
+  NotificationCategory _selected = NotificationCategory.medication;
+
+  Future<void> _fire() async {
+    setState(() => _busy = true);
+    final svc = ref.read(notificationServiceProvider);
+    await svc.show(
+      id: 999000 + _selected.index,
+      title: '[Test] ${_selected.channelName}',
+      body: 'This is a test local notification for the '
+          '${_selected.channelName} channel.',
+      category: _selected,
+    );
+    if (mounted) setState(() => _busy = false);
+  }
+
+  Future<void> _schedule() async {
+    setState(() => _busy = true);
+    final svc = ref.read(notificationServiceProvider);
+    final when = DateTime.now().add(const Duration(seconds: 5));
+    await svc.schedule(
+      id: 999100 + _selected.index,
+      title: '[Test – 5s] ${_selected.channelName}',
+      body: 'Scheduled 5 seconds ago for the ${_selected.channelName} channel.',
+      when: when,
+      category: _selected,
+    );
+    if (mounted) {
+      setState(() => _busy = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Scheduled — fires in 5 s')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Local notification test',
+                style: TextStyle(fontWeight: FontWeight.w600)),
+            const SizedBox(height: 4),
+            const Text(
+              'Pick a category then fire immediately or schedule in 5 s.',
+              style: TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+            const SizedBox(height: 12),
+            DropdownButton<NotificationCategory>(
+              value: _selected,
+              isExpanded: true,
+              onChanged: _busy
+                  ? null
+                  : (v) => setState(() => _selected = v!),
+              items: NotificationCategory.values
+                  .map(
+                    (c) => DropdownMenuItem(
+                      value: c,
+                      child: Text(c.channelName),
+                    ),
+                  )
+                  .toList(),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: FilledButton(
+                    onPressed: _busy ? null : _fire,
+                    child: const Text('Fire now'),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: _busy ? null : _schedule,
+                    child: const Text('In 5 s'),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

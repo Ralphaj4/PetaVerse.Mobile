@@ -1,7 +1,6 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/errors/failure.dart';
@@ -41,7 +40,7 @@ class HealthScorePage extends ConsumerWidget {
                 ? FluentIcons.arrow_right_24_regular
                 : FluentIcons.arrow_left_24_regular,
           ),
-          onPressed: () => context.pop(),
+          onPressed: () => context.popOrHome(),
         ),
       ),
       body: async.when(

@@ -122,7 +122,7 @@ class _AddVaccinationPageState extends ConsumerState<AddVaccinationPage> {
                 ? FluentIcons.arrow_right_24_regular
                 : FluentIcons.arrow_left_24_regular,
           ),
-          onPressed: () => context.pop(),
+          onPressed: () => context.popOrHome(),
         ),
       ),
       body: FormBuilder(

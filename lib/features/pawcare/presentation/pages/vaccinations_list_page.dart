@@ -80,7 +80,7 @@ class VaccinationsListPage extends ConsumerWidget {
                 ? FluentIcons.arrow_right_24_regular
                 : FluentIcons.arrow_left_24_regular,
           ),
-          onPressed: () => context.pop(),
+          onPressed: () => context.popOrHome(),
         ),
         actions: [
           IconButton(

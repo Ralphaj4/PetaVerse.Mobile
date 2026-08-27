@@ -64,21 +64,22 @@ class ApiClient {
   }) =>
       _request(() => _dio.get<T>(path, queryParameters: queryParameters));
 
-  Future<T> post<T>(String path, {Object? data}) =>
-      _request(() => _dio.post<T>(path, data: data));
+  Future<T> post<T>(String path, {Object? data, Options? options}) =>
+      _request(() => _dio.post<T>(path, data: data, options: options));
 
-  Future<T> put<T>(String path, {Object? data}) =>
-      _request(() => _dio.put<T>(path, data: data));
+  Future<T> put<T>(String path, {Object? data, Options? options}) =>
+      _request(() => _dio.put<T>(path, data: data, options: options));
 
-  Future<T> patch<T>(String path, {Object? data}) =>
-      _request(() => _dio.patch<T>(path, data: data));
+  Future<T> patch<T>(String path, {Object? data, Options? options}) =>
+      _request(() => _dio.patch<T>(path, data: data, options: options));
 
-  Future<T> delete<T>(String path) => _request(() => _dio.delete<T>(path));
+  Future<T> delete<T>(String path, {Options? options}) =>
+      _request(() => _dio.delete<T>(path, options: options));
 
   /// DELETE with a request body. Some endpoints (e.g. PawHub unlike / unsave /
   /// unfollow / unblock) identify the acting pet in the body even on a DELETE.
-  Future<T> deleteWithBody<T>(String path, {Object? data}) =>
-      _request(() => _dio.delete<T>(path, data: data));
+  Future<T> deleteWithBody<T>(String path, {Object? data, Options? options}) =>
+      _request(() => _dio.delete<T>(path, data: data, options: options));
 
   Future<T> _request<T>(Future<Response<T>> Function() send) async {
     try {

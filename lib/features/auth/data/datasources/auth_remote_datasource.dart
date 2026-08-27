@@ -121,4 +121,22 @@ class AuthRemoteDataSource {
       data: {'oldPassword': oldPassword, 'newPassword': newPassword},
     );
   }
+
+  /// Registers (or refreshes) a device FCM token so the backend can send
+  /// targeted push notifications to this device.
+  Future<void> registerFcmToken(String token) async {
+    await _client.post<void>(
+      ApiEndpoints.fcmToken,
+      data: {'token': token},
+    );
+  }
+
+  /// Removes a device FCM token — call on logout so the backend stops
+  /// sending pushes to this device.
+  Future<void> unregisterFcmToken(String token) async {
+    await _client.deleteWithBody<void>(
+      ApiEndpoints.fcmToken,
+      data: {'token': token},
+    );
+  }
 }

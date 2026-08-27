@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/app/router/app_router.dart';
@@ -9,10 +9,11 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_avatar.dart';
+import '../../../notifications/presentation/widgets/notification_bell.dart';
 
 /// Greeting row at the top of the home hero: time-aware greeting,
-/// notification bell, and the user's avatar.
-class HomeHeader extends StatelessWidget {
+/// notification bell (with badge), and the user's avatar.
+class HomeHeader extends ConsumerWidget {
   const HomeHeader({
     required this.userName,
     this.avatarUrl,
@@ -40,7 +41,7 @@ class HomeHeader extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       children: [
         Expanded(
@@ -54,14 +55,11 @@ class HomeHeader extends StatelessWidget {
           ),
         ),
         const SizedBox(width: AppSpacing.md),
-        IconButton(
-          onPressed: onBellTap,
-          tooltip: context.l10n.notifications,
-          icon: const Icon(
-            FluentIcons.alert_24_regular,
-            color: AppColors.onPrimary,
-          ),
+        NotificationBell(
+          onTap: onBellTap ?? () => context.push(AppRoutes.notifications),
+          color: AppColors.onPrimary,
         ),
+        const SizedBox(width: AppSpacing.sm),
         // Tap the avatar → personal information. (Debug: long-press opens the
         // sandbox.)
         GestureDetector(

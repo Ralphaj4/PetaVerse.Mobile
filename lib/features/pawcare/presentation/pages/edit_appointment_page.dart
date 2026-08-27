@@ -140,7 +140,7 @@ class _EditAppointmentPageState extends ConsumerState<EditAppointmentPage> {
                 ? FluentIcons.arrow_right_24_regular
                 : FluentIcons.arrow_left_24_regular,
           ),
-          onPressed: () => context.pop(),
+          onPressed: () => context.popOrHome(),
         ),
       ),
       body: FormBuilder(

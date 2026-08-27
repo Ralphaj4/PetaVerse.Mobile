@@ -104,7 +104,7 @@ final class PawCareRepositoryProvider
   }
 }
 
-String _$pawCareRepositoryHash() => r'a370d4ed27036ac16b560b0f6d29f570affe073a';
+String _$pawCareRepositoryHash() => r'399a004ced84f282cfcfc2c6fb4c11eac46c8b10';
 
 /// Loads the health snapshot for a pet — the three sections in parallel, with a
 /// single loading / error surface for the dashboard. Family-keyed so each pet

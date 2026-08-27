@@ -110,15 +110,12 @@ class AdoptionListingsNotifier extends _$AdoptionListingsNotifier {
   }
 }
 
-/// A single listing by id, for the detail screen. Seeded instantly from the
-/// already-loaded board list when present (so the detail opens with no spinner),
-/// otherwise fetched by id.
+/// A single listing by id, for the detail screen. Always fetches fresh from the
+/// server so the detail reflects the latest applicant count and status. The
+/// [initialListing] passed via GoRouter extra seeds the Hero/header immediately
+/// while the fetch completes — no blank frame, no stale data.
 @riverpod
 Future<AdoptionListing> adoptionListing(Ref ref, int id) async {
-  final loaded = ref.watch(adoptionListingsProvider).value;
-  final seeded = loaded?.where((l) => l.id == id);
-  if (seeded != null && seeded.isNotEmpty) return seeded.first;
-
   final result = await ref.read(adoptionRepositoryProvider).getListing(id);
   return result.when(
     success: (listing) => listing,
@@ -186,6 +183,15 @@ Future<List<AdoptionRequest>> adoptionListingRequests(
   );
 }
 
+/// The current user's own request for a specific listing, or null if they
+/// haven't applied. Derived from [myAdoptionRequestsProvider] so it stays in
+/// sync with any accept/cancel actions without an extra network call.
+@riverpod
+MyAdoptionRequest? myAdoptionRequestForListing(Ref ref, int listingId) {
+  final requests = ref.watch(myAdoptionRequestsProvider).value;
+  return requests?.where((r) => r.listingId == listingId).firstOrNull;
+}
+
 /// Creates an adoption listing for one of the current user's pets.
 ///
 /// `keepAlive` so the notifier isn't auto-disposed mid-await (which would hang
@@ -225,8 +231,8 @@ class CreateAdoptionListing extends _$CreateAdoptionListing {
     return result.when(
       success: (listing) {
         state = const AsyncData(null);
-        // Refresh the board so the new listing shows up.
         ref.read(adoptionListingsProvider.notifier).refresh();
+        ref.invalidate(myAdoptionListingsProvider);
         return listing;
       },
       failure: (f) {
@@ -278,6 +284,7 @@ class CreateAdoptionListing extends _$CreateAdoptionListing {
       success: (listing) {
         state = const AsyncData(null);
         ref.read(adoptionListingsProvider.notifier).refresh();
+        ref.invalidate(myAdoptionListingsProvider);
         return listing;
       },
       failure: (f) {

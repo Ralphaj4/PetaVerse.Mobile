@@ -54,7 +54,6 @@ class HomePage extends ConsumerWidget {
                 healthScore: 92,
                 healthStatusLabel: l10n.healthExcellent,
                 nextVisitLabel: 'Jun 21, 2026',
-                onBellTap: () {},
               ),
               // White sheet pulled up over the hero's bottom edge.
               Container(

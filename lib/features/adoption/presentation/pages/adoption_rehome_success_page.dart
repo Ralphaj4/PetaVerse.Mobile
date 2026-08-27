@@ -73,7 +73,7 @@ class AdoptionRehomeSuccessPage extends StatelessWidget {
                 label: l10n.adoptionRehomeSuccessDone,
                 icon: FluentIcons.checkmark_24_regular,
                 variant: AppButtonVariant.primary,
-                onPressed: () => context.go(AppRoutes.adoptionBoard),
+                onPressed: () => context.go(AppRoutes.home),
               ),
             ],
           ),

@@ -62,4 +62,10 @@ abstract interface class AuthRepository {
 
   /// Whether a session token is currently stored locally.
   Future<bool> hasSession();
+
+  /// Registers (or refreshes) a device FCM token with the backend.
+  Future<void> registerFcmToken(String token);
+
+  /// Removes a device FCM token on logout.
+  Future<void> unregisterFcmToken(String token);
 }

@@ -103,7 +103,7 @@ class _AddWeightPageState extends ConsumerState<AddWeightPage> {
                 ? FluentIcons.arrow_right_24_regular
                 : FluentIcons.arrow_left_24_regular,
           ),
-          onPressed: () => context.pop(),
+          onPressed: () => context.popOrHome(),
         ),
       ),
       body: ListView(

@@ -15,14 +15,29 @@ class PetaVerseApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(appRouterProvider);
     final culture = ref.watch(cultureProvider);
-    return MaterialApp.router(
-      onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
-      theme: AppTheme.light,
-      routerConfig: router,
-      locale: culture.locale,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      debugShowCheckedModeBanner: false,
+    return PopScope(
+      // Never let the OS close the app via back — if the router has nothing
+      // left to pop (e.g. the app was cold-launched from a notification deep
+      // link), go home instead of exiting.
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        final nav = router.routerDelegate.navigatorKey.currentState;
+        if (nav != null && nav.canPop()) {
+          nav.pop();
+        } else {
+          router.go(AppRoutes.home);
+        }
+      },
+      child: MaterialApp.router(
+        onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
+        theme: AppTheme.light,
+        routerConfig: router,
+        locale: culture.locale,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }

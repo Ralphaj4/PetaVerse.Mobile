@@ -16,6 +16,10 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_form_builder: ^10.3.0+2
+  firebase_core: ^3.15.1
+  firebase_messaging: ^15.2.5
+  firebase_analytics: ^11.5.1
+  firebase_crashlytics: ^4.3.5
   flutter_local_notifications: ^22.0.0
   flutter_localizations:
     sdk: flutter

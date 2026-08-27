@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,11 +17,16 @@ import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/app_cached_image.dart';
 import '../../../../shared/widgets/app_confirm_dialog.dart';
+import '../../../pets/domain/entities/pet_ref.dart';
+import '../../../pets/presentation/providers/pet_list_provider.dart';
+import '../../../pets/presentation/providers/pets_provider.dart';
 import '../../domain/entities/adoption_listing.dart';
 import '../providers/adoption_providers.dart';
 import '../widgets/adoption_card.dart';
 import '../widgets/adoption_format.dart';
 import '../widgets/adoption_status_badge.dart';
+import 'adoption_rehome_success_page.dart';
+import 'adoption_welcome_page.dart';
 
 /// Full details for a single adoption listing, fetched by id and seeded
 /// instantly from the tapped [initialListing] (so the screen is never blank and
@@ -48,10 +55,47 @@ class _AdoptionListingDetailPageState
     extends ConsumerState<AdoptionListingDetailPage> {
   bool _applying = false;
   bool _deleting = false;
+  bool _accepting = false;
+  bool _cancelling = false;
+  bool _completing = false;
 
-  /// Optimistic "applied" flag set after a successful apply, so the CTA flips
-  /// immediately without waiting for a board refetch.
-  bool _appliedOverride = false;
+  Timer? _pollTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    // Force a fresh fetch every time this page is opened so the detail is
+    // never stale from a previous visit or the board's list cache.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      ref.invalidate(adoptionListingProvider(widget.listingId));
+      ref.invalidate(myAdoptionRequestsProvider);
+    });
+  }
+
+  @override
+  void dispose() {
+    _pollTimer?.cancel();
+    super.dispose();
+  }
+
+  /// Poll both the listing and the adopter's requests every 10 s so state
+  /// changes made by the other party (approve, complete) surface automatically.
+  /// Started when the adopter has a pending or awaitingHandover request;
+  /// cancelled on transfer completion or dispose.
+  void _startPolling() {
+    if (_pollTimer != null) return;
+    _pollTimer = Timer.periodic(const Duration(seconds: 10), (_) {
+      if (!mounted) return;
+      ref.invalidate(adoptionListingProvider(widget.listingId));
+      ref.invalidate(myAdoptionRequestsProvider);
+    });
+  }
+
+  void _stopPolling() {
+    _pollTimer?.cancel();
+    _pollTimer = null;
+  }
 
   Future<void> _apply(AdoptionListing listing) async {
     final l10n = context.l10n;
@@ -66,34 +110,132 @@ class _AdoptionListingDetailPageState
     if (!confirmed || !mounted) return;
 
     setState(() => _applying = true);
-    final result =
-        await ref.read(adoptionRepositoryProvider).apply(listing.id);
+    final result = await ref.read(adoptionRepositoryProvider).apply(listing.id);
     if (!mounted) return;
     setState(() => _applying = false);
 
     result.when(
       success: (_) {
-        setState(() => _appliedOverride = true);
-        // Refresh the board + my-requests so both reflect the new application.
         ref.read(adoptionListingsProvider.notifier).refresh();
         ref.invalidate(myAdoptionRequestsProvider);
+        ref.invalidate(adoptionListingProvider(widget.listingId));
         context.showSuccessSnackBar(l10n.adoptionApplySuccess);
       },
-      failure: (f) => context.showErrorSnackBar(
-        f.localizedMessage(l10n),
-      ),
+      failure: (f) => context.showErrorSnackBar(f.localizedMessage(l10n)),
     );
+  }
+
+  Future<void> _accept(MyAdoptionRequest req) async {
+    final l10n = context.l10n;
+    setState(() => _accepting = true);
+    final result = await ref.read(adoptionRepositoryProvider).acceptRequest(req.id);
+    if (!mounted) return;
+    setState(() => _accepting = false);
+
+    result.when(
+      success: (updated) {
+        ref.invalidate(myAdoptionRequestsProvider);
+        ref.invalidate(adoptionListingProvider(widget.listingId));
+        if (updated.isCompleted) {
+          _onTransferred(updated);
+        } else {
+          context.showSuccessSnackBar(l10n.adoptionAcceptSuccess);
+        }
+      },
+      failure: (f) => context.showErrorSnackBar(f.localizedMessage(l10n)),
+    );
+  }
+
+  Future<void> _cancel(MyAdoptionRequest req) async {
+    final l10n = context.l10n;
+    final confirmed = await AppConfirmDialog.show(
+      context,
+      icon: FluentIcons.dismiss_circle_24_regular,
+      title: l10n.adoptionCancelConfirmTitle,
+      message: l10n.adoptionCancelConfirmMessage,
+      confirmLabel: l10n.adoptionCancelApplication,
+      cancelLabel: l10n.cancel,
+      isDestructive: true,
+    );
+    if (!confirmed || !mounted) return;
+
+    setState(() => _cancelling = true);
+    final result = await ref.read(adoptionRepositoryProvider).cancelRequest(req.id);
+    if (!mounted) return;
+    setState(() => _cancelling = false);
+
+    result.when(
+      success: (_) {
+        ref.invalidate(myAdoptionRequestsProvider);
+        ref.invalidate(adoptionListingProvider(widget.listingId));
+        unawaited(ref.read(adoptionListingsProvider.notifier).refresh());
+        context.showSuccessSnackBar(l10n.adoptionCancelSuccess);
+      },
+      failure: (f) => context.showErrorSnackBar(f.localizedMessage(l10n)),
+    );
+  }
+
+  Future<void> _complete(AdoptionListing listing, AdoptionRequest req) async {
+    final l10n = context.l10n;
+    final confirmed = await AppConfirmDialog.show(
+      context,
+      icon: FluentIcons.home_24_regular,
+      title: l10n.adoptionCompleteConfirmTitle(
+          listing.pet.name, req.requester.fullName),
+      message: l10n.adoptionCompleteConfirmMessage(
+          listing.pet.name, req.requester.fullName),
+      confirmLabel: l10n.adoptionCompleteTransfer,
+      cancelLabel: l10n.cancel,
+      isDestructive: true,
+    );
+    if (!confirmed || !mounted) return;
+
+    setState(() => _completing = true);
+    final result = await ref
+        .read(adoptionRepositoryProvider)
+        .completeRequest(listing.id, req.id);
+    if (!mounted) return;
+    setState(() => _completing = false);
+
+    result.when(
+      success: (transferredPet) {
+        final transferredId = transferredPet.id;
+        if (transferredId != null) {
+          ref.read(petsProvider.notifier).removePet(transferredId);
+        }
+        ref.invalidate(petListProvider);
+        ref.invalidate(myAdoptionListingsProvider);
+        unawaited(ref.read(adoptionListingsProvider.notifier).refresh());
+        context.pushReplacement(
+          AppRoutes.adoptionRehomeSuccess,
+          extra: AdoptionRehomeSuccessArgs(
+            petName: listing.pet.name,
+            adopterName: req.requester.fullName,
+          ),
+        );
+      },
+      failure: (f) => context.showErrorSnackBar(f.localizedMessage(l10n)),
+    );
+  }
+
+  void _onTransferred(MyAdoptionRequest req) {
+    final petId = req.pet.id;
+    if (petId != null) {
+      ref.read(petsProvider.notifier).addCreatedPet(
+            PetRef(id: petId, name: req.pet.name, imagePath: req.pet.avatarUrl),
+          );
+      ref.invalidate(petListProvider);
+      context.push(
+        AppRoutes.adoptionWelcome,
+        extra: AdoptionWelcomeArgs(petId: petId, petName: req.pet.name),
+      );
+    }
   }
 
   void _manage(AdoptionListing listing) {
-    context.push(
-      AppRoutes.adoptionManagePath(listing.id),
-      extra: listing,
-    );
+    context.push(AppRoutes.adoptionManagePath(listing.id), extra: listing);
   }
 
-  /// Hard-delete this listing (and all its applicant requests). Irreversible;
-  /// confirm first, surfacing the applicant count so the owner sees the impact.
   Future<void> _delete(AdoptionListing listing) async {
     final l10n = context.l10n;
     final count = listing.applicantCount;
@@ -103,9 +245,7 @@ class _AdoptionListingDetailPageState
       title: l10n.adoptionDeleteConfirmTitle,
       message: count > 0
           ? l10n.adoptionDeleteConfirmMessageWithApplicants(
-              listing.pet.name,
-              count,
-            )
+              listing.pet.name, count)
           : l10n.adoptionDeleteConfirmMessage(listing.pet.name),
       confirmLabel: l10n.adoptionDelete,
       cancelLabel: l10n.cancel,
@@ -121,25 +261,73 @@ class _AdoptionListingDetailPageState
 
     result.when(
       success: (_) {
-        // Drop it from "my listings" optimistically and refresh the board, then
-        // leave this now-defunct detail screen.
         ref.read(myAdoptionListingsProvider.notifier).remove(listing.id);
         ref.read(adoptionListingsProvider.notifier).refresh();
         context.showSuccessSnackBar(l10n.adoptionDeleteSuccess);
         context.pop();
       },
-      failure: (f) => context.showErrorSnackBar(
-        f.localizedMessage(l10n),
-      ),
+      failure: (f) => context.showErrorSnackBar(f.localizedMessage(l10n)),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final async = ref.watch(adoptionListingProvider(widget.listingId));
-    // Prefer the freshly-loaded listing; fall back to the tapped one so the
-    // header renders instantly and on error.
     final listing = async.value ?? widget.initialListing;
+    final myRequest =
+        ref.watch(myAdoptionRequestForListingProvider(widget.listingId));
+
+    // Lister: watch for the approved+accepted request so "Complete" can surface.
+    final requestsAsync = listing?.isOwnListing == true
+        ? ref.watch(adoptionListingRequestsProvider(widget.listingId))
+        : const AsyncData(<AdoptionRequest>[]);
+    final readyToComplete = requestsAsync.value?.where((r) =>
+        r.status == AdoptionRequestStatus.approved &&
+        r.adopterConfirmedAt != null).firstOrNull;
+
+    // Adopter: fire the welcome page the moment the lister completes the
+    // transfer — no manual refresh required. Two-step cascade:
+    //   1. Listen to the listing itself. When it flips to `adopted` while the
+    //      adopter has an awaitingHandover request, invalidate their requests
+    //      provider so the derived provider refreshes.
+    //   2. Listen to the derived request. When it lands on `completed`, push
+    //      the welcome page exactly once.
+    // Poll while the adopter is waiting on the other party:
+    //   pending       → waiting for lister to approve
+    //   awaitingHandover → waiting for lister to complete transfer
+    // Stop in all other states (no request, approved+unaccepted, completed).
+    final shouldPoll = myRequest?.status == AdoptionRequestStatus.pending ||
+        myRequest?.awaitingHandover == true;
+    if (shouldPoll) {
+      _startPolling();
+    } else {
+      _stopPolling();
+    }
+
+    ref.listen<AsyncValue<AdoptionListing>>(
+      adoptionListingProvider(widget.listingId),
+      (previous, next) {
+        final became = next.value;
+        if (became == null) return;
+        // Listing flipped to adopted → cascade to requests so isCompleted fires.
+        if (became.status == AdoptionListingStatus.adopted &&
+            previous?.value?.status != AdoptionListingStatus.adopted) {
+          ref.invalidate(myAdoptionRequestsProvider);
+        }
+      },
+    );
+
+    ref.listen<MyAdoptionRequest?>(
+      myAdoptionRequestForListingProvider(widget.listingId),
+      (previous, next) {
+        if (next != null &&
+            next.isCompleted &&
+            previous?.isCompleted != true) {
+          _stopPolling();
+          _onTransferred(next);
+        }
+      },
+    );
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -153,12 +341,26 @@ class _AdoptionListingDetailPageState
               )
             : _Content(
                 listing: listing,
-                applied: listing.hasApplied || _appliedOverride,
+                myRequest: myRequest,
+                readyToComplete: readyToComplete,
                 applying: _applying,
+                accepting: _accepting,
+                cancelling: _cancelling,
+                completing: _completing,
                 deleting: _deleting,
                 onApply: () => _apply(listing),
+                onAccept: myRequest != null ? () => _accept(myRequest) : null,
+                onCancel: myRequest != null ? () => _cancel(myRequest) : null,
+                onComplete: (listing.isOwnListing && readyToComplete != null)
+                    ? () => _complete(listing, readyToComplete)
+                    : null,
                 onManage: () => _manage(listing),
                 onDelete: () => _delete(listing),
+                onRefresh: () async {
+                  ref.invalidate(adoptionListingProvider(widget.listingId));
+                  ref.invalidate(myAdoptionRequestsProvider);
+                  await ref.read(adoptionListingProvider(widget.listingId).future);
+                },
               ),
       ),
     );
@@ -168,52 +370,79 @@ class _AdoptionListingDetailPageState
 class _Content extends StatelessWidget {
   const _Content({
     required this.listing,
-    required this.applied,
+    required this.myRequest,
+    required this.readyToComplete,
     required this.applying,
+    required this.accepting,
+    required this.cancelling,
+    required this.completing,
     required this.deleting,
     required this.onApply,
+    required this.onAccept,
+    required this.onCancel,
+    required this.onComplete,
     required this.onManage,
     required this.onDelete,
+    required this.onRefresh,
   });
 
   final AdoptionListing listing;
-  final bool applied;
+  final MyAdoptionRequest? myRequest;
+  final AdoptionRequest? readyToComplete;
   final bool applying;
+  final bool accepting;
+  final bool cancelling;
+  final bool completing;
   final bool deleting;
   final VoidCallback onApply;
+  final VoidCallback? onAccept;
+  final VoidCallback? onCancel;
+  final VoidCallback? onComplete;
   final VoidCallback onManage;
   final VoidCallback onDelete;
+  final Future<void> Function() onRefresh;
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        SingleChildScrollView(
-          child: Column(
-            children: [
-              Hero(
-                tag: adoptionHeroTag(listing.id),
-                child: AppCachedImage(
-                  imageUrl: listing.pet.avatarUrl,
-                  height: 300,
-                  width: double.infinity,
-                  borderRadius: BorderRadius.zero,
-                  semanticLabel: listing.pet.name,
+        RefreshIndicator(
+          color: AppColors.primary,
+          onRefresh: onRefresh,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                Hero(
+                  tag: adoptionHeroTag(listing.id),
+                  child: AppCachedImage(
+                    imageUrl: listing.pet.avatarUrl,
+                    height: 300,
+                    width: double.infinity,
+                    borderRadius: BorderRadius.zero,
+                    semanticLabel: listing.pet.name,
+                  ),
                 ),
-              ),
-              _Body(
-                listing: listing,
-                applied: applied,
-                applying: applying,
-                deleting: deleting,
-                onApply: onApply,
-                onManage: onManage,
-                onDelete: onDelete,
-              ),
-            ],
+                _Body(
+                  listing: listing,
+                  myRequest: myRequest,
+                  readyToComplete: readyToComplete,
+                  applying: applying,
+                  accepting: accepting,
+                  cancelling: cancelling,
+                  completing: completing,
+                  deleting: deleting,
+                  onApply: onApply,
+                  onAccept: onAccept,
+                  onCancel: onCancel,
+                  onComplete: onComplete,
+                  onManage: onManage,
+                  onDelete: onDelete,
+                ),
+              ],
+            ),
           ),
         ),
-        // Floating back button over the photo.
         PositionedDirectional(
           top: 0,
           start: 0,
@@ -238,19 +467,33 @@ class _Content extends StatelessWidget {
 class _Body extends StatelessWidget {
   const _Body({
     required this.listing,
-    required this.applied,
+    required this.myRequest,
+    required this.readyToComplete,
     required this.applying,
+    required this.accepting,
+    required this.cancelling,
+    required this.completing,
     required this.deleting,
     required this.onApply,
+    required this.onAccept,
+    required this.onCancel,
+    required this.onComplete,
     required this.onManage,
     required this.onDelete,
   });
 
   final AdoptionListing listing;
-  final bool applied;
+  final MyAdoptionRequest? myRequest;
+  final AdoptionRequest? readyToComplete;
   final bool applying;
+  final bool accepting;
+  final bool cancelling;
+  final bool completing;
   final bool deleting;
   final VoidCallback onApply;
+  final VoidCallback? onAccept;
+  final VoidCallback? onCancel;
+  final VoidCallback? onComplete;
   final VoidCallback onManage;
   final VoidCallback onDelete;
 
@@ -352,28 +595,23 @@ class _Body extends StatelessWidget {
           _ListerCard(lister: listing.lister),
           const SizedBox(height: AppSpacing.xl),
 
-          // ── Primary action ───────────────────────────────────────────────
-          _PrimaryAction(
+          // ── Action strip ─────────────────────────────────────────────────
+          _ActionStrip(
             listing: listing,
-            applied: applied,
+            myRequest: myRequest,
+            readyToComplete: readyToComplete,
             applying: applying,
+            accepting: accepting,
+            cancelling: cancelling,
+            completing: completing,
             onApply: onApply,
+            onAccept: onAccept,
+            onCancel: onCancel,
+            onComplete: onComplete,
             onManage: onManage,
           ),
-          // A note on how the transfer works (sets expectations for the
-          // two-sided confirm handshake before the user commits).
-          if (listing.isAvailable && !listing.isOwnListing && !applied) ...[
-            const SizedBox(height: AppSpacing.md),
-            Text(
-              l10n.adoptionTransferNote,
-              style: AppTextStyles.bodySmall,
-              textAlign: TextAlign.center,
-            ),
-          ],
 
-          // ── Owner-only: delete the listing (low-emphasis, destructive) ────
-          // Allowed any time before the adoption completes; once Adopted the
-          // backend blocks it (409), so it's hidden then.
+          // ── Owner-only: delete (low-emphasis, destructive) ────────────────
           if (listing.isOwnListing &&
               listing.status != AdoptionListingStatus.adopted) ...[
             const SizedBox(height: AppSpacing.sm),
@@ -385,76 +623,193 @@ class _Body extends StatelessWidget {
   }
 }
 
-/// The state-adaptive bottom action button.
-class _PrimaryAction extends StatelessWidget {
-  const _PrimaryAction({
+/// Full action strip: adapts to every combination of listing status, ownership,
+/// and the current user's request state. Replaces the old single-button CTA.
+class _ActionStrip extends StatelessWidget {
+  const _ActionStrip({
     required this.listing,
-    required this.applied,
+    required this.myRequest,
+    required this.readyToComplete,
     required this.applying,
+    required this.accepting,
+    required this.cancelling,
+    required this.completing,
     required this.onApply,
+    required this.onAccept,
+    required this.onCancel,
+    required this.onComplete,
     required this.onManage,
   });
 
   final AdoptionListing listing;
-  final bool applied;
+  final MyAdoptionRequest? myRequest;
+  final AdoptionRequest? readyToComplete;
   final bool applying;
+  final bool accepting;
+  final bool cancelling;
+  final bool completing;
   final VoidCallback onApply;
+  final VoidCallback? onAccept;
+  final VoidCallback? onCancel;
+  final VoidCallback? onComplete;
   final VoidCallback onManage;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
+    // ── Lister side ───────────────────────────────────────────────────────────
     if (listing.isOwnListing) {
-      return AppButton(
-        label: l10n.adoptionManageCount(listing.applicantCount),
-        icon: FluentIcons.people_settings_24_regular,
-        variant: AppButtonVariant.primary,
-        onPressed: onManage,
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // "Complete transfer" surfaces here once the adopter has accepted.
+          if (readyToComplete != null) ...[
+            AppButton(
+              label: l10n.adoptionCompleteTransfer,
+              icon: FluentIcons.home_24_regular,
+              variant: AppButtonVariant.primary,
+              isLoading: completing,
+              onPressed: onComplete,
+            ),
+            const SizedBox(height: AppSpacing.sm),
+          ],
+          AppButton(
+            label: l10n.adoptionManageCount(listing.applicantCount),
+            icon: FluentIcons.people_settings_24_regular,
+            variant: readyToComplete != null
+                ? AppButtonVariant.outlined
+                : AppButtonVariant.primary,
+            onPressed: onManage,
+          ),
+        ],
       );
     }
 
+    // ── Adopter side ──────────────────────────────────────────────────────────
+    final req = myRequest;
+
+    // If the user has an existing request, always show their status and any
+    // available actions — even if the listing is now closed. This covers:
+    //   - approved (awaiting acceptance) → Accept button still visible
+    //   - awaitingHandover → polling banner while lister completes
+    //   - completed → triggers _onTransferred via ref.listen above
+    if (req != null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _AppliedStatusBanner(request: req),
+          if (req.awaitingMyAcceptance) ...[
+            const SizedBox(height: AppSpacing.md),
+            AppButton(
+              label: l10n.adoptionAcceptCta,
+              icon: FluentIcons.heart_24_regular,
+              variant: AppButtonVariant.primary,
+              isLoading: accepting,
+              onPressed: onAccept,
+            ),
+            _WithdrawButton(
+              label: l10n.adoptionCancelApplication,
+              isLoading: cancelling,
+              onPressed: onCancel,
+            ),
+          ] else if (req.status == AdoptionRequestStatus.pending ||
+              req.awaitingHandover) ...[
+            _WithdrawButton(
+              label: l10n.adoptionCancelApplication,
+              isLoading: cancelling,
+              onPressed: req.status == AdoptionRequestStatus.pending
+                  ? onCancel
+                  : null, // can't withdraw once owner is awaiting handover
+            ),
+          ],
+        ],
+      );
+    }
+
+    // ── Closed listing (no involvement) ───────────────────────────────────────
     if (!listing.isAvailable) {
-      return AppButton(
-        label: listing.status == AdoptionListingStatus.adopted
-            ? l10n.adoptionStatusAdopted
-            : l10n.adoptionStatusUnavailable,
-        icon: FluentIcons.info_24_regular,
-        variant: AppButtonVariant.outlined,
-        onPressed: null,
-      );
+      return _UnavailableBanner(
+          isAdopted: listing.status == AdoptionListingStatus.adopted);
     }
 
-    if (applied) {
-      return const _AppliedConfirmation();
-    }
-
-    return AppButton(
-      label: l10n.adoptionApply,
-      icon: FluentIcons.heart_24_regular,
-      variant: AppButtonVariant.secondary,
-      isLoading: applying,
-      onPressed: onApply,
+    // No request yet — show Apply.
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        AppButton(
+          label: l10n.adoptionApply,
+          icon: FluentIcons.heart_24_regular,
+          variant: AppButtonVariant.secondary,
+          isLoading: applying,
+          onPressed: onApply,
+        ),
+        const SizedBox(height: AppSpacing.md),
+        Text(
+          l10n.adoptionTransferNote,
+          style: AppTextStyles.bodySmall,
+          textAlign: TextAlign.center,
+        ),
+      ],
     );
   }
 }
 
-/// Success confirmation shown once the user has applied. A soft-green banner
-/// with a filled check and a review-pending subtitle — a positive "done" state
-/// rather than a greyed-out disabled button.
-class _AppliedConfirmation extends StatelessWidget {
-  const _AppliedConfirmation();
+/// Status banner for the current user's own request on this listing.
+/// Mirrors [_UnavailableBanner] in shape; color and icon shift per state.
+class _AppliedStatusBanner extends StatelessWidget {
+  const _AppliedStatusBanner({required this.request});
+
+  final MyAdoptionRequest request;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
+    final (Color color, IconData icon, String title, String subtitle) =
+        switch (request.status) {
+      AdoptionRequestStatus.pending => (
+          AppColors.warning,
+          FluentIcons.hourglass_24_filled,
+          l10n.adoptionApplied,
+          l10n.adoptionAwaitingReview,
+        ),
+      AdoptionRequestStatus.approved when request.awaitingMyAcceptance => (
+          AppColors.success,
+          FluentIcons.checkmark_circle_24_filled,
+          l10n.adoptionRequestStatusApproved,
+          l10n.adoptionAcceptHint,
+        ),
+      AdoptionRequestStatus.approved => (
+          AppColors.secondaryDark,
+          FluentIcons.hourglass_24_filled,
+          l10n.adoptionRequestStatusApproved,
+          l10n.adoptionAwaitingHandover,
+        ),
+      AdoptionRequestStatus.rejected => (
+          AppColors.error,
+          FluentIcons.dismiss_circle_24_filled,
+          l10n.adoptionRequestStatusRejected,
+          l10n.adoptionAppliedSubtitle,
+        ),
+      AdoptionRequestStatus.completed => (
+          AppColors.secondaryDark,
+          FluentIcons.home_24_filled,
+          l10n.adoptionRequestStatusCompleted,
+          l10n.adoptionAppliedSubtitle,
+        ),
+      _ => (
+          AppColors.textSecondary,
+          FluentIcons.info_24_regular,
+          l10n.adoptionApplied,
+          l10n.adoptionAppliedSubtitle,
+        ),
+    };
+
     return Padding(
-      // A little breathing room above so the banner isn't clipped by the
-      // content spacing that sat above the shorter button it replaced.
       padding: const EdgeInsets.only(top: AppSpacing.sm),
       child: Semantics(
-        label: l10n.adoptionApplied,
+        label: title,
         container: true,
         child: Container(
           width: double.infinity,
@@ -462,42 +817,177 @@ class _AppliedConfirmation extends StatelessWidget {
             horizontal: AppSpacing.lg,
             vertical: AppSpacing.md,
           ),
-        decoration: BoxDecoration(
-          color: AppColors.success.withValues(alpha: 0.12),
-          borderRadius: AppRadius.mdAll,
-          border: Border.all(
-            color: AppColors.success.withValues(alpha: 0.35),
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.1),
+            borderRadius: AppRadius.mdAll,
+            border: Border.all(color: color.withValues(alpha: 0.35)),
+          ),
+          child: Row(
+            children: [
+              Icon(icon, color: color, size: 24),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(title,
+                        style: AppTextStyles.titleSmall.copyWith(color: color)),
+                    const SizedBox(height: 2),
+                    Text(subtitle,
+                        style: AppTextStyles.bodySmall
+                            .copyWith(color: AppColors.textSecondary)),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
-        child: Row(
-          children: [
-            const Icon(
-              FluentIcons.checkmark_circle_24_filled,
-              color: AppColors.success,
-              size: 24,
-            ),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    l10n.adoptionApplied,
-                    style: AppTextStyles.titleSmall
-                        .copyWith(color: AppColors.success),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    l10n.adoptionAppliedSubtitle,
-                    style: AppTextStyles.bodySmall
-                        .copyWith(color: AppColors.textSecondary),
-                  ),
-                ],
+      ),
+    );
+  }
+}
+
+/// Low-emphasis withdraw link matching the style from [_MyApplicationsTab].
+class _WithdrawButton extends StatelessWidget {
+  const _WithdrawButton({
+    required this.label,
+    required this.isLoading,
+    required this.onPressed,
+  });
+
+  final String label;
+  final bool isLoading;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = onPressed != null && !isLoading;
+    return Padding(
+      padding: const EdgeInsets.only(top: AppSpacing.lg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Divider(height: 1, thickness: 1, color: AppColors.divider),
+          const SizedBox(height: AppSpacing.lg),
+          Opacity(
+            opacity: enabled ? 1 : 0.5,
+            child: Material(
+              color: AppColors.error.withValues(alpha: 0.1),
+              borderRadius: AppRadius.mdAll,
+              child: InkWell(
+                onTap: enabled ? onPressed : null,
+                borderRadius: AppRadius.mdAll,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+                  child: isLoading
+                      ? const Center(
+                          child: SizedBox(
+                            width: 18,
+                            height: 18,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: AppColors.error,
+                            ),
+                          ),
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              FluentIcons.dismiss_circle_24_regular,
+                              size: 18,
+                              color: AppColors.error,
+                            ),
+                            const SizedBox(width: AppSpacing.sm),
+                            Flexible(
+                              child: Text(
+                                label,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTextStyles.labelLarge
+                                    .copyWith(color: AppColors.error),
+                              ),
+                            ),
+                          ],
+                        ),
+                ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Closed-listing banner shown when the pet has been adopted or the listing is
+/// otherwise unavailable. Mirrors the shape and padding of [_AppliedConfirmation]
+/// but uses a muted neutral palette so it reads as informational, not positive.
+class _UnavailableBanner extends StatelessWidget {
+  const _UnavailableBanner({required this.isAdopted});
+
+  final bool isAdopted;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    final (Color color, IconData icon, String label, String subtitle) =
+        isAdopted
+            ? (
+                AppColors.secondaryDark,
+                FluentIcons.home_24_filled,
+                l10n.adoptionStatusAdopted,
+                l10n.adoptionStatusAdoptedSubtitle,
+              )
+            : (
+                AppColors.textSecondary,
+                FluentIcons.info_24_regular,
+                l10n.adoptionStatusUnavailable,
+                l10n.adoptionStatusUnavailableSubtitle,
+              );
+
+    return Padding(
+      padding: const EdgeInsets.only(top: AppSpacing.sm),
+      child: Semantics(
+        label: label,
+        container: true,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg,
+            vertical: AppSpacing.md,
+          ),
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.1),
+            borderRadius: AppRadius.mdAll,
+            border: Border.all(color: color.withValues(alpha: 0.35)),
+          ),
+          child: Row(
+            children: [
+              Icon(icon, color: color, size: 24),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      label,
+                      style: AppTextStyles.titleSmall.copyWith(color: color),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle,
+                      style: AppTextStyles.bodySmall
+                          .copyWith(color: AppColors.textSecondary),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

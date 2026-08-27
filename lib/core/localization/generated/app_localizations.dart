@@ -3238,6 +3238,18 @@ abstract class AppLocalizations {
   /// **'Unavailable'**
   String get adoptionStatusUnavailable;
 
+  /// No description provided for @adoptionStatusAdoptedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This pet has found a forever home.'**
+  String get adoptionStatusAdoptedSubtitle;
+
+  /// No description provided for @adoptionStatusUnavailableSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This listing is no longer accepting applications.'**
+  String get adoptionStatusUnavailableSubtitle;
+
   /// No description provided for @adoptionPostedDaysAgo.
   ///
   /// In en, this message translates to:
@@ -4389,6 +4401,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Mark all read'**
   String get pawHubMarkAllRead;
+
+  /// No description provided for @notificationsEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all caught up'**
+  String get notificationsEmptyTitle;
+
+  /// No description provided for @notificationsEmptyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No notifications yet. We\'ll let you know when something happens.'**
+  String get notificationsEmptyMessage;
+
+  /// No description provided for @notificationsSectionToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get notificationsSectionToday;
+
+  /// No description provided for @notificationsSectionEarlier.
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier'**
+  String get notificationsSectionEarlier;
+
+  /// No description provided for @notificationsAllCaughtUp.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all caught up'**
+  String get notificationsAllCaughtUp;
 
   /// No description provided for @pawHubPostLike.
   ///

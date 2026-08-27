@@ -78,7 +78,7 @@ class AdoptionWelcomePage extends StatelessWidget {
               AppButton(
                 label: l10n.adoptionWelcomeDone,
                 variant: AppButtonVariant.text,
-                onPressed: () => context.go(AppRoutes.adoptionMy),
+                onPressed: () => context.go(AppRoutes.home),
               ),
             ],
           ),

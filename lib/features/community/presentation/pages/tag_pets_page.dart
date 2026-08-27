@@ -172,7 +172,7 @@ class _TagPetsPageState extends ConsumerState<TagPetsPage> {
         scrolledUnderElevation: 0,
         centerTitle: true,
         leading: IconButton(
-          onPressed: () => context.pop(),
+          onPressed: () => context.popOrHome(),
           tooltip: context.l10n.pawhubBack,
           icon: const Icon(FluentIcons.arrow_left_24_regular,
               color: AppColors.textPrimary),

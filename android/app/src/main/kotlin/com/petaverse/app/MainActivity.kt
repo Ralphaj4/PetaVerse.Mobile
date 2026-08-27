@@ -1,4 +1,4 @@
-package com.petaverse.petaverse_mobile
+package com.petaverse.app
 
 import io.flutter.embedding.android.FlutterActivity
 

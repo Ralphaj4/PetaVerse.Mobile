@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import '../app/router/app_router.dart';
 import '../localization/generated/app_localizations.dart';
 import '../../shared/widgets/app_snack_bar.dart';
 
@@ -63,6 +65,18 @@ extension BuildContextX on BuildContext {
         actionLabel: actionLabel,
         onAction: onAction,
       );
+
+  /// Safe back navigation: pops if there is a route to pop, otherwise
+  /// redirects to home. Prevents the "There is nothing to pop" GoError that
+  /// occurs when a page is the root of the stack after a cold-launch from a
+  /// notification deep-link.
+  void popOrHome() {
+    if (canPop()) {
+      pop();
+    } else {
+      go(AppRoutes.home);
+    }
+  }
 
   void showWarningSnackBar(
     String message, {

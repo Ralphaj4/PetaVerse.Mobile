@@ -1,7 +1,5 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
 import '../extensions/context_extensions.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
@@ -29,7 +27,7 @@ class ComingSoonPage extends StatelessWidget {
             ? IconButton(
                 icon: const Icon(FluentIcons.dismiss_24_regular),
                 tooltip: context.l10n.close,
-                onPressed: () => context.pop(),
+                onPressed: () => context.popOrHome(),
               )
             : null,
       ),
