@@ -124,8 +124,18 @@ class _CategoryIcon extends StatelessWidget {
           AppColors.error,
           AppColors.background,
         ),
+      'social' => (
+          FluentIcons.people_community_24_filled,
+          AppColors.accentPurple,
+          AppColors.accentPurpleSoft,
+        ),
+      'marketplace' => (
+          FluentIcons.cart_24_filled,
+          AppColors.secondary,
+          AppColors.secondarySoft,
+        ),
       _ => (
-          FluentIcons.animal_paw_print_24_filled,
+          FluentIcons.alert_24_filled,
           AppColors.primary,
           AppColors.primarySoft,
         ),

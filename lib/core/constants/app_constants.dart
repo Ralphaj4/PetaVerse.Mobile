@@ -34,4 +34,26 @@ abstract final class AppConstants {
   /// Enable with --dart-define=REMOTE_SYNC=true once the API is live.
   static const bool remoteSyncEnabled =
       bool.fromEnvironment('REMOTE_SYNC', defaultValue: false);
+
+  /// Map tile source (raster XYZ template) used by every [flutter_map] view.
+  ///
+  /// Defaults to the keyless OpenStreetMap **Humanitarian (HOT)** style — a
+  /// flatter, higher-contrast, less-cluttered rendering of OSM data than the
+  /// Standard style. (Carto's basemaps now require an API key, hence the
+  /// "API key required" watermark on the old cartocdn URL.)
+  ///
+  /// Swap to a keyed provider for production without touching widget code, e.g.
+  /// Stadia or MapTiler, via:
+  ///   --dart-define=MAP_TILE_URL='https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png?api_key=YOUR_KEY'
+  ///
+  /// The tile widgets read the placeholders present in this URL to decide what
+  /// to supply: `{s}` → [mapTileSubdomains] are passed; `{r}` → retina is on.
+  /// HOT and most keyless OSM mirrors use `{s}` subdomains but no `{r}` retina.
+  static const String mapTileUrl = String.fromEnvironment(
+    'MAP_TILE_URL',
+    defaultValue: 'https://tile-{s}.openstreetmap.fr/hot/{z}/{x}/{y}.png',
+  );
+
+  /// Subdomains for [mapTileUrl] when it contains the `{s}` placeholder.
+  static const List<String> mapTileSubdomains = ['a', 'b', 'c'];
 }

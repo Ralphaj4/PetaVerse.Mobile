@@ -8,11 +8,12 @@ import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../../constants/app_constants.dart';
 import '../../theme/app_colors.dart';
 import 'map_marker_data.dart';
 
-/// Reusable flutter_map view that renders [MapMarkerData] pins on CartoDB
-/// Voyager tiles (English labels, free, no API key).
+/// Reusable flutter_map view that renders [MapMarkerData] pins on the tiles
+/// configured by [AppConstants.mapTileUrl] (keyless OpenStreetMap by default).
 ///
 /// Aims for a Google-Maps-like feel: retina tiles, marker clustering, a
 /// current-location blue dot with a recenter button, and smooth animated
@@ -174,12 +175,16 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
           ),
           children: [
             TileLayer(
-              urlTemplate:
-                  'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-              subdomains: const ['a', 'b', 'c', 'd'],
+              urlTemplate: AppConstants.mapTileUrl,
+              // Supply subdomains only when the URL load-balances via `{s}`.
+              subdomains: AppConstants.mapTileUrl.contains('{s}')
+                  ? AppConstants.mapTileSubdomains
+                  : const [],
               userAgentPackageName: 'com.petaverse.mobile',
-              // Crisper tiles on high-DPI screens ({r} → "@2x").
-              retinaMode: RetinaMode.isHighDensity(context),
+              // Retina only when the tile URL supports it ({r} → "@2x"); the
+              // keyless OSM tiles don't, so this stays off for them.
+              retinaMode: AppConstants.mapTileUrl.contains('{r}') &&
+                  RetinaMode.isHighDensity(context),
             ),
             _buildMarkerLayer(),
             if (widget.showMyLocation && _myLocation != null)

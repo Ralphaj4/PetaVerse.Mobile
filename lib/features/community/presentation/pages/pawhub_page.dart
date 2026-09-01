@@ -12,19 +12,16 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../domain/entities/community_entities.dart' as domain;
-import '../../domain/entities/community_enums.dart' as domain_enums;
 import '../../domain/entities/community_group_entities.dart';
 import '../models/pawhub_models.dart';
 import '../providers/community_actions_providers.dart';
 import '../providers/community_feed_providers.dart';
-import '../providers/community_notifications_providers.dart';
 import '../providers/community_providers.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
 import '../widgets/community_discover_rail.dart';
 import '../widgets/pawhub_comments.dart';
 import '../widgets/pawhub_common.dart';
 import '../widgets/pawhub_feed_widgets.dart';
-import '../widgets/pawhub_notifications.dart';
 import '../widgets/pawhub_sheets.dart';
 import '../widgets/post_card.dart';
 import '../widgets/post_composer_page.dart';
@@ -41,15 +38,19 @@ class PawHubPage extends ConsumerStatefulWidget {
 }
 
 class _PawHubPageState extends ConsumerState<PawHubPage> {
-  final _scrollController = ScrollController();
+  /// The feed's scroll controller. Adopted from the ambient
+  /// [PrimaryScrollController] (owned by CommunityHubPage) so re-tapping the
+  /// Community bottom-nav tab scrolls the feed to the top. Not disposed here —
+  /// the hub owns its lifecycle.
+  late ScrollController _scrollController;
 
   FeedTab _tab = FeedTab.following;
   bool _showNewPill = false;
 
   @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _scrollController = PrimaryScrollController.of(context);
   }
 
   // ── Pet switcher ──────────────────────────────────────────────────────────
@@ -213,25 +214,6 @@ void _openProfile(PawPet pet) {
     });
   }
 
-  void _openNotifications() {
-    // Build PawNotif view-models from the domain notifications.
-    final notifState = ref.read(communityNotificationsProvider);
-    final notifs = notifState.value?.notifications
-            .map(_notifFromDomain)
-            .toList() ??
-        [];
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: AppColors.surface,
-      builder: (_) => NotificationsSheet(items: notifs),
-    ).whenComplete(() {
-      setState(() {});
-      // Mark all as read when the sheet closes.
-      ref.read(communityNotificationsProvider.notifier).markAllRead();
-    });
-  }
-
   Future<void> _openComposer() async {
     final myPets = _myPawPets();
     final actingPet = _currentActingPawPet();
@@ -316,32 +298,6 @@ void _openProfile(PawPet pet) {
         createdAt: DateTime.now(),
       );
 
-  PawNotif _notifFromDomain(domain.CommunityNotification n) {
-    final actor = n.actor != null
-        ? PawPet.fromEntity(n.actor!)
-        : _fallbackPet();
-    return PawNotif(
-      id: n.id,
-      type: _notifType(n.type),
-      actor: actor,
-      text: n.text,
-      timeAgo: n.timeAgo ?? '',
-      thumbnailUrl: n.thumbnailUrl,
-      isRead: n.isRead,
-    );
-  }
-
-  PawNotifType _notifType(domain_enums.NotificationType t) =>
-      switch (t) {
-        domain_enums.NotificationType.like => PawNotifType.like,
-        domain_enums.NotificationType.comment => PawNotifType.comment,
-        domain_enums.NotificationType.reply => PawNotifType.reply,
-        domain_enums.NotificationType.follow => PawNotifType.follow,
-        domain_enums.NotificationType.mention => PawNotifType.mention,
-        domain_enums.NotificationType.tagged => PawNotifType.tagged,
-        domain_enums.NotificationType.alert => PawNotifType.alert,
-      };
-
   void _snack(String msg) {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
@@ -353,7 +309,6 @@ void _openProfile(PawPet pet) {
   @override
   Widget build(BuildContext context) {
     final actingPet = ref.watch(actingPetProvider);
-    final unreadCount = ref.watch(communityUnreadCountProvider);
 
     final actingPawPet = actingPet != null
         ? PawPet(
@@ -374,7 +329,7 @@ void _openProfile(PawPet pet) {
         bottom: false,
         child: Column(
           children: [
-            _searchBar(unreadCount),
+            _searchBar(),
             _topBar(actingPawPet),
             // Background post-upload progress — shown here (below the
             // Following/Discover bar, above the feed) rather than app-wide.
@@ -409,9 +364,9 @@ void _openProfile(PawPet pet) {
   }
 
   /// The search row: a tap-to-search bar (opens the full PawHub search screen,
-  /// sharing a [Hero] with the search page's field) plus the notifications bell
-  /// beside it.
-  Widget _searchBar(int unreadCount) {
+  /// sharing a [Hero] with the search page's field) plus the saved-posts
+  /// shortcut beside it.
+  Widget _searchBar() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
           AppSpacing.md, AppSpacing.sm, AppSpacing.xs, AppSpacing.xs),
@@ -460,23 +415,6 @@ void _openProfile(PawPet pet) {
             icon: const Icon(FluentIcons.bookmark_24_regular,
                 color: AppColors.textPrimary),
             tooltip: context.l10n.pawhubSavedPostsTooltip,
-          ),
-          IconButton(
-            onPressed: _openNotifications,
-            tooltip: context.l10n.pawHubNotificationsTitle,
-            icon: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                const Icon(FluentIcons.alert_24_regular,
-                    color: AppColors.textPrimary),
-                if (unreadCount > 0)
-                  Positioned(
-                    right: -4,
-                    top: -4,
-                    child: CountBadge(count: unreadCount),
-                  ),
-              ],
-            ),
           ),
         ],
       ),

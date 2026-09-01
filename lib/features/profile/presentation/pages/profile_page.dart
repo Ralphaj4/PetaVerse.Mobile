@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/app/router/app_router.dart';
+import '../../../../core/app/tab_scroll_to_top_provider.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
@@ -36,6 +37,8 @@ class ProfilePage extends ConsumerStatefulWidget {
 }
 
 class _ProfilePageState extends ConsumerState<ProfilePage> {
+  final _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -45,7 +48,28 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToTop() {
+    if (!_scrollController.hasClients) return;
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // Bottom nav bumps this when the Profile tab (branch 3) is re-tapped at root.
+    ref.listen(
+      tabScrollToTopProvider.select((m) => m[3]),
+      (_, _) => _scrollToTop(),
+    );
+
     final l10n = context.l10n;
     final user = ref.watch(userProvider).value;
     final userName = user == null
@@ -60,6 +84,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       body: SafeArea(
         bottom: false,
         child: SingleChildScrollView(
+          controller: _scrollController,
           padding: const EdgeInsets.fromLTRB(
             AppSpacing.lg,
             AppSpacing.md,
@@ -116,14 +141,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   onTap: () => context.push(AppRoutes.coOwnerInvitations),
                 ),
               ],
-              const SizedBox(height: AppSpacing.sm),
-              SettingsTile(
-                icon: FluentIcons.wallet_24_regular,
-                iconColor: AppColors.primary,
-                label: l10n.paymentMethods,
-                onTap: () {},
-              ),
-              const SizedBox(height: AppSpacing.xl),
+              // const SizedBox(height: AppSpacing.sm),
+              // SettingsTile(
+              //   icon: FluentIcons.wallet_24_regular,
+              //   iconColor: AppColors.primary,
+              //   label: l10n.paymentMethods,
+              //   onTap: () {},
+              // ),
+              // const SizedBox(height: AppSpacing.xl),
 
               // ── Preferences ──────────────────────────────────────────
               _GroupTitle(title: l10n.preferences),

@@ -8,6 +8,7 @@ import '../../features/pets/presentation/providers/pet_list_provider.dart';
 import '../extensions/context_extensions.dart';
 import '../theme/app_colors.dart';
 import 'fcm_handler.dart';
+import 'tab_scroll_to_top_provider.dart';
 
 const double _navBarHeight = 64;
 
@@ -75,15 +76,27 @@ class _AppShellState extends ConsumerState<AppShell>
     final l10n = context.l10n;
 
     void goBranch(int index) {
+      final isReselect = index == widget.navigationShell.currentIndex;
+      // Re-tapping the already-selected tab, while its branch is at its root
+      // (no page pushed on top), scrolls that tab's root page to the top.
+      // If the branch navigator can pop, a sub-page is showing — leave it be.
+      if (isReselect) {
+        final branchCanPop = widget.navigationShell.route.branches[index]
+                .navigatorKey.currentState
+                ?.canPop() ??
+            false;
+        if (!branchCanPop) {
+          ref.read(tabScrollToTopProvider.notifier).request(index);
+        }
+      }
       // Offline-first refresh: reconcile the pet list when entering the
       // profile tab (it shows the cached list instantly, then updates).
-      if (index == _profileBranchIndex &&
-          index != widget.navigationShell.currentIndex) {
+      if (index == _profileBranchIndex && !isReselect) {
         ref.read(petListProvider.notifier).refresh();
       }
       widget.navigationShell.goBranch(
         index,
-        initialLocation: index == widget.navigationShell.currentIndex,
+        initialLocation: isReselect,
       );
     }
 
@@ -98,7 +111,7 @@ class _AppShellState extends ConsumerState<AppShell>
           heroTag: 'app_shell_ai_fab',
           onPressed: () => context.push('/assistant'),
           tooltip: l10n.aiAssistant,
-          child: const Icon(FluentIcons.animal_paw_print_24_filled, size: 32),
+          child: Image.asset('assets/logo.png', width: 40, height: 40),
         ),
       ),
       floatingActionButtonLocation: const _OverlappingCenterFabLocation(),

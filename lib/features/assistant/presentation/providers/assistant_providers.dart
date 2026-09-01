@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../core/errors/result.dart';
 import '../../../../core/network/api_client.dart';
 import '../../data/datasources/assistant_remote_datasource.dart';
 import '../../data/repositories/assistant_repository_impl.dart';
@@ -138,4 +139,43 @@ class ActiveChatSessionId extends _$ActiveChatSessionId {
   int? build() => null;
 
   void set(int id) => state = id;
+}
+
+/// The user's chat sessions for the history screen — newest-updated first,
+/// archived sessions filtered out (the backend soft-deletes, we hide them).
+///
+/// Backed by `GET /ai/chat/sessions` (endpoint 2). [archive] calls
+/// `DELETE /ai/chat/sessions/{id}` (endpoint 5) and optimistically removes the
+/// row so the list updates instantly.
+@riverpod
+class ChatHistory extends _$ChatHistory {
+  @override
+  Future<List<ChatSessionSummary>> build() async {
+    final result = await ref.watch(assistantRepositoryProvider).getSessions();
+    return result.when(
+      success: (sessions) => [
+        for (final s in sessions)
+          if (!s.isArchived) s,
+      ]..sort((a, b) => b.updatedAt.compareTo(a.updatedAt)),
+      failure: (f) => throw f,
+    );
+  }
+
+  /// Archives (soft-deletes) a session and drops it from the list. On failure
+  /// the list is reloaded so the row reappears.
+  Future<Result<void>> archive(int sessionId) async {
+    final previous = state.value ?? const [];
+    // Optimistic: remove immediately.
+    state = AsyncData([
+      for (final s in previous)
+        if (s.id != sessionId) s,
+    ]);
+
+    final result = await ref.read(assistantRepositoryProvider).deleteSession(sessionId);
+    result.when(
+      success: (_) {},
+      failure: (_) => state = AsyncData(previous), // roll back
+    );
+    return result;
+  }
 }

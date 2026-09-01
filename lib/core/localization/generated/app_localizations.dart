@@ -115,7 +115,7 @@ abstract class AppLocalizations {
   /// No description provided for @navCommunity.
   ///
   /// In en, this message translates to:
-  /// **'PawHub'**
+  /// **'PetaHub'**
   String get navCommunity;
 
   /// No description provided for @communityTabFeed.
@@ -127,7 +127,7 @@ abstract class AppLocalizations {
   /// No description provided for @navCare.
   ///
   /// In en, this message translates to:
-  /// **'PawCare'**
+  /// **'PetaCare'**
   String get navCare;
 
   /// No description provided for @navProfile.
@@ -1237,13 +1237,13 @@ abstract class AppLocalizations {
   /// No description provided for @aiAssistantTitle.
   ///
   /// In en, this message translates to:
-  /// **'PawBot Assistant'**
+  /// **'PetaBot Assistant'**
   String get aiAssistantTitle;
 
   /// No description provided for @aiAskHint.
   ///
   /// In en, this message translates to:
-  /// **'Ask PawBot anything…'**
+  /// **'Ask PetaBot anything…'**
   String get aiAskHint;
 
   /// No description provided for @aiQuickFaqs.
@@ -1306,6 +1306,168 @@ abstract class AppLocalizations {
   /// **'Attach'**
   String get aiAttach;
 
+  /// No description provided for @aiGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Hi! I\'m PetaBot 👋'**
+  String get aiGreeting;
+
+  /// No description provided for @aiIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask me anything about your pet\'s health, nutrition, or care.'**
+  String get aiIntro;
+
+  /// No description provided for @aiSuggestedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Try asking'**
+  String get aiSuggestedLabel;
+
+  /// No description provided for @aiCatNutrition.
+  ///
+  /// In en, this message translates to:
+  /// **'Nutrition'**
+  String get aiCatNutrition;
+
+  /// No description provided for @aiCatSymptoms.
+  ///
+  /// In en, this message translates to:
+  /// **'Symptoms'**
+  String get aiCatSymptoms;
+
+  /// No description provided for @aiCatVaccinations.
+  ///
+  /// In en, this message translates to:
+  /// **'Vaccinations'**
+  String get aiCatVaccinations;
+
+  /// No description provided for @aiCatBreed.
+  ///
+  /// In en, this message translates to:
+  /// **'Breed'**
+  String get aiCatBreed;
+
+  /// No description provided for @aiPromptNutrition.
+  ///
+  /// In en, this message translates to:
+  /// **'What should I feed my pet for a healthy diet?'**
+  String get aiPromptNutrition;
+
+  /// No description provided for @aiPromptSymptoms.
+  ///
+  /// In en, this message translates to:
+  /// **'My pet seems unwell - what symptoms should I watch for?'**
+  String get aiPromptSymptoms;
+
+  /// No description provided for @aiPromptVaccinations.
+  ///
+  /// In en, this message translates to:
+  /// **'What vaccinations does my pet need, and when?'**
+  String get aiPromptVaccinations;
+
+  /// No description provided for @aiPromptBreed.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell me about my pet\'s breed traits and care needs.'**
+  String get aiPromptBreed;
+
+  /// No description provided for @aiSwitchPetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat about'**
+  String get aiSwitchPetTitle;
+
+  /// No description provided for @aiSwitchConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a new chat?'**
+  String get aiSwitchConfirmTitle;
+
+  /// No description provided for @aiSwitchConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This starts a new conversation about {petName}. Your current chat will be saved.'**
+  String aiSwitchConfirmBody(String petName);
+
+  /// No description provided for @aiSwitchConfirmAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Start new chat'**
+  String get aiSwitchConfirmAction;
+
+  /// No description provided for @aiNewChat.
+  ///
+  /// In en, this message translates to:
+  /// **'New chat'**
+  String get aiNewChat;
+
+  /// No description provided for @aiHistoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat history'**
+  String get aiHistoryTitle;
+
+  /// No description provided for @aiHistoryTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat history'**
+  String get aiHistoryTooltip;
+
+  /// No description provided for @aiHistoryEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No conversations yet'**
+  String get aiHistoryEmptyTitle;
+
+  /// No description provided for @aiHistoryEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your chats with PetaBot will show up here.'**
+  String get aiHistoryEmptyBody;
+
+  /// No description provided for @aiHistoryUntitled.
+  ///
+  /// In en, this message translates to:
+  /// **'New conversation'**
+  String get aiHistoryUntitled;
+
+  /// No description provided for @aiArchiveTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get aiArchiveTooltip;
+
+  /// No description provided for @aiArchiveConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive this chat?'**
+  String get aiArchiveConfirmTitle;
+
+  /// No description provided for @aiArchiveConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'It will be removed from your history. This can\'t be undone.'**
+  String get aiArchiveConfirmBody;
+
+  /// No description provided for @aiArchiveConfirmAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get aiArchiveConfirmAction;
+
+  /// No description provided for @aiArchiveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t archive the chat. Please try again.'**
+  String get aiArchiveError;
+
+  /// No description provided for @aiGeneralChat.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get aiGeneralChat;
+
   /// No description provided for @fieldRequired.
   ///
   /// In en, this message translates to:
@@ -1365,6 +1527,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Close'**
   String get close;
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
 
   /// No description provided for @confirm.
   ///
@@ -6085,7 +6253,7 @@ abstract class AppLocalizations {
   /// No description provided for @pawhubSearchTitle.
   ///
   /// In en, this message translates to:
-  /// **'Search PawHub'**
+  /// **'Search PetaHub'**
   String get pawhubSearchTitle;
 
   /// No description provided for @pawhubSearchSubtitle.

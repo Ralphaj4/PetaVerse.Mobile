@@ -7,6 +7,7 @@ import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../../../../core/constants/app_constants.dart';
 import '../../domain/entities/service_provider.dart';
 import 'provider_map_pin.dart';
 
@@ -146,11 +147,15 @@ class _ServiceProviderMapState extends State<ServiceProviderMap>
       ),
       children: [
         TileLayer(
-          urlTemplate:
-              'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-          subdomains: const ['a', 'b', 'c', 'd'],
+          urlTemplate: AppConstants.mapTileUrl,
+          // Supply subdomains only when the URL load-balances via `{s}`.
+          subdomains: AppConstants.mapTileUrl.contains('{s}')
+              ? AppConstants.mapTileSubdomains
+              : const [],
           userAgentPackageName: 'com.petaverse.mobile',
-          retinaMode: RetinaMode.isHighDensity(context),
+          // Retina only when the configured tile URL supports it ({r} → "@2x").
+          retinaMode: AppConstants.mapTileUrl.contains('{r}') &&
+              RetinaMode.isHighDensity(context),
         ),
         _buildMarkerLayer(),
         if (_myLocation != null)

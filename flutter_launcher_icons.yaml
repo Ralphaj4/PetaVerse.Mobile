@@ -7,8 +7,8 @@ flutter_launcher_icons:
   ios: true
   # Android adaptive icon: teal logo (transparent foreground, already padded)
   # centered on a white background layer.
-  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_background: "#FBAB4C"
   adaptive_icon_foreground: "assets/logo_adaptive.png"
   # iOS forbids transparency — flatten onto white.
   remove_alpha_ios: true
-  background_color_ios: "#FFFFFF"
+  background_color_ios: "#FBAB4C"

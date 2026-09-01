@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/app/router/app_router.dart';
+import '../../../../core/app/tab_scroll_to_top_provider.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -26,11 +27,39 @@ import '../widgets/quick_action_button.dart';
 
 /// Home dashboard. The active pet's name is live from the pet gate; the rest
 /// is mocked until the health backend is wired.
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends ConsumerState<HomePage> {
+  final _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToTop() {
+    if (!_scrollController.hasClients) return;
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Bottom nav bumps this when the Home tab (branch 0) is re-tapped at root.
+    ref.listen(
+      tabScrollToTopProvider.select((m) => m[0]),
+      (_, _) => _scrollToTop(),
+    );
+
     final l10n = context.l10n;
     final currentPet = ref.watch(petsProvider).currentPet;
     final petName = currentPet?.name ?? '';
@@ -44,6 +73,7 @@ class HomePage extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: AppColors.surface,
         body: SingleChildScrollView(
+          controller: _scrollController,
           child: Column(
             children: [
               HomeHeroBanner(

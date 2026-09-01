@@ -228,6 +228,7 @@ Future<PawPet?> showPetSwitcherSheet(
   required List<PawPet> pets,
   required PawPet current,
   String? title,
+  bool showMyPostsLink = true,
 }) {
   final resolvedTitle = title ?? context.l10n.pawHubActingAs;
   return showModalBottomSheet<PawPet>(
@@ -268,38 +269,40 @@ Future<PawPet?> showPetSwitcherSheet(
                 selected: pet.id == current.id,
                 onTap: () => Navigator.of(context).pop(pet),
               ),
-            const SizedBox(height: AppSpacing.md),
-            const Divider(color: AppColors.divider, height: 1),
-            const SizedBox(height: AppSpacing.md),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).pop();
-                context.push('/community/my-posts');
-              },
-              borderRadius: AppRadius.mdAll,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(AppSpacing.sm),
-                      decoration: const BoxDecoration(
-                        color: AppColors.primarySoft,
-                        shape: BoxShape.circle,
+            if (showMyPostsLink) ...[
+              const SizedBox(height: AppSpacing.md),
+              const Divider(color: AppColors.divider, height: 1),
+              const SizedBox(height: AppSpacing.md),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).pop();
+                  context.push('/community/my-posts');
+                },
+                borderRadius: AppRadius.mdAll,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(AppSpacing.sm),
+                        decoration: const BoxDecoration(
+                          color: AppColors.primarySoft,
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          FluentIcons.person_24_regular,
+                          size: 20,
+                          color: AppColors.primaryDark,
+                        ),
                       ),
-                      child: const Icon(
-                        FluentIcons.person_24_regular,
-                        size: 20,
-                        color: AppColors.primaryDark,
-                      ),
-                    ),
-                    const SizedBox(width: AppSpacing.md),
-                    Text(context.l10n.pawhubMyPostsLink,
-                        style: AppTextStyles.titleSmall),
-                  ],
+                      const SizedBox(width: AppSpacing.md),
+                      Text(context.l10n.pawhubMyPostsLink,
+                          style: AppTextStyles.titleSmall),
+                    ],
+                  ),
                 ),
               ),
-            ),
+            ],
           ],
         ),
       ),

@@ -9,6 +9,7 @@ import '../../../features/auth/presentation/pages/login_page.dart';
 import '../../../features/auth/presentation/pages/otp_verification_page.dart';
 import '../../../features/auth/presentation/pages/register_page.dart';
 import '../../../features/assistant/presentation/pages/assistant_page.dart';
+import '../../../features/assistant/presentation/pages/assistant_history_page.dart';
 import '../../../features/home/presentation/pages/home_page.dart';
 import '../../../features/home/presentation/pages/upcoming_reminders_page.dart';
 import '../../../features/lost_and_found/presentation/models/pet_alert.dart';
@@ -114,6 +115,7 @@ abstract final class AppRoutes {
   static const String changeLanguage = '/change-language';
   static const String services = '/services';
   static const String assistant = '/assistant';
+  static const String assistantHistory = '/assistant/history';
   static const String lostAndFound = '/lost-and-found';
   static const String reportLostPet = '/lost-and-found/report';
   static const String lostFoundDetail = '/lost-and-found/listing/:id';
@@ -866,9 +868,24 @@ GoRouter appRouter(Ref ref) {
         path: AppRoutes.assistant,
         name: 'assistant',
         parentNavigatorKey: _rootNavigatorKey,
-        pageBuilder: (context, state) => AppSlideUpTransitionPage(
+        pageBuilder: (context, state) {
+          // When pushed from the history list, `extra` carries the id of the
+          // conversation to open. Opening this way keeps the history page in
+          // the stack so the chat gets a back button, not a close button.
+          final sessionId = state.extra is int ? state.extra as int : null;
+          return AppSlideUpTransitionPage(
+            key: state.pageKey,
+            child: AssistantPage(sessionId: sessionId),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.assistantHistory,
+        name: 'assistantHistory',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
               key: state.pageKey,
-              child: const AssistantPage(),
+              child: const AssistantHistoryPage(),
             ),
       ),
       GoRoute(

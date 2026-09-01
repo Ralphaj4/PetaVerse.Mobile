@@ -398,6 +398,9 @@ class _DashboardBody extends StatelessWidget {
         .toList();
 
     return CustomScrollView(
+      // Adopt the ambient PrimaryScrollController (set by CommunityHubPage) so
+      // re-tapping the Community tab can scroll this surface to the top.
+      primary: true,
       slivers: [
         // ── Map toggle + preview ───────────────────────────────────────
         SliverToBoxAdapter(

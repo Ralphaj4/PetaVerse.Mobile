@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/app/tab_scroll_to_top_provider.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
@@ -40,6 +41,23 @@ class _CommunityHubPageState extends ConsumerState<CommunityHubPage>
     initialIndex: widget.initialTab.clamp(0, 2),
   );
 
+  /// One scroll controller per inner tab (Feed · Lost&Found · Adoption),
+  /// handed down via [PrimaryScrollController] so re-tapping the Community
+  /// bottom-nav tab can scroll whichever inner tab is showing back to the top.
+  final _innerScrollControllers =
+      List.generate(3, (_) => ScrollController());
+
+  /// Scroll the currently-visible inner tab to the top.
+  void _scrollActiveTabToTop() {
+    final c = _innerScrollControllers[_controller.index];
+    if (!c.hasClients) return;
+    c.animateTo(
+      0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOutCubic,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -57,6 +75,9 @@ class _CommunityHubPageState extends ConsumerState<CommunityHubPage>
   @override
   void dispose() {
     _controller.dispose();
+    for (final c in _innerScrollControllers) {
+      c.dispose();
+    }
     super.dispose();
   }
 
@@ -72,6 +93,13 @@ class _CommunityHubPageState extends ConsumerState<CommunityHubPage>
         ref.read(pawHubRequestedTabProvider.notifier).clear();
       }
     });
+
+    // Bottom nav bumps this when the Community tab (branch 1) is re-tapped at
+    // root — scroll whichever inner tab is showing back to the top.
+    ref.listen(
+      tabScrollToTopProvider.select((m) => m[1]),
+      (_, _) => _scrollActiveTabToTop(),
+    );
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -104,10 +132,21 @@ class _CommunityHubPageState extends ConsumerState<CommunityHubPage>
               Expanded(
                 child: TabBarView(
                   controller: _controller,
-                  children: const [
-                    PawHubPage(),
-                    LostAndFoundPage(embedded: true),
-                    AdoptionBoardPage(embedded: true),
+                  // Each inner tab gets its own primary scroll controller so a
+                  // Community-tab re-tap can scroll the active one to the top.
+                  children: [
+                    PrimaryScrollController(
+                      controller: _innerScrollControllers[0],
+                      child: const PawHubPage(),
+                    ),
+                    PrimaryScrollController(
+                      controller: _innerScrollControllers[1],
+                      child: const LostAndFoundPage(embedded: true),
+                    ),
+                    PrimaryScrollController(
+                      controller: _innerScrollControllers[2],
+                      child: const AdoptionBoardPage(embedded: true),
+                    ),
                   ],
                 ),
               ),

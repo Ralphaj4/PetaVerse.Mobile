@@ -123,16 +123,28 @@ class ChatMessageDto {
   final Map<String, dynamic>? footer;
   final DateTime createdAt;
 
-  ChatMessage toEntity() => ChatMessage(
-        id: id,
-        role: role,
-        text: textContent,
-        blocks: blocks?.map((b) => b.toEntity()).toList(growable: false) ?? [],
-        quickReplies: quickReplies ?? [],
-        footerText: footer?['text'] as String?,
-        footerActionLabel: footer?['actionLabel'] as String?,
-        status: ChatMessageStatus.done,
-      );
+  ChatMessage toEntity() {
+    // The footer is a short call-to-action line, not a copy of the answer.
+    // History payloads sometimes echo the whole reply into `footer.text`,
+    // which would render the message twice — drop it when it just duplicates
+    // the body.
+    final footerText = footer?['text'] as String?;
+    final dedupedFooter =
+        (footerText != null && footerText.trim() == textContent.trim())
+            ? null
+            : footerText;
+
+    return ChatMessage(
+      id: id,
+      role: role,
+      text: textContent,
+      blocks: blocks?.map((b) => b.toEntity()).toList(growable: false) ?? [],
+      quickReplies: quickReplies ?? [],
+      footerText: dedupedFooter,
+      footerActionLabel: footer?['actionLabel'] as String?,
+      status: ChatMessageStatus.done,
+    );
+  }
 }
 
 // ── Session DTOs ─────────────────────────────────────────────────────────────

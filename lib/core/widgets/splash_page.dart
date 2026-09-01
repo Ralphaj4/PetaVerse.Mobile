@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
-import '../theme/app_spacing.dart';
 
 /// Neutral launch screen shown while the app resolves which destination
 /// to open (onboarding vs. login vs. home). It never flashes a real
@@ -45,20 +44,13 @@ class _SplashPageState extends State<SplashPage>
     return Scaffold(
       backgroundColor: AppColors.primary,
       body: Center(
-        // Logo on a white badge so its teal mark reads on the orange bg.
+        // The logo itself pulses (zooms in and out) to signal activity.
         child: ScaleTransition(
           scale: _scale,
-          child: Container(
-            padding: const EdgeInsets.all(AppSpacing.xl),
-            decoration: const BoxDecoration(
-              color: AppColors.surface,
-              shape: BoxShape.circle,
-            ),
-            child: Image.asset(
-              'assets/logo.png',
-              width: 96,
-              height: 96,
-            ),
+          child: Image.asset(
+            'assets/logo.png',
+            width: 200,
+            height: 200,
           ),
         ),
       ),

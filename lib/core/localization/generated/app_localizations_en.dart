@@ -15,13 +15,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navHome => 'Home';
 
   @override
-  String get navCommunity => 'PawHub';
+  String get navCommunity => 'PetaHub';
 
   @override
   String get communityTabFeed => 'Feed';
 
   @override
-  String get navCare => 'PawCare';
+  String get navCare => 'PetaCare';
 
   @override
   String get navProfile => 'Profile';
@@ -636,10 +636,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get aiAssistantTitle => 'PawBot Assistant';
+  String get aiAssistantTitle => 'PetaBot Assistant';
 
   @override
-  String get aiAskHint => 'Ask PawBot anything…';
+  String get aiAskHint => 'Ask PetaBot anything…';
 
   @override
   String get aiQuickFaqs => 'FAQs';
@@ -675,6 +675,95 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aiAttach => 'Attach';
 
   @override
+  String get aiGreeting => 'Hi! I\'m PetaBot 👋';
+
+  @override
+  String get aiIntro =>
+      'Ask me anything about your pet\'s health, nutrition, or care.';
+
+  @override
+  String get aiSuggestedLabel => 'Try asking';
+
+  @override
+  String get aiCatNutrition => 'Nutrition';
+
+  @override
+  String get aiCatSymptoms => 'Symptoms';
+
+  @override
+  String get aiCatVaccinations => 'Vaccinations';
+
+  @override
+  String get aiCatBreed => 'Breed';
+
+  @override
+  String get aiPromptNutrition =>
+      'What should I feed my pet for a healthy diet?';
+
+  @override
+  String get aiPromptSymptoms =>
+      'My pet seems unwell - what symptoms should I watch for?';
+
+  @override
+  String get aiPromptVaccinations =>
+      'What vaccinations does my pet need, and when?';
+
+  @override
+  String get aiPromptBreed =>
+      'Tell me about my pet\'s breed traits and care needs.';
+
+  @override
+  String get aiSwitchPetTitle => 'Chat about';
+
+  @override
+  String get aiSwitchConfirmTitle => 'Start a new chat?';
+
+  @override
+  String aiSwitchConfirmBody(String petName) {
+    return 'This starts a new conversation about $petName. Your current chat will be saved.';
+  }
+
+  @override
+  String get aiSwitchConfirmAction => 'Start new chat';
+
+  @override
+  String get aiNewChat => 'New chat';
+
+  @override
+  String get aiHistoryTitle => 'Chat history';
+
+  @override
+  String get aiHistoryTooltip => 'Chat history';
+
+  @override
+  String get aiHistoryEmptyTitle => 'No conversations yet';
+
+  @override
+  String get aiHistoryEmptyBody => 'Your chats with PetaBot will show up here.';
+
+  @override
+  String get aiHistoryUntitled => 'New conversation';
+
+  @override
+  String get aiArchiveTooltip => 'Archive';
+
+  @override
+  String get aiArchiveConfirmTitle => 'Archive this chat?';
+
+  @override
+  String get aiArchiveConfirmBody =>
+      'It will be removed from your history. This can\'t be undone.';
+
+  @override
+  String get aiArchiveConfirmAction => 'Archive';
+
+  @override
+  String get aiArchiveError => 'Couldn\'t archive the chat. Please try again.';
+
+  @override
+  String get aiGeneralChat => 'General';
+
+  @override
   String get fieldRequired => 'This field is required';
 
   @override
@@ -703,6 +792,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get close => 'Close';
+
+  @override
+  String get back => 'Back';
 
   @override
   String get confirm => 'Confirm';
@@ -3448,7 +3540,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get pawhubSearchTitle => 'Search PawHub';
+  String get pawhubSearchTitle => 'Search PetaHub';
 
   @override
   String get pawhubSearchSubtitle => 'Find pets, posts, or hashtags';

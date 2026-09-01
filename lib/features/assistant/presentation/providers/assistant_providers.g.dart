@@ -249,3 +249,81 @@ abstract class _$ActiveChatSessionId extends $Notifier<int?> {
     element.handleCreate(ref, build);
   }
 }
+
+/// The user's chat sessions for the history screen — newest-updated first,
+/// archived sessions filtered out (the backend soft-deletes, we hide them).
+///
+/// Backed by `GET /ai/chat/sessions` (endpoint 2). [archive] calls
+/// `DELETE /ai/chat/sessions/{id}` (endpoint 5) and optimistically removes the
+/// row so the list updates instantly.
+
+@ProviderFor(ChatHistory)
+final chatHistoryProvider = ChatHistoryProvider._();
+
+/// The user's chat sessions for the history screen — newest-updated first,
+/// archived sessions filtered out (the backend soft-deletes, we hide them).
+///
+/// Backed by `GET /ai/chat/sessions` (endpoint 2). [archive] calls
+/// `DELETE /ai/chat/sessions/{id}` (endpoint 5) and optimistically removes the
+/// row so the list updates instantly.
+final class ChatHistoryProvider
+    extends $AsyncNotifierProvider<ChatHistory, List<ChatSessionSummary>> {
+  /// The user's chat sessions for the history screen — newest-updated first,
+  /// archived sessions filtered out (the backend soft-deletes, we hide them).
+  ///
+  /// Backed by `GET /ai/chat/sessions` (endpoint 2). [archive] calls
+  /// `DELETE /ai/chat/sessions/{id}` (endpoint 5) and optimistically removes the
+  /// row so the list updates instantly.
+  ChatHistoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'chatHistoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$chatHistoryHash();
+
+  @$internal
+  @override
+  ChatHistory create() => ChatHistory();
+}
+
+String _$chatHistoryHash() => r'aa2c2f0c2cc1c5659effcbf255c645485dd451c2';
+
+/// The user's chat sessions for the history screen — newest-updated first,
+/// archived sessions filtered out (the backend soft-deletes, we hide them).
+///
+/// Backed by `GET /ai/chat/sessions` (endpoint 2). [archive] calls
+/// `DELETE /ai/chat/sessions/{id}` (endpoint 5) and optimistically removes the
+/// row so the list updates instantly.
+
+abstract class _$ChatHistory extends $AsyncNotifier<List<ChatSessionSummary>> {
+  FutureOr<List<ChatSessionSummary>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref =
+        this.ref
+            as $Ref<
+              AsyncValue<List<ChatSessionSummary>>,
+              List<ChatSessionSummary>
+            >;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                AsyncValue<List<ChatSessionSummary>>,
+                List<ChatSessionSummary>
+              >,
+              AsyncValue<List<ChatSessionSummary>>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}

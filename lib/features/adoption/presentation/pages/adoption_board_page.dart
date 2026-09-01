@@ -294,6 +294,10 @@ class _Body extends ConsumerWidget {
               ref.read(adoptionListingsProvider.notifier).refresh(),
           color: AppColors.primary,
           child: ListView.separated(
+            // Adopt the ambient PrimaryScrollController (set by
+            // CommunityHubPage) so re-tapping the Community tab can scroll this
+            // surface to the top.
+            primary: true,
             padding: const EdgeInsets.fromLTRB(
               AppSpacing.lg,
               0,

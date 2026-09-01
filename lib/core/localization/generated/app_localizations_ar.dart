@@ -21,7 +21,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get communityTabFeed => 'الموجز';
 
   @override
-  String get navCare => 'PawCare';
+  String get navCare => 'PetaCare';
 
   @override
   String get navProfile => 'الملف الشخصي';
@@ -634,10 +634,10 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get aiAssistantTitle => 'مساعد PawBot';
+  String get aiAssistantTitle => 'مساعد PetaBot';
 
   @override
-  String get aiAskHint => 'اسأل PawBot أي شيء…';
+  String get aiAskHint => 'اسأل PetaBot أي شيء…';
 
   @override
   String get aiQuickFaqs => 'الأسئلة الشائعة';
@@ -672,6 +672,95 @@ class AppLocalizationsAr extends AppLocalizations {
   String get aiAttach => 'إرفاق';
 
   @override
+  String get aiGreeting => 'مرحباً! أنا PetaBot 👋';
+
+  @override
+  String get aiIntro =>
+      'اسألني أي شيء عن صحة حيوانك الأليف أو تغذيته أو رعايته.';
+
+  @override
+  String get aiSuggestedLabel => 'جرّب أن تسأل';
+
+  @override
+  String get aiCatNutrition => 'التغذية';
+
+  @override
+  String get aiCatSymptoms => 'الأعراض';
+
+  @override
+  String get aiCatVaccinations => 'التطعيمات';
+
+  @override
+  String get aiCatBreed => 'السلالة';
+
+  @override
+  String get aiPromptNutrition =>
+      'ماذا يجب أن أطعم حيواني الأليف للحصول على نظام غذائي صحي؟';
+
+  @override
+  String get aiPromptSymptoms =>
+      'يبدو حيواني الأليف متوعكاً - ما الأعراض التي يجب أن أنتبه لها؟';
+
+  @override
+  String get aiPromptVaccinations =>
+      'ما التطعيمات التي يحتاجها حيواني الأليف ومتى؟';
+
+  @override
+  String get aiPromptBreed =>
+      'أخبرني عن سمات سلالة حيواني الأليف واحتياجات رعايته.';
+
+  @override
+  String get aiSwitchPetTitle => 'المحادثة عن';
+
+  @override
+  String get aiSwitchConfirmTitle => 'بدء محادثة جديدة؟';
+
+  @override
+  String aiSwitchConfirmBody(String petName) {
+    return 'سيبدأ هذا محادثة جديدة عن $petName. سيتم حفظ محادثتك الحالية.';
+  }
+
+  @override
+  String get aiSwitchConfirmAction => 'بدء محادثة جديدة';
+
+  @override
+  String get aiNewChat => 'محادثة جديدة';
+
+  @override
+  String get aiHistoryTitle => 'سجل المحادثات';
+
+  @override
+  String get aiHistoryTooltip => 'سجل المحادثات';
+
+  @override
+  String get aiHistoryEmptyTitle => 'لا توجد محادثات بعد';
+
+  @override
+  String get aiHistoryEmptyBody => 'ستظهر محادثاتك مع PetaBot هنا.';
+
+  @override
+  String get aiHistoryUntitled => 'محادثة جديدة';
+
+  @override
+  String get aiArchiveTooltip => 'أرشفة';
+
+  @override
+  String get aiArchiveConfirmTitle => 'أرشفة هذه المحادثة؟';
+
+  @override
+  String get aiArchiveConfirmBody =>
+      'ستتم إزالتها من سجلك. لا يمكن التراجع عن هذا.';
+
+  @override
+  String get aiArchiveConfirmAction => 'أرشفة';
+
+  @override
+  String get aiArchiveError => 'تعذّرت أرشفة المحادثة. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get aiGeneralChat => 'عام';
+
+  @override
   String get fieldRequired => 'هذا الحقل مطلوب';
 
   @override
@@ -700,6 +789,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get close => 'إغلاق';
+
+  @override
+  String get back => 'رجوع';
 
   @override
   String get confirm => 'تأكيد';
@@ -3462,7 +3554,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get pawhubSearchTitle => 'ابحث في PawHub';
+  String get pawhubSearchTitle => 'ابحث في PetaHub';
 
   @override
   String get pawhubSearchSubtitle => 'ابحث عن حيوانات أو منشورات أو وسوم';

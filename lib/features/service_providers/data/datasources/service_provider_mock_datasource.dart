@@ -115,7 +115,7 @@ class ServiceProviderMockDataSource {
       ),
       ServiceProvider(
         id: 'sp_7',
-        name: 'PawCare Pharmacy',
+        name: 'PetaCare Pharmacy',
         category: ProviderCategory.pharmacy,
         location: at(0.001, 0.009),
         address: 'Sassine Square, Achrafieh',
