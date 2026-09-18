@@ -15,6 +15,7 @@ _UserDto _$UserDtoFromJson(Map<String, dynamic> json) => _UserDto(
   pendingEmail: json['pendingEmail'] as String?,
   mobileNumber: json['mobileNumber'] as String,
   mobileVerified: json['mobileVerified'] as bool,
+  emailVerified: json['emailVerified'] as bool? ?? false,
   dateOfBirth: json['dateOfBirth'] == null
       ? null
       : DateTime.parse(json['dateOfBirth'] as String),
@@ -37,6 +38,7 @@ Map<String, dynamic> _$UserDtoToJson(_UserDto instance) => <String, dynamic>{
   'pendingEmail': instance.pendingEmail,
   'mobileNumber': instance.mobileNumber,
   'mobileVerified': instance.mobileVerified,
+  'emailVerified': instance.emailVerified,
   'dateOfBirth': instance.dateOfBirth?.toIso8601String(),
   'avatarUrl': instance.avatarUrl,
   'latitude': instance.latitude,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../features/auth/presentation/pages/avatar_setup_page.dart';
+import '../../../features/auth/presentation/pages/email_verification_page.dart';
 import '../../../features/auth/presentation/pages/change_password_page.dart';
 import '../../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../../features/auth/presentation/pages/login_page.dart';
@@ -55,7 +57,13 @@ import '../../../features/pets/presentation/pages/select_pet_page.dart';
 import '../../../features/pet_vision/presentation/pages/pet_vision_page.dart';
 import '../../../features/activity/presentation/pages/walk_history_page.dart';
 import '../../../features/notifications/presentation/pages/notifications_page.dart';
+import '../../../features/profile/presentation/pages/contact_us_page.dart';
 import '../../../features/profile/presentation/pages/notification_settings_page.dart';
+import '../../network/app_config_datasource.dart';
+import '../../utils/app_version_utils.dart';
+import '../../widgets/config_error_page.dart';
+import '../../widgets/force_update_page.dart';
+import '../../widgets/maintenance_page.dart';
 import '../../../features/pawcare/presentation/pages/add_appointment_page.dart';
 import '../../../features/pawcare/presentation/pages/edit_appointment_page.dart';
 import '../../../features/pawcare/presentation/pages/add_medication_page.dart';
@@ -69,6 +77,7 @@ import '../../../features/pawcare/presentation/pages/vaccinations_list_page.dart
 import '../../../features/pawcare/presentation/pages/weight_history_page.dart';
 import '../../../features/profile/presentation/pages/profile_page.dart';
 import '../../../features/profile/presentation/pages/personal_information_page.dart';
+import '../../../features/pawcare/presentation/pages/petacare_tab_page.dart';
 import '../../../features/service_providers/presentation/pages/service_providers_page.dart';
 import '../../../features/profile/presentation/pages/change_language_page.dart';
 import '../../../features/auth/presentation/providers/session_provider.dart';
@@ -94,6 +103,7 @@ abstract final class AppRoutes {
   static const String avatarSetup = '/avatar-setup';
   static const String forgotPassword = '/forgot-password';
   static const String changePassword = '/change-password';
+  static const String emailVerify = '/email-verify';
   static const String petOnboarding = '/pet-onboarding';
   static const String createPet = '/create-pet';
   static String petAvatarSetupPath(int id) => '/pet-avatar-setup/$id';
@@ -110,6 +120,7 @@ abstract final class AppRoutes {
   static const String home = '/home';
   static const String community = '/community';
   static const String care = '/care';
+  static const String careMap = '/care/map';
   static const String profile = '/profile';
   static const String personalInformation = '/personal-information';
   static const String changeLanguage = '/change-language';
@@ -172,6 +183,14 @@ abstract final class AppRoutes {
 
   // Notification preferences
   static const String notificationSettings = '/notification-settings';
+
+  // Support
+  static const String contactUs = '/contact-us';
+
+  // Boot gates
+  static const String configError = '/config-error';
+  static const String maintenance = '/maintenance';
+  static const String forceUpdate = '/force-update';
 }
 
 /// The route a logged-in user should land on, given the RESOLVED pet gate.
@@ -188,6 +207,13 @@ String petLandingFor(PetsState pets) {
 }
 
 
+/// Current installed app version, loaded once at startup via package_info_plus.
+@Riverpod(keepAlive: true)
+Future<String> currentAppVersion(Ref ref) async {
+  final info = await PackageInfo.fromPlatform();
+  return info.version; // e.g. "1.2.3"
+}
+
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey();
 
 @Riverpod(keepAlive: true)
@@ -197,6 +223,8 @@ GoRouter appRouter(Ref ref) {
   final refresh = ValueNotifier(0);
   ref
     ..onDispose(refresh.dispose)
+    ..listen(appConfigProvider, (_, _) => refresh.value++)
+    ..listen(currentAppVersionProvider, (_, _) => refresh.value++)
     ..listen(onboardingCompletedProvider, (_, _) => refresh.value++)
     ..listen(sessionProvider, (_, _) => refresh.value++)
     ..listen(petsProvider, (_, _) => refresh.value++);
@@ -215,11 +243,48 @@ GoRouter appRouter(Ref ref) {
     initialLocation: AppRoutes.splash,
     refreshListenable: refresh,
     redirect: (context, state) {
+      final configAsync = ref.read(appConfigProvider);
+      final versionAsync = ref.read(currentAppVersionProvider);
       final onboardingAsync = ref.read(onboardingCompletedProvider);
       final session = ref.read(sessionProvider);
       final pets = ref.read(petsProvider);
       final location = state.matchedLocation;
       final onSplash = location == AppRoutes.splash;
+      final onConfigError = location == AppRoutes.configError;
+      final onMaintenance = location == AppRoutes.maintenance;
+      final onForceUpdate = location == AppRoutes.forceUpdate;
+
+      // ── Gate 0: App config ───────────────────────────────────────────────
+      // Config + version must both resolve before anything else. While either
+      // is loading, hold on the splash. On config failure (no network + no
+      // usable cache), send to the error screen.
+      if (configAsync.isLoading || versionAsync.isLoading) {
+        return onSplash ? null : AppRoutes.splash;
+      }
+      // If PackageInfo failed to read the version, skip the force-update check
+      // rather than blocking the user with a false positive.
+      if (versionAsync.hasError) return onForceUpdate ? AppRoutes.splash : null;
+      if (configAsync.hasError ||
+          (configAsync.hasValue && configAsync.value!.isFailure)) {
+        return onConfigError ? null : AppRoutes.configError;
+      }
+      // Config loaded — bounce off the error screen.
+      if (onConfigError) return AppRoutes.splash;
+
+      final config = configAsync.value!.valueOrNull!;
+
+      // ── Gate 0a: Maintenance ─────────────────────────────────────────────
+      if (config.maintenance.active) {
+        return onMaintenance ? null : AppRoutes.maintenance;
+      }
+      if (onMaintenance) return AppRoutes.splash;
+
+      // ── Gate 0b: Force update ────────────────────────────────────────────
+      final currentVersion = versionAsync.value ?? '0.0.0';
+      if (AppVersionUtils.isOlderThan(currentVersion, config.minAppVersion)) {
+        return onForceUpdate ? null : AppRoutes.forceUpdate;
+      }
+      if (onForceUpdate) return AppRoutes.splash;
 
       // While either gate is resolving, stay put (return null). On cold start
       // that means holding on the splash (initialLocation) until both gates
@@ -396,6 +461,15 @@ GoRouter appRouter(Ref ref) {
         pageBuilder: (context, state) => AppTransitionPage(
               key: state.pageKey,
               child: const ChangePasswordPage(),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.emailVerify,
+        name: 'emailVerify',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+              key: state.pageKey,
+              child: const EmailVerificationPage(),
             ),
       ),
       GoRoute(
@@ -818,8 +892,19 @@ GoRouter appRouter(Ref ref) {
                 name: 'care',
                 pageBuilder: (context, state) => AppTransitionPage(
                       key: state.pageKey,
-                      child: const ServiceProvidersPage(),
+                      child: const PetaCareTabPage(),
                     ),
+                routes: [
+                  GoRoute(
+                    path: 'map',
+                    name: 'careMap',
+                    parentNavigatorKey: _rootNavigatorKey,
+                    pageBuilder: (context, state) => AppTransitionPage(
+                          key: state.pageKey,
+                          child: const ServiceProvidersPage(),
+                        ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -1070,6 +1155,49 @@ GoRouter appRouter(Ref ref) {
               key: state.pageKey,
               child: const NotificationSettingsPage(),
             ),
+      ),
+      GoRoute(
+        path: AppRoutes.contactUs,
+        name: 'contactUs',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppTransitionPage(
+              key: state.pageKey,
+              child: const ContactUsPage(),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.configError,
+        name: 'configError',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppFadeTransitionPage(
+              key: state.pageKey,
+              child: const ConfigErrorPage(),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.maintenance,
+        name: 'maintenance',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) {
+          // Config is guaranteed loaded when we reach this route.
+          final config = ref.read(appConfigProvider).value!.valueOrNull!;
+          return AppFadeTransitionPage(
+            key: state.pageKey,
+            child: MaintenancePage(maintenance: config.maintenance),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.forceUpdate,
+        name: 'forceUpdate',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final config = ref.read(appConfigProvider).value!.valueOrNull!;
+          return AppFadeTransitionPage(
+            key: state.pageKey,
+            child: ForceUpdatePage(links: config.links),
+          );
+        },
       ),
     ],
   );

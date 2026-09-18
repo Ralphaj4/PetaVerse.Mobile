@@ -10,6 +10,7 @@ class User {
   final String? pendingEmail;
   final String mobileNumber;
   final bool mobileVerified;
+  final bool emailVerified;
   final DateTime? dateOfBirth;
   final String? avatarUrl;
   final double? latitude;
@@ -31,6 +32,7 @@ class User {
     this.pendingEmail,
     required this.mobileNumber,
     required this.mobileVerified,
+    this.emailVerified = false,
     this.dateOfBirth,
     this.avatarUrl,
     this.latitude,

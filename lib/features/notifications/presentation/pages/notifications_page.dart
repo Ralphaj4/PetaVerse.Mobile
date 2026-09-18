@@ -2,7 +2,9 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
+import '../../../../core/app/router/app_router.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -109,27 +111,57 @@ class _NotificationListState extends ConsumerState<_NotificationList> {
   void _handleTap(AppNotification notification) {
     ref.read(notificationListProvider.notifier).markRead(notification.id);
 
+    // Email-verification notifications always open the dedicated 6-digit OTP
+    // page, regardless of the backend route field (which points to /profile).
+    if (notification.type == 'email_verification') {
+      context.push(AppRoutes.emailVerify);
+      return;
+    }
+
     final route = notification.route;
     if (route != null && route.isNotEmpty) {
       context.push(route);
     }
   }
 
+  /// Groups [items] by calendar date (device-local) and returns an ordered
+  /// list of (label, notifications) pairs.
+  List<(String, List<AppNotification>)> _group(
+    BuildContext context,
+    List<AppNotification> items,
+  ) {
+    final l10n = context.l10n;
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(const Duration(days: 1));
+
+    final Map<DateTime, List<AppNotification>> buckets = {};
+    for (final n in items) {
+      final local = n.createdAt.toLocal();
+      final day = DateTime(local.year, local.month, local.day);
+      (buckets[day] ??= []).add(n);
+    }
+
+    final sorted = buckets.keys.toList()..sort((a, b) => b.compareTo(a));
+
+    return sorted.map((day) {
+      final String label;
+      if (day == today) {
+        label = l10n.notificationsSectionToday;
+      } else if (day == yesterday) {
+        label = l10n.notificationsSectionYesterday;
+      } else {
+        label = DateFormat.MMMEd().format(day);
+      }
+      return (label, buckets[day]!);
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     final hasMore = ref.watch(notificationHasMoreProvider);
     final isLoadingMore = ref.watch(notificationIsLoadingMoreProvider);
-
-    // Group items into Today / Earlier.
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-
-    final todayItems = widget.items
-        .where((n) => n.createdAt.isAfter(today))
-        .toList(growable: false);
-    final earlierItems = widget.items
-        .where((n) => !n.createdAt.isAfter(today))
-        .toList(growable: false);
+    final groups = _group(context, widget.items);
 
     return RefreshIndicator(
       onRefresh: () =>
@@ -137,19 +169,9 @@ class _NotificationListState extends ConsumerState<_NotificationList> {
       child: ListView(
         controller: _scroll,
         children: [
-          if (todayItems.isNotEmpty) ...[
-            _SectionLabel(label: context.l10n.notificationsSectionToday),
-            for (final n in todayItems) ...[
-              NotificationCard(
-                notification: n,
-                onTap: () => _handleTap(n),
-              ),
-              const Divider(height: 1, color: AppColors.divider),
-            ],
-          ],
-          if (earlierItems.isNotEmpty) ...[
-            _SectionLabel(label: context.l10n.notificationsSectionEarlier),
-            for (final n in earlierItems) ...[
+          for (final (label, notifications) in groups) ...[
+            _SectionLabel(label: label),
+            for (final n in notifications) ...[
               NotificationCard(
                 notification: n,
                 onTap: () => _handleTap(n),

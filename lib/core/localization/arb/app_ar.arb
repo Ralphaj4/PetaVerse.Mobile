@@ -1016,6 +1016,14 @@
   "@pawHubReportReasonImpersonation": {},
   "pawHubReportReasonOther": "شيء آخر",
   "@pawHubReportReasonOther": {},
+  "pawHubReportConfirmTitle": "إرسال البلاغ؟",
+  "@pawHubReportConfirmTitle": {},
+  "pawHubReportConfirmMessage": "أنت تُبلغ عن هذا بسبب: {reason}. لا يمكن التراجع عن هذا الإجراء.",
+  "@pawHubReportConfirmMessage": {
+    "placeholders": { "reason": { "type": "String" } }
+  },
+  "pawHubReportConfirmAction": "إرسال البلاغ",
+  "@pawHubReportConfirmAction": {},
   "pawHubCommentsTitle": "التعليقات",
   "@pawHubCommentsTitle": {},
   "pawHubCommentAs": "التعليق باسم",
@@ -1045,6 +1053,8 @@
   "@notificationsEmptyMessage": {},
   "notificationsSectionToday": "اليوم",
   "@notificationsSectionToday": {},
+  "notificationsSectionYesterday": "أمس",
+  "@notificationsSectionYesterday": {},
   "notificationsSectionEarlier": "سابقاً",
   "@notificationsSectionEarlier": {},
   "notificationsAllCaughtUp": "أنت في الموعد",
@@ -1499,5 +1509,79 @@
       "name": { "type": "String" },
       "count": { "type": "int" }
     }
-  }
+  },
+
+  "contactUsTitle": "نحن هنا للمساعدة",
+  "contactUsSubtitle": "تواصل معنا في أي وقت — عادةً ما نرد خلال 24 ساعة.",
+  "contactUsEmailSubtitle": "أسئلة عامة ودعم",
+  "contactUsEmailSubject": "دعم PetaVerse",
+  "reportProblemSubtitle": "وجدت خللاً أو مشكلة؟",
+  "reportProblemEmailSubject": "PetaVerse — تقرير خلل",
+  "contactUsResponseTime": "نرد عادةً خلال 24 ساعة.",
+  "textUs": "راسلنا",
+  "textUsSubtitle": "تواصل معنا عبر واتساب",
+
+  "emailVerifyTitle1": "تحقق من",
+  "emailVerifyTitle2": "البريد الإلكتروني",
+  "emailVerifySubtitle": "أدخل الرمز المكوّن من 6 أرقام الذي أرسلناه إلى بريدك الإلكتروني.",
+  "emailVerifyDevHint": "DEV: تحقق من سجلات الخادم للحصول على رمز التحقق.",
+  "emailVerifySendFailed": "تعذّر إرسال رمز التحقق. اضغط على إعادة المحاولة.",
+  "emailVerifiedSuccess": "تم التحقق من البريد الإلكتروني بنجاح",
+  "emailAlreadyVerified": "بريدك الإلكتروني محقق مسبقاً.",
+  "verifyEmail": "تحقق من البريد الإلكتروني",
+
+  "noConnectionTitle": "لا يوجد اتصال",
+  "noConnectionMessage": "تعذّر تحميل إعدادات التطبيق. يرجى التحقق من اتصالك والمحاولة مجدداً.",
+
+  "maintenanceTitle": "جارٍ الصيانة",
+  "maintenanceDefaultMessage": "سنعود قريباً.",
+  "maintenanceEndsInHoursMinutes": "سنعود خلال {hours} س و{minutes} د",
+  "@maintenanceEndsInHoursMinutes": {
+    "placeholders": {
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" }
+    }
+  },
+  "maintenanceEndsInMinutes": "سنعود خلال {minutes} دقيقة",
+  "@maintenanceEndsInMinutes": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+
+  "forceUpdateTitle": "التحديث مطلوب",
+  "forceUpdateMessage": "هذا الإصدار من PetaVerse لم يعد مدعوماً. يرجى التحديث للمتابعة.",
+  "forceUpdateButton": "تحديث الآن",
+  "forceUpdateNoStoreUrl": "تعذّر فتح المتجر. يرجى التحديث يدوياً.",
+
+  "errorSuspended": "حسابك موقوف حتى {date}.",
+  "@errorSuspended": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "errorBanned": "تم حظر حسابك نهائياً.",
+
+  "petaCareHeaderTitle": "خزنة صحة {petName}",
+  "@petaCareHeaderTitle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "petaCareHeaderSubtitle": "تتبع الصحة والتذكيرات واعثر على رعاية قريبة",
+  "petaCareHealthScore": "نقاط الصحة",
+  "petaCareHealthData": "بيانات الصحة",
+  "petaCareNoPetTitle": "لا يوجد حيوان أليف نشط",
+  "petaCareNoPetSubtitle": "أضف حيوانًا أليفًا من علامة تبويب الملف الشخصي لرؤية خزنة صحته هنا.",
+  "petaCareFindCare": "ابحث عن رعاية قريبة منك",
+  "petaCareMapSubtitle": "أطباء بيطريون ومصففو شعر وأكثر",
+  "petaCareOpenMap": "فتح الخريطة",
+
+  "accountActions": "إجراءات الحساب",
+  "deleteAccount": "حذف الحساب",
+  "deleteAccountConfirmTitle": "حذف الحساب؟",
+  "deleteAccountConfirmMessage": "سيؤدي هذا إلى حذف حسابك وجميع البيانات المرتبطة به بشكل دائم. لا يمكن التراجع عن هذا الإجراء.",
+  "deleteAccountConfirm": "نعم، احذف",
+  "deleteAccountTypePromptTitle": "تأكيد الحذف",
+  "deleteAccountTypePromptMessage": "اكتب DELETE لحذف حسابك بشكل دائم.",
+  "deleteAccountTypePlaceholder": "اكتب DELETE هنا",
+  "deleteAccountSuccess": "تم حذف حسابك."
 }

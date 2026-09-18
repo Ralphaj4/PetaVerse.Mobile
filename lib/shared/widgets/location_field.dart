@@ -6,7 +6,6 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../core/extensions/context_extensions.dart';
-import '../../core/location/geocoding_service.dart';
 import '../../core/location/location_service.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
@@ -72,24 +71,13 @@ class LocationField extends ConsumerStatefulWidget {
 
 class _LocationFieldState extends ConsumerState<LocationField> {
   LatLng? _location;
-
-  /// True while fetching the device location / reverse-geocoding.
   bool _locating = false;
-
-  /// The address value we last reverse-geocoded into the field, or null if the
-  /// user has since edited (or we never auto-filled). A new pin may overwrite
-  /// an auto-filled value, but never one the user typed.
-  String? _autoFilledAddress;
 
   @override
   void initState() {
     super.initState();
     _location = widget.initialLocation;
-    // When editing, the pre-filled address counts as "auto-filled" so a later
-    // pin move can refresh it — but a user edit still takes precedence.
-    _autoFilledAddress = widget.initialLocationName;
     if (_location == null) {
-      // No initial pin — center on the device once permission resolves.
       WidgetsBinding.instance.addPostFrameCallback((_) => _centerOnDevice());
     }
   }
@@ -106,54 +94,23 @@ class _LocationFieldState extends ConsumerState<LocationField> {
   /// app-wide default. Once a pin exists, [MapView] follows [_location].
   LatLng _mapCenter = kDefaultMapCenter;
 
-  /// Fetches the device's current position and applies it as the pin+address.
   Future<void> _useMyLocation() async {
     setState(() => _locating = true);
     final here = await ref.read(locationServiceProvider).currentLatLng();
     if (!mounted) return;
+    setState(() => _locating = false);
     if (here == null) {
-      setState(() => _locating = false);
       context.showErrorSnackBar(context.l10n.errorUnknown);
       return;
     }
-    await _applyLocation(here);
+    _applyLocation(here);
   }
 
-  /// Sets the pin to [point] and, when allowed, fills the address field by
-  /// reverse-geocoding it. The pin is set regardless; the address is a
-  /// best-effort convenience — geocoding failures are silent.
-  Future<void> _applyLocation(LatLng point) async {
-    setState(() {
-      _location = point;
-      _locating = true;
-    });
+  /// Sets the pin to [point] and notifies the parent.
+  void _applyLocation(LatLng point) {
+    setState(() => _location = point);
     widget.onLocationChanged(point);
-
-    final field = _formField;
-    final existing = (field?.value as String?)?.trim();
-    // Fill when empty, or when the current value is one we auto-filled (the
-    // user hasn't taken over the field). Never clobber user-typed text.
-    final mayFill = existing == null ||
-        existing.isEmpty ||
-        (_autoFilledAddress != null && existing == _autoFilledAddress);
-
-    if (mayFill) {
-      final result = await ref.read(geocodingServiceProvider).reverse(
-            latitude: point.latitude,
-            longitude: point.longitude,
-          );
-      final address = result.valueOrNull;
-      if (address != null && mounted) {
-        _autoFilledAddress = address;
-        _formField?.didChange(address);
-      }
-    }
-
-    if (mounted) setState(() => _locating = false);
   }
-
-  FormFieldState<dynamic>? get _formField =>
-      FormBuilder.of(context)?.fields[widget.addressFieldName];
 
   Future<void> _openFullScreen() async {
     final picked = await Navigator.of(context).push<LatLng>(
@@ -165,7 +122,7 @@ class _LocationFieldState extends ConsumerState<LocationField> {
         ),
       ),
     );
-    if (picked != null) await _applyLocation(picked);
+    if (picked != null) _applyLocation(picked);
   }
 
   @override
@@ -191,11 +148,6 @@ class _LocationFieldState extends ConsumerState<LocationField> {
             ),
             counterText: '',
           ),
-          // Typing takes over the field — drop our auto-fill claim so a later
-          // pin move won't overwrite the user's text.
-          onChanged: (value) {
-            if (value != _autoFilledAddress) _autoFilledAddress = null;
-          },
           validator: FormBuilderValidators.compose([
             FormBuilderValidators.required(errorText: l10n.fieldRequired),
             FormBuilderValidators.maxLength(

@@ -27,6 +27,16 @@ class ChatSession extends _$ChatSession {
     final result = await ref
         .watch(assistantRepositoryProvider)
         .getSession(sessionId);
+
+    // If a send started (or completed) while this history fetch was in flight,
+    // optimistic/streamed messages already live in state. Prefer them over the
+    // (possibly empty) GET result so build() never clobbers an ongoing chat and
+    // bounces the user back to the suggested-prompts screen.
+    final existing = state.value;
+    if (_isSending || (existing != null && existing.isNotEmpty)) {
+      return existing ?? const [];
+    }
+
     return result.when(
       success: (session) => session.messages,
       failure: (f) => throw f,

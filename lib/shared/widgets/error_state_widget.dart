@@ -128,6 +128,18 @@ class _ErrorStyle {
             FluentIcons.cloud_off_24_regular,
             AppColors.textSecondary,
           ),
+        ConflictFailure() => const _ErrorStyle(
+            FluentIcons.warning_24_regular,
+            AppColors.warning,
+          ),
+        SuspendedFailure() => const _ErrorStyle(
+            FluentIcons.clock_pause_24_regular,
+            AppColors.warning,
+          ),
+        BannedFailure() => const _ErrorStyle(
+            FluentIcons.prohibited_24_regular,
+            AppColors.error,
+          ),
         UnknownFailure() => const _ErrorStyle(
             FluentIcons.emoji_sad_24_regular,
             AppColors.primary,

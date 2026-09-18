@@ -13,6 +13,8 @@ import '../../../../shared/widgets/app_confirm_dialog.dart';
 import '../../../../shared/widgets/empty_state_widget.dart';
 import '../../../../shared/widgets/error_state_widget.dart';
 import '../../domain/entities/community_group_entities.dart';
+import '../models/pawhub_models.dart';
+import '../pages/pawhub_pet_profile_page.dart';
 import '../providers/community_group_actions_providers.dart';
 import '../providers/community_group_feed_providers.dart';
 
@@ -87,6 +89,10 @@ class CommunityMembersPage extends ConsumerWidget {
           itemBuilder: (context, i) {
             final m = page.members[i];
             return ListTile(
+              onTap: () => openPawHubPetProfile(
+                context,
+                PawPet.fromEntity(m.pet),
+              ),
               leading: AppAvatar(
                 name: m.pet.name,
                 imageUrl: m.pet.avatarUrl,

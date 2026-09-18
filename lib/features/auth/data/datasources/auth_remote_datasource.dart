@@ -68,10 +68,13 @@ class AuthRemoteDataSource {
     return LoginResponseDto.fromJson(json);
   }
 
-  Future<void> revoke(String refreshToken) async {
+  Future<void> revoke({
+    required String refreshToken,
+    required String deviceId,
+  }) async {
     await _client.post<Map<String, dynamic>>(
       ApiEndpoints.revokeToken,
-      data: {'refreshToken': refreshToken},
+      data: {'refreshToken': refreshToken, 'deviceId': deviceId},
     );
   }
 
@@ -122,21 +125,43 @@ class AuthRemoteDataSource {
     );
   }
 
+  /// Sends a 6-digit email verification code to the current user's email.
+  Future<void> sendEmailVerification() async {
+    await _client.post<void>(ApiEndpoints.emailVerifySend);
+  }
+
+  /// Confirms the email verification code entered by the user.
+  Future<void> confirmEmailVerification(String code) async {
+    await _client.post<void>(
+      ApiEndpoints.emailVerifyConfirm,
+      data: {'code': code},
+    );
+  }
+
   /// Registers (or refreshes) a device FCM token so the backend can send
   /// targeted push notifications to this device.
-  Future<void> registerFcmToken(String token) async {
+  Future<void> registerFcmToken({
+    required String token,
+    required String deviceId,
+    required String platform,
+  }) async {
     await _client.post<void>(
       ApiEndpoints.fcmToken,
-      data: {'token': token},
+      data: {'token': token, 'deviceId': deviceId, 'platform': platform},
     );
   }
 
   /// Removes a device FCM token — call on logout so the backend stops
   /// sending pushes to this device.
-  Future<void> unregisterFcmToken(String token) async {
+  Future<void> unregisterFcmToken({required String deviceId}) async {
     await _client.deleteWithBody<void>(
       ApiEndpoints.fcmToken,
-      data: {'token': token},
+      data: {'deviceId': deviceId},
     );
+  }
+
+  /// Permanently deletes the authenticated user's account (204 No Content).
+  Future<void> deleteAccount() async {
+    await _client.delete<void>(ApiEndpoints.deleteAccount);
   }
 }

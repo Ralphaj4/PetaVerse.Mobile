@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserDto {
 
- String get id; String get userCode; String get firstName; String get lastName; String? get email; String? get pendingEmail; String get mobileNumber; bool get mobileVerified; DateTime? get dateOfBirth; String? get avatarUrl; double? get latitude; double? get longitude; String? get locationName; int get pendingCoOwnerInvitesCount; List<String> get roles; DateTime get createdAt;
+ String get id; String get userCode; String get firstName; String get lastName; String? get email; String? get pendingEmail; String get mobileNumber; bool get mobileVerified; bool get emailVerified; DateTime? get dateOfBirth; String? get avatarUrl; double? get latitude; double? get longitude; String? get locationName; int get pendingCoOwnerInvitesCount; List<String> get roles; DateTime get createdAt;
 /// Create a copy of UserDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserDtoCopyWith<UserDto> get copyWith => _$UserDtoCopyWithImpl<UserDto>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserDto&&(identical(other.id, id) || other.id == id)&&(identical(other.userCode, userCode) || other.userCode == userCode)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.email, email) || other.email == email)&&(identical(other.pendingEmail, pendingEmail) || other.pendingEmail == pendingEmail)&&(identical(other.mobileNumber, mobileNumber) || other.mobileNumber == mobileNumber)&&(identical(other.mobileVerified, mobileVerified) || other.mobileVerified == mobileVerified)&&(identical(other.dateOfBirth, dateOfBirth) || other.dateOfBirth == dateOfBirth)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.locationName, locationName) || other.locationName == locationName)&&(identical(other.pendingCoOwnerInvitesCount, pendingCoOwnerInvitesCount) || other.pendingCoOwnerInvitesCount == pendingCoOwnerInvitesCount)&&const DeepCollectionEquality().equals(other.roles, roles)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserDto&&(identical(other.id, id) || other.id == id)&&(identical(other.userCode, userCode) || other.userCode == userCode)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.email, email) || other.email == email)&&(identical(other.pendingEmail, pendingEmail) || other.pendingEmail == pendingEmail)&&(identical(other.mobileNumber, mobileNumber) || other.mobileNumber == mobileNumber)&&(identical(other.mobileVerified, mobileVerified) || other.mobileVerified == mobileVerified)&&(identical(other.emailVerified, emailVerified) || other.emailVerified == emailVerified)&&(identical(other.dateOfBirth, dateOfBirth) || other.dateOfBirth == dateOfBirth)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.locationName, locationName) || other.locationName == locationName)&&(identical(other.pendingCoOwnerInvitesCount, pendingCoOwnerInvitesCount) || other.pendingCoOwnerInvitesCount == pendingCoOwnerInvitesCount)&&const DeepCollectionEquality().equals(other.roles, roles)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userCode,firstName,lastName,email,pendingEmail,mobileNumber,mobileVerified,dateOfBirth,avatarUrl,latitude,longitude,locationName,pendingCoOwnerInvitesCount,const DeepCollectionEquality().hash(roles),createdAt);
+int get hashCode => Object.hash(runtimeType,id,userCode,firstName,lastName,email,pendingEmail,mobileNumber,mobileVerified,emailVerified,dateOfBirth,avatarUrl,latitude,longitude,locationName,pendingCoOwnerInvitesCount,const DeepCollectionEquality().hash(roles),createdAt);
 
 @override
 String toString() {
-  return 'UserDto(id: $id, userCode: $userCode, firstName: $firstName, lastName: $lastName, email: $email, pendingEmail: $pendingEmail, mobileNumber: $mobileNumber, mobileVerified: $mobileVerified, dateOfBirth: $dateOfBirth, avatarUrl: $avatarUrl, latitude: $latitude, longitude: $longitude, locationName: $locationName, pendingCoOwnerInvitesCount: $pendingCoOwnerInvitesCount, roles: $roles, createdAt: $createdAt)';
+  return 'UserDto(id: $id, userCode: $userCode, firstName: $firstName, lastName: $lastName, email: $email, pendingEmail: $pendingEmail, mobileNumber: $mobileNumber, mobileVerified: $mobileVerified, emailVerified: $emailVerified, dateOfBirth: $dateOfBirth, avatarUrl: $avatarUrl, latitude: $latitude, longitude: $longitude, locationName: $locationName, pendingCoOwnerInvitesCount: $pendingCoOwnerInvitesCount, roles: $roles, createdAt: $createdAt)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserDtoCopyWith<$Res>  {
   factory $UserDtoCopyWith(UserDto value, $Res Function(UserDto) _then) = _$UserDtoCopyWithImpl;
 @useResult
 $Res call({
- String id, String userCode, String firstName, String lastName, String? email, String? pendingEmail, String mobileNumber, bool mobileVerified, DateTime? dateOfBirth, String? avatarUrl, double? latitude, double? longitude, String? locationName, int pendingCoOwnerInvitesCount, List<String> roles, DateTime createdAt
+ String id, String userCode, String firstName, String lastName, String? email, String? pendingEmail, String mobileNumber, bool mobileVerified, bool emailVerified, DateTime? dateOfBirth, String? avatarUrl, double? latitude, double? longitude, String? locationName, int pendingCoOwnerInvitesCount, List<String> roles, DateTime createdAt
 });
 
 
@@ -65,7 +65,7 @@ class _$UserDtoCopyWithImpl<$Res>
 
 /// Create a copy of UserDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userCode = null,Object? firstName = null,Object? lastName = null,Object? email = freezed,Object? pendingEmail = freezed,Object? mobileNumber = null,Object? mobileVerified = null,Object? dateOfBirth = freezed,Object? avatarUrl = freezed,Object? latitude = freezed,Object? longitude = freezed,Object? locationName = freezed,Object? pendingCoOwnerInvitesCount = null,Object? roles = null,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userCode = null,Object? firstName = null,Object? lastName = null,Object? email = freezed,Object? pendingEmail = freezed,Object? mobileNumber = null,Object? mobileVerified = null,Object? emailVerified = null,Object? dateOfBirth = freezed,Object? avatarUrl = freezed,Object? latitude = freezed,Object? longitude = freezed,Object? locationName = freezed,Object? pendingCoOwnerInvitesCount = null,Object? roles = null,Object? createdAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userCode: null == userCode ? _self.userCode : userCode // ignore: cast_nullable_to_non_nullable
@@ -75,6 +75,7 @@ as String,email: freezed == email ? _self.email : email // ignore: cast_nullable
 as String?,pendingEmail: freezed == pendingEmail ? _self.pendingEmail : pendingEmail // ignore: cast_nullable_to_non_nullable
 as String?,mobileNumber: null == mobileNumber ? _self.mobileNumber : mobileNumber // ignore: cast_nullable_to_non_nullable
 as String,mobileVerified: null == mobileVerified ? _self.mobileVerified : mobileVerified // ignore: cast_nullable_to_non_nullable
+as bool,emailVerified: null == emailVerified ? _self.emailVerified : emailVerified // ignore: cast_nullable_to_non_nullable
 as bool,dateOfBirth: freezed == dateOfBirth ? _self.dateOfBirth : dateOfBirth // ignore: cast_nullable_to_non_nullable
 as DateTime?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
@@ -168,10 +169,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String userCode,  String firstName,  String lastName,  String? email,  String? pendingEmail,  String mobileNumber,  bool mobileVerified,  DateTime? dateOfBirth,  String? avatarUrl,  double? latitude,  double? longitude,  String? locationName,  int pendingCoOwnerInvitesCount,  List<String> roles,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String userCode,  String firstName,  String lastName,  String? email,  String? pendingEmail,  String mobileNumber,  bool mobileVerified,  bool emailVerified,  DateTime? dateOfBirth,  String? avatarUrl,  double? latitude,  double? longitude,  String? locationName,  int pendingCoOwnerInvitesCount,  List<String> roles,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserDto() when $default != null:
-return $default(_that.id,_that.userCode,_that.firstName,_that.lastName,_that.email,_that.pendingEmail,_that.mobileNumber,_that.mobileVerified,_that.dateOfBirth,_that.avatarUrl,_that.latitude,_that.longitude,_that.locationName,_that.pendingCoOwnerInvitesCount,_that.roles,_that.createdAt);case _:
+return $default(_that.id,_that.userCode,_that.firstName,_that.lastName,_that.email,_that.pendingEmail,_that.mobileNumber,_that.mobileVerified,_that.emailVerified,_that.dateOfBirth,_that.avatarUrl,_that.latitude,_that.longitude,_that.locationName,_that.pendingCoOwnerInvitesCount,_that.roles,_that.createdAt);case _:
   return orElse();
 
 }
@@ -189,10 +190,10 @@ return $default(_that.id,_that.userCode,_that.firstName,_that.lastName,_that.ema
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String userCode,  String firstName,  String lastName,  String? email,  String? pendingEmail,  String mobileNumber,  bool mobileVerified,  DateTime? dateOfBirth,  String? avatarUrl,  double? latitude,  double? longitude,  String? locationName,  int pendingCoOwnerInvitesCount,  List<String> roles,  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String userCode,  String firstName,  String lastName,  String? email,  String? pendingEmail,  String mobileNumber,  bool mobileVerified,  bool emailVerified,  DateTime? dateOfBirth,  String? avatarUrl,  double? latitude,  double? longitude,  String? locationName,  int pendingCoOwnerInvitesCount,  List<String> roles,  DateTime createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _UserDto():
-return $default(_that.id,_that.userCode,_that.firstName,_that.lastName,_that.email,_that.pendingEmail,_that.mobileNumber,_that.mobileVerified,_that.dateOfBirth,_that.avatarUrl,_that.latitude,_that.longitude,_that.locationName,_that.pendingCoOwnerInvitesCount,_that.roles,_that.createdAt);case _:
+return $default(_that.id,_that.userCode,_that.firstName,_that.lastName,_that.email,_that.pendingEmail,_that.mobileNumber,_that.mobileVerified,_that.emailVerified,_that.dateOfBirth,_that.avatarUrl,_that.latitude,_that.longitude,_that.locationName,_that.pendingCoOwnerInvitesCount,_that.roles,_that.createdAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -209,10 +210,10 @@ return $default(_that.id,_that.userCode,_that.firstName,_that.lastName,_that.ema
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String userCode,  String firstName,  String lastName,  String? email,  String? pendingEmail,  String mobileNumber,  bool mobileVerified,  DateTime? dateOfBirth,  String? avatarUrl,  double? latitude,  double? longitude,  String? locationName,  int pendingCoOwnerInvitesCount,  List<String> roles,  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String userCode,  String firstName,  String lastName,  String? email,  String? pendingEmail,  String mobileNumber,  bool mobileVerified,  bool emailVerified,  DateTime? dateOfBirth,  String? avatarUrl,  double? latitude,  double? longitude,  String? locationName,  int pendingCoOwnerInvitesCount,  List<String> roles,  DateTime createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _UserDto() when $default != null:
-return $default(_that.id,_that.userCode,_that.firstName,_that.lastName,_that.email,_that.pendingEmail,_that.mobileNumber,_that.mobileVerified,_that.dateOfBirth,_that.avatarUrl,_that.latitude,_that.longitude,_that.locationName,_that.pendingCoOwnerInvitesCount,_that.roles,_that.createdAt);case _:
+return $default(_that.id,_that.userCode,_that.firstName,_that.lastName,_that.email,_that.pendingEmail,_that.mobileNumber,_that.mobileVerified,_that.emailVerified,_that.dateOfBirth,_that.avatarUrl,_that.latitude,_that.longitude,_that.locationName,_that.pendingCoOwnerInvitesCount,_that.roles,_that.createdAt);case _:
   return null;
 
 }
@@ -224,7 +225,7 @@ return $default(_that.id,_that.userCode,_that.firstName,_that.lastName,_that.ema
 @JsonSerializable()
 
 class _UserDto extends UserDto {
-  const _UserDto({required this.id, this.userCode = '', required this.firstName, required this.lastName, this.email, this.pendingEmail, required this.mobileNumber, required this.mobileVerified, this.dateOfBirth, this.avatarUrl, this.latitude, this.longitude, this.locationName, this.pendingCoOwnerInvitesCount = 0, required final  List<String> roles, required this.createdAt}): _roles = roles,super._();
+  const _UserDto({required this.id, this.userCode = '', required this.firstName, required this.lastName, this.email, this.pendingEmail, required this.mobileNumber, required this.mobileVerified, this.emailVerified = false, this.dateOfBirth, this.avatarUrl, this.latitude, this.longitude, this.locationName, this.pendingCoOwnerInvitesCount = 0, required final  List<String> roles, required this.createdAt}): _roles = roles,super._();
   factory _UserDto.fromJson(Map<String, dynamic> json) => _$UserDtoFromJson(json);
 
 @override final  String id;
@@ -235,6 +236,7 @@ class _UserDto extends UserDto {
 @override final  String? pendingEmail;
 @override final  String mobileNumber;
 @override final  bool mobileVerified;
+@override@JsonKey() final  bool emailVerified;
 @override final  DateTime? dateOfBirth;
 @override final  String? avatarUrl;
 @override final  double? latitude;
@@ -263,16 +265,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserDto&&(identical(other.id, id) || other.id == id)&&(identical(other.userCode, userCode) || other.userCode == userCode)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.email, email) || other.email == email)&&(identical(other.pendingEmail, pendingEmail) || other.pendingEmail == pendingEmail)&&(identical(other.mobileNumber, mobileNumber) || other.mobileNumber == mobileNumber)&&(identical(other.mobileVerified, mobileVerified) || other.mobileVerified == mobileVerified)&&(identical(other.dateOfBirth, dateOfBirth) || other.dateOfBirth == dateOfBirth)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.locationName, locationName) || other.locationName == locationName)&&(identical(other.pendingCoOwnerInvitesCount, pendingCoOwnerInvitesCount) || other.pendingCoOwnerInvitesCount == pendingCoOwnerInvitesCount)&&const DeepCollectionEquality().equals(other._roles, _roles)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserDto&&(identical(other.id, id) || other.id == id)&&(identical(other.userCode, userCode) || other.userCode == userCode)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.email, email) || other.email == email)&&(identical(other.pendingEmail, pendingEmail) || other.pendingEmail == pendingEmail)&&(identical(other.mobileNumber, mobileNumber) || other.mobileNumber == mobileNumber)&&(identical(other.mobileVerified, mobileVerified) || other.mobileVerified == mobileVerified)&&(identical(other.emailVerified, emailVerified) || other.emailVerified == emailVerified)&&(identical(other.dateOfBirth, dateOfBirth) || other.dateOfBirth == dateOfBirth)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.locationName, locationName) || other.locationName == locationName)&&(identical(other.pendingCoOwnerInvitesCount, pendingCoOwnerInvitesCount) || other.pendingCoOwnerInvitesCount == pendingCoOwnerInvitesCount)&&const DeepCollectionEquality().equals(other._roles, _roles)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,userCode,firstName,lastName,email,pendingEmail,mobileNumber,mobileVerified,dateOfBirth,avatarUrl,latitude,longitude,locationName,pendingCoOwnerInvitesCount,const DeepCollectionEquality().hash(_roles),createdAt);
+int get hashCode => Object.hash(runtimeType,id,userCode,firstName,lastName,email,pendingEmail,mobileNumber,mobileVerified,emailVerified,dateOfBirth,avatarUrl,latitude,longitude,locationName,pendingCoOwnerInvitesCount,const DeepCollectionEquality().hash(_roles),createdAt);
 
 @override
 String toString() {
-  return 'UserDto(id: $id, userCode: $userCode, firstName: $firstName, lastName: $lastName, email: $email, pendingEmail: $pendingEmail, mobileNumber: $mobileNumber, mobileVerified: $mobileVerified, dateOfBirth: $dateOfBirth, avatarUrl: $avatarUrl, latitude: $latitude, longitude: $longitude, locationName: $locationName, pendingCoOwnerInvitesCount: $pendingCoOwnerInvitesCount, roles: $roles, createdAt: $createdAt)';
+  return 'UserDto(id: $id, userCode: $userCode, firstName: $firstName, lastName: $lastName, email: $email, pendingEmail: $pendingEmail, mobileNumber: $mobileNumber, mobileVerified: $mobileVerified, emailVerified: $emailVerified, dateOfBirth: $dateOfBirth, avatarUrl: $avatarUrl, latitude: $latitude, longitude: $longitude, locationName: $locationName, pendingCoOwnerInvitesCount: $pendingCoOwnerInvitesCount, roles: $roles, createdAt: $createdAt)';
 }
 
 
@@ -283,7 +285,7 @@ abstract mixin class _$UserDtoCopyWith<$Res> implements $UserDtoCopyWith<$Res> {
   factory _$UserDtoCopyWith(_UserDto value, $Res Function(_UserDto) _then) = __$UserDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String userCode, String firstName, String lastName, String? email, String? pendingEmail, String mobileNumber, bool mobileVerified, DateTime? dateOfBirth, String? avatarUrl, double? latitude, double? longitude, String? locationName, int pendingCoOwnerInvitesCount, List<String> roles, DateTime createdAt
+ String id, String userCode, String firstName, String lastName, String? email, String? pendingEmail, String mobileNumber, bool mobileVerified, bool emailVerified, DateTime? dateOfBirth, String? avatarUrl, double? latitude, double? longitude, String? locationName, int pendingCoOwnerInvitesCount, List<String> roles, DateTime createdAt
 });
 
 
@@ -300,7 +302,7 @@ class __$UserDtoCopyWithImpl<$Res>
 
 /// Create a copy of UserDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userCode = null,Object? firstName = null,Object? lastName = null,Object? email = freezed,Object? pendingEmail = freezed,Object? mobileNumber = null,Object? mobileVerified = null,Object? dateOfBirth = freezed,Object? avatarUrl = freezed,Object? latitude = freezed,Object? longitude = freezed,Object? locationName = freezed,Object? pendingCoOwnerInvitesCount = null,Object? roles = null,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userCode = null,Object? firstName = null,Object? lastName = null,Object? email = freezed,Object? pendingEmail = freezed,Object? mobileNumber = null,Object? mobileVerified = null,Object? emailVerified = null,Object? dateOfBirth = freezed,Object? avatarUrl = freezed,Object? latitude = freezed,Object? longitude = freezed,Object? locationName = freezed,Object? pendingCoOwnerInvitesCount = null,Object? roles = null,Object? createdAt = null,}) {
   return _then(_UserDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userCode: null == userCode ? _self.userCode : userCode // ignore: cast_nullable_to_non_nullable
@@ -310,6 +312,7 @@ as String,email: freezed == email ? _self.email : email // ignore: cast_nullable
 as String?,pendingEmail: freezed == pendingEmail ? _self.pendingEmail : pendingEmail // ignore: cast_nullable_to_non_nullable
 as String?,mobileNumber: null == mobileNumber ? _self.mobileNumber : mobileNumber // ignore: cast_nullable_to_non_nullable
 as String,mobileVerified: null == mobileVerified ? _self.mobileVerified : mobileVerified // ignore: cast_nullable_to_non_nullable
+as bool,emailVerified: null == emailVerified ? _self.emailVerified : emailVerified // ignore: cast_nullable_to_non_nullable
 as bool,dateOfBirth: freezed == dateOfBirth ? _self.dateOfBirth : dateOfBirth // ignore: cast_nullable_to_non_nullable
 as DateTime?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable

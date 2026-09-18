@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/app/tab_scroll_to_top_provider.dart';
+import '../../../../core/network/app_config_datasource.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
@@ -23,6 +25,7 @@ import '../../../pets/presentation/providers/pet_list_provider.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
 import '../../../pets/presentation/widgets/pet_card_grid.dart';
 import '../providers/user_provider.dart';
+import '../widgets/delete_account_dialog.dart';
 import '../widgets/log_out_button.dart';
 import '../widgets/profile_header.dart';
 import '../widgets/settings_tile.dart';
@@ -60,6 +63,43 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOutCubic,
     );
+  }
+
+  Future<void> _onDeleteAccount(BuildContext context) async {
+    final confirmed = await DeleteAccountDialog.show(context);
+    if (!confirmed || !context.mounted) return;
+
+    // Read all stable refs before any await — the providers we touch
+    // (authProvider in particular) are auto-disposed and their refs become
+    // invalid the moment the session gate flips and the router rebuilds.
+    final petsNotifier = ref.read(petsProvider.notifier);
+    final authNotifier = ref.read(authProvider.notifier);
+    final sessionNotifier = ref.read(sessionProvider.notifier);
+
+    final result = await authNotifier.deleteAccount();
+
+    if (result.isFailure) {
+      if (!context.mounted) return;
+      context.showErrorSnackBar(
+        result.failureOrNull!.localizedMessage(context.l10n),
+      );
+      return;
+    }
+
+    // Flip the session gate FIRST (synchronous) — the router immediately
+    // redirects to /login. Any remaining async teardown (pet cache reset)
+    // runs after, mirroring the logout sequence.
+    sessionNotifier.setLoggedIn(false);
+    await petsNotifier.reset();
+  }
+
+  Future<void> _openUrl(BuildContext context, String url) async {
+    if (url.isEmpty) return;
+    final uri = Uri.tryParse(url);
+    if (uri == null) return;
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      if (context.mounted) context.showErrorSnackBar(context.l10n.errorServer);
+    }
   }
 
   @override
@@ -108,13 +148,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 actionLabel: l10n.addPet,
                 onAdd: () async {
                   await context.push(AppRoutes.createPet);
-                  // Reconcile the list after returning — the create provider
-                  // invalidates petListProvider on success, but if the
-                  // provider was disposed while off-screen we need a fresh
-                  // fetch here too.
-                  if (context.mounted) {
-                    unawaited(ref.read(petListProvider.notifier).refresh());
-                  }
+                  // Invalidate so the list rebuilds with any newly created
+                  // pet. Using invalidate (not .refresh()) avoids touching a
+                  // potentially-disposed notifier after the provider went
+                  // off-screen during navigation.
+                  if (context.mounted) ref.invalidate(petListProvider);
                 },
               ),
               const SizedBox(height: AppSpacing.md),
@@ -148,7 +186,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               //   label: l10n.paymentMethods,
               //   onTap: () {},
               // ),
-              // const SizedBox(height: AppSpacing.xl),
+              const SizedBox(height: AppSpacing.xl),
 
               // ── Preferences ──────────────────────────────────────────
               _GroupTitle(title: l10n.preferences),
@@ -177,37 +215,16 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 label: l10n.changePassword,
                 onTap: () => context.push(AppRoutes.changePassword),
               ),
-              const SizedBox(height: AppSpacing.sm),
-              SettingsTile(
-                icon: FluentIcons.shield_24_regular,
-                iconColor: AppColors.secondary,
-                label: l10n.privacySettings,
-                onTap: () {},
-              ),
               const SizedBox(height: AppSpacing.xl),
 
               // ── Support ──────────────────────────────────────────────
               _GroupTitle(title: l10n.support),
               const SizedBox(height: AppSpacing.md),
               SettingsTile(
-                icon: FluentIcons.question_circle_24_regular,
-                iconColor: AppColors.accentPurple,
-                label: l10n.helpCenter,
-                onTap: () {},
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              SettingsTile(
                 icon: FluentIcons.mail_24_regular,
                 iconColor: AppColors.secondary,
                 label: l10n.contactUs,
-                onTap: () {},
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              SettingsTile(
-                icon: FluentIcons.warning_24_regular,
-                iconColor: AppColors.accentCoral,
-                label: l10n.reportProblem,
-                onTap: () {},
+                onTap: () => context.push(AppRoutes.contactUs),
               ),
               const SizedBox(height: AppSpacing.xl),
 
@@ -218,14 +235,28 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 icon: FluentIcons.document_24_regular,
                 iconColor: AppColors.primary,
                 label: l10n.privacyPolicy,
-                onTap: () {},
+                onTap: () => _openUrl(
+                  context,
+                  ref.read(appConfigProvider).value?.valueOrNull?.links.privacy ?? '',
+                ),
               ),
               const SizedBox(height: AppSpacing.sm),
               SettingsTile(
                 icon: FluentIcons.document_bullet_list_24_regular,
                 iconColor: AppColors.accentPurple,
                 label: l10n.termsConditions,
-                onTap: () {},
+                onTap: () => _openUrl(
+                  context,
+                  ref.read(appConfigProvider).value?.valueOrNull?.links.terms ?? '',
+                ),
+              ),
+              const SizedBox(height: AppSpacing.xl),
+
+              // ── Account Actions ──────────────────────────────────────
+              _GroupTitle(title: l10n.accountActions),
+              const SizedBox(height: AppSpacing.md),
+              _DeleteAccountTile(
+                onTap: () => _onDeleteAccount(context),
               ),
               const SizedBox(height: AppSpacing.xxl),
 
@@ -262,14 +293,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 },
               ),
               const SizedBox(height: AppSpacing.lg),
-              Center(
-                child: Text(
-                  l10n.appVersion('2.4.1', '108'),
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textTertiary,
-                  ),
-                ),
-              ),
             ],
           ),
         ),
@@ -432,6 +455,66 @@ class _PetCardSkeleton extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Destructive tile for the "Account Actions" section. Styled in red to
+/// communicate the severity of the action without using a normal SettingsTile.
+class _DeleteAccountTile extends StatelessWidget {
+  const _DeleteAccountTile({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: context.l10n.deleteAccount,
+      child: Material(
+        color: AppColors.error.withValues(alpha: 0.08),
+        borderRadius: AppRadius.mdAll,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: AppRadius.mdAll,
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            child: Row(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppColors.error.withValues(alpha: 0.12),
+                    borderRadius: AppRadius.smAll,
+                  ),
+                  child: const Icon(
+                    FluentIcons.delete_24_regular,
+                    size: 20,
+                    color: AppColors.error,
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Text(
+                    context.l10n.deleteAccount,
+                    style: AppTextStyles.titleSmall.copyWith(
+                      color: AppColors.error,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Icon(
+                  FluentIcons.chevron_right_24_regular,
+                  size: 18,
+                  color: AppColors.error.withValues(alpha: 0.5),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

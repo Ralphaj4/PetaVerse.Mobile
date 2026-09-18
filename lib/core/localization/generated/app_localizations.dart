@@ -4534,6 +4534,24 @@ abstract class AppLocalizations {
   /// **'Something else'**
   String get pawHubReportReasonOther;
 
+  /// No description provided for @pawHubReportConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit report?'**
+  String get pawHubReportConfirmTitle;
+
+  /// No description provided for @pawHubReportConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re reporting this as: {reason}. This action cannot be undone.'**
+  String pawHubReportConfirmMessage(String reason);
+
+  /// No description provided for @pawHubReportConfirmAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Report'**
+  String get pawHubReportConfirmAction;
+
   /// No description provided for @pawHubCommentsTitle.
   ///
   /// In en, this message translates to:
@@ -4617,6 +4635,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Today'**
   String get notificationsSectionToday;
+
+  /// No description provided for @notificationsSectionYesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get notificationsSectionYesterday;
 
   /// No description provided for @notificationsSectionEarlier.
   ///
@@ -6531,6 +6555,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{name} & {count, plural, =1{1 more} other{{count} more}}'**
   String pawhubComposerTaggedSummary(String name, int count);
+
+  /// No description provided for @contactUsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'re here to help'**
+  String get contactUsTitle;
+
+  /// No description provided for @contactUsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach out anytime — we usually reply within 24 hours.'**
+  String get contactUsSubtitle;
+
+  /// No description provided for @contactUsEmailSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'General questions & support'**
+  String get contactUsEmailSubtitle;
+
+  /// No description provided for @contactUsEmailSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'PetaVerse Support'**
+  String get contactUsEmailSubject;
+
+  /// No description provided for @reportProblemSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Found a bug or something broken?'**
+  String get reportProblemSubtitle;
+
+  /// No description provided for @reportProblemEmailSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'PetaVerse — Bug Report'**
+  String get reportProblemEmailSubject;
+
+  /// No description provided for @contactUsResponseTime.
+  ///
+  /// In en, this message translates to:
+  /// **'We typically respond within 24 hours.'**
+  String get contactUsResponseTime;
+
+  /// No description provided for @textUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Text Us'**
+  String get textUs;
+
+  /// No description provided for @textUsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat with us on WhatsApp'**
+  String get textUsSubtitle;
+
+  /// No description provided for @emailVerifyTitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Your'**
+  String get emailVerifyTitle1;
+
+  /// No description provided for @emailVerifyTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailVerifyTitle2;
+
+  /// No description provided for @emailVerifySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code we sent to your email address.'**
+  String get emailVerifySubtitle;
+
+  /// No description provided for @emailVerifyDevHint.
+  ///
+  /// In en, this message translates to:
+  /// **'DEV: check the server logs for the verification code.'**
+  String get emailVerifyDevHint;
+
+  /// No description provided for @emailVerifySendFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t send the verification code. Tap retry to try again.'**
+  String get emailVerifySendFailed;
+
+  /// No description provided for @emailVerifiedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Email verified successfully'**
+  String get emailVerifiedSuccess;
+
+  /// No description provided for @emailAlreadyVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email is already verified.'**
+  String get emailAlreadyVerified;
+
+  /// No description provided for @verifyEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify email'**
+  String get verifyEmail;
+
+  /// No description provided for @noConnectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No Connection'**
+  String get noConnectionTitle;
+
+  /// No description provided for @noConnectionMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load the app configuration. Please check your connection and try again.'**
+  String get noConnectionMessage;
+
+  /// No description provided for @maintenanceTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Under Maintenance'**
+  String get maintenanceTitle;
+
+  /// No description provided for @maintenanceDefaultMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll be back shortly.'**
+  String get maintenanceDefaultMessage;
+
+  /// No description provided for @maintenanceEndsInHoursMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Back in {hours}h {minutes}m'**
+  String maintenanceEndsInHoursMinutes(int hours, int minutes);
+
+  /// No description provided for @maintenanceEndsInMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Back in {minutes}m'**
+  String maintenanceEndsInMinutes(int minutes);
+
+  /// No description provided for @forceUpdateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Required'**
+  String get forceUpdateTitle;
+
+  /// No description provided for @forceUpdateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This version of PetaVerse is no longer supported. Please update to continue.'**
+  String get forceUpdateMessage;
+
+  /// No description provided for @forceUpdateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Now'**
+  String get forceUpdateButton;
+
+  /// No description provided for @forceUpdateNoStoreUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the store. Please update manually.'**
+  String get forceUpdateNoStoreUrl;
+
+  /// No description provided for @errorSuspended.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is suspended until {date}.'**
+  String errorSuspended(String date);
+
+  /// No description provided for @errorBanned.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account has been permanently banned.'**
+  String get errorBanned;
+
+  /// No description provided for @petaCareHeaderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{petName}\'s Health Vault'**
+  String petaCareHeaderTitle(String petName);
+
+  /// No description provided for @petaCareHeaderSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Track health, reminders & find local care'**
+  String get petaCareHeaderSubtitle;
+
+  /// No description provided for @petaCareHealthScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Score'**
+  String get petaCareHealthScore;
+
+  /// No description provided for @petaCareHealthData.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Data'**
+  String get petaCareHealthData;
+
+  /// No description provided for @petaCareNoPetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No active pet'**
+  String get petaCareNoPetTitle;
+
+  /// No description provided for @petaCareNoPetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a pet from the profile tab to see their health vault here.'**
+  String get petaCareNoPetSubtitle;
+
+  /// No description provided for @petaCareFindCare.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Care Near You'**
+  String get petaCareFindCare;
+
+  /// No description provided for @petaCareMapSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Vets, groomers & more nearby'**
+  String get petaCareMapSubtitle;
+
+  /// No description provided for @petaCareOpenMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Map'**
+  String get petaCareOpenMap;
+
+  /// No description provided for @accountActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Actions'**
+  String get accountActions;
+
+  /// No description provided for @deleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get deleteAccount;
+
+  /// No description provided for @deleteAccountConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account?'**
+  String get deleteAccountConfirmTitle;
+
+  /// No description provided for @deleteAccountConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This will permanently delete your account and all associated data. This action cannot be undone.'**
+  String get deleteAccountConfirmMessage;
+
+  /// No description provided for @deleteAccountConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, Delete'**
+  String get deleteAccountConfirm;
+
+  /// No description provided for @deleteAccountTypePromptTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Deletion'**
+  String get deleteAccountTypePromptTitle;
+
+  /// No description provided for @deleteAccountTypePromptMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Type DELETE to permanently delete your account.'**
+  String get deleteAccountTypePromptMessage;
+
+  /// No description provided for @deleteAccountTypePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Type DELETE here'**
+  String get deleteAccountTypePlaceholder;
+
+  /// No description provided for @deleteAccountSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account has been deleted.'**
+  String get deleteAccountSuccess;
 }
 
 class _AppLocalizationsDelegate

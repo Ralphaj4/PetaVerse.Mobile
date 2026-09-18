@@ -2568,6 +2568,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pawHubReportReasonOther => 'Something else';
 
   @override
+  String get pawHubReportConfirmTitle => 'Submit report?';
+
+  @override
+  String pawHubReportConfirmMessage(String reason) {
+    return 'You\'re reporting this as: $reason. This action cannot be undone.';
+  }
+
+  @override
+  String get pawHubReportConfirmAction => 'Submit Report';
+
+  @override
   String get pawHubCommentsTitle => 'Comments';
 
   @override
@@ -2614,6 +2625,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationsSectionToday => 'Today';
+
+  @override
+  String get notificationsSectionYesterday => 'Yesterday';
 
   @override
   String get notificationsSectionEarlier => 'Earlier';
@@ -3698,4 +3712,164 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$name & $_temp0';
   }
+
+  @override
+  String get contactUsTitle => 'We\'re here to help';
+
+  @override
+  String get contactUsSubtitle =>
+      'Reach out anytime — we usually reply within 24 hours.';
+
+  @override
+  String get contactUsEmailSubtitle => 'General questions & support';
+
+  @override
+  String get contactUsEmailSubject => 'PetaVerse Support';
+
+  @override
+  String get reportProblemSubtitle => 'Found a bug or something broken?';
+
+  @override
+  String get reportProblemEmailSubject => 'PetaVerse — Bug Report';
+
+  @override
+  String get contactUsResponseTime => 'We typically respond within 24 hours.';
+
+  @override
+  String get textUs => 'Text Us';
+
+  @override
+  String get textUsSubtitle => 'Chat with us on WhatsApp';
+
+  @override
+  String get emailVerifyTitle1 => 'Verify Your';
+
+  @override
+  String get emailVerifyTitle2 => 'Email';
+
+  @override
+  String get emailVerifySubtitle =>
+      'Enter the 6-digit code we sent to your email address.';
+
+  @override
+  String get emailVerifyDevHint =>
+      'DEV: check the server logs for the verification code.';
+
+  @override
+  String get emailVerifySendFailed =>
+      'Couldn\'t send the verification code. Tap retry to try again.';
+
+  @override
+  String get emailVerifiedSuccess => 'Email verified successfully';
+
+  @override
+  String get emailAlreadyVerified => 'Your email is already verified.';
+
+  @override
+  String get verifyEmail => 'Verify email';
+
+  @override
+  String get noConnectionTitle => 'No Connection';
+
+  @override
+  String get noConnectionMessage =>
+      'We couldn\'t load the app configuration. Please check your connection and try again.';
+
+  @override
+  String get maintenanceTitle => 'Under Maintenance';
+
+  @override
+  String get maintenanceDefaultMessage => 'We\'ll be back shortly.';
+
+  @override
+  String maintenanceEndsInHoursMinutes(int hours, int minutes) {
+    return 'Back in ${hours}h ${minutes}m';
+  }
+
+  @override
+  String maintenanceEndsInMinutes(int minutes) {
+    return 'Back in ${minutes}m';
+  }
+
+  @override
+  String get forceUpdateTitle => 'Update Required';
+
+  @override
+  String get forceUpdateMessage =>
+      'This version of PetaVerse is no longer supported. Please update to continue.';
+
+  @override
+  String get forceUpdateButton => 'Update Now';
+
+  @override
+  String get forceUpdateNoStoreUrl =>
+      'Couldn\'t open the store. Please update manually.';
+
+  @override
+  String errorSuspended(String date) {
+    return 'Your account is suspended until $date.';
+  }
+
+  @override
+  String get errorBanned => 'Your account has been permanently banned.';
+
+  @override
+  String petaCareHeaderTitle(String petName) {
+    return '$petName\'s Health Vault';
+  }
+
+  @override
+  String get petaCareHeaderSubtitle =>
+      'Track health, reminders & find local care';
+
+  @override
+  String get petaCareHealthScore => 'Health Score';
+
+  @override
+  String get petaCareHealthData => 'Health Data';
+
+  @override
+  String get petaCareNoPetTitle => 'No active pet';
+
+  @override
+  String get petaCareNoPetSubtitle =>
+      'Add a pet from the profile tab to see their health vault here.';
+
+  @override
+  String get petaCareFindCare => 'Find Care Near You';
+
+  @override
+  String get petaCareMapSubtitle => 'Vets, groomers & more nearby';
+
+  @override
+  String get petaCareOpenMap => 'Open Map';
+
+  @override
+  String get accountActions => 'Account Actions';
+
+  @override
+  String get deleteAccount => 'Delete Account';
+
+  @override
+  String get deleteAccountConfirmTitle => 'Delete Account?';
+
+  @override
+  String get deleteAccountConfirmMessage =>
+      'This will permanently delete your account and all associated data. This action cannot be undone.';
+
+  @override
+  String get deleteAccountConfirm => 'Yes, Delete';
+
+  @override
+  String get deleteAccountTypePromptTitle => 'Confirm Deletion';
+
+  @override
+  String get deleteAccountTypePromptMessage =>
+      'Type DELETE to permanently delete your account.';
+
+  @override
+  String get deleteAccountTypePlaceholder => 'Type DELETE here';
+
+  @override
+  String get deleteAccountSuccess => 'Your account has been deleted.';
 }

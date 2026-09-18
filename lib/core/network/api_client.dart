@@ -140,7 +140,7 @@ class ApiClient {
         final status = e.response?.statusCode ?? 0;
         final body = e.response?.data;
         final message = _extractErrorMessage(body, status);
-        if (status == 401) return UnauthorizedException(message);
+        if (status == 401) return _map401(body, message);
         if (status == 403) return ForbiddenException(message);
         if (status == 404) return NotFoundException(message);
         if (status == 400 || status == 422) {
@@ -149,6 +149,7 @@ class ApiClient {
             fieldErrors: _extractFieldErrors(body),
           );
         }
+        if (status == 409) return ConflictException(message);
         if (status == 429) {
           return RateLimitException(
             message,
@@ -162,6 +163,25 @@ class ApiClient {
       case DioExceptionType.unknown:
         return NetworkException(e.message ?? 'Unexpected network error');
     }
+  }
+
+  /// Distinguishes the three 401 subtypes:
+  ///   • suspended — body has `extensions.suspendedUntil`
+  ///   • banned    — body detail contains "banned"
+  ///   • generic   — session expired / bad credentials
+  AppException _map401(dynamic body, String message) {
+    if (body is Map<String, dynamic>) {
+      final extensions = body['extensions'];
+      if (extensions is Map<String, dynamic>) {
+        final rawDate = extensions['suspendedUntil'] as String?;
+        final until = rawDate != null ? DateTime.tryParse(rawDate) : null;
+        return SuspendedException(message, suspendedUntil: until);
+      }
+      if (message.toLowerCase().contains('banned')) {
+        return BannedException(message);
+      }
+    }
+    return UnauthorizedException(message);
   }
 
   /// Extracts the server's human-facing error message from the body, or `''`

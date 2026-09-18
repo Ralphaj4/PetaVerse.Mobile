@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -23,7 +24,9 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/location_field.dart';
+import '../../../../shared/widgets/photo_source_sheet.dart';
 import '../../../../shared/widgets/shimmer.dart';
+import '../../../../core/app/router/app_router.dart';
 import '../../domain/entities/user.dart';
 import '../providers/user_provider.dart';
 
@@ -77,7 +80,7 @@ class _PersonalInformationPageState
     _initialized = true;
     _firstNameController.text = user.firstName;
     _lastNameController.text = user.lastName;
-    _emailController.text = user.email ?? '';
+    _emailController.text = user.email ?? user.pendingEmail ?? '';
     _selectedDateOfBirth = user.dateOfBirth;
     if (user.latitude != null && user.longitude != null) {
       _location = LatLng(user.latitude!, user.longitude!);
@@ -96,6 +99,11 @@ class _PersonalInformationPageState
     if (picked != null) {
       setState(() => _selectedDateOfBirth = picked);
     }
+  }
+
+  Future<void> _onVerifyEmail() async {
+    await context.push(AppRoutes.emailVerify);
+    if (mounted) ref.invalidate(userProvider);
   }
 
   Future<void> _submitUpdate() async {
@@ -134,14 +142,7 @@ class _PersonalInformationPageState
   Future<void> _editAvatar() async {
     if (_isUploadingAvatar) return;
 
-    final source = await showModalBottomSheet<ImageSource>(
-      context: context,
-      backgroundColor: AppColors.surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
-      ),
-      builder: (ctx) => _PhotoSourceSheet(),
-    );
+    final source = await showPhotoSourceSheet(context);
     if (source == null) return;
 
     final picked = await ImagePicker().pickImage(
@@ -216,6 +217,7 @@ class _PersonalInformationPageState
             isUploadingAvatar: _isUploadingAvatar,
             onPickDate: _pickDate,
             onEditAvatar: _editAvatar,
+            onVerifyEmail: _onVerifyEmail,
             onSubmit: _submitUpdate,
           );
         },
@@ -242,6 +244,7 @@ class _Body extends StatelessWidget {
     required this.isUploadingAvatar,
     required this.onPickDate,
     required this.onEditAvatar,
+    required this.onVerifyEmail,
     required this.onSubmit,
   });
 
@@ -259,6 +262,7 @@ class _Body extends StatelessWidget {
   final bool isUploadingAvatar;
   final VoidCallback onPickDate;
   final VoidCallback onEditAvatar;
+  final VoidCallback onVerifyEmail;
   final VoidCallback onSubmit;
 
   @override
@@ -326,22 +330,10 @@ class _Body extends StatelessWidget {
               icon: FluentIcons.mail_24_regular,
               title: l10n.contactDetails,
               children: [
-                FormBuilderTextField(
-                  name: 'email',
+                _EmailField(
+                  user: user,
                   controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    labelText: l10n.emailOptional,
-                    helperText: user.pendingEmail != null
-                        ? l10n.emailPendingVerification(user.pendingEmail!)
-                        : null,
-                  ),
-                  validator: (value) {
-                    if (value == null || value.trim().isEmpty) return null;
-                    return FormBuilderValidators.email(
-                      errorText: l10n.invalidEmail,
-                    )(value);
-                  },
+                  onVerify: onVerifyEmail,
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 _MobileNumberField(
@@ -781,111 +773,6 @@ class _DotsGrid extends StatelessWidget {
   }
 }
 
-// ── Photo source sheet ──────────────────────────────────────────────────
-
-/// Bottom sheet that lets the user pick a photo source, returning the
-/// chosen [ImageSource] (or null if dismissed).
-class _PhotoSourceSheet extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(
-          AppSpacing.lg,
-          AppSpacing.lg,
-          AppSpacing.lg,
-          AppSpacing.xl,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.only(bottom: AppSpacing.lg),
-                decoration: BoxDecoration(
-                  color: AppColors.divider,
-                  borderRadius: BorderRadius.circular(AppRadius.sm),
-                ),
-              ),
-            ),
-            Text(l10n.changePhoto, style: AppTextStyles.titleMedium),
-            const SizedBox(height: AppSpacing.lg),
-            Row(
-              children: [
-                Expanded(
-                  child: _SourceButton(
-                    icon: FluentIcons.camera_24_regular,
-                    label: l10n.camera,
-                    onTap: () => Navigator.pop(context, ImageSource.camera),
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: _SourceButton(
-                    icon: FluentIcons.image_24_regular,
-                    label: l10n.gallery,
-                    onTap: () => Navigator.pop(context, ImageSource.gallery),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _SourceButton extends StatelessWidget {
-  const _SourceButton({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: AppRadius.mdAll,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
-        decoration: BoxDecoration(
-          color: AppColors.background,
-          borderRadius: AppRadius.mdAll,
-          border: Border.all(color: AppColors.divider),
-        ),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(AppSpacing.md),
-              decoration: const BoxDecoration(
-                color: AppColors.primarySoft,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, color: AppColors.primaryDark, size: 24),
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              label,
-              style: AppTextStyles.bodyMedium
-                  .copyWith(fontWeight: FontWeight.w600),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 // ── Section card ────────────────────────────────────────────────────────
 
 class _SectionCard extends StatelessWidget {
@@ -978,6 +865,141 @@ class _ReadOnlyTapField extends StatelessWidget {
             color: placeholder ? AppColors.textTertiary : AppColors.textPrimary,
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Email row — mirrors [_MobileNumberField].
+///
+/// - If the user has no email yet: shows an editable [FormBuilderTextField].
+/// - If the email is set (confirmed or pending): shows a read-only container
+///   with the address, a verified/unverified badge, and — when unverified —
+///   a "Verify email" button. Editing is blocked once an address is on file
+///   (same UX as mobile number).
+class _EmailField extends StatelessWidget {
+  const _EmailField({
+    required this.user,
+    required this.controller,
+    required this.onVerify,
+  });
+
+  final User user;
+  final TextEditingController controller;
+  final VoidCallback onVerify;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final email = user.email ?? user.pendingEmail;
+
+    if (email == null || email.isEmpty) {
+      return FormBuilderTextField(
+        name: 'email',
+        controller: controller,
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(labelText: l10n.emailOptional),
+        validator: (value) {
+          if (value == null || value.trim().isEmpty) return null;
+          return FormBuilderValidators.email(
+            errorText: l10n.invalidEmail,
+          )(value);
+        },
+      );
+    }
+
+    final verified = user.emailVerified;
+    final color = verified ? AppColors.success : AppColors.warning;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.md,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: AppRadius.mdAll,
+        border: Border.all(color: AppColors.divider),
+      ),
+      child: Row(
+        children: [
+          const Icon(
+            FluentIcons.mail_24_regular,
+            size: 20,
+            color: AppColors.textSecondary,
+          ),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l10n.emailOptional, style: AppTextStyles.labelSmall),
+                const SizedBox(height: 2),
+                Text(
+                  email,
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (!verified)
+            GestureDetector(
+              onTap: onVerify,
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.sm,
+                  vertical: AppSpacing.xs,
+                ),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      FluentIcons.warning_16_filled,
+                      size: 13,
+                      color: color,
+                    ),
+                    const SizedBox(width: AppSpacing.xs),
+                    Text(
+                      l10n.verifyEmail,
+                      style: AppTextStyles.labelMedium.copyWith(color: color),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          else
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.sm,
+                vertical: AppSpacing.xs,
+              ),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    FluentIcons.checkmark_circle_16_filled,
+                    size: 13,
+                    color: color,
+                  ),
+                  const SizedBox(width: AppSpacing.xs),
+                  Text(
+                    l10n.verified,
+                    style: AppTextStyles.labelMedium.copyWith(color: color),
+                  ),
+                ],
+              ),
+            ),
+        ],
       ),
     );
   }

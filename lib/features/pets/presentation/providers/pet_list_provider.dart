@@ -36,13 +36,13 @@ class PetListNotifier extends _$PetListNotifier {
   /// Reconciles with the API in place (no loading flash), keeping the current
   /// list visible on failure. Coalesces overlapping calls.
   Future<void> refresh() async {
-    if (_refreshing) return;
+    if (!ref.mounted || _refreshing) return;
     _refreshing = true;
     try {
-      state = AsyncData(await _fetch());
+      final pets = await _fetch();
+      if (ref.mounted) state = AsyncData(pets);
     } catch (e, st) {
-      // Keep whatever we're showing; only surface the error if we have nothing.
-      if (!state.hasValue) state = AsyncError(e, st);
+      if (ref.mounted && !state.hasValue) state = AsyncError(e, st);
     } finally {
       _refreshing = false;
     }

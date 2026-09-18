@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import '../localization/generated/app_localizations.dart';
 import 'failure.dart';
 
@@ -29,12 +31,25 @@ extension FailureL10n on Failure {
                   : l10n.errorRateLimit),
         UnauthorizedFailure(:final message) =>
           _detail(message) ?? l10n.errorUnauthorized,
+        SuspendedFailure(:final suspendedUntil) => suspendedUntil != null
+            ? l10n.errorSuspended(_formatLocal(suspendedUntil))
+            : l10n.errorUnauthorized,
+        BannedFailure() => l10n.errorBanned,
         ValidationFailure(:final message) =>
           _detail(message) ?? l10n.errorValidation,
+        ConflictFailure(:final message) =>
+          _detail(message) ?? l10n.errorUnknown,
         UnknownFailure(:final message) =>
           _detail(message) ?? l10n.errorUnknown,
       };
 
   String? _detail(String? message) =>
       (message != null && message.trim().isNotEmpty) ? message : null;
+
+  /// Converts a UTC [DateTime] to the device's local timezone and formats it
+  /// as "Sep 10, 2026 at 4:00 PM" (locale-neutral medium date + short time).
+  String _formatLocal(DateTime utc) {
+    final local = utc.toLocal();
+    return DateFormat.yMMMd().add_jm().format(local);
+  }
 }

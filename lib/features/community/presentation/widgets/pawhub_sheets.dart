@@ -6,6 +6,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../shared/widgets/app_confirm_dialog.dart';
 import '../../domain/entities/community_enums.dart' hide PostVisibility;
 import '../models/pawhub_models.dart';
 
@@ -116,7 +117,7 @@ Future<ReportReason?> showReportSheet(BuildContext context) {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const _SheetHandle(),
+          const Center(child: _SheetHandle()),
           Padding(
             padding: const EdgeInsets.fromLTRB(
               AppSpacing.lg,
@@ -132,7 +133,20 @@ Future<ReportReason?> showReportSheet(BuildContext context) {
               icon: FluentIcons.chevron_right_24_regular,
               label: label,
               trailingChevron: true,
-              onTap: () => Navigator.pop(context, reason),
+              onTap: () async {
+                final confirmed = await AppConfirmDialog.show(
+                  context,
+                  icon: FluentIcons.flag_24_regular,
+                  title: context.l10n.pawHubReportConfirmTitle,
+                  message: context.l10n.pawHubReportConfirmMessage(label),
+                  confirmLabel: context.l10n.pawHubReportConfirmAction,
+                  cancelLabel: context.l10n.cancel,
+                  isDestructive: true,
+                );
+                if (confirmed && context.mounted) {
+                  Navigator.pop(context, reason);
+                }
+              },
             ),
           const SizedBox(height: AppSpacing.sm),
         ],

@@ -63,9 +63,20 @@ abstract interface class AuthRepository {
   /// Whether a session token is currently stored locally.
   Future<bool> hasSession();
 
+  /// Sends a 6-digit email verification code to the current user's email.
+  Future<Result<void>> sendEmailVerification();
+
+  /// Confirms the 6-digit email verification code.
+  Future<Result<void>> confirmEmailVerification(String code);
+
   /// Registers (or refreshes) a device FCM token with the backend.
   Future<void> registerFcmToken(String token);
 
-  /// Removes a device FCM token on logout.
-  Future<void> unregisterFcmToken(String token);
+  /// Removes this device's FCM token on logout. The token param is kept for
+  /// call-site symmetry but the impl resolves the device ID from secure storage.
+  Future<void> unregisterFcmToken([String? token]);
+
+  /// Permanently deletes the authenticated user's account and clears all local
+  /// credentials. Returns a failure if the server call fails.
+  Future<Result<void>> deleteAccount();
 }

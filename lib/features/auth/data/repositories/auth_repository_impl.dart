@@ -1,4 +1,5 @@
-import 'dart:async';
+﻿import 'dart:async';
+import 'dart:io';
 
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/errors/failure.dart';
@@ -21,6 +22,9 @@ class AuthRepositoryImpl implements AuthRepository {
 
   final AuthRemoteDataSource _remote;
   final SecureStorageService _secureStorage;
+
+  static String get _platform =>
+      Platform.isAndroid ? 'android' : Platform.isIOS ? 'ios' : 'unknown';
 
   @override
   Future<Result<String?>> register({
@@ -128,8 +132,13 @@ class AuthRepositoryImpl implements AuthRepository {
     // call never delays (or blocks) the local token clear, which is what
     // actually logs the user out on-device.
     final refresh = await _secureStorage.readRefreshToken();
+    final deviceId = await _secureStorage.getOrCreateDeviceId();
     if (refresh != null && refresh.isNotEmpty) {
-      unawaited(_remote.revoke(refresh).catchError((_) {}));
+      unawaited(
+        _remote
+            .revoke(refreshToken: refresh, deviceId: deviceId)
+            .catchError((_) {}),
+      );
     }
     // Local token clear is awaited and durable — this is the source of truth
     // for [hasSession] on the next launch.
@@ -138,20 +147,45 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Result<void>> sendEmailVerification() =>
+      _guardVoid(() => _remote.sendEmailVerification());
+
+  @override
+  Future<Result<void>> confirmEmailVerification(String code) =>
+      _guardVoid(() => _remote.confirmEmailVerification(code));
+
+  @override
   Future<void> registerFcmToken(String token) async {
     try {
-      await _remote.registerFcmToken(token);
+      final deviceId = await _secureStorage.getOrCreateDeviceId();
+      await _remote.registerFcmToken(
+        token: token,
+        deviceId: deviceId,
+        platform: _platform,
+      );
     } catch (_) {
       // Best-effort — a token registration failure must never break login.
     }
   }
 
   @override
-  Future<void> unregisterFcmToken(String token) async {
+  Future<void> unregisterFcmToken([String? token]) async {
     try {
-      await _remote.unregisterFcmToken(token);
+      final deviceId = await _secureStorage.getOrCreateDeviceId();
+      await _remote.unregisterFcmToken(deviceId: deviceId);
     } catch (_) {
       // Best-effort — logout proceeds regardless.
+    }
+  }
+
+  @override
+  Future<Result<void>> deleteAccount() async {
+    try {
+      await _remote.deleteAccount();
+      await _secureStorage.clearTokens();
+      return const Result.success(null);
+    } on AppException catch (e) {
+      return Result.failure(_mapFailure(e));
     }
   }
 
@@ -250,6 +284,11 @@ class AuthRepositoryImpl implements AuthRepository {
   Failure _mapFailure(AppException e) => switch (e) {
         NetworkException() => NetworkFailure(message: e.message),
         UnauthorizedException() => UnauthorizedFailure(message: e.message),
+        SuspendedException() => SuspendedFailure(
+            message: e.message,
+            suspendedUntil: e.suspendedUntil,
+          ),
+        BannedException() => BannedFailure(message: e.message),
         ForbiddenException() => ForbiddenFailure(message: e.message),
         NotFoundException() => NotFoundFailure(message: e.message),
         ValidationException() => ValidationFailure(
@@ -260,6 +299,7 @@ class AuthRepositoryImpl implements AuthRepository {
             message: e.message,
             retryAfter: e.retryAfter,
           ),
+        ConflictException() => ConflictFailure(message: e.message),
         ServerException() => ServerFailure(message: e.message),
         CacheException() => CacheFailure(message: e.message),
       };

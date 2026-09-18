@@ -121,15 +121,16 @@ class _ServiceProvidersPageState extends ConsumerState<ServiceProvidersPage> {
           children: [
             // ── Map (fills the screen) ──────────────────────────────────
             Positioned.fill(
-              child: ServiceProviderMap(
-                providers: visible,
-                center: center,
-                selectedId: selectedId,
-                // Tapping a pin surfaces its card: highlight + raise the sheet
-                // to the mid snap so the (highlighted) result is in view.
-                onProviderTap: (id) => _selectProvider(id, expandSheet: true),
-                onMapTap: _deselect,
-                controllerReady: (c) => _mapController = c,
+              child: Hero(
+                tag: 'care-provider-map',
+                child: ServiceProviderMap(
+                  providers: visible,
+                  center: center,
+                  selectedId: selectedId,
+                  onProviderTap: (id) => _selectProvider(id, expandSheet: true),
+                  onMapTap: _deselect,
+                  controllerReady: (c) => _mapController = c,
+                ),
               ),
             ),
 

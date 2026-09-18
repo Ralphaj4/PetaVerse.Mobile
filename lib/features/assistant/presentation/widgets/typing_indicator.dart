@@ -131,7 +131,7 @@ class _BotAvatar extends StatelessWidget {
         shape: BoxShape.circle,
       ),
       child: const Icon(
-        FluentIcons.sparkle_24_filled,
+        FluentIcons.animal_dog_24_filled,
         size: 18,
         color: AppColors.onPrimary,
       ),

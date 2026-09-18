@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -88,6 +90,12 @@ class _AddFirstPet extends ConsumerStatefulWidget {
 }
 
 class _AddFirstPetState extends ConsumerState<_AddFirstPet> {
+  /// Polls the invites endpoint while this page is on screen so an invitation
+  /// that arrives after the user lands here appears without a manual refresh.
+  Timer? _invitePoll;
+
+  static const _pollInterval = Duration(seconds: 10);
+
   @override
   void initState() {
     super.initState();
@@ -97,6 +105,19 @@ class _AddFirstPetState extends ConsumerState<_AddFirstPet> {
     Future.microtask(
       () => ref.invalidate(incomingInvitesProvider),
     );
+    // Then keep it fresh: re-fetch every 10s while mounted. Invalidating a
+    // keepAlive provider re-runs its build() but holds the last value during
+    // the refresh, so the UI doesn't flash a loader between polls.
+    _invitePoll = Timer.periodic(
+      _pollInterval,
+      (_) => ref.invalidate(incomingInvitesProvider),
+    );
+  }
+
+  @override
+  void dispose() {
+    _invitePoll?.cancel();
+    super.dispose();
   }
 
   Future<void> _logout() async {

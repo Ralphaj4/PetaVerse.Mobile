@@ -1,4 +1,4 @@
-import '../../../../core/app/notification_service.dart';
+﻿import '../../../../core/app/notification_service.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
@@ -484,6 +484,11 @@ class PawCareRepositoryImpl implements PawCareRepository {
   Failure _mapFailure(AppException e) => switch (e) {
         NetworkException() => NetworkFailure(message: e.message),
         UnauthorizedException() => UnauthorizedFailure(message: e.message),
+        SuspendedException() => SuspendedFailure(
+            message: e.message,
+            suspendedUntil: e.suspendedUntil,
+          ),
+        BannedException() => BannedFailure(message: e.message),
         ForbiddenException() => ForbiddenFailure(message: e.message),
         NotFoundException() => NotFoundFailure(message: e.message),
         ValidationException() => ValidationFailure(
@@ -494,6 +499,7 @@ class PawCareRepositoryImpl implements PawCareRepository {
             message: e.message,
             retryAfter: e.retryAfter,
           ),
+        ConflictException() => ConflictFailure(message: e.message),
         ServerException() => ServerFailure(message: e.message),
         CacheException() => CacheFailure(message: e.message),
       };

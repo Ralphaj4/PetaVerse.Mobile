@@ -2584,6 +2584,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pawHubReportReasonOther => 'شيء آخر';
 
   @override
+  String get pawHubReportConfirmTitle => 'إرسال البلاغ؟';
+
+  @override
+  String pawHubReportConfirmMessage(String reason) {
+    return 'أنت تُبلغ عن هذا بسبب: $reason. لا يمكن التراجع عن هذا الإجراء.';
+  }
+
+  @override
+  String get pawHubReportConfirmAction => 'إرسال البلاغ';
+
+  @override
   String get pawHubCommentsTitle => 'التعليقات';
 
   @override
@@ -2630,6 +2641,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get notificationsSectionToday => 'اليوم';
+
+  @override
+  String get notificationsSectionYesterday => 'أمس';
 
   @override
   String get notificationsSectionEarlier => 'سابقاً';
@@ -3711,4 +3725,163 @@ class AppLocalizationsAr extends AppLocalizations {
     );
     return '$name و$_temp0';
   }
+
+  @override
+  String get contactUsTitle => 'نحن هنا للمساعدة';
+
+  @override
+  String get contactUsSubtitle =>
+      'تواصل معنا في أي وقت — عادةً ما نرد خلال 24 ساعة.';
+
+  @override
+  String get contactUsEmailSubtitle => 'أسئلة عامة ودعم';
+
+  @override
+  String get contactUsEmailSubject => 'دعم PetaVerse';
+
+  @override
+  String get reportProblemSubtitle => 'وجدت خللاً أو مشكلة؟';
+
+  @override
+  String get reportProblemEmailSubject => 'PetaVerse — تقرير خلل';
+
+  @override
+  String get contactUsResponseTime => 'نرد عادةً خلال 24 ساعة.';
+
+  @override
+  String get textUs => 'راسلنا';
+
+  @override
+  String get textUsSubtitle => 'تواصل معنا عبر واتساب';
+
+  @override
+  String get emailVerifyTitle1 => 'تحقق من';
+
+  @override
+  String get emailVerifyTitle2 => 'البريد الإلكتروني';
+
+  @override
+  String get emailVerifySubtitle =>
+      'أدخل الرمز المكوّن من 6 أرقام الذي أرسلناه إلى بريدك الإلكتروني.';
+
+  @override
+  String get emailVerifyDevHint =>
+      'DEV: تحقق من سجلات الخادم للحصول على رمز التحقق.';
+
+  @override
+  String get emailVerifySendFailed =>
+      'تعذّر إرسال رمز التحقق. اضغط على إعادة المحاولة.';
+
+  @override
+  String get emailVerifiedSuccess => 'تم التحقق من البريد الإلكتروني بنجاح';
+
+  @override
+  String get emailAlreadyVerified => 'بريدك الإلكتروني محقق مسبقاً.';
+
+  @override
+  String get verifyEmail => 'تحقق من البريد الإلكتروني';
+
+  @override
+  String get noConnectionTitle => 'لا يوجد اتصال';
+
+  @override
+  String get noConnectionMessage =>
+      'تعذّر تحميل إعدادات التطبيق. يرجى التحقق من اتصالك والمحاولة مجدداً.';
+
+  @override
+  String get maintenanceTitle => 'جارٍ الصيانة';
+
+  @override
+  String get maintenanceDefaultMessage => 'سنعود قريباً.';
+
+  @override
+  String maintenanceEndsInHoursMinutes(int hours, int minutes) {
+    return 'سنعود خلال $hours س و$minutes د';
+  }
+
+  @override
+  String maintenanceEndsInMinutes(int minutes) {
+    return 'سنعود خلال $minutes دقيقة';
+  }
+
+  @override
+  String get forceUpdateTitle => 'التحديث مطلوب';
+
+  @override
+  String get forceUpdateMessage =>
+      'هذا الإصدار من PetaVerse لم يعد مدعوماً. يرجى التحديث للمتابعة.';
+
+  @override
+  String get forceUpdateButton => 'تحديث الآن';
+
+  @override
+  String get forceUpdateNoStoreUrl => 'تعذّر فتح المتجر. يرجى التحديث يدوياً.';
+
+  @override
+  String errorSuspended(String date) {
+    return 'حسابك موقوف حتى $date.';
+  }
+
+  @override
+  String get errorBanned => 'تم حظر حسابك نهائياً.';
+
+  @override
+  String petaCareHeaderTitle(String petName) {
+    return 'خزنة صحة $petName';
+  }
+
+  @override
+  String get petaCareHeaderSubtitle =>
+      'تتبع الصحة والتذكيرات واعثر على رعاية قريبة';
+
+  @override
+  String get petaCareHealthScore => 'نقاط الصحة';
+
+  @override
+  String get petaCareHealthData => 'بيانات الصحة';
+
+  @override
+  String get petaCareNoPetTitle => 'لا يوجد حيوان أليف نشط';
+
+  @override
+  String get petaCareNoPetSubtitle =>
+      'أضف حيوانًا أليفًا من علامة تبويب الملف الشخصي لرؤية خزنة صحته هنا.';
+
+  @override
+  String get petaCareFindCare => 'ابحث عن رعاية قريبة منك';
+
+  @override
+  String get petaCareMapSubtitle => 'أطباء بيطريون ومصففو شعر وأكثر';
+
+  @override
+  String get petaCareOpenMap => 'فتح الخريطة';
+
+  @override
+  String get accountActions => 'إجراءات الحساب';
+
+  @override
+  String get deleteAccount => 'حذف الحساب';
+
+  @override
+  String get deleteAccountConfirmTitle => 'حذف الحساب؟';
+
+  @override
+  String get deleteAccountConfirmMessage =>
+      'سيؤدي هذا إلى حذف حسابك وجميع البيانات المرتبطة به بشكل دائم. لا يمكن التراجع عن هذا الإجراء.';
+
+  @override
+  String get deleteAccountConfirm => 'نعم، احذف';
+
+  @override
+  String get deleteAccountTypePromptTitle => 'تأكيد الحذف';
+
+  @override
+  String get deleteAccountTypePromptMessage =>
+      'اكتب DELETE لحذف حسابك بشكل دائم.';
+
+  @override
+  String get deleteAccountTypePlaceholder => 'اكتب DELETE هنا';
+
+  @override
+  String get deleteAccountSuccess => 'تم حذف حسابك.';
 }

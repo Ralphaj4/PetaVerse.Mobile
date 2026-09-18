@@ -16,7 +16,6 @@ import '../../../community/presentation/widgets/pawhub_common.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
 import '../../domain/entities/chat_entities.dart';
 import '../providers/assistant_providers.dart';
-import '../widgets/bot_bubble.dart';
 import '../widgets/chat_input_bar.dart';
 import '../widgets/markdown_text.dart';
 import '../widgets/quick_reply_chips.dart';
@@ -33,8 +32,8 @@ import '../widgets/user_bubble.dart';
 ///   3. User can switch which pet the conversation is about via the app-bar
 ///      pet chip. Switching starts a fresh session for the newly-selected pet
 ///      (with a confirm dialog first if a conversation is already underway).
-///   4. Widgets (BotBubble, TipSectionItem, QuickReplyChips) render unchanged
-///      — the data layer resolved iconName/color to real Flutter constants.
+///   4. Messages render via [_BotMessageView] / QuickReplyChips — the data
+///      layer resolved iconName/color to real Flutter constants.
 class AssistantPage extends ConsumerStatefulWidget {
   const AssistantPage({this.petId, this.sessionId, super.key});
 
@@ -238,13 +237,31 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
   Future<void> _handleSend(String text) async {
     if (_creatingSession) return;
 
-    // Lazy: create the session for this pet on the first message, then send.
+    final wasNew = _sessionId == null;
+
+    // Lazy: create the session for this pet on the first message. On success
+    // _ensureSession setStates _sessionId, which makes build() start watching
+    // chatSessionProvider — establishing the notifier instance the UI is bound
+    // to before we send on it.
     final sessionId = await _ensureSession();
     if (sessionId == null || !mounted) return; // creation failed
 
-    // Let the session provider finish its initial load before sending, so the
-    // provider's build() doesn't resolve *after* send() and clobber the
-    // optimistic messages. For a just-created session this returns [] fast.
+    if (wasNew) {
+      // Wait one frame so the post-setState build() has run and the widget is
+      // now watching chatSessionProvider(sessionId). Then send WITHOUT awaiting
+      // .future: for a brand-new session that GET returns [] and would race
+      // send(); the build() guard (_isSending / non-empty existing) protects
+      // the optimistic list instead of bouncing back to the suggested prompts.
+      await _nextFrame();
+      if (!mounted) return;
+      unawaited(ref.read(chatSessionProvider(sessionId).notifier).send(text));
+      _scrollToBottom();
+      return;
+    }
+
+    // Existing session: let the provider's initial load finish before sending,
+    // so build() doesn't resolve *after* send() and clobber the optimistic
+    // messages.
     try {
       await ref.read(chatSessionProvider(sessionId).future);
     } catch (_) {
@@ -256,6 +273,16 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
 
     unawaited(ref.read(chatSessionProvider(sessionId).notifier).send(text));
     _scrollToBottom();
+  }
+
+  /// Completes after the next frame is rendered — i.e. after the pending
+  /// setState-driven build() has run and its ref.watch calls are live.
+  Future<void> _nextFrame() {
+    final completer = Completer<void>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!completer.isCompleted) completer.complete();
+    });
+    return completer.future;
   }
 
   void _handleQuickReply(String label) => _handleSend(label);
@@ -317,7 +344,7 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
                 shape: BoxShape.circle,
               ),
               child: const Icon(
-                FluentIcons.sparkle_24_filled,
+                FluentIcons.animal_dog_24_filled,
                 size: 16,
                 color: AppColors.onPrimary,
               ),
@@ -459,8 +486,8 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
   }
 }
 
-/// Adapts a [ChatMessage] (domain entity) to the [BotBubble] widget which
-/// still uses the presentation [chat_message.dart] model.
+/// Renders a single assistant [ChatMessage] (domain entity) as a chat bubble
+/// with avatar, label, markdown text, blocks, and an optional footer line.
 class _BotMessageView extends StatelessWidget {
   const _BotMessageView({
     required this.message,
@@ -524,29 +551,15 @@ class _BotMessageView extends StatelessWidget {
                       ),
                     ],
 
+                    // Footer info line. The server also sends a
+                    // [footerActionLabel] (e.g. "View Pet Profile"), but it
+                    // carries no destination — so we render the informational
+                    // text only and omit the dead action button.
                     if (message.footerText != null) ...[
                       const SizedBox(height: AppSpacing.md),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              message.footerText!,
-                              style: AppTextStyles.bodySmall,
-                            ),
-                          ),
-                          if (message.footerActionLabel != null) ...[
-                            const SizedBox(width: AppSpacing.sm),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Text(
-                                message.footerActionLabel!,
-                                style: AppTextStyles.labelMedium.copyWith(
-                                  color: AppColors.secondary,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ],
+                      Text(
+                        message.footerText!,
+                        style: AppTextStyles.bodySmall,
                       ),
                     ],
 
@@ -655,7 +668,7 @@ class _BotAvatar extends StatelessWidget {
         shape: BoxShape.circle,
       ),
       child: const Icon(
-        FluentIcons.sparkle_24_filled,
+        FluentIcons.animal_dog_24_filled,
         size: 18,
         color: AppColors.onPrimary,
       ),
@@ -738,7 +751,7 @@ class _SuggestedPrompts extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: const Icon(
-              FluentIcons.sparkle_24_filled,
+              FluentIcons.animal_dog_24_filled,
               size: 24,
               color: AppColors.onPrimary,
             ),

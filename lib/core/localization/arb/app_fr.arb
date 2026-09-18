@@ -1016,6 +1016,14 @@
   "@pawHubReportReasonImpersonation": {},
   "pawHubReportReasonOther": "Autre chose",
   "@pawHubReportReasonOther": {},
+  "pawHubReportConfirmTitle": "Soumettre le signalement ?",
+  "@pawHubReportConfirmTitle": {},
+  "pawHubReportConfirmMessage": "Vous signalez ceci pour : {reason}. Cette action est irréversible.",
+  "@pawHubReportConfirmMessage": {
+    "placeholders": { "reason": { "type": "String" } }
+  },
+  "pawHubReportConfirmAction": "Soumettre le signalement",
+  "@pawHubReportConfirmAction": {},
   "pawHubCommentsTitle": "Commentaires",
   "@pawHubCommentsTitle": {},
   "pawHubCommentAs": "Commenter en tant que",
@@ -1045,6 +1053,8 @@
   "@notificationsEmptyMessage": {},
   "notificationsSectionToday": "Aujourd'hui",
   "@notificationsSectionToday": {},
+  "notificationsSectionYesterday": "Hier",
+  "@notificationsSectionYesterday": {},
   "notificationsSectionEarlier": "Plus tôt",
   "@notificationsSectionEarlier": {},
   "notificationsAllCaughtUp": "Vous êtes à jour",
@@ -1499,5 +1509,79 @@
       "name": { "type": "String" },
       "count": { "type": "int" }
     }
-  }
+  },
+
+  "contactUsTitle": "Nous sommes là pour vous aider",
+  "contactUsSubtitle": "Contactez-nous à tout moment — nous répondons généralement sous 24 heures.",
+  "contactUsEmailSubtitle": "Questions générales et support",
+  "contactUsEmailSubject": "Support PetaVerse",
+  "reportProblemSubtitle": "Vous avez trouvé un bug ou quelque chose qui ne fonctionne pas ?",
+  "reportProblemEmailSubject": "PetaVerse — Rapport de bug",
+  "contactUsResponseTime": "Nous répondons généralement sous 24 heures.",
+  "textUs": "Écrivez-nous",
+  "textUsSubtitle": "Discutez avec nous sur WhatsApp",
+
+  "emailVerifyTitle1": "Vérifiez votre",
+  "emailVerifyTitle2": "Email",
+  "emailVerifySubtitle": "Entrez le code à 6 chiffres envoyé à votre adresse e-mail.",
+  "emailVerifyDevHint": "DEV : consultez les journaux du serveur pour obtenir le code.",
+  "emailVerifySendFailed": "Impossible d'envoyer le code de vérification. Appuyez sur Réessayer.",
+  "emailVerifiedSuccess": "Email vérifié avec succès",
+  "emailAlreadyVerified": "Votre adresse e-mail est déjà vérifiée.",
+  "verifyEmail": "Vérifier l'e-mail",
+
+  "noConnectionTitle": "Pas de connexion",
+  "noConnectionMessage": "Impossible de charger la configuration de l'application. Vérifiez votre connexion et réessayez.",
+
+  "maintenanceTitle": "En maintenance",
+  "maintenanceDefaultMessage": "Nous revenons bientôt.",
+  "maintenanceEndsInHoursMinutes": "Retour dans {hours}h {minutes}min",
+  "@maintenanceEndsInHoursMinutes": {
+    "placeholders": {
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" }
+    }
+  },
+  "maintenanceEndsInMinutes": "Retour dans {minutes} min",
+  "@maintenanceEndsInMinutes": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+
+  "forceUpdateTitle": "Mise à jour requise",
+  "forceUpdateMessage": "Cette version de PetaVerse n'est plus prise en charge. Veuillez mettre à jour pour continuer.",
+  "forceUpdateButton": "Mettre à jour",
+  "forceUpdateNoStoreUrl": "Impossible d'ouvrir le store. Veuillez mettre à jour manuellement.",
+
+  "errorSuspended": "Votre compte est suspendu jusqu'au {date}.",
+  "@errorSuspended": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "errorBanned": "Votre compte a été définitivement banni.",
+
+  "petaCareHeaderTitle": "Dossier santé de {petName}",
+  "@petaCareHeaderTitle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "petaCareHeaderSubtitle": "Suivez la santé, les rappels et trouvez des soins locaux",
+  "petaCareHealthScore": "Score de santé",
+  "petaCareHealthData": "Données de santé",
+  "petaCareNoPetTitle": "Aucun animal actif",
+  "petaCareNoPetSubtitle": "Ajoutez un animal depuis l'onglet profil pour voir son dossier santé ici.",
+  "petaCareFindCare": "Trouver des soins près de chez vous",
+  "petaCareMapSubtitle": "Vétérinaires, toiletteurs et plus encore",
+  "petaCareOpenMap": "Ouvrir la carte",
+
+  "accountActions": "Actions du compte",
+  "deleteAccount": "Supprimer le compte",
+  "deleteAccountConfirmTitle": "Supprimer le compte ?",
+  "deleteAccountConfirmMessage": "Cela supprimera définitivement votre compte et toutes les données associées. Cette action est irréversible.",
+  "deleteAccountConfirm": "Oui, supprimer",
+  "deleteAccountTypePromptTitle": "Confirmer la suppression",
+  "deleteAccountTypePromptMessage": "Tapez DELETE pour supprimer définitivement votre compte.",
+  "deleteAccountTypePlaceholder": "Tapez DELETE ici",
+  "deleteAccountSuccess": "Votre compte a été supprimé."
 }

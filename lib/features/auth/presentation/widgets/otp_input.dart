@@ -53,44 +53,60 @@ class _OtpInputState extends State<OtpInput> {
     // Digits always render left-to-right, even in RTL locales.
     return Directionality(
       textDirection: TextDirection.ltr,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Fit all boxes in the available width with equal horizontal gaps.
+          // Cap at 64 so 4-digit boxes don't grow huge on tablets.
+          const double maxBoxSize = 64;
+          const double minGap = 6;
+          final totalGap = minGap * 2 * widget.length;
+          final boxSize =
+              ((constraints.maxWidth - totalGap) / widget.length)
+                  .clamp(0.0, maxBoxSize);
+
+          return Stack(
+            alignment: Alignment.center,
             children: [
-              for (var i = 0; i < widget.length; i++)
-                _OtpBox(
-                  char: i < _value.length ? _value[i] : '',
-                  isFilled: i < _value.length,
-                  isActive: _focusNode.hasFocus &&
-                      i == _value.length &&
-                      _value.length < widget.length,
-                ),
-            ],
-          ),
-          // Invisible field on top: tapping anywhere on the boxes
-          // focuses it and brings up the number pad.
-          Positioned.fill(
-            child: Opacity(
-              opacity: 0,
-              child: TextField(
-                controller: _controller,
-                focusNode: _focusNode,
-                autofocus: true,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(widget.length),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (var i = 0; i < widget.length; i++)
+                    _OtpBox(
+                      char: i < _value.length ? _value[i] : '',
+                      isFilled: i < _value.length,
+                      isActive: _focusNode.hasFocus &&
+                          i == _value.length &&
+                          _value.length < widget.length,
+                      size: boxSize,
+                      gap: minGap,
+                    ),
                 ],
-                showCursor: false,
-                enableInteractiveSelection: false,
-                decoration: const InputDecoration(border: InputBorder.none),
-                onChanged: _handleChanged,
               ),
-            ),
-          ),
-        ],
+              // Invisible field on top: tapping anywhere on the boxes
+              // focuses it and brings up the number pad.
+              Positioned.fill(
+                child: Opacity(
+                  opacity: 0,
+                  child: TextField(
+                    controller: _controller,
+                    focusNode: _focusNode,
+                    autofocus: true,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(widget.length),
+                    ],
+                    showCursor: false,
+                    enableInteractiveSelection: false,
+                    decoration:
+                        const InputDecoration(border: InputBorder.none),
+                    onChanged: _handleChanged,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -101,20 +117,24 @@ class _OtpBox extends StatelessWidget {
     required this.char,
     required this.isFilled,
     required this.isActive,
+    required this.size,
+    required this.gap,
   });
 
   final String char;
   final bool isFilled;
   final bool isActive;
+  final double size;
+  final double gap;
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 250),
       curve: Curves.easeOut,
-      width: 64,
-      height: 64,
-      margin: const EdgeInsets.symmetric(horizontal: 8),
+      width: size,
+      height: size,
+      margin: EdgeInsets.symmetric(horizontal: gap),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: AppRadius.smAll,

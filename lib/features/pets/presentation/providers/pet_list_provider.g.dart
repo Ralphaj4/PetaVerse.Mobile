@@ -60,7 +60,7 @@ final class PetListNotifierProvider
   PetListNotifier create() => PetListNotifier();
 }
 
-String _$petListNotifierHash() => r'e95c8a6f56d79371f673e9d225aa7105226c7d77';
+String _$petListNotifierHash() => r'54945a6d346115bd118574e829326128429994ed';
 
 /// Full pet records for display screens (Profile, the pet picker), offline-first.
 ///

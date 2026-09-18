@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../core/extensions/context_extensions.dart';
-import '../../core/location/geocoding_service.dart';
 import '../../core/location/location_service.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
@@ -71,29 +70,20 @@ class _LocationNamePickerState extends ConsumerState<_LocationNamePicker> {
     setState(() => _busy = true);
     final here = await ref.read(locationServiceProvider).currentLatLng();
     if (!mounted) return;
+    setState(() => _busy = false);
     if (here == null) {
-      setState(() => _busy = false);
       context.showErrorSnackBar(context.l10n.errorUnknown);
       return;
     }
-    await _apply(here);
+    _apply(here);
   }
 
-  /// Drops the pin and reverse-geocodes it into the address field (best-effort;
-  /// a failed lookup just leaves the field for the user to type into).
-  Future<void> _apply(LatLng point) async {
+  /// Drops the pin at [point].
+  void _apply(LatLng point) {
     setState(() {
       _picked = point;
       _center = point;
-      _busy = true;
     });
-    final result = await ref.read(geocodingServiceProvider).reverse(
-          latitude: point.latitude,
-          longitude: point.longitude,
-        );
-    final address = result.valueOrNull;
-    if (address != null && mounted) _address.text = address;
-    if (mounted) setState(() => _busy = false);
   }
 
   void _confirm() {
@@ -182,21 +172,9 @@ class _LocationNamePickerState extends ConsumerState<_LocationNamePicker> {
                       textCapitalization: TextCapitalization.words,
                       style: AppTextStyles.bodyMedium,
                       decoration: InputDecoration(
-                        hintText: _busy
-                            ? l10n.locationResolving
-                            : l10n.pawhubComposerLocationHint,
-                        prefixIcon: _busy
-                            ? const Padding(
-                                padding: EdgeInsets.all(12),
-                                child: SizedBox(
-                                  width: 18,
-                                  height: 18,
-                                  child: CircularProgressIndicator(
-                                      strokeWidth: 2),
-                                ),
-                              )
-                            : const Icon(FluentIcons.location_24_regular,
-                                size: 20, color: AppColors.textSecondary),
+                        hintText: l10n.pawhubComposerLocationHint,
+                        prefixIcon: const Icon(FluentIcons.location_24_regular,
+                            size: 20, color: AppColors.textSecondary),
                         isDense: true,
                       ),
                       onChanged: (_) => setState(() {}),

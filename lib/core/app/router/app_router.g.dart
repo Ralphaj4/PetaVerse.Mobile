@@ -8,6 +8,43 @@ part of 'app_router.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// Current installed app version, loaded once at startup via package_info_plus.
+
+@ProviderFor(currentAppVersion)
+final currentAppVersionProvider = CurrentAppVersionProvider._();
+
+/// Current installed app version, loaded once at startup via package_info_plus.
+
+final class CurrentAppVersionProvider
+    extends $FunctionalProvider<AsyncValue<String>, String, FutureOr<String>>
+    with $FutureModifier<String>, $FutureProvider<String> {
+  /// Current installed app version, loaded once at startup via package_info_plus.
+  CurrentAppVersionProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'currentAppVersionProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$currentAppVersionHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<String> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<String> create(Ref ref) {
+    return currentAppVersion(ref);
+  }
+}
+
+String _$currentAppVersionHash() => r'828a55b7464459763068499a4896ac2c649f002c';
 
 @ProviderFor(appRouter)
 final appRouterProvider = AppRouterProvider._();
@@ -48,4 +85,4 @@ final class AppRouterProvider
   }
 }
 
-String _$appRouterHash() => r'd0a6ef31d49ca5d9f57b6888f72c0b60bbc0154e';
+String _$appRouterHash() => r'056b61e9cbad75fe7ae994e96c129304847c6b0a';

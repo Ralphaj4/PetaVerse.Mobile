@@ -20,6 +20,19 @@ final class UnauthorizedFailure extends Failure {
   const UnauthorizedFailure({super.message});
 }
 
+/// 401 — account is temporarily suspended.
+final class SuspendedFailure extends Failure {
+  const SuspendedFailure({super.message, this.suspendedUntil});
+
+  /// UTC datetime after which the user may try again, or null if not provided.
+  final DateTime? suspendedUntil;
+}
+
+/// 401 — account is permanently banned.
+final class BannedFailure extends Failure {
+  const BannedFailure({super.message});
+}
+
 /// 403 responses — authenticated but not allowed.
 final class ForbiddenFailure extends Failure {
   const ForbiddenFailure({super.message});
@@ -50,6 +63,11 @@ final class RateLimitFailure extends Failure {
   const RateLimitFailure({super.message, this.retryAfter});
 
   final Duration? retryAfter;
+}
+
+/// 409 responses — the resource is in a state that conflicts with the request.
+final class ConflictFailure extends Failure {
+  const ConflictFailure({super.message});
 }
 
 /// Local cache read/write problems.

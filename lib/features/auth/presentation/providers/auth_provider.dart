@@ -186,6 +186,36 @@ class AuthNotifier extends _$AuthNotifier {
     );
   }
 
+  /// Sends a 6-digit verification code to the user's email address.
+  Future<bool> sendEmailVerification() =>
+      _runVoid(() => ref.read(authRepositoryProvider).sendEmailVerification());
+
+  /// Confirms the 6-digit email verification code entered by the user.
+  Future<bool> confirmEmailVerification(String code) =>
+      _runVoid(
+          () => ref.read(authRepositoryProvider).confirmEmailVerification(code));
+
+  /// Permanently deletes the account via DELETE /api/users/me, then clears all
+  /// local credentials and cached data.
+  ///
+  /// Mirrors [logout]: all providers are read up front, no [state] writes
+  /// happen after the awaits — the notifier is auto-disposed and its ref
+  /// becomes invalid as soon as the session gate is flipped by the caller.
+  /// Returns the [Result] directly so the caller can handle errors and drive
+  /// the gate flip from a stable ref.
+  Future<Result<void>> deleteAccount() async {
+    final authRepository = ref.read(authRepositoryProvider);
+    final userRepository = ref.read(userRepositoryProvider);
+    final reminderCache = ref.read(healthReminderCacheProvider);
+    final result = await authRepository.deleteAccount();
+    if (result.isFailure) return result;
+    await Future.wait([
+      userRepository.clearCache(),
+      reminderCache.clear(),
+    ]);
+    return result;
+  }
+
   /// Revokes + clears the stored session, and drops the cached profile so
   /// the next user never sees the previous one's data.
   ///

@@ -17,6 +17,19 @@ final class UnauthorizedException extends AppException {
   const UnauthorizedException(super.message);
 }
 
+/// 401 — account is temporarily suspended. [suspendedUntil] is the UTC
+/// datetime after which the user may try again (null when not provided).
+final class SuspendedException extends AppException {
+  const SuspendedException(super.message, {this.suspendedUntil});
+
+  final DateTime? suspendedUntil;
+}
+
+/// 401 — account is permanently banned.
+final class BannedException extends AppException {
+  const BannedException(super.message);
+}
+
 final class ForbiddenException extends AppException {
   const ForbiddenException(super.message);
 }
@@ -41,6 +54,11 @@ final class RateLimitException extends AppException {
   const RateLimitException(super.message, {this.retryAfter});
 
   final Duration? retryAfter;
+}
+
+/// 409 responses — the resource is in a state that conflicts with the request.
+final class ConflictException extends AppException {
+  const ConflictException(super.message);
 }
 
 final class CacheException extends AppException {

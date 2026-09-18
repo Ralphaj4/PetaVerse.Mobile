@@ -21,6 +21,7 @@ import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/app_dropdown_field.dart';
 import '../../../../shared/widgets/location_field.dart';
+import '../../../../shared/widgets/photo_source_sheet.dart';
 import '../../../pets/domain/entities/pet.dart';
 import '../../../pets/presentation/providers/pet_list_provider.dart';
 import '../../../pets/presentation/providers/species_provider.dart';
@@ -84,11 +85,7 @@ class _ReportLostPetPageState extends ConsumerState<ReportLostPetPage> {
   }
 
   Future<void> _pickPhoto() async {
-    final source = await showModalBottomSheet<ImageSource>(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (_) => const _PhotoSourceSheet(),
-    );
+    final source = await showPhotoSourceSheet(context);
     if (source == null) return;
     final picked =
         await ImagePicker().pickImage(source: source, imageQuality: 90);
@@ -970,84 +967,6 @@ class _PhotoPicker extends StatelessWidget {
               l10n.reportPhotoHint,
               style: AppTextStyles.bodyMedium
                   .copyWith(color: AppColors.textSecondary),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Camera / Gallery chooser, returning the picked [ImageSource].
-class _PhotoSourceSheet extends StatelessWidget {
-  const _PhotoSourceSheet();
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
-      ),
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      child: SafeArea(
-        top: false,
-        child: Row(
-          children: [
-            Expanded(
-              child: _SourceButton(
-                icon: FluentIcons.camera_24_regular,
-                label: l10n.camera,
-                onTap: () => Navigator.pop(context, ImageSource.camera),
-              ),
-            ),
-            const SizedBox(width: AppSpacing.lg),
-            Expanded(
-              child: _SourceButton(
-                icon: FluentIcons.image_24_regular,
-                label: l10n.gallery,
-                onTap: () => Navigator.pop(context, ImageSource.gallery),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _SourceButton extends StatelessWidget {
-  const _SourceButton({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: AppRadius.mdAll,
-          border: Border.all(color: AppColors.primary, width: 2),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, color: AppColors.primary, size: 32),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              label,
-              style:
-                  AppTextStyles.bodySmall.copyWith(fontWeight: FontWeight.w600),
             ),
           ],
         ),

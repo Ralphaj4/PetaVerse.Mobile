@@ -134,11 +134,25 @@ class ChatMessageDto {
             ? null
             : footerText;
 
+    // History payloads sometimes carry the reply both in `textContent` AND as a
+    // plain `text`-kind block echoing the same string. Rendered together that
+    // shows the answer twice in one bubble (once as the body text, once as the
+    // block). Drop any text-kind block whose body duplicates the message text;
+    // real tip/structured blocks are always kept.
+    final trimmedText = textContent.trim();
+    final mappedBlocks = blocks
+            ?.map((b) => b.toEntity())
+            .where((b) => !(b.resolved == null &&
+                b.body.trim() == trimmedText &&
+                trimmedText.isNotEmpty))
+            .toList(growable: false) ??
+        const [];
+
     return ChatMessage(
       id: id,
       role: role,
       text: textContent,
-      blocks: blocks?.map((b) => b.toEntity()).toList(growable: false) ?? [],
+      blocks: mappedBlocks,
       quickReplies: quickReplies ?? [],
       footerText: dedupedFooter,
       footerActionLabel: footer?['actionLabel'] as String?,

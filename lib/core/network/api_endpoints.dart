@@ -11,6 +11,10 @@ abstract final class ApiEndpoints {
   static const String resetPassword = '/auth/reset-password';
   static const String changePassword = '/auth/change-password';
 
+  // Email verification (authenticated user)
+  static const String emailVerifySend = '/users/email/verify/send';
+  static const String emailVerifyConfirm = '/users/email/verify/confirm';
+
   // FCM device tokens
   static const String fcmToken = '/users/me/fcm-token';
 
@@ -20,6 +24,7 @@ abstract final class ApiEndpoints {
 
   // Users
   static const String usersMe = '/users/me';
+  static const String deleteAccount = '/users/me';
   static const String usersProfile = '/users/profile';
   static const String userLookup = '/users/lookup';
 
@@ -230,6 +235,9 @@ abstract final class ApiEndpoints {
   static String communityEventRsvp(int eventId) =>
       '/community/events/$eventId/rsvp';
 
+  // App config (support email, etc.)
+  static const String appConfig = '/config';
+
   // Media (avatars, pet documents, etc.)
   static const String mediaUploadUrl = '/media/upload-url';
   static String mediaConfirm(String assetId) => '/media/$assetId/confirm';
@@ -245,6 +253,4 @@ abstract final class ApiEndpoints {
   static String petActivity(int petId, int activityId) =>
       '/pets/$petId/activities/$activityId';
 
-  // Geocoding (reverse: coordinates → street address)
-  static const String geocodeReverse = '/geocode/reverse';
 }

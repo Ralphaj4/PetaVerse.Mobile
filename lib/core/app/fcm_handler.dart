@@ -110,10 +110,7 @@ class FcmHandler {
   /// sending push notifications to this device.
   static Future<void> unregister(WidgetRef ref) async {
     try {
-      final token = await FirebaseMessaging.instance.getToken();
-      if (token != null) {
-        await ref.read(authRepositoryProvider).unregisterFcmToken(token);
-      }
+      await ref.read(authRepositoryProvider).unregisterFcmToken();
       await FirebaseMessaging.instance.deleteToken();
     } catch (e, st) {
       _logger.error('Failed to unregister FCM token', error: e, stackTrace: st);

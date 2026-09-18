@@ -1128,6 +1128,14 @@
   "@pawHubReportReasonImpersonation": {},
   "pawHubReportReasonOther": "Something else",
   "@pawHubReportReasonOther": {},
+  "pawHubReportConfirmTitle": "Submit report?",
+  "@pawHubReportConfirmTitle": {},
+  "pawHubReportConfirmMessage": "You're reporting this as: {reason}. This action cannot be undone.",
+  "@pawHubReportConfirmMessage": {
+    "placeholders": { "reason": { "type": "String" } }
+  },
+  "pawHubReportConfirmAction": "Submit Report",
+  "@pawHubReportConfirmAction": {},
 
   "pawHubCommentsTitle": "Comments",
   "@pawHubCommentsTitle": {},
@@ -1163,6 +1171,8 @@
   "@notificationsEmptyMessage": {},
   "notificationsSectionToday": "Today",
   "@notificationsSectionToday": {},
+  "notificationsSectionYesterday": "Yesterday",
+  "@notificationsSectionYesterday": {},
   "notificationsSectionEarlier": "Earlier",
   "@notificationsSectionEarlier": {},
   "notificationsAllCaughtUp": "You're all caught up",
@@ -1647,5 +1657,79 @@
       "name": { "type": "String" },
       "count": { "type": "int" }
     }
-  }
+  },
+
+  "contactUsTitle": "We're here to help",
+  "contactUsSubtitle": "Reach out anytime — we usually reply within 24 hours.",
+  "contactUsEmailSubtitle": "General questions & support",
+  "contactUsEmailSubject": "PetaVerse Support",
+  "reportProblemSubtitle": "Found a bug or something broken?",
+  "reportProblemEmailSubject": "PetaVerse — Bug Report",
+  "contactUsResponseTime": "We typically respond within 24 hours.",
+  "textUs": "Text Us",
+  "textUsSubtitle": "Chat with us on WhatsApp",
+
+  "emailVerifyTitle1": "Verify Your",
+  "emailVerifyTitle2": "Email",
+  "emailVerifySubtitle": "Enter the 6-digit code we sent to your email address.",
+  "emailVerifyDevHint": "DEV: check the server logs for the verification code.",
+  "emailVerifySendFailed": "Couldn't send the verification code. Tap retry to try again.",
+  "emailVerifiedSuccess": "Email verified successfully",
+  "emailAlreadyVerified": "Your email is already verified.",
+  "verifyEmail": "Verify email",
+
+  "noConnectionTitle": "No Connection",
+  "noConnectionMessage": "We couldn't load the app configuration. Please check your connection and try again.",
+
+  "maintenanceTitle": "Under Maintenance",
+  "maintenanceDefaultMessage": "We'll be back shortly.",
+  "maintenanceEndsInHoursMinutes": "Back in {hours}h {minutes}m",
+  "@maintenanceEndsInHoursMinutes": {
+    "placeholders": {
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" }
+    }
+  },
+  "maintenanceEndsInMinutes": "Back in {minutes}m",
+  "@maintenanceEndsInMinutes": {
+    "placeholders": {
+      "minutes": { "type": "int" }
+    }
+  },
+
+  "forceUpdateTitle": "Update Required",
+  "forceUpdateMessage": "This version of PetaVerse is no longer supported. Please update to continue.",
+  "forceUpdateButton": "Update Now",
+  "forceUpdateNoStoreUrl": "Couldn't open the store. Please update manually.",
+
+  "errorSuspended": "Your account is suspended until {date}.",
+  "@errorSuspended": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "errorBanned": "Your account has been permanently banned.",
+
+  "petaCareHeaderTitle": "{petName}'s Health Vault",
+  "@petaCareHeaderTitle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "petaCareHeaderSubtitle": "Track health, reminders & find local care",
+  "petaCareHealthScore": "Health Score",
+  "petaCareHealthData": "Health Data",
+  "petaCareNoPetTitle": "No active pet",
+  "petaCareNoPetSubtitle": "Add a pet from the profile tab to see their health vault here.",
+  "petaCareFindCare": "Find Care Near You",
+  "petaCareMapSubtitle": "Vets, groomers & more nearby",
+  "petaCareOpenMap": "Open Map",
+
+  "accountActions": "Account Actions",
+  "deleteAccount": "Delete Account",
+  "deleteAccountConfirmTitle": "Delete Account?",
+  "deleteAccountConfirmMessage": "This will permanently delete your account and all associated data. This action cannot be undone.",
+  "deleteAccountConfirm": "Yes, Delete",
+  "deleteAccountTypePromptTitle": "Confirm Deletion",
+  "deleteAccountTypePromptMessage": "Type DELETE to permanently delete your account.",
+  "deleteAccountTypePlaceholder": "Type DELETE here",
+  "deleteAccountSuccess": "Your account has been deleted."
 }
