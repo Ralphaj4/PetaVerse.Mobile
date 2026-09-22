@@ -203,6 +203,58 @@ class AppLocalizationsFr extends AppLocalizations {
   String get upToDate => 'À jour';
 
   @override
+  String get statWeight => 'Poids';
+
+  @override
+  String statActivityMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String statActiveDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days jours actifs',
+      one: '1 jour actif',
+      zero: '0 jour',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String statVaccinesUpcoming(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count à venir',
+      one: '1 à venir',
+      zero: 'Aucun prévu',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String statWeightValue(String value, String unit) {
+    return '$value $unit';
+  }
+
+  @override
+  String get weightTrendStable => 'Stable';
+
+  @override
+  String get weightTrendRising => 'En hausse';
+
+  @override
+  String get weightTrendDropping => 'En baisse';
+
+  @override
+  String get statNoData => '—';
+
+  @override
+  String get nextVisitNone => 'Aucune visite prévue';
+
+  @override
   String get upcoming => 'À venir';
 
   @override
@@ -1155,6 +1207,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get healthVaccinationsDue => 'À faire';
+
+  @override
+  String get healthVaccinationsMarkAdministered => 'Marquer administré';
+
+  @override
+  String healthVaccinationsAdministeredConfirmed(String name) {
+    return '$name enregistré comme administré';
+  }
 
   @override
   String get healthFrequencyDaily => 'Quotidien';
@@ -2416,6 +2476,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get appointmentsUpdatedSuccess => 'Rendez-vous mis à jour';
+
+  @override
+  String get appointmentsMarkDone => 'Marquer terminé';
+
+  @override
+  String get appointmentsCompleted => 'Terminé';
+
+  @override
+  String get appointmentsCompleteSuccess => 'Rendez-vous marqué terminé';
 
   @override
   String get upcomingEmptyTitle => 'Tout est en ordre';

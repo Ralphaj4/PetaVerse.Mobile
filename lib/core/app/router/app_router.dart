@@ -83,6 +83,7 @@ import '../../../features/profile/presentation/pages/change_language_page.dart';
 import '../../../features/auth/presentation/providers/session_provider.dart';
 import '../../../features/onboarding/presentation/providers/onboarding_provider.dart';
 import '../../../features/pets/presentation/providers/pets_provider.dart';
+import '../../../shared/widgets/image_viewer_page.dart';
 import '../../dev/sandbox_page.dart';
 import '../../widgets/coming_soon_page.dart';
 import '../../widgets/map/map_page.dart';
@@ -170,6 +171,9 @@ abstract final class AppRoutes {
   static const String vaccinations = '/pet/:id/vaccinations';
   static String healthScorePath(int petId) => '/pet/$petId/health-score';
   static const String healthScore = '/pet/:id/health-score';
+
+  // Full-screen image viewer (image URL + optional hero tag passed via extra).
+  static const String imageViewer = '/image-viewer';
 
   // Walk activity
   static String walkHistoryPath(int petId) => '/pet/$petId/walks';
@@ -634,6 +638,22 @@ GoRouter appRouter(Ref ref) {
             petId: int.parse(state.pathParameters['id']!),
           ),
         ),
+      ),
+      GoRoute(
+        path: AppRoutes.imageViewer,
+        name: 'imageViewer',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final extra = (state.extra as Map<String, Object?>?) ?? const {};
+          return AppTransitionPage(
+            key: state.pageKey,
+            child: ImageViewerPage(
+              imageUrl: (extra['url'] as String?) ?? '',
+              heroTag: extra['heroTag'],
+              semanticLabel: extra['label'] as String?,
+            ),
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.upcomingReminders,

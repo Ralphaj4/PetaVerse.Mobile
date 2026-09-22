@@ -22,6 +22,8 @@ class HomeHeroBanner extends StatelessWidget {
     this.avatarUrl,
     this.petImageUrl,
     this.onBellTap,
+    this.onPetImageTap,
+    this.onHealthScoreTap,
     super.key,
   });
 
@@ -33,6 +35,15 @@ class HomeHeroBanner extends StatelessWidget {
   final String? avatarUrl;
   final String? petImageUrl;
   final VoidCallback? onBellTap;
+
+  /// Opens the pet photo in a full-screen viewer.
+  final VoidCallback? onPetImageTap;
+
+  /// Opens the health-score breakdown page.
+  final VoidCallback? onHealthScoreTap;
+
+  /// Shared hero tag for the pet photo → viewer transition.
+  static const String petImageHeroTag = 'home-hero-pet-image';
 
   @override
   Widget build(BuildContext context) {
@@ -65,22 +76,28 @@ class HomeHeroBanner extends StatelessWidget {
               PositionedDirectional(
                 end: AppSpacing.lg,
                 bottom: AppSpacing.xxl + AppSpacing.xxl,
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: AppColors.onPrimary.withValues(alpha: 0.6),
-                      width: 3,
+                child: GestureDetector(
+                  onTap: onPetImageTap,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppColors.onPrimary.withValues(alpha: 0.6),
+                        width: 3,
+                      ),
                     ),
-                  ),
-                  child: ClipOval(
-                    child: AppCachedImage(
-                      imageUrl: petImageUrl,
-                      width: 160,
-                      height: 160,
-                      fit: BoxFit.cover,
-                      borderRadius: BorderRadius.zero,
-                      semanticLabel: petName,
+                    child: Hero(
+                      tag: petImageHeroTag,
+                      child: ClipOval(
+                        child: AppCachedImage(
+                          imageUrl: petImageUrl,
+                          width: 160,
+                          height: 160,
+                          fit: BoxFit.cover,
+                          borderRadius: BorderRadius.zero,
+                          semanticLabel: petName,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -111,9 +128,12 @@ class HomeHeroBanner extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xl),
-                  HealthScoreCard(
-                    score: healthScore,
-                    statusLabel: healthStatusLabel,
+                  GestureDetector(
+                    onTap: onHealthScoreTap,
+                    child: HealthScoreCard(
+                      score: healthScore,
+                      statusLabel: healthStatusLabel,
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.xl),
                   NextVisitChip(dateLabel: nextVisitLabel),

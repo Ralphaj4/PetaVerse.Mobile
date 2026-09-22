@@ -9,6 +9,7 @@ class Appointment {
     required this.scheduledAt,
     this.location,
     this.notes,
+    this.completedAt,
   });
 
   /// Server-assigned id.
@@ -26,6 +27,12 @@ class Appointment {
   final String? location;
 
   final String? notes;
+
+  /// When the appointment was marked done, or null if still open.
+  final DateTime? completedAt;
+
+  /// True once the appointment has been marked done.
+  bool get isCompleted => completedAt != null;
 
   bool get isPast => scheduledAt.isBefore(DateTime.now());
 

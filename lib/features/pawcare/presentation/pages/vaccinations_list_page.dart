@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/analytics/analytics_events.dart';
+import '../../../../core/analytics/analytics_service.dart';
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/failure_l10n.dart';
@@ -20,20 +22,59 @@ import '../../domain/entities/vaccination.dart';
 import '../providers/pawcare_providers.dart';
 
 /// Full list of a pet's vaccination records, most recent first, each showing
-/// the administered date and booster status. A "+" opens the add form, and each
-/// record can be deleted (trailing button or swipe).
-class VaccinationsListPage extends ConsumerWidget {
+/// the administered date and booster status. A "+" opens the add form, each
+/// record can be marked administered (rolls the booster forward) or deleted
+/// (trailing button or swipe).
+class VaccinationsListPage extends ConsumerStatefulWidget {
   const VaccinationsListPage({required this.petId, super.key});
 
   final int petId;
 
+  @override
+  ConsumerState<VaccinationsListPage> createState() =>
+      _VaccinationsListPageState();
+}
+
+class _VaccinationsListPageState extends ConsumerState<VaccinationsListPage> {
+  /// The vaccination id running an action, so only its row disables/spins.
+  int? _busyId;
+
+  void _refresh() {
+    ref.invalidate(petVaccinationsProvider(widget.petId));
+    ref.invalidate(petHealthSnapshotProvider(widget.petId));
+    ref.invalidate(petHealthScoreProvider(widget.petId));
+  }
+
+  Future<void> _markAdministered(Vaccination vax) async {
+    final l10n = context.l10n;
+    setState(() => _busyId = vax.id);
+    final result = await ref
+        .read(pawCareRepositoryProvider)
+        .markVaccinationAdministered(widget.petId, vax.id);
+    if (!mounted) return;
+    setState(() => _busyId = null);
+    result.when(
+      success: (_) {
+        _refresh();
+        unawaited(
+          ref.read(analyticsServiceProvider).logEvent(
+            AnalyticsEvents.vaccinationAdministered,
+            parameters: {'pet_id': widget.petId},
+          ),
+        );
+        context.showSuccessSnackBar(
+          l10n.healthVaccinationsAdministeredConfirmed(vax.name),
+        );
+      },
+      failure: (f) => context.showErrorSnackBar(
+        f.localizedMessage(l10n),
+      ),
+    );
+  }
+
   /// Confirms and deletes a single vaccination, then refreshes the list + the
   /// dashboard snapshot.
-  Future<void> _delete(
-    BuildContext context,
-    WidgetRef ref,
-    Vaccination vax,
-  ) async {
+  Future<void> _delete(Vaccination vax) async {
     final l10n = context.l10n;
     final confirmed = await AppConfirmDialog.show(
       context,
@@ -44,18 +85,16 @@ class VaccinationsListPage extends ConsumerWidget {
       cancelLabel: l10n.cancel,
       isDestructive: true,
     );
-    if (!confirmed || !context.mounted) return;
+    if (!confirmed || !mounted) return;
 
     final result = await ref
         .read(pawCareRepositoryProvider)
-        .deleteVaccination(petId, vax.id);
-    if (!context.mounted) return;
+        .deleteVaccination(widget.petId, vax.id);
+    if (!mounted) return;
 
     result.when(
       success: (_) {
-        ref.invalidate(petVaccinationsProvider(petId));
-        ref.invalidate(petHealthSnapshotProvider(petId));
-        ref.invalidate(petHealthScoreProvider(petId));
+        _refresh();
         context.showSuccessSnackBar(l10n.healthVaccinationsDeleteSuccess);
       },
       failure: (f) => context.showErrorSnackBar(
@@ -65,9 +104,9 @@ class VaccinationsListPage extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final async = ref.watch(petVaccinationsProvider(petId));
+    final async = ref.watch(petVaccinationsProvider(widget.petId));
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -86,7 +125,8 @@ class VaccinationsListPage extends ConsumerWidget {
           IconButton(
             tooltip: l10n.healthVaccinationsAdd,
             icon: const Icon(FluentIcons.add_24_regular),
-            onPressed: () => context.push(AppRoutes.addVaccinationPath(petId)),
+            onPressed: () =>
+                context.push(AppRoutes.addVaccinationPath(widget.petId)),
           ),
         ],
       ),
@@ -94,20 +134,22 @@ class VaccinationsListPage extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => ErrorStateWidget(
           failure: e is Failure ? e : const UnknownFailure(),
-          onRetry: () => ref.invalidate(petVaccinationsProvider(petId)),
+          onRetry: () =>
+              ref.invalidate(petVaccinationsProvider(widget.petId)),
         ),
         data: (vaccinations) {
           if (vaccinations.isEmpty) {
             return _Empty(
-              onAdd: () => context.push(AppRoutes.addVaccinationPath(petId)),
+              onAdd: () =>
+                  context.push(AppRoutes.addVaccinationPath(widget.petId)),
             );
           }
           final now = DateTime.now();
           return RefreshIndicator(
             color: AppColors.primary,
             onRefresh: () async {
-              ref.invalidate(petVaccinationsProvider(petId));
-              await ref.read(petVaccinationsProvider(petId).future);
+              ref.invalidate(petVaccinationsProvider(widget.petId));
+              await ref.read(petVaccinationsProvider(widget.petId).future);
             },
             child: ListView.separated(
               padding: const EdgeInsets.all(AppSpacing.lg),
@@ -119,14 +161,17 @@ class VaccinationsListPage extends ConsumerWidget {
                   key: ValueKey('vax-${vax.id}'),
                   direction: DismissDirection.endToStart,
                   confirmDismiss: (_) async {
-                    unawaited(_delete(context, ref, vax));
+                    unawaited(_delete(vax));
                     return false;
                   },
                   background: const _DeleteBackground(),
                   child: _VaccinationTile(
                     vax: vax,
                     now: now,
-                    onDelete: () => _delete(context, ref, vax),
+                    busy: _busyId == vax.id,
+                    actionsEnabled: _busyId == null,
+                    onMarkAdministered: () => _markAdministered(vax),
+                    onDelete: () => _delete(vax),
                   ),
                 );
               },
@@ -142,11 +187,17 @@ class _VaccinationTile extends StatelessWidget {
   const _VaccinationTile({
     required this.vax,
     required this.now,
+    required this.busy,
+    required this.actionsEnabled,
+    required this.onMarkAdministered,
     required this.onDelete,
   });
 
   final Vaccination vax;
   final DateTime now;
+  final bool busy;
+  final bool actionsEnabled;
+  final VoidCallback onMarkAdministered;
   final VoidCallback onDelete;
 
   @override
@@ -208,7 +259,24 @@ class _VaccinationTile extends StatelessWidget {
             _BoosterBadge(due: due, date: dateFmt.format(vax.nextDueDate!)),
           ],
           IconButton(
-            onPressed: onDelete,
+            onPressed: actionsEnabled ? onMarkAdministered : null,
+            tooltip: l10n.healthVaccinationsMarkAdministered,
+            visualDensity: VisualDensity.compact,
+            icon: busy
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                        strokeWidth: 2, color: AppColors.success),
+                  )
+                : const Icon(
+                    FluentIcons.checkmark_circle_24_regular,
+                    size: 20,
+                    color: AppColors.success,
+                  ),
+          ),
+          IconButton(
+            onPressed: actionsEnabled ? onDelete : null,
             tooltip: l10n.delete,
             visualDensity: VisualDensity.compact,
             icon: const Icon(

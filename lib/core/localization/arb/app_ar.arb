@@ -91,6 +91,31 @@
     }
   },
   "upToDate": "محدّثة",
+  "statWeight": "الوزن",
+  "statActivityMinutes": "{minutes} دقيقة",
+  "@statActivityMinutes": {
+    "placeholders": { "minutes": { "type": "int" } }
+  },
+  "statActiveDays": "{days, plural, =0{0 أيام} =1{يوم نشاط واحد} =2{يوما نشاط} few{{days} أيام نشاط} many{{days} يوم نشاط} other{{days} يوم نشاط}}",
+  "@statActiveDays": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+  "statVaccinesUpcoming": "{count, plural, =0{لا شيء مستحق} =1{لقاح واحد قادم} =2{لقاحان قادمان} few{{count} لقاحات قادمة} many{{count} لقاحًا قادمًا} other{{count} لقاح قادم}}",
+  "@statVaccinesUpcoming": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "statWeightValue": "{value} {unit}",
+  "@statWeightValue": {
+    "placeholders": {
+      "value": { "type": "String" },
+      "unit": { "type": "String" }
+    }
+  },
+  "weightTrendStable": "ثابت",
+  "weightTrendRising": "مرتفع",
+  "weightTrendDropping": "منخفض",
+  "statNoData": "—",
+  "nextVisitNone": "لا زيارة مجدولة",
   "upcoming": "القادمة",
   "quickActions": "إجراءات",
   "bookAppointment": "حجز موعد",
@@ -470,6 +495,11 @@
     "placeholders": { "date": { "type": "String" } }
   },
   "healthVaccinationsDue": "مستحق",
+  "healthVaccinationsMarkAdministered": "تسجيل الإعطاء",
+  "healthVaccinationsAdministeredConfirmed": "تم تسجيل إعطاء {name}",
+  "@healthVaccinationsAdministeredConfirmed": {
+    "placeholders": { "name": { "type": "String" } }
+  },
   "healthFrequencyDaily": "يوميًا",
   "healthFrequencyWeekly": "أسبوعيًا",
   "healthFrequencyBiweekly": "كل أسبوعين",
@@ -905,6 +935,9 @@
   },
   "appointmentsEdit": "تعديل الموعد",
   "appointmentsUpdatedSuccess": "تم تحديث الموعد",
+  "appointmentsMarkDone": "تحديد كمنجز",
+  "appointmentsCompleted": "منجز",
+  "appointmentsCompleteSuccess": "تم تحديد الموعد كمنجز",
   "upcomingEmptyTitle": "كل شيء على ما يرام",
   "upcomingEmptySubtitle": "ستظهر هنا الأدوية والتطعيمات والمواعيد.",
 

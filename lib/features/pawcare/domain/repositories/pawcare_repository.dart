@@ -93,6 +93,16 @@ abstract interface class PawCareRepository {
   /// Deletes a vaccination record.
   Future<Result<void>> deleteVaccination(int petId, int vaccinationId);
 
+  /// Marks a vaccination administered ([dateAdministered] defaults to now); the
+  /// backend rolls the next-due date forward by the prior cadence unless
+  /// [nextDueDate] is given, and returns the updated record.
+  Future<Result<Vaccination>> markVaccinationAdministered(
+    int petId,
+    int vaccinationId, {
+    DateTime? dateAdministered,
+    DateTime? nextDueDate,
+  });
+
   // ── Lookups ─────────────────────────────────────────────────────────────
 
   /// Known medications for the add-medication picker.
@@ -127,6 +137,14 @@ abstract interface class PawCareRepository {
 
   /// Deletes an appointment.
   Future<Result<void>> deleteAppointment(int petId, int appointmentId);
+
+  /// Marks an appointment done ([completedAt] defaults to now, must not be in
+  /// the future) and returns the updated appointment.
+  Future<Result<Appointment>> completeAppointment(
+    int petId,
+    int appointmentId, {
+    DateTime? completedAt,
+  });
 
   // ── Health score ──────────────────────────────────────────────────────────
 

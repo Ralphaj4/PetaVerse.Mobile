@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/analytics/analytics_events.dart';
+import '../../../../core/analytics/analytics_service.dart';
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/failure_l10n.dart';
@@ -20,17 +22,50 @@ import '../../domain/entities/appointment.dart';
 import '../providers/pawcare_providers.dart';
 
 /// Full list of a pet's appointments, upcoming first. A "+" opens the add
-/// form; each record can be deleted via swipe or the trailing button.
-class AppointmentsListPage extends ConsumerWidget {
+/// form; each record can be marked done or deleted (swipe / trailing button).
+class AppointmentsListPage extends ConsumerStatefulWidget {
   const AppointmentsListPage({required this.petId, super.key});
 
   final int petId;
 
-  Future<void> _delete(
-    BuildContext context,
-    WidgetRef ref,
-    Appointment appt,
-  ) async {
+  @override
+  ConsumerState<AppointmentsListPage> createState() =>
+      _AppointmentsListPageState();
+}
+
+class _AppointmentsListPageState extends ConsumerState<AppointmentsListPage> {
+  /// The appointment id running an action, so only its row disables/spins.
+  int? _busyId;
+
+  void _refresh() {
+    ref.invalidate(petAppointmentsProvider(widget.petId));
+    ref.invalidate(petHealthSnapshotProvider(widget.petId));
+  }
+
+  Future<void> _complete(Appointment appt) async {
+    final l10n = context.l10n;
+    setState(() => _busyId = appt.id);
+    final result = await ref
+        .read(pawCareRepositoryProvider)
+        .completeAppointment(widget.petId, appt.id);
+    if (!mounted) return;
+    setState(() => _busyId = null);
+    result.when(
+      success: (_) {
+        _refresh();
+        unawaited(
+          ref.read(analyticsServiceProvider).logEvent(
+            AnalyticsEvents.appointmentCompleted,
+            parameters: {'pet_id': widget.petId},
+          ),
+        );
+        context.showSuccessSnackBar(l10n.appointmentsCompleteSuccess);
+      },
+      failure: (f) => context.showErrorSnackBar(f.localizedMessage(l10n)),
+    );
+  }
+
+  Future<void> _delete(Appointment appt) async {
     final l10n = context.l10n;
     final confirmed = await AppConfirmDialog.show(
       context,
@@ -41,16 +76,16 @@ class AppointmentsListPage extends ConsumerWidget {
       cancelLabel: l10n.cancel,
       isDestructive: true,
     );
-    if (!confirmed || !context.mounted) return;
+    if (!confirmed || !mounted) return;
 
     final result = await ref
         .read(pawCareRepositoryProvider)
-        .deleteAppointment(petId, appt.id);
-    if (!context.mounted) return;
+        .deleteAppointment(widget.petId, appt.id);
+    if (!mounted) return;
 
     result.when(
       success: (_) {
-        ref.invalidate(petAppointmentsProvider(petId));
+        _refresh();
         context.showSuccessSnackBar(l10n.appointmentsDeleteSuccess);
       },
       failure: (f) => context.showErrorSnackBar(f.localizedMessage(l10n)),
@@ -58,9 +93,9 @@ class AppointmentsListPage extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final async = ref.watch(petAppointmentsProvider(petId));
+    final async = ref.watch(petAppointmentsProvider(widget.petId));
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -80,7 +115,7 @@ class AppointmentsListPage extends ConsumerWidget {
             tooltip: l10n.appointmentsAdd,
             icon: const Icon(FluentIcons.add_24_regular),
             onPressed: () =>
-                context.push(AppRoutes.addAppointmentPath(petId)),
+                context.push(AppRoutes.addAppointmentPath(widget.petId)),
           ),
         ],
       ),
@@ -88,20 +123,21 @@ class AppointmentsListPage extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => ErrorStateWidget(
           failure: e is Failure ? e : const UnknownFailure(),
-          onRetry: () => ref.invalidate(petAppointmentsProvider(petId)),
+          onRetry: () =>
+              ref.invalidate(petAppointmentsProvider(widget.petId)),
         ),
         data: (appointments) {
           if (appointments.isEmpty) {
             return _Empty(
               onAdd: () =>
-                  context.push(AppRoutes.addAppointmentPath(petId)),
+                  context.push(AppRoutes.addAppointmentPath(widget.petId)),
             );
           }
           return RefreshIndicator(
             color: AppColors.primary,
             onRefresh: () async {
-              ref.invalidate(petAppointmentsProvider(petId));
-              await ref.read(petAppointmentsProvider(petId).future);
+              ref.invalidate(petAppointmentsProvider(widget.petId));
+              await ref.read(petAppointmentsProvider(widget.petId).future);
             },
             child: ListView.separated(
               padding: const EdgeInsets.all(AppSpacing.lg),
@@ -114,17 +150,20 @@ class AppointmentsListPage extends ConsumerWidget {
                   key: ValueKey('appt-${appt.id}'),
                   direction: DismissDirection.endToStart,
                   confirmDismiss: (_) async {
-                    unawaited(_delete(context, ref, appt));
+                    unawaited(_delete(appt));
                     return false;
                   },
                   background: const _DeleteBackground(),
                   child: _AppointmentTile(
                     appt: appt,
+                    busy: _busyId == appt.id,
+                    actionsEnabled: _busyId == null,
                     onEdit: () => context.push(
-                      AppRoutes.editAppointmentPath(petId, appt.id),
+                      AppRoutes.editAppointmentPath(widget.petId, appt.id),
                       extra: appt,
                     ),
-                    onDelete: () => _delete(context, ref, appt),
+                    onComplete: () => _complete(appt),
+                    onDelete: () => _delete(appt),
                   ),
                 );
               },
@@ -139,24 +178,34 @@ class AppointmentsListPage extends ConsumerWidget {
 class _AppointmentTile extends StatelessWidget {
   const _AppointmentTile({
     required this.appt,
+    required this.busy,
+    required this.actionsEnabled,
     required this.onEdit,
+    required this.onComplete,
     required this.onDelete,
   });
 
   final Appointment appt;
+  final bool busy;
+  final bool actionsEnabled;
   final VoidCallback onEdit;
+  final VoidCallback onComplete;
   final VoidCallback onDelete;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final locale = Localizations.localeOf(context).toString();
+    final completed = appt.isCompleted;
     final past = appt.isPast;
     final days = appt.daysUntil;
 
     final String status;
     final Color statusColor;
-    if (past) {
+    if (completed) {
+      status = l10n.appointmentsCompleted;
+      statusColor = AppColors.success;
+    } else if (past) {
       status = l10n.reminderOverdue;
       statusColor = AppColors.error;
     } else if (days == 0) {
@@ -185,15 +234,23 @@ class _AppointmentTile extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: past
-                  ? AppColors.error.withValues(alpha: 0.10)
-                  : AppColors.secondarySoft,
+              color: completed
+                  ? AppColors.success.withValues(alpha: 0.12)
+                  : past
+                      ? AppColors.error.withValues(alpha: 0.10)
+                      : AppColors.secondarySoft,
               borderRadius: BorderRadius.circular(AppRadius.sm),
             ),
             child: Icon(
-              FluentIcons.calendar_ltr_24_regular,
+              completed
+                  ? FluentIcons.checkmark_circle_24_filled
+                  : FluentIcons.calendar_ltr_24_regular,
               size: 20,
-              color: past ? AppColors.error : AppColors.secondary,
+              color: completed
+                  ? AppColors.success
+                  : past
+                      ? AppColors.error
+                      : AppColors.secondary,
             ),
           ),
           const SizedBox(width: AppSpacing.md),
@@ -251,18 +308,37 @@ class _AppointmentTile extends StatelessWidget {
                   .copyWith(color: statusColor, letterSpacing: 0),
             ),
           ),
-          IconButton(
-            onPressed: onEdit,
-            tooltip: l10n.appointmentsEdit,
-            visualDensity: VisualDensity.compact,
-            icon: const Icon(
-              FluentIcons.edit_24_regular,
-              size: 20,
-              color: AppColors.textTertiary,
+          if (!completed)
+            IconButton(
+              onPressed: actionsEnabled ? onComplete : null,
+              tooltip: l10n.appointmentsMarkDone,
+              visualDensity: VisualDensity.compact,
+              icon: busy
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                          strokeWidth: 2, color: AppColors.success),
+                    )
+                  : const Icon(
+                      FluentIcons.checkmark_circle_24_regular,
+                      size: 20,
+                      color: AppColors.success,
+                    ),
             ),
-          ),
+          if (!completed)
+            IconButton(
+              onPressed: actionsEnabled ? onEdit : null,
+              tooltip: l10n.appointmentsEdit,
+              visualDensity: VisualDensity.compact,
+              icon: const Icon(
+                FluentIcons.edit_24_regular,
+                size: 20,
+                color: AppColors.textTertiary,
+              ),
+            ),
           IconButton(
-            onPressed: onDelete,
+            onPressed: actionsEnabled ? onDelete : null,
             tooltip: l10n.delete,
             visualDensity: VisualDensity.compact,
             icon: const Icon(

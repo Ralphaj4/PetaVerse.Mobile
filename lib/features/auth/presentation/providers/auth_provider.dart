@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
+import '../../../home/presentation/providers/home_providers.dart';
 import '../../../pawcare/presentation/providers/pawcare_providers.dart';
 import '../../../profile/data/providers/user_repository_provider.dart';
 import '../../../profile/presentation/providers/user_usecases_provider.dart';
@@ -207,11 +208,13 @@ class AuthNotifier extends _$AuthNotifier {
     final authRepository = ref.read(authRepositoryProvider);
     final userRepository = ref.read(userRepositoryProvider);
     final reminderCache = ref.read(healthReminderCacheProvider);
+    final homeCache = ref.read(homeSummaryCacheProvider);
     final result = await authRepository.deleteAccount();
     if (result.isFailure) return result;
     await Future.wait([
       userRepository.clearCache(),
       reminderCache.clear(),
+      homeCache.clear(),
     ]);
     return result;
   }
@@ -227,6 +230,7 @@ class AuthNotifier extends _$AuthNotifier {
     final authRepository = ref.read(authRepositoryProvider);
     final userRepository = ref.read(userRepositoryProvider);
     final reminderCache = ref.read(healthReminderCacheProvider);
+    final homeCache = ref.read(homeSummaryCacheProvider);
     // Await the local clears so they're durably written before logout is
     // considered done — otherwise a user who kills the app immediately after
     // tapping "log out" can relaunch with tokens/cache still present (skipping
@@ -235,6 +239,7 @@ class AuthNotifier extends _$AuthNotifier {
       authRepository.logout(),
       userRepository.clearCache(),
       reminderCache.clear(),
+      homeCache.clear(),
     ]);
   }
 

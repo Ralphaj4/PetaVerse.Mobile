@@ -39,6 +39,44 @@ Color _resolveColor(String? color) => switch (color) {
         }(),
     };
 
+/// Normalizes text for duplicate-detection between a message's inline body and
+/// its structured blocks: lowercases, strips markdown emphasis/heading markers
+/// (`* _ # \``), and collapses all whitespace so line-wrap and heading markup
+/// differences don't defeat a substring match.
+String _normalizeForMatch(String s) => s
+    .toLowerCase()
+    .replaceAll(RegExp(r'[*_#`]'), '')
+    .replaceAll(RegExp(r'\s+'), ' ')
+    .trim();
+
+/// Removes from [text] any paragraph that a structured [blocks] card already
+/// covers, so a section isn't shown twice (once inline, once as a card). We
+/// keep the cards and drop the inline copy. A paragraph is dropped when its
+/// normalized content is contained in — or contains — a block's normalized
+/// title+body. Paragraphs the blocks don't cover (e.g. the intro) are kept
+/// verbatim, preserving their markdown.
+String _stripBlocksFromText(String text, List<ChatBlock> blocks) {
+  if (blocks.isEmpty) return text;
+
+  final blockKeys = [
+    for (final b in blocks)
+      _normalizeForMatch('${b.title ?? ''} ${b.body}')
+  ].where((k) => k.isNotEmpty).toList(growable: false);
+  if (blockKeys.isEmpty) return text;
+
+  // Split into paragraphs on blank lines so a heading+body section stays as one
+  // unit (adjacent lines), while the intro paragraph is separate.
+  final paragraphs = text.split(RegExp(r'\n\s*\n'));
+  final kept = <String>[];
+  for (final para in paragraphs) {
+    final key = _normalizeForMatch(para);
+    if (key.isEmpty) continue;
+    final covered = blockKeys.any((bk) => bk.contains(key) || key.contains(bk));
+    if (!covered) kept.add(para.trim());
+  }
+  return kept.join('\n\n').trim();
+}
+
 // ── Block DTO ────────────────────────────────────────────────────────────────
 
 class ChatBlockDto {
@@ -134,24 +172,22 @@ class ChatMessageDto {
             ? null
             : footerText;
 
-    // History payloads sometimes carry the reply both in `textContent` AND as a
-    // plain `text`-kind block echoing the same string. Rendered together that
-    // shows the answer twice in one bubble (once as the body text, once as the
-    // block). Drop any text-kind block whose body duplicates the message text;
-    // real tip/structured blocks are always kept.
-    final trimmedText = textContent.trim();
-    final mappedBlocks = blocks
-            ?.map((b) => b.toEntity())
-            .where((b) => !(b.resolved == null &&
-                b.body.trim() == trimmedText &&
-                trimmedText.isNotEmpty))
-            .toList(growable: false) ??
-        const [];
+    // On history reload the backend flattens the whole reply into
+    // `textContent` (intro + every structured section inline, with markdown
+    // headings) AND *also* returns those sections as separate blocks. Rendered
+    // together each section shows up twice — once inline in the body text, once
+    // as a styled card. We keep the styled cards (they carry the design) and
+    // strip the sections they cover out of the inline text, leaving only the
+    // intro paragraph in the body.
+    final mappedBlocks =
+        blocks?.map((b) => b.toEntity()).toList(growable: false) ?? const [];
+    final dedupedText =
+        stripChatMetaLines(_stripBlocksFromText(textContent, mappedBlocks));
 
     return ChatMessage(
       id: id,
       role: role,
-      text: textContent,
+      text: dedupedText,
       blocks: mappedBlocks,
       quickReplies: quickReplies ?? [],
       footerText: dedupedFooter,

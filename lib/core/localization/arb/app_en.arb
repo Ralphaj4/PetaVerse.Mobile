@@ -91,6 +91,31 @@
     }
   },
   "upToDate": "Up to date",
+  "statWeight": "Weight",
+  "statActivityMinutes": "{minutes} min",
+  "@statActivityMinutes": {
+    "placeholders": { "minutes": { "type": "int" } }
+  },
+  "statActiveDays": "{days, plural, =0{0 days} =1{1 active day} other{{days} active days}}",
+  "@statActiveDays": {
+    "placeholders": { "days": { "type": "int" } }
+  },
+  "statVaccinesUpcoming": "{count, plural, =0{None due} =1{1 upcoming} other{{count} upcoming}}",
+  "@statVaccinesUpcoming": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "statWeightValue": "{value} {unit}",
+  "@statWeightValue": {
+    "placeholders": {
+      "value": { "type": "String" },
+      "unit": { "type": "String" }
+    }
+  },
+  "weightTrendStable": "Stable",
+  "weightTrendRising": "Rising",
+  "weightTrendDropping": "Dropping",
+  "statNoData": "—",
+  "nextVisitNone": "No visit scheduled",
   "upcoming": "Upcoming",
   "quickActions": "Actions",
   "bookAppointment": "Book Appointment",
@@ -470,6 +495,11 @@
     "placeholders": { "date": { "type": "String" } }
   },
   "healthVaccinationsDue": "Due",
+  "healthVaccinationsMarkAdministered": "Mark administered",
+  "healthVaccinationsAdministeredConfirmed": "Recorded {name} as administered",
+  "@healthVaccinationsAdministeredConfirmed": {
+    "placeholders": { "name": { "type": "String" } }
+  },
   "healthFrequencyDaily": "Daily",
   "healthFrequencyWeekly": "Weekly",
   "healthFrequencyBiweekly": "Every 2 weeks",
@@ -1004,6 +1034,9 @@
   },
   "appointmentsEdit": "Edit Appointment",
   "appointmentsUpdatedSuccess": "Appointment updated",
+  "appointmentsMarkDone": "Mark done",
+  "appointmentsCompleted": "Done",
+  "appointmentsCompleteSuccess": "Appointment marked done",
   "upcomingEmptyTitle": "All clear for now",
   "upcomingEmptySubtitle": "Medications, vaccinations, and appointments will appear here.",
 

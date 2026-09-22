@@ -105,12 +105,16 @@ class ChatSession extends _$ChatSession {
           ));
 
         case DoneEvent(:final messageId):
-          // Replace temp id with the real persisted one.
+          // If the model streamed the quick-replies / footer as tokens too,
+          // strip those lines from the body now that the meta event has landed
+          // — they render as chips + a footer, never inline.
+          final cleanText = stripChatMetaLines(botMsg.text);
           final msgs = state.value ?? [];
           state = AsyncData([
             for (final m in msgs)
               if (m.id == botMsg.id)
-                botMsg.copyWith(status: ChatMessageStatus.done)
+                botMsg
+                    .copyWith(text: cleanText, status: ChatMessageStatus.done)
                     // Real id — reconstruct since copyWith doesn't cover id.
                     ._withId(messageId)
               else

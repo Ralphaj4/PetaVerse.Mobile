@@ -2831,7 +2831,7 @@ as List<String>,
 /// @nodoc
 mixin _$AppointmentDto {
 
- int get id; int get petId; String get title; DateTime get scheduledAt; String? get location; String? get notes;
+ int get id; int get petId; String get title; DateTime get scheduledAt; String? get location; String? get notes; DateTime? get completedAt; bool get isCompleted;
 /// Create a copy of AppointmentDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -2844,16 +2844,16 @@ $AppointmentDtoCopyWith<AppointmentDto> get copyWith => _$AppointmentDtoCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppointmentDto&&(identical(other.id, id) || other.id == id)&&(identical(other.petId, petId) || other.petId == petId)&&(identical(other.title, title) || other.title == title)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.location, location) || other.location == location)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppointmentDto&&(identical(other.id, id) || other.id == id)&&(identical(other.petId, petId) || other.petId == petId)&&(identical(other.title, title) || other.title == title)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.location, location) || other.location == location)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.completedAt, completedAt) || other.completedAt == completedAt)&&(identical(other.isCompleted, isCompleted) || other.isCompleted == isCompleted));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,petId,title,scheduledAt,location,notes);
+int get hashCode => Object.hash(runtimeType,id,petId,title,scheduledAt,location,notes,completedAt,isCompleted);
 
 @override
 String toString() {
-  return 'AppointmentDto(id: $id, petId: $petId, title: $title, scheduledAt: $scheduledAt, location: $location, notes: $notes)';
+  return 'AppointmentDto(id: $id, petId: $petId, title: $title, scheduledAt: $scheduledAt, location: $location, notes: $notes, completedAt: $completedAt, isCompleted: $isCompleted)';
 }
 
 
@@ -2864,7 +2864,7 @@ abstract mixin class $AppointmentDtoCopyWith<$Res>  {
   factory $AppointmentDtoCopyWith(AppointmentDto value, $Res Function(AppointmentDto) _then) = _$AppointmentDtoCopyWithImpl;
 @useResult
 $Res call({
- int id, int petId, String title, DateTime scheduledAt, String? location, String? notes
+ int id, int petId, String title, DateTime scheduledAt, String? location, String? notes, DateTime? completedAt, bool isCompleted
 });
 
 
@@ -2881,7 +2881,7 @@ class _$AppointmentDtoCopyWithImpl<$Res>
 
 /// Create a copy of AppointmentDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? petId = null,Object? title = null,Object? scheduledAt = null,Object? location = freezed,Object? notes = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? petId = null,Object? title = null,Object? scheduledAt = null,Object? location = freezed,Object? notes = freezed,Object? completedAt = freezed,Object? isCompleted = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,petId: null == petId ? _self.petId : petId // ignore: cast_nullable_to_non_nullable
@@ -2889,7 +2889,9 @@ as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_no
 as String,scheduledAt: null == scheduledAt ? _self.scheduledAt : scheduledAt // ignore: cast_nullable_to_non_nullable
 as DateTime,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as String?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,completedAt: freezed == completedAt ? _self.completedAt : completedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,isCompleted: null == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -2974,10 +2976,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int petId,  String title,  DateTime scheduledAt,  String? location,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int petId,  String title,  DateTime scheduledAt,  String? location,  String? notes,  DateTime? completedAt,  bool isCompleted)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppointmentDto() when $default != null:
-return $default(_that.id,_that.petId,_that.title,_that.scheduledAt,_that.location,_that.notes);case _:
+return $default(_that.id,_that.petId,_that.title,_that.scheduledAt,_that.location,_that.notes,_that.completedAt,_that.isCompleted);case _:
   return orElse();
 
 }
@@ -2995,10 +2997,10 @@ return $default(_that.id,_that.petId,_that.title,_that.scheduledAt,_that.locatio
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int petId,  String title,  DateTime scheduledAt,  String? location,  String? notes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int petId,  String title,  DateTime scheduledAt,  String? location,  String? notes,  DateTime? completedAt,  bool isCompleted)  $default,) {final _that = this;
 switch (_that) {
 case _AppointmentDto():
-return $default(_that.id,_that.petId,_that.title,_that.scheduledAt,_that.location,_that.notes);case _:
+return $default(_that.id,_that.petId,_that.title,_that.scheduledAt,_that.location,_that.notes,_that.completedAt,_that.isCompleted);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -3015,10 +3017,10 @@ return $default(_that.id,_that.petId,_that.title,_that.scheduledAt,_that.locatio
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int petId,  String title,  DateTime scheduledAt,  String? location,  String? notes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int petId,  String title,  DateTime scheduledAt,  String? location,  String? notes,  DateTime? completedAt,  bool isCompleted)?  $default,) {final _that = this;
 switch (_that) {
 case _AppointmentDto() when $default != null:
-return $default(_that.id,_that.petId,_that.title,_that.scheduledAt,_that.location,_that.notes);case _:
+return $default(_that.id,_that.petId,_that.title,_that.scheduledAt,_that.location,_that.notes,_that.completedAt,_that.isCompleted);case _:
   return null;
 
 }
@@ -3030,7 +3032,7 @@ return $default(_that.id,_that.petId,_that.title,_that.scheduledAt,_that.locatio
 @JsonSerializable()
 
 class _AppointmentDto extends AppointmentDto {
-  const _AppointmentDto({required this.id, required this.petId, required this.title, required this.scheduledAt, this.location, this.notes}): super._();
+  const _AppointmentDto({required this.id, required this.petId, required this.title, required this.scheduledAt, this.location, this.notes, this.completedAt, this.isCompleted = false}): super._();
   factory _AppointmentDto.fromJson(Map<String, dynamic> json) => _$AppointmentDtoFromJson(json);
 
 @override final  int id;
@@ -3039,6 +3041,8 @@ class _AppointmentDto extends AppointmentDto {
 @override final  DateTime scheduledAt;
 @override final  String? location;
 @override final  String? notes;
+@override final  DateTime? completedAt;
+@override@JsonKey() final  bool isCompleted;
 
 /// Create a copy of AppointmentDto
 /// with the given fields replaced by the non-null parameter values.
@@ -3053,16 +3057,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppointmentDto&&(identical(other.id, id) || other.id == id)&&(identical(other.petId, petId) || other.petId == petId)&&(identical(other.title, title) || other.title == title)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.location, location) || other.location == location)&&(identical(other.notes, notes) || other.notes == notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppointmentDto&&(identical(other.id, id) || other.id == id)&&(identical(other.petId, petId) || other.petId == petId)&&(identical(other.title, title) || other.title == title)&&(identical(other.scheduledAt, scheduledAt) || other.scheduledAt == scheduledAt)&&(identical(other.location, location) || other.location == location)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.completedAt, completedAt) || other.completedAt == completedAt)&&(identical(other.isCompleted, isCompleted) || other.isCompleted == isCompleted));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,petId,title,scheduledAt,location,notes);
+int get hashCode => Object.hash(runtimeType,id,petId,title,scheduledAt,location,notes,completedAt,isCompleted);
 
 @override
 String toString() {
-  return 'AppointmentDto(id: $id, petId: $petId, title: $title, scheduledAt: $scheduledAt, location: $location, notes: $notes)';
+  return 'AppointmentDto(id: $id, petId: $petId, title: $title, scheduledAt: $scheduledAt, location: $location, notes: $notes, completedAt: $completedAt, isCompleted: $isCompleted)';
 }
 
 
@@ -3073,7 +3077,7 @@ abstract mixin class _$AppointmentDtoCopyWith<$Res> implements $AppointmentDtoCo
   factory _$AppointmentDtoCopyWith(_AppointmentDto value, $Res Function(_AppointmentDto) _then) = __$AppointmentDtoCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int petId, String title, DateTime scheduledAt, String? location, String? notes
+ int id, int petId, String title, DateTime scheduledAt, String? location, String? notes, DateTime? completedAt, bool isCompleted
 });
 
 
@@ -3090,7 +3094,7 @@ class __$AppointmentDtoCopyWithImpl<$Res>
 
 /// Create a copy of AppointmentDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? petId = null,Object? title = null,Object? scheduledAt = null,Object? location = freezed,Object? notes = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? petId = null,Object? title = null,Object? scheduledAt = null,Object? location = freezed,Object? notes = freezed,Object? completedAt = freezed,Object? isCompleted = null,}) {
   return _then(_AppointmentDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,petId: null == petId ? _self.petId : petId // ignore: cast_nullable_to_non_nullable
@@ -3098,7 +3102,9 @@ as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_no
 as String,scheduledAt: null == scheduledAt ? _self.scheduledAt : scheduledAt // ignore: cast_nullable_to_non_nullable
 as DateTime,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as String?,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,completedAt: freezed == completedAt ? _self.completedAt : completedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,isCompleted: null == isCompleted ? _self.isCompleted : isCompleted // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

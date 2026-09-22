@@ -294,6 +294,8 @@ abstract class AppointmentDto with _$AppointmentDto {
     required DateTime scheduledAt,
     String? location,
     String? notes,
+    DateTime? completedAt,
+    @Default(false) bool isCompleted,
   }) = _AppointmentDto;
 
   const AppointmentDto._();
@@ -308,5 +310,6 @@ abstract class AppointmentDto with _$AppointmentDto {
         scheduledAt: scheduledAt,
         location: location,
         notes: notes,
+        completedAt: completedAt?.toLocal(),
       );
 }

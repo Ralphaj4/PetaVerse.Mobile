@@ -22,6 +22,9 @@ abstract final class ApiEndpoints {
   static const String notificationPreferences =
       '/users/me/notification-preferences';
 
+  // Home dashboard (aggregated summary for the active pet + cross-pet timeline)
+  static const String homeSummary = '/users/me/home-summary';
+
   // Users
   static const String usersMe = '/users/me';
   static const String deleteAccount = '/users/me';
@@ -65,6 +68,8 @@ abstract final class ApiEndpoints {
   static String petVaccinations(String petId) => '/pets/$petId/vaccinations';
   static String petVaccination(int petId, int vaccinationId) =>
       '/pets/$petId/vaccinations/$vaccinationId';
+  static String markVaccinationAdministered(int petId, int vaccinationId) =>
+      '/pets/$petId/vaccinations/$vaccinationId/mark-administered';
 
   // Health
   static const String reminders = '/reminders';
@@ -247,6 +252,8 @@ abstract final class ApiEndpoints {
   static String petAppointments(int petId) => '/pets/$petId/appointments';
   static String petAppointment(int petId, int appointmentId) =>
       '/pets/$petId/appointments/$appointmentId';
+  static String completePetAppointment(int petId, int appointmentId) =>
+      '/pets/$petId/appointments/$appointmentId/complete';
 
   // Walk activities (under a pet)
   static String petActivities(int petId) => '/pets/$petId/activities';

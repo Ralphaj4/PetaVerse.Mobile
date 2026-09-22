@@ -20,8 +20,6 @@ import '../../../../shared/widgets/app_cached_image.dart';
 import '../../../../shared/widgets/app_confirm_dialog.dart';
 import '../../../../shared/widgets/shimmer.dart';
 import '../../../co_ownership/presentation/providers/co_ownership_providers.dart';
-import '../../../pawcare/presentation/widgets/health_dashboard.dart';
-import '../../../pawcare/presentation/widgets/health_score_card.dart';
 import '../../../profile/presentation/providers/user_provider.dart';
 import '../../domain/entities/pet.dart';
 import '../providers/delete_pet_provider.dart';
@@ -125,7 +123,7 @@ class _PetDetailPageState extends ConsumerState<PetDetailPage> {
       backgroundColor: AppColors.background,
       body: Stack(
         children: [
-          // Single scrolling column: hero header → info + health dashboard.
+          // Single scrolling column: hero header → info.
           SingleChildScrollView(
             child: Column(
               children: [
@@ -515,9 +513,8 @@ class _PetHeroHeader extends StatelessWidget {
 
 // ── Content sheet (below the header) ──────────────────────────────────────────
 
-/// The white content sheet below the hero: the pet info card, the health
-/// dashboard (weight / medications / vaccinations), and the profile-complete
-/// card. Non-scrolling — the page owns the single scroll view.
+/// The white content sheet below the hero: the pet info card. Non-scrolling —
+/// the page owns the single scroll view.
 class _PetContent extends ConsumerWidget {
   const _PetContent({
     required this.petId,
@@ -572,22 +569,6 @@ class _PetContent extends ConsumerWidget {
             ],
 
             const SizedBox(height: AppSpacing.xl),
-
-            _SectionHeader(
-              icon: FluentIcons.heart_pulse_24_regular,
-              title: context.l10n.petDetailSectionHealth,
-            ),
-            const SizedBox(height: AppSpacing.md),
-
-            // Server-computed health score summary, tapping through to the full
-            // breakdown page.
-            HealthScoreCard(petId: petId, petName: displayed!.name),
-            const SizedBox(height: AppSpacing.md),
-
-            // Health dashboard: weight, medications, vaccinations.
-            HealthDashboard(petId: petId),
-            const SizedBox(height: AppSpacing.xl),
-
           ],
         ],
       ),

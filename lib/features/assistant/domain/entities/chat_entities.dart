@@ -79,6 +79,27 @@ class ChatMessage {
 
 enum ChatMessageRole { user, assistant }
 
+/// Matches a leaked meta line the backend sometimes flattens into a message
+/// body: `Quick Replies: ...` or `Footer: ...`, optionally wrapped in markdown
+/// emphasis (`**Quick Replies:**`) and case-insensitive.
+final _chatMetaLineRegExp = RegExp(
+  r'^\s*[*_#`]*\s*(quick\s*replies|footer)\s*[*_#`]*\s*:.*$',
+  caseSensitive: false,
+);
+
+/// Removes any `Quick Replies:` / `Footer:` lines from [text]. These are
+/// rendered separately (quick-reply chips + footer line), so they must never
+/// appear inline in the message body — whether the backend flattened them into
+/// history `textContent` or streamed them as tokens.
+String stripChatMetaLines(String text) {
+  if (!text.contains(':')) return text;
+  final kept = [
+    for (final line in text.split('\n'))
+      if (!_chatMetaLineRegExp.hasMatch(line)) line,
+  ];
+  return kept.join('\n').trim();
+}
+
 enum ChatMessageStatus {
   /// Message was sent and a response is being received (streaming).
   streaming,

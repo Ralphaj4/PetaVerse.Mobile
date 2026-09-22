@@ -203,6 +203,58 @@ class AppLocalizationsEn extends AppLocalizations {
   String get upToDate => 'Up to date';
 
   @override
+  String get statWeight => 'Weight';
+
+  @override
+  String statActivityMinutes(int minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String statActiveDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days active days',
+      one: '1 active day',
+      zero: '0 days',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String statVaccinesUpcoming(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count upcoming',
+      one: '1 upcoming',
+      zero: 'None due',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String statWeightValue(String value, String unit) {
+    return '$value $unit';
+  }
+
+  @override
+  String get weightTrendStable => 'Stable';
+
+  @override
+  String get weightTrendRising => 'Rising';
+
+  @override
+  String get weightTrendDropping => 'Dropping';
+
+  @override
+  String get statNoData => '—';
+
+  @override
+  String get nextVisitNone => 'No visit scheduled';
+
+  @override
   String get upcoming => 'Upcoming';
 
   @override
@@ -1144,6 +1196,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get healthVaccinationsDue => 'Due';
+
+  @override
+  String get healthVaccinationsMarkAdministered => 'Mark administered';
+
+  @override
+  String healthVaccinationsAdministeredConfirmed(String name) {
+    return 'Recorded $name as administered';
+  }
 
   @override
   String get healthFrequencyDaily => 'Daily';
@@ -2389,6 +2449,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appointmentsUpdatedSuccess => 'Appointment updated';
+
+  @override
+  String get appointmentsMarkDone => 'Mark done';
+
+  @override
+  String get appointmentsCompleted => 'Done';
+
+  @override
+  String get appointmentsCompleteSuccess => 'Appointment marked done';
 
   @override
   String get upcomingEmptyTitle => 'All clear for now';

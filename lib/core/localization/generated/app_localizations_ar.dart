@@ -202,6 +202,64 @@ class AppLocalizationsAr extends AppLocalizations {
   String get upToDate => 'محدّثة';
 
   @override
+  String get statWeight => 'الوزن';
+
+  @override
+  String statActivityMinutes(int minutes) {
+    return '$minutes دقيقة';
+  }
+
+  @override
+  String statActiveDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days يوم نشاط',
+      many: '$days يوم نشاط',
+      few: '$days أيام نشاط',
+      two: 'يوما نشاط',
+      one: 'يوم نشاط واحد',
+      zero: '0 أيام',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String statVaccinesUpcoming(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count لقاح قادم',
+      many: '$count لقاحًا قادمًا',
+      few: '$count لقاحات قادمة',
+      two: 'لقاحان قادمان',
+      one: 'لقاح واحد قادم',
+      zero: 'لا شيء مستحق',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String statWeightValue(String value, String unit) {
+    return '$value $unit';
+  }
+
+  @override
+  String get weightTrendStable => 'ثابت';
+
+  @override
+  String get weightTrendRising => 'مرتفع';
+
+  @override
+  String get weightTrendDropping => 'منخفض';
+
+  @override
+  String get statNoData => '—';
+
+  @override
+  String get nextVisitNone => 'لا زيارة مجدولة';
+
+  @override
   String get upcoming => 'القادمة';
 
   @override
@@ -1141,6 +1199,14 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get healthVaccinationsDue => 'مستحق';
+
+  @override
+  String get healthVaccinationsMarkAdministered => 'تسجيل الإعطاء';
+
+  @override
+  String healthVaccinationsAdministeredConfirmed(String name) {
+    return 'تم تسجيل إعطاء $name';
+  }
 
   @override
   String get healthFrequencyDaily => 'يوميًا';
@@ -2406,6 +2472,15 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get appointmentsUpdatedSuccess => 'تم تحديث الموعد';
+
+  @override
+  String get appointmentsMarkDone => 'تحديد كمنجز';
+
+  @override
+  String get appointmentsCompleted => 'منجز';
+
+  @override
+  String get appointmentsCompleteSuccess => 'تم تحديد الموعد كمنجز';
 
   @override
   String get upcomingEmptyTitle => 'كل شيء على ما يرام';

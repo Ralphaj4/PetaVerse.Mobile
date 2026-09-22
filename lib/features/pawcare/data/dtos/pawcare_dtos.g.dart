@@ -236,6 +236,10 @@ _AppointmentDto _$AppointmentDtoFromJson(Map<String, dynamic> json) =>
       scheduledAt: DateTime.parse(json['scheduledAt'] as String),
       location: json['location'] as String?,
       notes: json['notes'] as String?,
+      completedAt: json['completedAt'] == null
+          ? null
+          : DateTime.parse(json['completedAt'] as String),
+      isCompleted: json['isCompleted'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$AppointmentDtoToJson(_AppointmentDto instance) =>
@@ -246,4 +250,6 @@ Map<String, dynamic> _$AppointmentDtoToJson(_AppointmentDto instance) =>
       'scheduledAt': instance.scheduledAt.toIso8601String(),
       'location': instance.location,
       'notes': instance.notes,
+      'completedAt': instance.completedAt?.toIso8601String(),
+      'isCompleted': instance.isCompleted,
     };

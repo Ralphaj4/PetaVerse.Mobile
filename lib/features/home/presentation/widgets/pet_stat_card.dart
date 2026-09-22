@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -13,6 +14,7 @@ class PetStatCard extends StatelessWidget {
     required this.background,
     required this.title,
     required this.value,
+    this.subtitle,
     super.key,
   });
 
@@ -27,10 +29,14 @@ class PetStatCard extends StatelessWidget {
   final String title;
   final String value;
 
+  /// Optional secondary line under [value] (e.g. "3 active days", "Stable").
+  final String? subtitle;
+
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: '$title: $value',
+      label:
+          subtitle == null ? '$title: $value' : '$title: $value, $subtitle',
       child: Container(
         padding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.sm,
@@ -66,6 +72,17 @@ class PetStatCard extends StatelessWidget {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
+            if (subtitle != null) ...[
+              const SizedBox(height: 2),
+              Text(
+                subtitle!,
+                style: AppTextStyles.labelSmall
+                    .copyWith(color: AppColors.textTertiary),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ],
         ),
       ),

@@ -226,6 +226,33 @@ class PawCareRepositoryImpl implements PawCareRepository {
         await _notifications.cancel(_vacBase + vaccinationId);
       });
 
+  @override
+  Future<Result<Vaccination>> markVaccinationAdministered(
+    int petId,
+    int vaccinationId, {
+    DateTime? dateAdministered,
+    DateTime? nextDueDate,
+  }) =>
+      _guard(() async {
+        final dto = await _remote.markVaccinationAdministered(
+          petId,
+          vaccinationId,
+          dateAdministered: dateAdministered,
+          nextDueDate: nextDueDate,
+        );
+        final vaccine = dto.toEntity();
+        // Cancel the old booster slot and reschedule for the new nextDueDate.
+        await _notifications.cancel(_vacBase + vaccinationId);
+        await _scheduleVaccination(vaccine);
+        // Refresh the reminder cache with the rolled-forward due date.
+        final all = await _remote.getVaccinations(petId);
+        await _cacheVaccinationReminders(
+          petId,
+          all.map((e) => e.toEntity()).toList(growable: false),
+        );
+        return vaccine;
+      });
+
   // ── Appointments ──────────────────────────────────────────────────────────
 
   @override
@@ -301,6 +328,31 @@ class PawCareRepositoryImpl implements PawCareRepository {
           petId,
           all.map((e) => e.toEntity()).toList(growable: false),
         );
+      });
+
+  @override
+  Future<Result<Appointment>> completeAppointment(
+    int petId,
+    int appointmentId, {
+    DateTime? completedAt,
+  }) =>
+      _guard(() async {
+        final dto = await _remote.completeAppointment(
+          petId,
+          appointmentId,
+          completedAt: completedAt,
+        );
+        final appt = dto.toEntity();
+        // A completed appointment needs no more reminders.
+        await _cancelAppointmentNotifications(appointmentId);
+        // Refresh the reminder cache so the completed entry drops out of the
+        // home "Upcoming" section.
+        final all = await _remote.getAppointments(petId);
+        await _cacheAppointmentReminders(
+          petId,
+          all.map((e) => e.toEntity()).toList(growable: false),
+        );
+        return appt;
       });
 
   // ── Lookups ───────────────────────────────────────────────────────────────
@@ -400,7 +452,7 @@ class PawCareRepositoryImpl implements PawCareRepository {
       List<Appointment> appts) async {
     for (final a in appts) {
       await _cancelAppointmentNotifications(a.id);
-      if (!a.isPast) await _scheduleAppointment(a);
+      if (!a.isPast && !a.isCompleted) await _scheduleAppointment(a);
     }
   }
 
@@ -438,7 +490,7 @@ class PawCareRepositoryImpl implements PawCareRepository {
     try {
       final reminders = [
         for (final a in appts)
-          if (!a.isPast)
+          if (!a.isPast && !a.isCompleted)
             HealthReminder(
               kind: HealthReminderKind.appointment,
               sourceId: a.id,

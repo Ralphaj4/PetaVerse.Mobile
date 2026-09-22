@@ -5,8 +5,19 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/localization/generated/app_localizations.dart';
 import '../../domain/entities/pet_health_score.dart';
 import 'health_score_style.dart';
+
+/// Localized display label for a [HealthBand]. `band` is a stable identifier —
+/// the string always comes from l10n, never the wire token.
+String healthBandLabel(AppLocalizations l10n, HealthBand band) => switch (band) {
+      HealthBand.excellent => l10n.healthScoreBandExcellent,
+      HealthBand.good => l10n.healthScoreBandGood,
+      HealthBand.fair => l10n.healthScoreBandFair,
+      HealthBand.needsAttention => l10n.healthScoreBandNeedsAttention,
+      HealthBand.noData => l10n.healthScoreBandNoData,
+    };
 
 /// A pill showing the band label in the band color. `band` is a stable
 /// identifier — the display string comes from l10n, never the wire token.
@@ -28,24 +39,13 @@ class HealthBandChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(999),
       ),
       child: Text(
-        _label(context, band),
+        healthBandLabel(context.l10n, band),
         style: AppTextStyles.labelLarge.copyWith(
           color: AppColors.onPrimary,
           letterSpacing: 0.2,
         ),
       ),
     );
-  }
-
-  static String _label(BuildContext context, HealthBand band) {
-    final l10n = context.l10n;
-    return switch (band) {
-      HealthBand.excellent => l10n.healthScoreBandExcellent,
-      HealthBand.good => l10n.healthScoreBandGood,
-      HealthBand.fair => l10n.healthScoreBandFair,
-      HealthBand.needsAttention => l10n.healthScoreBandNeedsAttention,
-      HealthBand.noData => l10n.healthScoreBandNoData,
-    };
   }
 }
 

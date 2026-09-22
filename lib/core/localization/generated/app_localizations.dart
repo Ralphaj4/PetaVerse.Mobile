@@ -454,6 +454,66 @@ abstract class AppLocalizations {
   /// **'Up to date'**
   String get upToDate;
 
+  /// No description provided for @statWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get statWeight;
+
+  /// No description provided for @statActivityMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String statActivityMinutes(int minutes);
+
+  /// No description provided for @statActiveDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =0{0 days} =1{1 active day} other{{days} active days}}'**
+  String statActiveDays(int days);
+
+  /// No description provided for @statVaccinesUpcoming.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{None due} =1{1 upcoming} other{{count} upcoming}}'**
+  String statVaccinesUpcoming(int count);
+
+  /// No description provided for @statWeightValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} {unit}'**
+  String statWeightValue(String value, String unit);
+
+  /// No description provided for @weightTrendStable.
+  ///
+  /// In en, this message translates to:
+  /// **'Stable'**
+  String get weightTrendStable;
+
+  /// No description provided for @weightTrendRising.
+  ///
+  /// In en, this message translates to:
+  /// **'Rising'**
+  String get weightTrendRising;
+
+  /// No description provided for @weightTrendDropping.
+  ///
+  /// In en, this message translates to:
+  /// **'Dropping'**
+  String get weightTrendDropping;
+
+  /// No description provided for @statNoData.
+  ///
+  /// In en, this message translates to:
+  /// **'—'**
+  String get statNoData;
+
+  /// No description provided for @nextVisitNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No visit scheduled'**
+  String get nextVisitNone;
+
   /// No description provided for @upcoming.
   ///
   /// In en, this message translates to:
@@ -2133,6 +2193,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Due'**
   String get healthVaccinationsDue;
+
+  /// No description provided for @healthVaccinationsMarkAdministered.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark administered'**
+  String get healthVaccinationsMarkAdministered;
+
+  /// No description provided for @healthVaccinationsAdministeredConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Recorded {name} as administered'**
+  String healthVaccinationsAdministeredConfirmed(String name);
 
   /// No description provided for @healthFrequencyDaily.
   ///
@@ -4221,6 +4293,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Appointment updated'**
   String get appointmentsUpdatedSuccess;
+
+  /// No description provided for @appointmentsMarkDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark done'**
+  String get appointmentsMarkDone;
+
+  /// No description provided for @appointmentsCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get appointmentsCompleted;
+
+  /// No description provided for @appointmentsCompleteSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointment marked done'**
+  String get appointmentsCompleteSuccess;
 
   /// No description provided for @upcomingEmptyTitle.
   ///

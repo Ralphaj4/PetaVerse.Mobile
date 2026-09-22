@@ -217,6 +217,28 @@ class PawCareRemoteDataSource {
     );
   }
 
+  /// POST /pets/{petId}/vaccinations/{id}/mark-administered → updated record.
+  /// Omitting [dateAdministered] stamps today; omitting [nextDueDate] rolls the
+  /// prior administered→due cadence forward. An empty body is valid.
+  Future<VaccinationDto> markVaccinationAdministered(
+    int petId,
+    int vaccinationId, {
+    DateTime? dateAdministered,
+    DateTime? nextDueDate,
+  }) async {
+    final json = await _client.post<Map<String, dynamic>>(
+      ApiEndpoints.markVaccinationAdministered(petId, vaccinationId),
+      data: {
+        if (dateAdministered != null)
+          'dateAdministered': dateAdministered.toUtc().toIso8601String(),
+        if (nextDueDate != null)
+          'nextDueDate': nextDueDate.toUtc().toIso8601String(),
+      },
+      options: await _mutationOptions(),
+    );
+    return VaccinationDto.fromJson(json);
+  }
+
   // ── Lookups ─────────────────────────────────────────────────────────────
 
   /// GET /lookups/medications → known medications.
@@ -294,6 +316,24 @@ class PawCareRemoteDataSource {
       ApiEndpoints.petAppointment(petId, appointmentId),
       options: await _mutationOptions(),
     );
+  }
+
+  /// POST /pets/{petId}/appointments/{id}/complete → the completed appointment.
+  /// Omitting [completedAt] defaults to now; an empty body is valid.
+  Future<AppointmentDto> completeAppointment(
+    int petId,
+    int appointmentId, {
+    DateTime? completedAt,
+  }) async {
+    final json = await _client.post<Map<String, dynamic>>(
+      ApiEndpoints.completePetAppointment(petId, appointmentId),
+      data: {
+        if (completedAt != null)
+          'completedAt': completedAt.toUtc().toIso8601String(),
+      },
+      options: await _mutationOptions(),
+    );
+    return AppointmentDto.fromJson(json);
   }
 
   // ── Health score ──────────────────────────────────────────────────────────

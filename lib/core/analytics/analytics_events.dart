@@ -5,7 +5,9 @@ abstract final class AnalyticsEvents {
   static const String petCreated = 'PetCreated';
   static const String appointmentBooked = 'AppointmentBooked';
   static const String medicationCompleted = 'MedicationCompleted';
+  static const String appointmentCompleted = 'AppointmentCompleted';
   static const String vaccinationAdded = 'VaccinationAdded';
+  static const String vaccinationAdministered = 'VaccinationAdministered';
   static const String aiChatStarted = 'AIChatStarted';
   static const String purchaseCompleted = 'PurchaseCompleted';
   static const String sosActivated = 'SOSActivated';
