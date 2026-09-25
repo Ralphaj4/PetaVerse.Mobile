@@ -6,7 +6,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../providers/service_providers_providers.dart';
+import '../../domain/entities/provider_search.dart';
 import 'provider_sort_label.dart';
 
 /// Modal sort picker. Returns the chosen [ProviderSort] via [Navigator.pop],

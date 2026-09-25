@@ -18,6 +18,9 @@ _HomeSummaryDto _$HomeSummaryDtoFromJson(Map<String, dynamic> json) =>
               )
               .toList() ??
           const <HomeUpcomingItemDto>[],
+      explore: json['explore'] == null
+          ? null
+          : HomeExploreDto.fromJson(json['explore'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$HomeSummaryDtoToJson(_HomeSummaryDto instance) =>
@@ -26,6 +29,19 @@ Map<String, dynamic> _$HomeSummaryDtoToJson(_HomeSummaryDto instance) =>
       'hero': instance.hero,
       'stats': instance.stats,
       'upcoming': instance.upcoming,
+      'explore': instance.explore,
+    };
+
+_HomeExploreDto _$HomeExploreDtoFromJson(Map<String, dynamic> json) =>
+    _HomeExploreDto(
+      lostNearbyCount: (json['lostNearbyCount'] as num?)?.toInt(),
+      adoptionAvailableCount: (json['adoptionAvailableCount'] as num?)?.toInt(),
+    );
+
+Map<String, dynamic> _$HomeExploreDtoToJson(_HomeExploreDto instance) =>
+    <String, dynamic>{
+      'lostNearbyCount': instance.lostNearbyCount,
+      'adoptionAvailableCount': instance.adoptionAvailableCount,
     };
 
 _HomePetDto _$HomePetDtoFromJson(Map<String, dynamic> json) => _HomePetDto(

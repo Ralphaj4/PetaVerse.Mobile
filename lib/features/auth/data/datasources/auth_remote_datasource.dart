@@ -144,10 +144,16 @@ class AuthRemoteDataSource {
     required String token,
     required String deviceId,
     required String platform,
+    required String timeZone,
   }) async {
     await _client.post<void>(
       ApiEndpoints.fcmToken,
-      data: {'token': token, 'deviceId': deviceId, 'platform': platform},
+      data: {
+        'token': token,
+        'deviceId': deviceId,
+        'platform': platform,
+        'timeZone': timeZone,
+      },
     );
   }
 

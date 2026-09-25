@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../domain/entities/provider_category.dart';
+import '../providers/service_providers_providers.dart';
 import 'provider_format.dart';
 
 /// Horizontal, single-select category chips shown at the top of the map.
 ///
-/// Data-driven off [ProviderCategory.values], so a new category appears here
-/// automatically. The selected chip fills with the category accent color and
-/// animates smoothly; the row scrolls and keeps the selection in view.
-class ProviderFilterBar extends StatefulWidget {
+/// The chip set is server-driven off [providerCategoriesProvider] (the
+/// admin-configurable category table), ordered by `sortOrder`, with an [all]
+/// reset chip prepended. Falls back to the full client enum until the list
+/// loads. The selected chip fills with the category accent color; the row
+/// scrolls and keeps the selection in view.
+class ProviderFilterBar extends ConsumerStatefulWidget {
   const ProviderFilterBar({
     required this.selected,
     required this.onSelected,
@@ -23,10 +27,10 @@ class ProviderFilterBar extends StatefulWidget {
   final ValueChanged<ProviderCategory> onSelected;
 
   @override
-  State<ProviderFilterBar> createState() => _ProviderFilterBarState();
+  ConsumerState<ProviderFilterBar> createState() => _ProviderFilterBarState();
 }
 
-class _ProviderFilterBarState extends State<ProviderFilterBar> {
+class _ProviderFilterBarState extends ConsumerState<ProviderFilterBar> {
   final ScrollController _controller = ScrollController();
   final Map<ProviderCategory, GlobalKey> _keys = {
     for (final c in ProviderCategory.values) c: GlobalKey(),
@@ -58,8 +62,24 @@ class _ProviderFilterBarState extends State<ProviderFilterBar> {
     super.dispose();
   }
 
+  /// The chips to render: [all] first, then server categories ordered by
+  /// `sortOrder`. Falls back to the full client enum order until the categories
+  /// list loads (or if it fails), so the bar is never empty.
+  List<ProviderCategory> _categories() {
+    final async = ref.watch(providerCategoriesProvider);
+    final refs = async.value;
+    if (refs == null || refs.isEmpty) return ProviderCategory.values;
+    final sorted = [...refs]..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+    final mapped = sorted
+        .map((r) => r.category)
+        .whereType<ProviderCategory>()
+        .toList();
+    return [ProviderCategory.all, ...mapped];
+  }
+
   @override
   Widget build(BuildContext context) {
+    final categories = _categories();
     return SizedBox(
       height: 44,
       child: ListView.separated(
@@ -67,10 +87,10 @@ class _ProviderFilterBarState extends State<ProviderFilterBar> {
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-        itemCount: ProviderCategory.values.length,
+        itemCount: categories.length,
         separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.sm),
         itemBuilder: (context, i) {
-          final category = ProviderCategory.values[i];
+          final category = categories[i];
           return _CategoryChip(
             key: _keys[category],
             category: category,

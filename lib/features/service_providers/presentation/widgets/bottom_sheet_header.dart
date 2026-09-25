@@ -5,7 +5,7 @@ import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../providers/service_providers_providers.dart';
+import '../../domain/entities/provider_search.dart';
 import 'provider_sort_label.dart';
 
 /// Pinned header of the providers bottom sheet: a grab handle, the result

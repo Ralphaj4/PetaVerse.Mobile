@@ -20,7 +20,6 @@ enum ProviderCategory {
   walking,
   adoption,
   shelter,
-  emergency,
   pharmacy,
 }
 
@@ -28,11 +27,25 @@ enum ProviderCategory {
 /// chips, and the accent color used to tint them. Kept on the enum (not in the
 /// widgets) so every surface stays consistent and a new category is one edit.
 extension ProviderCategoryX on ProviderCategory {
+  /// The wire slug the backend uses for this category (matches the enum name
+  /// for every real category). [all] is a client-only reset chip with no slug.
+  String get slug => name;
+
+  /// Resolves a server slug to the client enum, or null when unknown. [all] is
+  /// never resolvable from the wire (it's client-only), so an "all" slug maps
+  /// to null too.
+  static ProviderCategory? fromSlug(String slug) {
+    for (final c in ProviderCategory.values) {
+      if (c != ProviderCategory.all && c.slug == slug) return c;
+    }
+    return null;
+  }
+
   /// Regular (outline) icon — used for unselected chips.
   IconData get icon => switch (this) {
         ProviderCategory.all => FluentIcons.grid_24_regular,
         ProviderCategory.veterinary => FluentIcons.stethoscope_24_regular,
-        ProviderCategory.grooming => FluentIcons.sparkle_24_regular,
+        ProviderCategory.grooming => FluentIcons.cut_24_regular,
         ProviderCategory.petShop => FluentIcons.store_microsoft_24_regular,
         ProviderCategory.boarding => FluentIcons.home_24_regular,
         ProviderCategory.training => FluentIcons.ribbon_24_regular,
@@ -40,7 +53,6 @@ extension ProviderCategoryX on ProviderCategory {
         ProviderCategory.walking => FluentIcons.person_walking_24_regular,
         ProviderCategory.adoption => FluentIcons.heart_24_regular,
         ProviderCategory.shelter => FluentIcons.home_heart_24_regular,
-        ProviderCategory.emergency => FluentIcons.vehicle_car_24_regular,
         ProviderCategory.pharmacy => FluentIcons.pill_24_regular,
       };
 
@@ -48,7 +60,7 @@ extension ProviderCategoryX on ProviderCategory {
   IconData get filledIcon => switch (this) {
         ProviderCategory.all => FluentIcons.grid_24_filled,
         ProviderCategory.veterinary => FluentIcons.stethoscope_24_filled,
-        ProviderCategory.grooming => FluentIcons.sparkle_24_filled,
+        ProviderCategory.grooming => FluentIcons.cut_24_filled,
         ProviderCategory.petShop => FluentIcons.store_microsoft_24_filled,
         ProviderCategory.boarding => FluentIcons.home_24_filled,
         ProviderCategory.training => FluentIcons.ribbon_24_filled,
@@ -56,7 +68,6 @@ extension ProviderCategoryX on ProviderCategory {
         ProviderCategory.walking => FluentIcons.person_walking_24_filled,
         ProviderCategory.adoption => FluentIcons.heart_24_filled,
         ProviderCategory.shelter => FluentIcons.home_heart_24_filled,
-        ProviderCategory.emergency => FluentIcons.vehicle_car_24_filled,
         ProviderCategory.pharmacy => FluentIcons.pill_24_filled,
       };
 
@@ -73,7 +84,6 @@ extension ProviderCategoryX on ProviderCategory {
         ProviderCategory.walking => AppColors.success,
         ProviderCategory.adoption => AppColors.accentCoral,
         ProviderCategory.shelter => AppColors.secondaryDark,
-        ProviderCategory.emergency => AppColors.error,
         ProviderCategory.pharmacy => AppColors.info,
       };
 }

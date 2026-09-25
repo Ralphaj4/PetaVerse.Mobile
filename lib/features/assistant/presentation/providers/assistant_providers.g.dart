@@ -117,7 +117,7 @@ final class ChatSessionProvider
   }
 }
 
-String _$chatSessionHash() => r'53414eb80a7ef4984b4fd8c5a8ad138cb4a68234';
+String _$chatSessionHash() => r'26617af773c65768af6351db10a6cf944d4ef6f0';
 
 /// Manages the full message list for a single chat session.
 ///

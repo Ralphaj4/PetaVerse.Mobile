@@ -1,6 +1,8 @@
 ﻿import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter_timezone/flutter_timezone.dart';
+
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
@@ -25,6 +27,18 @@ class AuthRepositoryImpl implements AuthRepository {
 
   static String get _platform =>
       Platform.isAndroid ? 'android' : Platform.isIOS ? 'ios' : 'unknown';
+
+  /// The device's IANA timezone id (e.g. "Asia/Beirut"), sent so the backend
+  /// can schedule pushes in the user's local time. Falls back to UTC if the
+  /// platform can't report it.
+  static Future<String> _localTimeZone() async {
+    try {
+      final info = await FlutterTimezone.getLocalTimezone();
+      return info.identifier;
+    } catch (_) {
+      return 'UTC';
+    }
+  }
 
   @override
   Future<Result<String?>> register({
@@ -162,6 +176,7 @@ class AuthRepositoryImpl implements AuthRepository {
         token: token,
         deviceId: deviceId,
         platform: _platform,
+        timeZone: await _localTimeZone(),
       );
     } catch (_) {
       // Best-effort — a token registration failure must never break login.

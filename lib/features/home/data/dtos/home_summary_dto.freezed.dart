@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HomeSummaryDto {
 
- HomePetDto get pet; HomeHeroDto get hero; HomeStatsDto get stats; List<HomeUpcomingItemDto> get upcoming;
+ HomePetDto get pet; HomeHeroDto get hero; HomeStatsDto get stats; List<HomeUpcomingItemDto> get upcoming; HomeExploreDto? get explore;
 /// Create a copy of HomeSummaryDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $HomeSummaryDtoCopyWith<HomeSummaryDto> get copyWith => _$HomeSummaryDtoCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeSummaryDto&&(identical(other.pet, pet) || other.pet == pet)&&(identical(other.hero, hero) || other.hero == hero)&&(identical(other.stats, stats) || other.stats == stats)&&const DeepCollectionEquality().equals(other.upcoming, upcoming));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeSummaryDto&&(identical(other.pet, pet) || other.pet == pet)&&(identical(other.hero, hero) || other.hero == hero)&&(identical(other.stats, stats) || other.stats == stats)&&const DeepCollectionEquality().equals(other.upcoming, upcoming)&&(identical(other.explore, explore) || other.explore == explore));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,pet,hero,stats,const DeepCollectionEquality().hash(upcoming));
+int get hashCode => Object.hash(runtimeType,pet,hero,stats,const DeepCollectionEquality().hash(upcoming),explore);
 
 @override
 String toString() {
-  return 'HomeSummaryDto(pet: $pet, hero: $hero, stats: $stats, upcoming: $upcoming)';
+  return 'HomeSummaryDto(pet: $pet, hero: $hero, stats: $stats, upcoming: $upcoming, explore: $explore)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $HomeSummaryDtoCopyWith<$Res>  {
   factory $HomeSummaryDtoCopyWith(HomeSummaryDto value, $Res Function(HomeSummaryDto) _then) = _$HomeSummaryDtoCopyWithImpl;
 @useResult
 $Res call({
- HomePetDto pet, HomeHeroDto hero, HomeStatsDto stats, List<HomeUpcomingItemDto> upcoming
+ HomePetDto pet, HomeHeroDto hero, HomeStatsDto stats, List<HomeUpcomingItemDto> upcoming, HomeExploreDto? explore
 });
 
 
-$HomePetDtoCopyWith<$Res> get pet;$HomeHeroDtoCopyWith<$Res> get hero;$HomeStatsDtoCopyWith<$Res> get stats;
+$HomePetDtoCopyWith<$Res> get pet;$HomeHeroDtoCopyWith<$Res> get hero;$HomeStatsDtoCopyWith<$Res> get stats;$HomeExploreDtoCopyWith<$Res>? get explore;
 
 }
 /// @nodoc
@@ -65,13 +65,14 @@ class _$HomeSummaryDtoCopyWithImpl<$Res>
 
 /// Create a copy of HomeSummaryDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? pet = null,Object? hero = null,Object? stats = null,Object? upcoming = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? pet = null,Object? hero = null,Object? stats = null,Object? upcoming = null,Object? explore = freezed,}) {
   return _then(_self.copyWith(
 pet: null == pet ? _self.pet : pet // ignore: cast_nullable_to_non_nullable
 as HomePetDto,hero: null == hero ? _self.hero : hero // ignore: cast_nullable_to_non_nullable
 as HomeHeroDto,stats: null == stats ? _self.stats : stats // ignore: cast_nullable_to_non_nullable
 as HomeStatsDto,upcoming: null == upcoming ? _self.upcoming : upcoming // ignore: cast_nullable_to_non_nullable
-as List<HomeUpcomingItemDto>,
+as List<HomeUpcomingItemDto>,explore: freezed == explore ? _self.explore : explore // ignore: cast_nullable_to_non_nullable
+as HomeExploreDto?,
   ));
 }
 /// Create a copy of HomeSummaryDto
@@ -100,6 +101,18 @@ $HomeStatsDtoCopyWith<$Res> get stats {
   
   return $HomeStatsDtoCopyWith<$Res>(_self.stats, (value) {
     return _then(_self.copyWith(stats: value));
+  });
+}/// Create a copy of HomeSummaryDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$HomeExploreDtoCopyWith<$Res>? get explore {
+    if (_self.explore == null) {
+    return null;
+  }
+
+  return $HomeExploreDtoCopyWith<$Res>(_self.explore!, (value) {
+    return _then(_self.copyWith(explore: value));
   });
 }
 }
@@ -183,10 +196,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( HomePetDto pet,  HomeHeroDto hero,  HomeStatsDto stats,  List<HomeUpcomingItemDto> upcoming)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( HomePetDto pet,  HomeHeroDto hero,  HomeStatsDto stats,  List<HomeUpcomingItemDto> upcoming,  HomeExploreDto? explore)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HomeSummaryDto() when $default != null:
-return $default(_that.pet,_that.hero,_that.stats,_that.upcoming);case _:
+return $default(_that.pet,_that.hero,_that.stats,_that.upcoming,_that.explore);case _:
   return orElse();
 
 }
@@ -204,10 +217,10 @@ return $default(_that.pet,_that.hero,_that.stats,_that.upcoming);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( HomePetDto pet,  HomeHeroDto hero,  HomeStatsDto stats,  List<HomeUpcomingItemDto> upcoming)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( HomePetDto pet,  HomeHeroDto hero,  HomeStatsDto stats,  List<HomeUpcomingItemDto> upcoming,  HomeExploreDto? explore)  $default,) {final _that = this;
 switch (_that) {
 case _HomeSummaryDto():
-return $default(_that.pet,_that.hero,_that.stats,_that.upcoming);case _:
+return $default(_that.pet,_that.hero,_that.stats,_that.upcoming,_that.explore);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -224,10 +237,10 @@ return $default(_that.pet,_that.hero,_that.stats,_that.upcoming);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( HomePetDto pet,  HomeHeroDto hero,  HomeStatsDto stats,  List<HomeUpcomingItemDto> upcoming)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( HomePetDto pet,  HomeHeroDto hero,  HomeStatsDto stats,  List<HomeUpcomingItemDto> upcoming,  HomeExploreDto? explore)?  $default,) {final _that = this;
 switch (_that) {
 case _HomeSummaryDto() when $default != null:
-return $default(_that.pet,_that.hero,_that.stats,_that.upcoming);case _:
+return $default(_that.pet,_that.hero,_that.stats,_that.upcoming,_that.explore);case _:
   return null;
 
 }
@@ -239,7 +252,7 @@ return $default(_that.pet,_that.hero,_that.stats,_that.upcoming);case _:
 @JsonSerializable()
 
 class _HomeSummaryDto extends HomeSummaryDto {
-  const _HomeSummaryDto({required this.pet, required this.hero, required this.stats, final  List<HomeUpcomingItemDto> upcoming = const <HomeUpcomingItemDto>[]}): _upcoming = upcoming,super._();
+  const _HomeSummaryDto({required this.pet, required this.hero, required this.stats, final  List<HomeUpcomingItemDto> upcoming = const <HomeUpcomingItemDto>[], this.explore}): _upcoming = upcoming,super._();
   factory _HomeSummaryDto.fromJson(Map<String, dynamic> json) => _$HomeSummaryDtoFromJson(json);
 
 @override final  HomePetDto pet;
@@ -252,6 +265,7 @@ class _HomeSummaryDto extends HomeSummaryDto {
   return EqualUnmodifiableListView(_upcoming);
 }
 
+@override final  HomeExploreDto? explore;
 
 /// Create a copy of HomeSummaryDto
 /// with the given fields replaced by the non-null parameter values.
@@ -266,16 +280,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeSummaryDto&&(identical(other.pet, pet) || other.pet == pet)&&(identical(other.hero, hero) || other.hero == hero)&&(identical(other.stats, stats) || other.stats == stats)&&const DeepCollectionEquality().equals(other._upcoming, _upcoming));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeSummaryDto&&(identical(other.pet, pet) || other.pet == pet)&&(identical(other.hero, hero) || other.hero == hero)&&(identical(other.stats, stats) || other.stats == stats)&&const DeepCollectionEquality().equals(other._upcoming, _upcoming)&&(identical(other.explore, explore) || other.explore == explore));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,pet,hero,stats,const DeepCollectionEquality().hash(_upcoming));
+int get hashCode => Object.hash(runtimeType,pet,hero,stats,const DeepCollectionEquality().hash(_upcoming),explore);
 
 @override
 String toString() {
-  return 'HomeSummaryDto(pet: $pet, hero: $hero, stats: $stats, upcoming: $upcoming)';
+  return 'HomeSummaryDto(pet: $pet, hero: $hero, stats: $stats, upcoming: $upcoming, explore: $explore)';
 }
 
 
@@ -286,11 +300,11 @@ abstract mixin class _$HomeSummaryDtoCopyWith<$Res> implements $HomeSummaryDtoCo
   factory _$HomeSummaryDtoCopyWith(_HomeSummaryDto value, $Res Function(_HomeSummaryDto) _then) = __$HomeSummaryDtoCopyWithImpl;
 @override @useResult
 $Res call({
- HomePetDto pet, HomeHeroDto hero, HomeStatsDto stats, List<HomeUpcomingItemDto> upcoming
+ HomePetDto pet, HomeHeroDto hero, HomeStatsDto stats, List<HomeUpcomingItemDto> upcoming, HomeExploreDto? explore
 });
 
 
-@override $HomePetDtoCopyWith<$Res> get pet;@override $HomeHeroDtoCopyWith<$Res> get hero;@override $HomeStatsDtoCopyWith<$Res> get stats;
+@override $HomePetDtoCopyWith<$Res> get pet;@override $HomeHeroDtoCopyWith<$Res> get hero;@override $HomeStatsDtoCopyWith<$Res> get stats;@override $HomeExploreDtoCopyWith<$Res>? get explore;
 
 }
 /// @nodoc
@@ -303,13 +317,14 @@ class __$HomeSummaryDtoCopyWithImpl<$Res>
 
 /// Create a copy of HomeSummaryDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? pet = null,Object? hero = null,Object? stats = null,Object? upcoming = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? pet = null,Object? hero = null,Object? stats = null,Object? upcoming = null,Object? explore = freezed,}) {
   return _then(_HomeSummaryDto(
 pet: null == pet ? _self.pet : pet // ignore: cast_nullable_to_non_nullable
 as HomePetDto,hero: null == hero ? _self.hero : hero // ignore: cast_nullable_to_non_nullable
 as HomeHeroDto,stats: null == stats ? _self.stats : stats // ignore: cast_nullable_to_non_nullable
 as HomeStatsDto,upcoming: null == upcoming ? _self._upcoming : upcoming // ignore: cast_nullable_to_non_nullable
-as List<HomeUpcomingItemDto>,
+as List<HomeUpcomingItemDto>,explore: freezed == explore ? _self.explore : explore // ignore: cast_nullable_to_non_nullable
+as HomeExploreDto?,
   ));
 }
 
@@ -340,7 +355,285 @@ $HomeStatsDtoCopyWith<$Res> get stats {
   return $HomeStatsDtoCopyWith<$Res>(_self.stats, (value) {
     return _then(_self.copyWith(stats: value));
   });
+}/// Create a copy of HomeSummaryDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$HomeExploreDtoCopyWith<$Res>? get explore {
+    if (_self.explore == null) {
+    return null;
+  }
+
+  return $HomeExploreDtoCopyWith<$Res>(_self.explore!, (value) {
+    return _then(_self.copyWith(explore: value));
+  });
 }
+}
+
+
+/// @nodoc
+mixin _$HomeExploreDto {
+
+ int? get lostNearbyCount; int? get adoptionAvailableCount;
+/// Create a copy of HomeExploreDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$HomeExploreDtoCopyWith<HomeExploreDto> get copyWith => _$HomeExploreDtoCopyWithImpl<HomeExploreDto>(this as HomeExploreDto, _$identity);
+
+  /// Serializes this HomeExploreDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeExploreDto&&(identical(other.lostNearbyCount, lostNearbyCount) || other.lostNearbyCount == lostNearbyCount)&&(identical(other.adoptionAvailableCount, adoptionAvailableCount) || other.adoptionAvailableCount == adoptionAvailableCount));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,lostNearbyCount,adoptionAvailableCount);
+
+@override
+String toString() {
+  return 'HomeExploreDto(lostNearbyCount: $lostNearbyCount, adoptionAvailableCount: $adoptionAvailableCount)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $HomeExploreDtoCopyWith<$Res>  {
+  factory $HomeExploreDtoCopyWith(HomeExploreDto value, $Res Function(HomeExploreDto) _then) = _$HomeExploreDtoCopyWithImpl;
+@useResult
+$Res call({
+ int? lostNearbyCount, int? adoptionAvailableCount
+});
+
+
+
+
+}
+/// @nodoc
+class _$HomeExploreDtoCopyWithImpl<$Res>
+    implements $HomeExploreDtoCopyWith<$Res> {
+  _$HomeExploreDtoCopyWithImpl(this._self, this._then);
+
+  final HomeExploreDto _self;
+  final $Res Function(HomeExploreDto) _then;
+
+/// Create a copy of HomeExploreDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? lostNearbyCount = freezed,Object? adoptionAvailableCount = freezed,}) {
+  return _then(_self.copyWith(
+lostNearbyCount: freezed == lostNearbyCount ? _self.lostNearbyCount : lostNearbyCount // ignore: cast_nullable_to_non_nullable
+as int?,adoptionAvailableCount: freezed == adoptionAvailableCount ? _self.adoptionAvailableCount : adoptionAvailableCount // ignore: cast_nullable_to_non_nullable
+as int?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [HomeExploreDto].
+extension HomeExploreDtoPatterns on HomeExploreDto {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _HomeExploreDto value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _HomeExploreDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _HomeExploreDto value)  $default,){
+final _that = this;
+switch (_that) {
+case _HomeExploreDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _HomeExploreDto value)?  $default,){
+final _that = this;
+switch (_that) {
+case _HomeExploreDto() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? lostNearbyCount,  int? adoptionAvailableCount)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _HomeExploreDto() when $default != null:
+return $default(_that.lostNearbyCount,_that.adoptionAvailableCount);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? lostNearbyCount,  int? adoptionAvailableCount)  $default,) {final _that = this;
+switch (_that) {
+case _HomeExploreDto():
+return $default(_that.lostNearbyCount,_that.adoptionAvailableCount);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? lostNearbyCount,  int? adoptionAvailableCount)?  $default,) {final _that = this;
+switch (_that) {
+case _HomeExploreDto() when $default != null:
+return $default(_that.lostNearbyCount,_that.adoptionAvailableCount);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _HomeExploreDto implements HomeExploreDto {
+  const _HomeExploreDto({this.lostNearbyCount, this.adoptionAvailableCount});
+  factory _HomeExploreDto.fromJson(Map<String, dynamic> json) => _$HomeExploreDtoFromJson(json);
+
+@override final  int? lostNearbyCount;
+@override final  int? adoptionAvailableCount;
+
+/// Create a copy of HomeExploreDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$HomeExploreDtoCopyWith<_HomeExploreDto> get copyWith => __$HomeExploreDtoCopyWithImpl<_HomeExploreDto>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$HomeExploreDtoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeExploreDto&&(identical(other.lostNearbyCount, lostNearbyCount) || other.lostNearbyCount == lostNearbyCount)&&(identical(other.adoptionAvailableCount, adoptionAvailableCount) || other.adoptionAvailableCount == adoptionAvailableCount));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,lostNearbyCount,adoptionAvailableCount);
+
+@override
+String toString() {
+  return 'HomeExploreDto(lostNearbyCount: $lostNearbyCount, adoptionAvailableCount: $adoptionAvailableCount)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$HomeExploreDtoCopyWith<$Res> implements $HomeExploreDtoCopyWith<$Res> {
+  factory _$HomeExploreDtoCopyWith(_HomeExploreDto value, $Res Function(_HomeExploreDto) _then) = __$HomeExploreDtoCopyWithImpl;
+@override @useResult
+$Res call({
+ int? lostNearbyCount, int? adoptionAvailableCount
+});
+
+
+
+
+}
+/// @nodoc
+class __$HomeExploreDtoCopyWithImpl<$Res>
+    implements _$HomeExploreDtoCopyWith<$Res> {
+  __$HomeExploreDtoCopyWithImpl(this._self, this._then);
+
+  final _HomeExploreDto _self;
+  final $Res Function(_HomeExploreDto) _then;
+
+/// Create a copy of HomeExploreDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? lostNearbyCount = freezed,Object? adoptionAvailableCount = freezed,}) {
+  return _then(_HomeExploreDto(
+lostNearbyCount: freezed == lostNearbyCount ? _self.lostNearbyCount : lostNearbyCount // ignore: cast_nullable_to_non_nullable
+as int?,adoptionAvailableCount: freezed == adoptionAvailableCount ? _self.adoptionAvailableCount : adoptionAvailableCount // ignore: cast_nullable_to_non_nullable
+as int?,
+  ));
+}
+
+
 }
 
 

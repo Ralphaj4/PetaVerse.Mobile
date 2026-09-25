@@ -21,8 +21,8 @@ import '../../../community/presentation/models/pawhub_models.dart';
 import '../../../community/presentation/widgets/pawhub_common.dart';
 import '../../../home/presentation/widgets/health_reminder_card.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
+import '../../../../core/location/location_service.dart';
 import '../../../service_providers/presentation/providers/service_providers_providers.dart';
-import '../../../service_providers/presentation/widgets/provider_map_pin.dart';
 import '../providers/pawcare_providers.dart';
 import '../widgets/health_dashboard.dart';
 import '../widgets/health_score_card.dart';
@@ -111,8 +111,8 @@ class _PetaCareTabPageState extends ConsumerState<PetaCareTabPage> {
 
                     // Find Care Near You map card
                     _FindCareSection(
-                      center: ref.watch(providerQueryCenterProvider),
-                      providers: ref.watch(visibleProvidersProvider),
+                      center: ref.watch(providerUserLocationProvider) ??
+                          kDefaultMapCenter,
                     ),
                     const SizedBox(height: AppSpacing.xl),
 
@@ -465,25 +465,22 @@ class _RemindersEmpty extends StatelessWidget {
 class _FindCareSection extends StatelessWidget {
   const _FindCareSection({
     required this.center,
-    required this.providers,
   });
 
+  /// Teaser map center — the user's location, or the app default. Providers
+  /// aren't preloaded here; they load in the full map screen on tap.
   final LatLng center;
-  final List<dynamic> providers;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final count = providers.length;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SectionHeader(
           title: l10n.petaCareFindCare,
-          onSeeAll: count > 0
-              ? () => context.push(AppRoutes.careMap)
-              : null,
+          onSeeAll: () => context.push(AppRoutes.careMap),
         ),
         const SizedBox(height: AppSpacing.sm),
         GestureDetector(
@@ -516,21 +513,6 @@ class _FindCareSection extends StatelessWidget {
                         retinaMode: AppConstants.mapTileUrl.contains('{r}') &&
                             RetinaMode.isHighDensity(context),
                       ),
-                      MarkerLayer(
-                        markers: providers.take(20).map((p) {
-                          return Marker(
-                            point: p.location as LatLng,
-                            width: 44,
-                            height: 54,
-                            alignment: Alignment.topCenter,
-                            child: ProviderMapPin(
-                              category: p.category,
-                              selected: false,
-                              onTap: () => context.push(AppRoutes.careMap),
-                            ),
-                          );
-                        }).toList(),
-                      ),
                     ],
                   ),
 
@@ -554,46 +536,45 @@ class _FindCareSection extends StatelessWidget {
                     ),
                   ),
 
-                  // Provider count chip — top-left
-                  if (count > 0)
-                    PositionedDirectional(
-                      top: AppSpacing.md,
-                      start: AppSpacing.md,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.sm,
-                          vertical: AppSpacing.xs,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.surface,
-                          borderRadius: BorderRadius.circular(AppRadius.sm),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.textPrimary.withValues(alpha: 0.12),
-                              blurRadius: 8,
+                  // "Find nearby" chip — top-left
+                  PositionedDirectional(
+                    top: AppSpacing.md,
+                    start: AppSpacing.md,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.sm,
+                        vertical: AppSpacing.xs,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(AppRadius.sm),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.textPrimary.withValues(alpha: 0.12),
+                            blurRadius: 8,
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            FluentIcons.building_24_regular,
+                            size: 14,
+                            color: AppColors.secondary,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            l10n.providersNearby,
+                            style: AppTextStyles.labelMedium.copyWith(
+                              color: AppColors.textPrimary,
+                              letterSpacing: 0,
                             ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(
-                              FluentIcons.building_24_regular,
-                              size: 14,
-                              color: AppColors.secondary,
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              l10n.providerCount(count),
-                              style: AppTextStyles.labelMedium.copyWith(
-                                color: AppColors.textPrimary,
-                                letterSpacing: 0,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
+                  ),
 
                   // "Open Map" CTA — bottom-left
                   PositionedDirectional(

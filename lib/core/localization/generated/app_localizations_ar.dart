@@ -350,7 +350,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get viewDetails => 'عرض التفاصيل';
 
   @override
-  String get reportLostPet => 'الإبلاغ عن حيوان مفقود';
+  String get reportLostPet => 'إبلاغ';
 
   @override
   String get reportLostPetTitle => 'الإبلاغ عن حيوان مفقود';
@@ -1804,6 +1804,82 @@ class AppLocalizationsAr extends AppLocalizations {
   String get providerEnableLocation => 'تفعيل الموقع';
 
   @override
+  String get providerZoomInTitle => 'قرّب لاستكشاف المكان';
+
+  @override
+  String get providerZoomInMessage =>
+      'أنت تعرض منطقة واسعة. قرّب على الخريطة لرؤية خدمات الحيوانات القريبة.';
+
+  @override
+  String providerShowingOf(int shown, int total) {
+    return 'عرض $shown من $total — قرّب لرؤية المزيد';
+  }
+
+  @override
+  String providerForPet(String name) {
+    return 'لـ $name';
+  }
+
+  @override
+  String get providerForMyPet => 'لحيواني';
+
+  @override
+  String get providerForAll => 'الكل';
+
+  @override
+  String get providerSpecializations => 'التخصصات';
+
+  @override
+  String get providerLocation => 'الموقع';
+
+  @override
+  String providerBranchesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count مواقع',
+      one: 'موقع واحد',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get providerHours => 'ساعات العمل';
+
+  @override
+  String get providerWhatsApp => 'واتساب';
+
+  @override
+  String get providerEmergencyCall => 'طوارئ';
+
+  @override
+  String get providerWebsite => 'الموقع الإلكتروني';
+
+  @override
+  String get providerInstagram => 'إنستغرام';
+
+  @override
+  String get providerEmail => 'البريد الإلكتروني';
+
+  @override
+  String get providerRate => 'قيّم';
+
+  @override
+  String get providerUpdateRating => 'تحديث التقييم';
+
+  @override
+  String get providerRateTitle => 'كيف تقيّم هذا المزوّد؟';
+
+  @override
+  String get providerSubmitRating => 'إرسال التقييم';
+
+  @override
+  String get providerRateThanks => 'شكرًا على تقييمك!';
+
+  @override
+  String get providerNotFoundTitle => 'المزوّد غير موجود';
+
+  @override
   String distanceMeters(int meters) {
     return '$meters م';
   }
@@ -2903,6 +2979,39 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String pawHubProfileCaredForBy(String owner) {
     return 'يُعتنى به من قِبَل $owner';
+  }
+
+  @override
+  String get exploreSectionTitle => 'استكشف';
+
+  @override
+  String get exploreLostFoundSubtitle => 'لمّ شمل الحيوانات المفقودة';
+
+  @override
+  String get exploreAdoptionSubtitle => 'ابحث عن منزل دائم';
+
+  @override
+  String exploreLostNearby(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count حيوانات بالقرب منك',
+      one: 'حيوان واحد بالقرب منك',
+      zero: 'لا شيء بالقرب منك',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String exploreAdoptionAvailable(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count حيوانات متاحة',
+      one: 'حيوان واحد متاح',
+      zero: 'لا يوجد متاح',
+    );
+    return '$_temp0';
   }
 
   @override

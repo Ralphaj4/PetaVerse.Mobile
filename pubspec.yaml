@@ -57,6 +57,7 @@ dependencies:
   path: ^1.9.1
   path_provider: ^2.1.4
   package_info_plus: ^10.1.0
+  flutter_timezone: ^5.1.0
 
 dev_dependencies:
   flutter_test:

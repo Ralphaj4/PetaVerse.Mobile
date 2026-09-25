@@ -17,7 +17,6 @@ import '../../../../core/theme/app_text_styles.dart';
 
 import '../../../../shared/widgets/section_header.dart';
 import '../../../activity/presentation/widgets/walk_banner.dart';
-import '../../../community/presentation/providers/pawhub_tab_provider.dart';
 import '../../../pawcare/domain/entities/health_reminder.dart';
 import '../../../pawcare/presentation/providers/pawcare_providers.dart';
 import '../../../pawcare/presentation/widgets/health_score_bits.dart';
@@ -25,6 +24,7 @@ import '../../../pets/presentation/providers/pets_provider.dart';
 import '../../../profile/presentation/providers/user_provider.dart';
 import '../../domain/entities/home_summary.dart';
 import '../providers/home_providers.dart';
+import '../widgets/explore_section.dart';
 import '../widgets/health_reminder_card.dart';
 import '../widgets/home_hero_banner.dart';
 import '../widgets/pet_stat_card.dart';
@@ -166,6 +166,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                         summary: summary,
                         error: summaryAsync.hasError,
                       ),
+                      const SizedBox(height: AppSpacing.xl),
+                      ExploreSection(summary: summary),
                       const SizedBox(height: AppSpacing.xl),
                       SectionHeader(title: l10n.quickActions),
                       const SizedBox(height: AppSpacing.md),
@@ -395,13 +397,6 @@ class _StatsRow extends StatelessWidget {
 class _QuickActionsRow extends ConsumerWidget {
   const _QuickActionsRow();
 
-  /// Deep-links into a PawHub hub segment: set the requested tab, then switch
-  /// to the community branch (go, not push, so the bottom nav follows).
-  void _openPawHubTab(BuildContext context, WidgetRef ref, int tab) {
-    ref.read(pawHubRequestedTabProvider.notifier).request(tab);
-    context.go(AppRoutes.community);
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
@@ -419,23 +414,6 @@ class _QuickActionsRow extends ConsumerWidget {
                 context.push(AppRoutes.appointmentsPath(pet.id));
               }
             },
-          ),
-        ),
-        Expanded(
-          child: QuickActionButton(
-            icon: FluentIcons.location_24_regular,
-            color: AppColors.secondary,
-            filled: true,
-            label: l10n.lostAndFound,
-            onTap: () => _openPawHubTab(context, ref, 1),
-          ),
-        ),
-        Expanded(
-          child: QuickActionButton(
-            icon: FluentIcons.heart_24_regular,
-            color: AppColors.primary,
-            label: l10n.adoptionTitle,
-            onTap: () => _openPawHubTab(context, ref, 2),
           ),
         ),
         Expanded(

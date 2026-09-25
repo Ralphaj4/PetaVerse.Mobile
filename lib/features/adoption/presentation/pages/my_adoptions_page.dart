@@ -82,28 +82,6 @@ class _MyAdoptionsPageState extends ConsumerState<MyAdoptionsPage> {
           ),
           onPressed: () => context.popOrHome(),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsetsDirectional.only(end: AppSpacing.sm),
-            child: FilledButton.icon(
-              onPressed: () => context.push(AppRoutes.listPetForAdoption),
-              icon: const Icon(FluentIcons.add_24_regular, size: 18),
-              label: Text(l10n.adoptionListAPet),
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.onPrimary,
-                textStyle: AppTextStyles.labelMedium,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.md,
-                  vertical: AppSpacing.sm,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppSpacing.sm),
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
       body: Column(
         children: [

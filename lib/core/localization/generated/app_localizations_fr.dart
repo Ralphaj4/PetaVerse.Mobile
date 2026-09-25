@@ -346,7 +346,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get viewDetails => 'Voir les Détails';
 
   @override
-  String get reportLostPet => 'Signaler un Animal Perdu';
+  String get reportLostPet => 'Signaler';
 
   @override
   String get reportLostPetTitle => 'Signaler un animal perdu';
@@ -1820,6 +1820,82 @@ class AppLocalizationsFr extends AppLocalizations {
   String get providerEnableLocation => 'Activer la localisation';
 
   @override
+  String get providerZoomInTitle => 'Zoomez pour explorer';
+
+  @override
+  String get providerZoomInMessage =>
+      'Vous affichez une grande zone. Zoomez sur la carte pour voir les services pour animaux à proximité.';
+
+  @override
+  String providerShowingOf(int shown, int total) {
+    return 'Affichage de $shown sur $total — zoomez pour en voir plus';
+  }
+
+  @override
+  String providerForPet(String name) {
+    return 'Pour $name';
+  }
+
+  @override
+  String get providerForMyPet => 'Pour mon animal';
+
+  @override
+  String get providerForAll => 'Tous';
+
+  @override
+  String get providerSpecializations => 'Spécialisations';
+
+  @override
+  String get providerLocation => 'Emplacement';
+
+  @override
+  String providerBranchesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count emplacements',
+      one: '1 emplacement',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get providerHours => 'Heures d\'ouverture';
+
+  @override
+  String get providerWhatsApp => 'WhatsApp';
+
+  @override
+  String get providerEmergencyCall => 'Urgence';
+
+  @override
+  String get providerWebsite => 'Site web';
+
+  @override
+  String get providerInstagram => 'Instagram';
+
+  @override
+  String get providerEmail => 'E-mail';
+
+  @override
+  String get providerRate => 'Noter';
+
+  @override
+  String get providerUpdateRating => 'Modifier la note';
+
+  @override
+  String get providerRateTitle => 'Comment noteriez-vous ce prestataire ?';
+
+  @override
+  String get providerSubmitRating => 'Envoyer la note';
+
+  @override
+  String get providerRateThanks => 'Merci pour votre note !';
+
+  @override
+  String get providerNotFoundTitle => 'Prestataire introuvable';
+
+  @override
   String distanceMeters(int meters) {
     return '$meters m';
   }
@@ -2912,6 +2988,39 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String pawHubProfileCaredForBy(String owner) {
     return 'soigné par $owner';
+  }
+
+  @override
+  String get exploreSectionTitle => 'Explorer';
+
+  @override
+  String get exploreLostFoundSubtitle => 'Retrouver les animaux perdus';
+
+  @override
+  String get exploreAdoptionSubtitle => 'Trouver un foyer pour la vie';
+
+  @override
+  String exploreLostNearby(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count animaux à proximité',
+      one: '1 animal à proximité',
+      zero: 'Aucun à proximité',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String exploreAdoptionAvailable(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count animaux disponibles',
+      one: '1 animal disponible',
+      zero: 'Aucun disponible',
+    );
+    return '$_temp0';
   }
 
   @override

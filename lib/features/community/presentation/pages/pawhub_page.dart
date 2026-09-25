@@ -12,13 +12,11 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../domain/entities/community_entities.dart' as domain;
-import '../../domain/entities/community_group_entities.dart';
 import '../models/pawhub_models.dart';
 import '../providers/community_actions_providers.dart';
 import '../providers/community_feed_providers.dart';
 import '../providers/community_providers.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
-import '../widgets/community_discover_rail.dart';
 import '../widgets/pawhub_comments.dart';
 import '../widgets/pawhub_common.dart';
 import '../widgets/pawhub_feed_widgets.dart';
@@ -480,13 +478,11 @@ void _openProfile(PawPet pet) {
         final posts = discover.posts.map(PawPost.fromEntity).toList();
         final suggestedPets =
             discover.suggestedPets.map(PawPet.fromEntity).toList();
-        final rail = _communityRail(discover.suggestedCommunities);
-        // With no posts, still surface the communities rail above the empty
-        // state so Discover isn't blank when only suggestions exist.
+        // Community suggestions now live in the dedicated Communities tab, so
+        // Discover is pure post discovery — no communities rail here.
         if (posts.isEmpty) {
           return ListView(
             children: [
-              rail,
               // No CTA here — already on the Discover tab — and Discover-specific
               // copy (not the "follow some pets" Following wording).
               FeedEmptyState(
@@ -501,20 +497,8 @@ void _openProfile(PawPet pet) {
           hasMore: discover.cursor.hasMore,
           loadingMore: discover.loadingMore,
           suggestedPets: suggestedPets,
-          header: rail,
         );
       },
-    );
-  }
-
-  /// The "Communities to join" rail shown atop the Discover feed, fed by the
-  /// discover response. Renders nothing when there are no suggestions.
-  Widget _communityRail(List<CommunityGroup> communities) {
-    if (communities.isEmpty) return const SizedBox.shrink();
-    return CommunityDiscoverRail(
-      communities: communities,
-      onOpen: (c) => context.push('/community/communities/${c.id}'),
-      onSeeAll: () => context.push('/community/communities'),
     );
   }
 

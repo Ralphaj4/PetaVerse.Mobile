@@ -16,6 +16,7 @@ abstract class HomeSummaryDto with _$HomeSummaryDto {
     required HomeHeroDto hero,
     required HomeStatsDto stats,
     @Default(<HomeUpcomingItemDto>[]) List<HomeUpcomingItemDto> upcoming,
+    HomeExploreDto? explore,
   }) = _HomeSummaryDto;
 
   const HomeSummaryDto._();
@@ -36,7 +37,22 @@ abstract class HomeSummaryDto with _$HomeSummaryDto {
         weight: stats.weight?.toEntity(),
         upcoming:
             upcoming.map((e) => e.toEntity()).toList(growable: false),
+        lostNearbyCount: explore?.lostNearbyCount,
+        adoptionAvailableCount: explore?.adoptionAvailableCount,
       );
+}
+
+/// Optional Home "Explore" counts (Lost & Found / Adoption). Absent until the
+/// backend ships it — the tiles fall back to static subtitles.
+@freezed
+abstract class HomeExploreDto with _$HomeExploreDto {
+  const factory HomeExploreDto({
+    int? lostNearbyCount,
+    int? adoptionAvailableCount,
+  }) = _HomeExploreDto;
+
+  factory HomeExploreDto.fromJson(Map<String, dynamic> json) =>
+      _$HomeExploreDtoFromJson(json);
 }
 
 @freezed

@@ -1,42 +1,47 @@
+import 'dart:async';
+
 import 'package:latlong2/latlong.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/location/location_service.dart';
-import '../../data/datasources/service_provider_mock_datasource.dart';
+import '../../../pets/presentation/providers/pets_provider.dart';
+import '../../data/datasources/service_provider_remote_datasource.dart';
 import '../../data/repositories/service_provider_repository_impl.dart';
 import '../../domain/entities/provider_category.dart';
+import '../../domain/entities/provider_category_ref.dart';
+import '../../domain/entities/provider_search.dart';
 import '../../domain/entities/service_provider.dart';
 import '../../domain/repositories/service_provider_repository.dart';
+import '../../../../core/network/api_client.dart';
 
 part 'service_providers_providers.g.dart';
 
-/// How the visible provider list is ordered. Extensible: adding a value only
-/// requires a new branch in [_sortComparator] and a localized label.
-enum ProviderSort { distance, rating, openNow, mostReviewed }
-
 @Riverpod(keepAlive: true)
 ServiceProviderRepository serviceProviderRepository(Ref ref) =>
-    const ServiceProviderRepositoryImpl(ServiceProviderMockDataSource());
+    ServiceProviderRepositoryImpl(
+      ServiceProviderRemoteDataSource(ref.watch(apiClientProvider)),
+    );
 
-/// The map center used to query providers.
-///
-/// Synchronous by design: it starts at the app default center immediately so
-/// the provider list can load without EVER waiting on location (a stalled
-/// permission dialog or a device with no fix must not be able to hang the
-/// list in its shimmer state). A background one-shot location read then
-/// refines the center when it arrives, which re-runs the query for the user's
-/// real position. Not changed as the user pans — panning re-sorts the loaded
-/// set client-side (see [visibleProviders]).
+/// The admin-configurable category list (id ↔ slug ↔ name), backing the filter
+/// bar. Loaded once; widgets map each row to a client [ProviderCategory].
+@riverpod
+Future<List<ProviderCategoryRef>> providerCategories(Ref ref) async {
+  final result = await ref.watch(serviceProviderRepositoryProvider).getCategories();
+  return result.when(success: (c) => c, failure: (f) => throw f);
+}
+
+/// The device's current location, resolved once in the background. Null until
+/// (or unless) it lands — the search runs against the viewport regardless, and
+/// distance is simply omitted when this is null.
 @Riverpod(keepAlive: true)
-class ProviderQueryCenter extends _$ProviderQueryCenter {
+class ProviderUserLocation extends _$ProviderUserLocation {
   @override
-  LatLng build() {
-    // Kick off location resolution in the background; update when/if it lands.
-    _resolveLocation();
-    return kDefaultMapCenter;
+  LatLng? build() {
+    _resolve();
+    return null;
   }
 
-  Future<void> _resolveLocation() async {
+  Future<void> _resolve() async {
     try {
       final here = await ref
           .read(locationServiceProvider)
@@ -44,38 +49,26 @@ class ProviderQueryCenter extends _$ProviderQueryCenter {
           .timeout(const Duration(seconds: 8));
       if (here != null) state = here;
     } catch (_) {
-      // Keep the default center — the list already loaded against it.
+      // No fix / denied — distance is omitted; search still works.
     }
   }
+
+  /// Re-attempts location resolution (e.g. the "my location" button after the
+  /// user granted permission from settings).
+  Future<void> refresh() => _resolve();
 }
 
-/// Loads nearby providers for the current query center. Re-runs if the center
-/// changes (e.g. once the real location resolves). Carries the full unfiltered
-/// set; filtering/search/sort are applied downstream in [visibleProviders] so
-/// those never trigger a refetch.
+/// The visible map bounding box, updated when the camera settles after a pan.
+/// Null until the map reports its first viewport; the search waits for it.
 @riverpod
-class ServiceProvidersNotifier extends _$ServiceProvidersNotifier {
+class ProviderViewport extends _$ProviderViewport {
   @override
-  Future<List<ServiceProvider>> build() async {
-    final center = ref.watch(providerQueryCenterProvider);
-    final result =
-        await ref.read(serviceProviderRepositoryProvider).getNearby(
-              center: center,
-            );
-    return result.when(
-      success: (providers) => providers,
-      failure: (f) => throw f,
-    );
-  }
+  GeoBounds? build() => null;
 
-  /// Re-fetches from the current center (pull-to-retry after an error).
-  Future<void> refresh() async {
-    ref.invalidateSelf();
-    await future;
-  }
+  void set(GeoBounds bounds) => state = bounds;
 }
 
-/// Selected category filter (single-select). [ProviderCategory.all] shows all.
+/// Selected category filter (single-select). [ProviderCategory.all] = no filter.
 @riverpod
 class ProviderCategoryFilter extends _$ProviderCategoryFilter {
   @override
@@ -84,8 +77,7 @@ class ProviderCategoryFilter extends _$ProviderCategoryFilter {
   void select(ProviderCategory category) => state = category;
 }
 
-/// Debounced search query (business name / category / address). The text field
-/// debounces before writing here, so this never churns on every keystroke.
+/// Debounced search query. The text field debounces before writing here.
 @riverpod
 class ProviderSearchQuery extends _$ProviderSearchQuery {
   @override
@@ -94,7 +86,7 @@ class ProviderSearchQuery extends _$ProviderSearchQuery {
   void set(String query) => state = query;
 }
 
-/// Active sort order for the list.
+/// Active sort order for the search.
 @riverpod
 class ProviderSortOrder extends _$ProviderSortOrder {
   @override
@@ -103,64 +95,102 @@ class ProviderSortOrder extends _$ProviderSortOrder {
   void select(ProviderSort sort) => state = sort;
 }
 
-/// The currently highlighted provider id (tapped pin or card), or null. Drives
-/// pin highlight + the map camera fly-to. Kept separate from the list so
-/// selecting never rebuilds the (expensive) list computation.
+/// "Open now" toggle for the search.
+@riverpod
+class ProviderOpenNowFilter extends _$ProviderOpenNowFilter {
+  @override
+  bool build() => false;
+
+  void toggle() => state = !state;
+}
+
+/// Whether results are tailored to the active pet's species ("For [Pet]" vs
+/// "All"). Defaults on when the user has an active pet.
+@riverpod
+class ProviderPetTailoring extends _$ProviderPetTailoring {
+  @override
+  bool build() => ref.watch(petsProvider).currentPetId != null;
+
+  void toggle() => state = !state;
+}
+
+/// The active pet id to send for tailoring, or null when tailoring is off / no
+/// pet is selected.
+@riverpod
+int? providerTailoringPetId(Ref ref) {
+  final on = ref.watch(providerPetTailoringProvider);
+  if (!on) return null;
+  return ref.watch(petsProvider).currentPetId;
+}
+
+/// The currently highlighted branch pin (tapped pin or card), keyed by
+/// `branchId`, or null. Drives pin highlight + the map camera fly-to. Separate
+/// from the search so selecting never refetches.
 @riverpod
 class SelectedProvider extends _$SelectedProvider {
   @override
-  String? build() => null;
+  int? build() => null;
 
-  void select(String? id) => state = id;
+  void select(int? branchId) => state = branchId;
 
-  void toggle(String id) => state = state == id ? null : id;
+  void toggle(int branchId) => state = state == branchId ? null : branchId;
 }
 
-/// The list actually shown in the sheet and as pins: the loaded set with the
-/// category filter, search query, and sort order applied. Recomputes only when
-/// one of those inputs changes (not on selection), so highlighting a pin is
-/// cheap.
+/// Runs the viewport search and re-runs whenever the viewport or any filter
+/// changes. Debounced so a fast pan/typing burst issues one request once things
+/// settle. Returns the full result (items + paging guardrails).
 @riverpod
-List<ServiceProvider> visibleProviders(Ref ref) {
-  final all = ref.watch(serviceProvidersProvider).value ??
-      const <ServiceProvider>[];
-  final category = ref.watch(providerCategoryFilterProvider);
-  final query = ref.watch(providerSearchQueryProvider).trim().toLowerCase();
-  final sort = ref.watch(providerSortOrderProvider);
+class ServiceProvidersNotifier extends _$ServiceProvidersNotifier {
+  @override
+  Future<ProviderSearchResult> build() async {
+    final bounds = ref.watch(providerViewportProvider);
+    // No viewport yet → nothing to search; the map reports one on first idle.
+    if (bounds == null) return const ProviderSearchResult.empty();
 
-  Iterable<ServiceProvider> result = all;
+    final params = ProviderSearchParams(
+      bounds: bounds,
+      userLocation: ref.watch(providerUserLocationProvider),
+      category: ref.watch(providerCategoryFilterProvider),
+      query: ref.watch(providerSearchQueryProvider),
+      petId: ref.watch(providerTailoringPetIdProvider),
+      openNow: ref.watch(providerOpenNowFilterProvider),
+      sort: ref.watch(providerSortOrderProvider),
+    );
 
-  if (category != ProviderCategory.all) {
-    result = result.where((p) => p.category == category);
-  }
+    // Debounce: coalesce rapid input/pan changes into a single request. If the
+    // provider is rebuilt (a newer change arrived) this future is discarded.
+    await _debounce();
 
-  if (query.isNotEmpty) {
-    result = result.where(
-      (p) =>
-          p.name.toLowerCase().contains(query) ||
-          p.address.toLowerCase().contains(query) ||
-          p.category.name.toLowerCase().contains(query),
+    final result = await ref.read(serviceProviderRepositoryProvider).search(params);
+    return result.when(
+      success: (r) => r,
+      failure: (f) => throw f,
     );
   }
 
-  final list = result.toList()..sort(_sortComparator(sort));
-  return list;
+  Future<void> _debounce() {
+    final completer = Completer<void>();
+    final timer = Timer(const Duration(milliseconds: 350), () {
+      if (!completer.isCompleted) completer.complete();
+    });
+    ref.onDispose(() {
+      timer.cancel();
+      if (!completer.isCompleted) completer.complete();
+    });
+    return completer.future;
+  }
+
+  /// Re-fetches the current viewport (pull-to-retry after an error).
+  Future<void> refresh() async {
+    ref.invalidateSelf();
+    await future;
+  }
 }
 
-int Function(ServiceProvider, ServiceProvider) _sortComparator(
-  ProviderSort sort,
-) =>
-    switch (sort) {
-      ProviderSort.distance => (a, b) =>
-          (a.distanceMeters ?? double.infinity)
-              .compareTo(b.distanceMeters ?? double.infinity),
-      ProviderSort.rating => (a, b) => b.rating.compareTo(a.rating),
-      ProviderSort.mostReviewed => (a, b) =>
-          b.reviewCount.compareTo(a.reviewCount),
-      // Open businesses first, then by distance within each group.
-      ProviderSort.openNow => (a, b) {
-          if (a.isOpen != b.isOpen) return a.isOpen ? -1 : 1;
-          return (a.distanceMeters ?? double.infinity)
-              .compareTo(b.distanceMeters ?? double.infinity);
-        },
-    };
+/// The branch pins actually shown (map + list). Sourced directly from the
+/// server result — filtering/sort are server-side, so this is a thin accessor.
+@riverpod
+List<ServiceProvider> visibleProviders(Ref ref) {
+  return ref.watch(serviceProvidersProvider).value?.items ??
+      const <ServiceProvider>[];
+}

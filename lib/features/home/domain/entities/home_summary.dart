@@ -17,6 +17,8 @@ class HomeSummary {
     required this.vaccinesUpcomingCount,
     required this.weight,
     required this.upcoming,
+    this.lostNearbyCount,
+    this.adoptionAvailableCount,
   });
 
   /// The pet the hero + stat cards describe (primary/active, or the queried id).
@@ -45,6 +47,15 @@ class HomeSummary {
   /// Cross-pet, cross-kind reminders — soonest first, all overdue included,
   /// no future cutoff. Empty when nothing is due across any pet.
   final List<HealthReminder> upcoming;
+
+  /// Lost pets reported near the user, backing the Home "Explore" tile.
+  /// Null until the backend supplies it — the tile falls back to a static
+  /// subtitle rather than showing a count of zero.
+  final int? lostNearbyCount;
+
+  /// Pets available for adoption, backing the Home "Explore" tile. Null until
+  /// the backend supplies it.
+  final int? adoptionAvailableCount;
 
   bool get hasHealthData => healthBand != HealthBand.noData;
 }

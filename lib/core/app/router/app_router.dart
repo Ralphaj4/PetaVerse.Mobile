@@ -79,6 +79,7 @@ import '../../../features/profile/presentation/pages/profile_page.dart';
 import '../../../features/profile/presentation/pages/personal_information_page.dart';
 import '../../../features/pawcare/presentation/pages/petacare_tab_page.dart';
 import '../../../features/service_providers/presentation/pages/service_providers_page.dart';
+import '../../../features/service_providers/presentation/pages/service_provider_detail_page.dart';
 import '../../../features/profile/presentation/pages/change_language_page.dart';
 import '../../../features/auth/presentation/providers/session_provider.dart';
 import '../../../features/onboarding/presentation/providers/onboarding_provider.dart';
@@ -122,6 +123,7 @@ abstract final class AppRoutes {
   static const String community = '/community';
   static const String care = '/care';
   static const String careMap = '/care/map';
+  static String serviceProviderDetail(int id) => '/care/map/provider/$id';
   static const String profile = '/profile';
   static const String personalInformation = '/personal-information';
   static const String changeLanguage = '/change-language';
@@ -923,6 +925,20 @@ GoRouter appRouter(Ref ref) {
                           key: state.pageKey,
                           child: const ServiceProvidersPage(),
                         ),
+                    routes: [
+                      GoRoute(
+                        path: 'provider/:id',
+                        name: 'serviceProviderDetail',
+                        parentNavigatorKey: _rootNavigatorKey,
+                        pageBuilder: (context, state) => AppTransitionPage(
+                              key: state.pageKey,
+                              child: ServiceProviderDetailPage(
+                                providerId:
+                                    int.parse(state.pathParameters['id']!),
+                              ),
+                            ),
+                      ),
+                    ],
                   ),
                 ],
               ),

@@ -120,6 +120,30 @@ class AdoptionBoardPage extends ConsumerWidget {
               ),
             ],
           ),
+          actions: [
+            // "List a pet" — the primary create action, in the top bar next to
+            // the "N pets looking for a home" subtitle.
+            Padding(
+              padding: const EdgeInsets.only(right: AppSpacing.sm),
+              child: FilledButton.icon(
+                onPressed: () => context.push(AppRoutes.listPetForAdoption),
+                icon: const Icon(FluentIcons.add_24_regular, size: 18),
+                label: Text(l10n.adoptionListAPet),
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: AppColors.onPrimary,
+                  textStyle: AppTextStyles.labelMedium,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.md,
+                    vertical: AppSpacing.sm,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppSpacing.sm),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
         body: content,
       ),

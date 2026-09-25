@@ -9,24 +9,21 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../adoption/presentation/pages/adoption_board_page.dart';
-import '../../../lost_and_found/presentation/pages/lost_and_found_page.dart';
-import '../providers/pawhub_tab_provider.dart';
+import 'communities_page.dart';
 import 'pawhub_page.dart';
 
-/// The Community destination (bottom-nav tab 1). Hosts the three
+/// The PetaHub destination (bottom-nav tab 1). Hosts the two social
 /// "other people's pets" surfaces behind a segmented control:
-/// Feed (PawHub) · Lost & Found · Adoption.
+/// Feed (PawHub) · Communities.
 ///
-/// Each surface is a self-contained page. To avoid stacked chrome, Lost & Found
-/// and Adoption render in [embedded] mode (no own AppBar) — the hub supplies the
-/// shared header. PawHub keeps its own functional toolbar (pet switcher /
-/// notifications) below the segmented control.
+/// Communities renders in [embedded] mode (no own AppBar) — the hub supplies
+/// the shared header. PawHub keeps its own functional toolbar (pet switcher /
+/// search) below the segmented control. Lost & Found and Adoption now live on
+/// Home, not here.
 class CommunityHubPage extends ConsumerStatefulWidget {
   const CommunityHubPage({this.initialTab = 0, super.key});
 
-  /// Which segment to open on first build: 0 = Feed, 1 = Lost & Found,
-  /// 2 = Adoption. Lets Home's quick actions deep-link into a specific tab.
+  /// Which segment to open on first build: 0 = Feed, 1 = Communities.
   final int initialTab;
 
   @override
@@ -36,16 +33,16 @@ class CommunityHubPage extends ConsumerStatefulWidget {
 class _CommunityHubPageState extends ConsumerState<CommunityHubPage>
     with SingleTickerProviderStateMixin {
   late final TabController _controller = TabController(
-    length: 3,
+    length: 2,
     vsync: this,
-    initialIndex: widget.initialTab.clamp(0, 2),
+    initialIndex: widget.initialTab.clamp(0, 1),
   );
 
-  /// One scroll controller per inner tab (Feed · Lost&Found · Adoption),
-  /// handed down via [PrimaryScrollController] so re-tapping the Community
-  /// bottom-nav tab can scroll whichever inner tab is showing back to the top.
+  /// One scroll controller per inner tab (Feed · Communities), handed down via
+  /// [PrimaryScrollController] so re-tapping the PetaHub bottom-nav tab can
+  /// scroll whichever inner tab is showing back to the top.
   final _innerScrollControllers =
-      List.generate(3, (_) => ScrollController());
+      List.generate(2, (_) => ScrollController());
 
   /// Scroll the currently-visible inner tab to the top.
   void _scrollActiveTabToTop() {
@@ -56,20 +53,6 @@ class _CommunityHubPageState extends ConsumerState<CommunityHubPage>
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOutCubic,
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // Consume a pending tab request (e.g. from Home's quick actions) once the
-    // first frame is up, then clear it so it doesn't re-fire on the next visit.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final requested = ref.read(pawHubRequestedTabProvider);
-      if (requested != null) {
-        _controller.index = requested.clamp(0, 2);
-        ref.read(pawHubRequestedTabProvider.notifier).clear();
-      }
-    });
   }
 
   @override
@@ -84,15 +67,6 @@ class _CommunityHubPageState extends ConsumerState<CommunityHubPage>
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-
-    // The hub is kept alive in the shell's IndexedStack, so react to later tab
-    // requests (arriving while already built) by animating to that segment.
-    ref.listen<int?>(pawHubRequestedTabProvider, (_, next) {
-      if (next != null && mounted) {
-        _controller.animateTo(next.clamp(0, 2));
-        ref.read(pawHubRequestedTabProvider.notifier).clear();
-      }
-    });
 
     // Bottom nav bumps this when the Community tab (branch 1) is re-tapped at
     // root — scroll whichever inner tab is showing back to the top.
@@ -122,10 +96,8 @@ class _CommunityHubPageState extends ConsumerState<CommunityHubPage>
                   tabs: [
                     (icon: FluentIcons.animal_paw_print_24_filled,
                         label: l10n.communityTabFeed),
-                    (icon: FluentIcons.search_24_regular,
-                        label: l10n.lostAndFound),
-                    (icon: FluentIcons.home_24_regular,
-                        label: l10n.adoptionTitle),
+                    (icon: FluentIcons.people_community_24_filled,
+                        label: l10n.communitiesTitle),
                   ],
                 ),
               ),
@@ -141,11 +113,7 @@ class _CommunityHubPageState extends ConsumerState<CommunityHubPage>
                     ),
                     PrimaryScrollController(
                       controller: _innerScrollControllers[1],
-                      child: const LostAndFoundPage(embedded: true),
-                    ),
-                    PrimaryScrollController(
-                      controller: _innerScrollControllers[2],
-                      child: const AdoptionBoardPage(embedded: true),
+                      child: const CommunitiesPage(embedded: true),
                     ),
                   ],
                 ),

@@ -5,11 +5,11 @@ import '../../domain/entities/provider_category.dart';
 /// place so cards, pins, and the sheet header all read distances and category
 /// names identically (and localized).
 abstract final class ProviderFormat {
-  /// "320 m" / "1.2 km" / "" when distance is unknown.
-  static String distance(AppLocalizations l10n, double? meters) {
-    if (meters == null) return '';
-    if (meters < 1000) return l10n.distanceMeters(meters.round());
-    final km = meters / 1000;
+  /// "320 m" / "1.2 km" / "" when distance is unknown. Input is kilometers
+  /// (the search/detail API returns `distanceKm`).
+  static String distance(AppLocalizations l10n, double? km) {
+    if (km == null) return '';
+    if (km < 1) return l10n.distanceMeters((km * 1000).round());
     return l10n.distanceKm(km.toStringAsFixed(km >= 10 ? 0 : 1));
   }
 
@@ -26,7 +26,6 @@ abstract final class ProviderFormat {
         ProviderCategory.walking => l10n.categoryWalking,
         ProviderCategory.adoption => l10n.categoryAdoption,
         ProviderCategory.shelter => l10n.categoryShelter,
-        ProviderCategory.emergency => l10n.categoryEmergency,
         ProviderCategory.pharmacy => l10n.categoryPharmacy,
       };
 }

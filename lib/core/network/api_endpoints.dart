@@ -143,6 +143,12 @@ abstract final class ApiEndpoints {
   // Services directory
   static const String services = '/services';
 
+  // Service providers (PawCare map — bbox search, categories, detail, rating)
+  static const String serviceProviderSearch = '/service-providers/search';
+  static const String serviceProviderCategories = '/service-providers/categories';
+  static String serviceProvider(int id) => '/service-providers/$id';
+  static String serviceProviderRating(int id) => '/service-providers/$id/rating';
+
   // Community (PawHub) — per-pet social graph. All under /community.
   // Feeds & post CRUD
   static const String communityFeed = '/community/feed';

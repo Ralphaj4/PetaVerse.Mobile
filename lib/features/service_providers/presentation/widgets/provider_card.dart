@@ -38,7 +38,7 @@ class ProviderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final accent = provider.category.color;
+    final accent = provider.primaryCategory.color;
 
     return Semantics(
       button: true,
@@ -146,7 +146,7 @@ class _Photo extends StatelessWidget {
               border: Border.all(color: AppColors.surface, width: 1.5),
             ),
             child: Icon(
-              provider.category.filledIcon,
+              provider.primaryCategory.filledIcon,
               size: 12,
               color: AppColors.onPrimary,
             ),
@@ -166,7 +166,7 @@ class _Info extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final distance = ProviderFormat.distance(l10n, provider.distanceMeters);
+    final distance = ProviderFormat.distance(l10n, provider.distanceKm);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,7 +179,7 @@ class _Info extends StatelessWidget {
         ),
         const SizedBox(height: 2),
         Text(
-          ProviderFormat.category(l10n, provider.category),
+          ProviderFormat.category(l10n, provider.primaryCategory),
           style: AppTextStyles.labelMedium.copyWith(
             color: accent,
             letterSpacing: 0,

@@ -159,7 +159,7 @@
   "contactNoPhone": "This report has no contact number.",
   "contactLaunchError": "Couldn't open the app. Please try again.",
   "viewDetails": "View Details",
-  "reportLostPet": "Report Lost Pet",
+  "reportLostPet": "Report",
   "reportLostPetTitle": "Report a Lost Pet",
   "reportLostPetSubtitle": "Pick your pet and where it was last seen.",
   "reportSelectPet": "Which pet is lost?",
@@ -732,6 +732,39 @@
   "providerLocationDeniedTitle": "Location is off",
   "providerLocationDeniedMessage": "Turn on location to discover pet services around you.",
   "providerEnableLocation": "Enable location",
+  "providerZoomInTitle": "Zoom in to explore",
+  "providerZoomInMessage": "You're viewing a large area. Zoom in on the map to see pet services nearby.",
+  "providerShowingOf": "Showing {shown} of {total} — zoom in to see more",
+  "@providerShowingOf": {
+    "placeholders": {
+      "shown": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "providerForPet": "For {name}",
+  "@providerForPet": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "providerForMyPet": "For my pet",
+  "providerForAll": "All",
+  "providerSpecializations": "Specializations",
+  "providerLocation": "Location",
+  "providerBranchesCount": "{count, plural, =1{1 location} other{{count} locations}}",
+  "@providerBranchesCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "providerHours": "Opening hours",
+  "providerWhatsApp": "WhatsApp",
+  "providerEmergencyCall": "Emergency",
+  "providerWebsite": "Website",
+  "providerInstagram": "Instagram",
+  "providerEmail": "Email",
+  "providerRate": "Rate",
+  "providerUpdateRating": "Update rating",
+  "providerRateTitle": "How would you rate this provider?",
+  "providerSubmitRating": "Submit rating",
+  "providerRateThanks": "Thanks for your rating!",
+  "providerNotFoundTitle": "Provider not found",
   "distanceMeters": "{meters} m",
   "@distanceMeters": {
     "placeholders": { "meters": { "type": "int" } }
@@ -1329,6 +1362,18 @@
   "pawHubProfileCaredForBy": "cared for by {owner}",
   "@pawHubProfileCaredForBy": {
     "placeholders": { "owner": { "type": "String" } }
+  },
+
+  "exploreSectionTitle": "Explore",
+  "exploreLostFoundSubtitle": "Reunite lost pets",
+  "exploreAdoptionSubtitle": "Find a forever home",
+  "exploreLostNearby": "{count, plural, =0{None nearby} =1{1 pet nearby} other{{count} pets nearby}}",
+  "@exploreLostNearby": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "exploreAdoptionAvailable": "{count, plural, =0{None available} =1{1 pet available} other{{count} pets available}}",
+  "@exploreAdoptionAvailable": {
+    "placeholders": { "count": { "type": "int" } }
   },
 
   "communitiesTitle": "Communities",

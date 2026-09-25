@@ -2,7 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../../../core/localization/generated/app_localizations.dart';
-import '../providers/service_providers_providers.dart';
+import '../../domain/entities/provider_search.dart';
 
 /// Localized label for a [ProviderSort] — shared by the sheet header chip and
 /// the sort selector so they never drift.

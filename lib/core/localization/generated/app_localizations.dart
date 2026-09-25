@@ -685,7 +685,7 @@ abstract class AppLocalizations {
   /// No description provided for @reportLostPet.
   ///
   /// In en, this message translates to:
-  /// **'Report Lost Pet'**
+  /// **'Report'**
   String get reportLostPet;
 
   /// No description provided for @reportLostPetTitle.
@@ -3274,6 +3274,132 @@ abstract class AppLocalizations {
   /// **'Enable location'**
   String get providerEnableLocation;
 
+  /// No description provided for @providerZoomInTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom in to explore'**
+  String get providerZoomInTitle;
+
+  /// No description provided for @providerZoomInMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re viewing a large area. Zoom in on the map to see pet services nearby.'**
+  String get providerZoomInMessage;
+
+  /// No description provided for @providerShowingOf.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing {shown} of {total} — zoom in to see more'**
+  String providerShowingOf(int shown, int total);
+
+  /// No description provided for @providerForPet.
+  ///
+  /// In en, this message translates to:
+  /// **'For {name}'**
+  String providerForPet(String name);
+
+  /// No description provided for @providerForMyPet.
+  ///
+  /// In en, this message translates to:
+  /// **'For my pet'**
+  String get providerForMyPet;
+
+  /// No description provided for @providerForAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get providerForAll;
+
+  /// No description provided for @providerSpecializations.
+  ///
+  /// In en, this message translates to:
+  /// **'Specializations'**
+  String get providerSpecializations;
+
+  /// No description provided for @providerLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get providerLocation;
+
+  /// No description provided for @providerBranchesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 location} other{{count} locations}}'**
+  String providerBranchesCount(int count);
+
+  /// No description provided for @providerHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening hours'**
+  String get providerHours;
+
+  /// No description provided for @providerWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get providerWhatsApp;
+
+  /// No description provided for @providerEmergencyCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency'**
+  String get providerEmergencyCall;
+
+  /// No description provided for @providerWebsite.
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get providerWebsite;
+
+  /// No description provided for @providerInstagram.
+  ///
+  /// In en, this message translates to:
+  /// **'Instagram'**
+  String get providerInstagram;
+
+  /// No description provided for @providerEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get providerEmail;
+
+  /// No description provided for @providerRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate'**
+  String get providerRate;
+
+  /// No description provided for @providerUpdateRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Update rating'**
+  String get providerUpdateRating;
+
+  /// No description provided for @providerRateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How would you rate this provider?'**
+  String get providerRateTitle;
+
+  /// No description provided for @providerSubmitRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit rating'**
+  String get providerSubmitRating;
+
+  /// No description provided for @providerRateThanks.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks for your rating!'**
+  String get providerRateThanks;
+
+  /// No description provided for @providerNotFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Provider not found'**
+  String get providerNotFoundTitle;
+
   /// No description provided for @distanceMeters.
   ///
   /// In en, this message translates to:
@@ -5067,6 +5193,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'cared for by {owner}'**
   String pawHubProfileCaredForBy(String owner);
+
+  /// No description provided for @exploreSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore'**
+  String get exploreSectionTitle;
+
+  /// No description provided for @exploreLostFoundSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reunite lost pets'**
+  String get exploreLostFoundSubtitle;
+
+  /// No description provided for @exploreAdoptionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find a forever home'**
+  String get exploreAdoptionSubtitle;
+
+  /// No description provided for @exploreLostNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{None nearby} =1{1 pet nearby} other{{count} pets nearby}}'**
+  String exploreLostNearby(int count);
+
+  /// No description provided for @exploreAdoptionAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{None available} =1{1 pet available} other{{count} pets available}}'**
+  String exploreAdoptionAvailable(int count);
 
   /// No description provided for @communitiesTitle.
   ///
