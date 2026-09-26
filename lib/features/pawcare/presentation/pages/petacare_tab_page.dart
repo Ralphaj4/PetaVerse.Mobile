@@ -1,20 +1,19 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/app/tab_scroll_to_top_provider.dart';
-import '../../../../core/constants/app_constants.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/widgets/map/map_view.dart';
 import '../../../../shared/widgets/error_state_widget.dart';
 import '../../../../shared/widgets/section_header.dart';
 import '../../../community/presentation/models/pawhub_models.dart';
@@ -494,26 +493,15 @@ class _FindCareSection extends StatelessWidget {
                 child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  // Live map tile — no interaction flags so it's a pure visual
-                  FlutterMap(
-                    options: MapOptions(
-                      initialCenter: center,
-                      initialZoom: 14,
-                      interactionOptions: const InteractionOptions(
-                        flags: InteractiveFlag.none,
-                      ),
-                    ),
-                    children: [
-                      TileLayer(
-                        urlTemplate: AppConstants.mapTileUrl,
-                        subdomains: AppConstants.mapTileUrl.contains('{s}')
-                            ? AppConstants.mapTileSubdomains
-                            : const [],
-                        userAgentPackageName: 'com.petaverse.mobile',
-                        retinaMode: AppConstants.mapTileUrl.contains('{r}') &&
-                            RetinaMode.isHighDensity(context),
-                      ),
-                    ],
+                  // Live map teaser — non-interactive, no controls, pure visual.
+                  MapView(
+                    center: center,
+                    zoom: 14,
+                    markers: const [],
+                    interactive: false,
+                    showMyLocation: false,
+                    showRecenterButton: false,
+                    cluster: false,
                   ),
 
                   // Bottom gradient so the CTA reads over tiles

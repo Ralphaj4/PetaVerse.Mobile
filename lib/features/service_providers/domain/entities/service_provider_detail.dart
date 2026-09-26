@@ -19,7 +19,7 @@ class ServiceProviderDetail {
     required this.branches,
     this.description,
     this.photoUrl,
-    this.serviceIds = const [],
+    this.services = const [],
     this.supportedSpecies = const [],
     this.servesAllSpecies = false,
     this.specializations = const [],
@@ -41,8 +41,8 @@ class ServiceProviderDetail {
   final double rating;
   final int reviewCount;
 
-  final List<int> serviceIds;
-  final List<int> supportedSpecies;
+  final List<ProviderService> services;
+  final List<ProviderSpecies> supportedSpecies;
   final bool servesAllSpecies;
 
   final List<ProviderSpecialization> specializations;
@@ -122,4 +122,26 @@ class ProviderSpecialization {
   String get label => (otherName != null && otherName!.isNotEmpty)
       ? otherName!
       : name;
+}
+
+/// A service offered by the provider (e.g. "Vaccination", "Grooming").
+class ProviderService {
+  const ProviderService({
+    required this.id,
+    required this.name,
+  });
+
+  final int id;
+  final String name;
+}
+
+/// A species the provider supports (e.g. "Dog", "Cat").
+class ProviderSpecies {
+  const ProviderSpecies({
+    required this.id,
+    required this.name,
+  });
+
+  final int id;
+  final String name;
 }

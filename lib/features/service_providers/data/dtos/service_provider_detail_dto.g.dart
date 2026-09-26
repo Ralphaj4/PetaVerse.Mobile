@@ -22,16 +22,16 @@ _ServiceProviderDetailDto _$ServiceProviderDetailDtoFromJson(
           .toList() ??
       const <int>[],
   primaryCategoryId: (json['primaryCategoryId'] as num?)?.toInt() ?? 0,
-  serviceIds:
-      (json['serviceIds'] as List<dynamic>?)
-          ?.map((e) => (e as num).toInt())
+  services:
+      (json['services'] as List<dynamic>?)
+          ?.map((e) => ProviderServiceDto.fromJson(e as Map<String, dynamic>))
           .toList() ??
-      const <int>[],
+      const <ProviderServiceDto>[],
   supportedSpecies:
       (json['supportedSpecies'] as List<dynamic>?)
-          ?.map((e) => (e as num).toInt())
+          ?.map((e) => ProviderSpeciesDto.fromJson(e as Map<String, dynamic>))
           .toList() ??
-      const <int>[],
+      const <ProviderSpeciesDto>[],
   servesAllSpecies: json['servesAllSpecies'] as bool? ?? false,
   specializations:
       (json['specializations'] as List<dynamic>?)
@@ -71,7 +71,7 @@ Map<String, dynamic> _$ServiceProviderDetailDtoToJson(
   'reviewCount': instance.reviewCount,
   'categoryIds': instance.categoryIds,
   'primaryCategoryId': instance.primaryCategoryId,
-  'serviceIds': instance.serviceIds,
+  'services': instance.services,
   'supportedSpecies': instance.supportedSpecies,
   'servesAllSpecies': instance.servesAllSpecies,
   'specializations': instance.specializations,
@@ -142,6 +142,24 @@ Map<String, dynamic> _$ProviderSpecializationDtoToJson(
   'name': instance.name,
   'otherName': instance.otherName,
 };
+
+_ProviderServiceDto _$ProviderServiceDtoFromJson(Map<String, dynamic> json) =>
+    _ProviderServiceDto(
+      id: (json['id'] as num).toInt(),
+      name: json['name'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$ProviderServiceDtoToJson(_ProviderServiceDto instance) =>
+    <String, dynamic>{'id': instance.id, 'name': instance.name};
+
+_ProviderSpeciesDto _$ProviderSpeciesDtoFromJson(Map<String, dynamic> json) =>
+    _ProviderSpeciesDto(
+      id: (json['id'] as num).toInt(),
+      name: json['name'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$ProviderSpeciesDtoToJson(_ProviderSpeciesDto instance) =>
+    <String, dynamic>{'id': instance.id, 'name': instance.name};
 
 _ProviderRatingDto _$ProviderRatingDtoFromJson(Map<String, dynamic> json) =>
     _ProviderRatingDto(

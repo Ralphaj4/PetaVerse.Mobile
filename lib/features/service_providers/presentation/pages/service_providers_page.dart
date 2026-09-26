@@ -1,7 +1,6 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_map_animations/flutter_map_animations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -11,6 +10,7 @@ import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/location/location_service.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
+import '../../../../core/widgets/map/map_camera_controller.dart';
 import '../../domain/entities/provider_category.dart';
 import '../../domain/entities/provider_search.dart';
 import '../../domain/entities/service_provider.dart';
@@ -46,9 +46,9 @@ class _ServiceProvidersPageState extends ConsumerState<ServiceProvidersPage> {
   final DraggableScrollableController _sheetController =
       DraggableScrollableController();
 
-  /// The map's animated controller, handed up by [ServiceProviderMap] once
-  /// built, so the floating "my location" button can drive a fly-to.
-  AnimatedMapController? _mapController;
+  /// The map's camera controller, handed up by [ServiceProviderMap] once built,
+  /// so the floating "my location" button can drive a fly-to.
+  MapCameraController? _mapController;
 
   // Sheet snap points as a fraction of screen height. [_peek] lets the sheet
   // collapse down to just its header near the bottom; [_collapsed] is the

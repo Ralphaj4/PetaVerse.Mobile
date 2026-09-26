@@ -3,7 +3,14 @@ import 'package:latlong2/latlong.dart';
 
 import '../../domain/entities/provider_category.dart';
 import '../../domain/entities/service_provider.dart';
-import '../../domain/entities/service_provider_detail.dart';
+import '../../domain/entities/service_provider_detail.dart'
+    show
+        ServiceProviderDetail,
+        ProviderBranch,
+        ProviderHours,
+        ProviderSpecialization,
+        ProviderService,
+        ProviderSpecies;
 
 part 'service_provider_detail_dto.freezed.dart';
 part 'service_provider_detail_dto.g.dart';
@@ -21,8 +28,8 @@ abstract class ServiceProviderDetailDto with _$ServiceProviderDetailDto {
     @Default(0) int reviewCount,
     @Default(<int>[]) List<int> categoryIds,
     @Default(0) int primaryCategoryId,
-    @Default(<int>[]) List<int> serviceIds,
-    @Default(<int>[]) List<int> supportedSpecies,
+    @Default(<ProviderServiceDto>[]) List<ProviderServiceDto> services,
+    @Default(<ProviderSpeciesDto>[]) List<ProviderSpeciesDto> supportedSpecies,
     @Default(false) bool servesAllSpecies,
     @Default(<ProviderSpecializationDto>[])
     List<ProviderSpecializationDto> specializations,
@@ -52,8 +59,8 @@ abstract class ServiceProviderDetailDto with _$ServiceProviderDetailDto {
         reviewCount: reviewCount,
         categoryIds: categoryIds,
         primaryCategory: resolveCategory(primaryCategoryId),
-        serviceIds: serviceIds,
-        supportedSpecies: supportedSpecies,
+        services: services.map((e) => e.toEntity()).toList(),
+        supportedSpecies: supportedSpecies.map((e) => e.toEntity()).toList(),
         servesAllSpecies: servesAllSpecies,
         specializations:
             specializations.map((e) => e.toEntity()).toList(),
@@ -142,6 +149,36 @@ abstract class ProviderSpecializationDto with _$ProviderSpecializationDto {
         name: name,
         otherName: otherName,
       );
+}
+
+@freezed
+abstract class ProviderServiceDto with _$ProviderServiceDto {
+  const factory ProviderServiceDto({
+    required int id,
+    @Default('') String name,
+  }) = _ProviderServiceDto;
+
+  const ProviderServiceDto._();
+
+  factory ProviderServiceDto.fromJson(Map<String, dynamic> json) =>
+      _$ProviderServiceDtoFromJson(json);
+
+  ProviderService toEntity() => ProviderService(id: id, name: name);
+}
+
+@freezed
+abstract class ProviderSpeciesDto with _$ProviderSpeciesDto {
+  const factory ProviderSpeciesDto({
+    required int id,
+    @Default('') String name,
+  }) = _ProviderSpeciesDto;
+
+  const ProviderSpeciesDto._();
+
+  factory ProviderSpeciesDto.fromJson(Map<String, dynamic> json) =>
+      _$ProviderSpeciesDtoFromJson(json);
+
+  ProviderSpecies toEntity() => ProviderSpecies(id: id, name: name);
 }
 
 /// Wire shape of the rating submission response.

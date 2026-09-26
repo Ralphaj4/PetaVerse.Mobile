@@ -133,7 +133,7 @@ final class ProviderRatingProvider
   ProviderRating create() => ProviderRating();
 }
 
-String _$providerRatingHash() => r'27617964c9d191abafdd2564a476b28b8cfc7010';
+String _$providerRatingHash() => r'35c7616853da571506b8e0bffe12b34a4a150727';
 
 /// Submits the user's star rating for a provider and refreshes the detail on
 /// success. Returns the updated aggregate for optimistic UI, or throws the

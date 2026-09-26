@@ -74,7 +74,7 @@ class ServiceProviderRemoteDataSource {
     return ServiceProviderDetailDto.fromJson(json);
   }
 
-  /// POST /service-providers/{id}/rating — submit the user's stars.
+  /// POST /service-providers/{id}/rate — submit the user's stars.
   Future<ProviderRatingDto> rate(int id, int stars) async {
     final json = await _client.post<Map<String, dynamic>>(
       ApiEndpoints.serviceProviderRating(id),

@@ -2,29 +2,31 @@ import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_animations/flutter_map_animations.dart';
-import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_cluster_manager_2/google_maps_cluster_manager_2.dart'
+    as cm;
+import 'package:google_maps_flutter/google_maps_flutter.dart' as gmaps;
 import 'package:latlong2/latlong.dart';
 
-import '../../constants/app_constants.dart';
 import '../../theme/app_colors.dart';
+import 'latlng_bridge.dart';
 import 'map_marker_data.dart';
+import 'map_pin_painters.dart';
+import 'marker_bitmap.dart';
 
-/// Reusable flutter_map view that renders [MapMarkerData] pins on the tiles
-/// configured by [AppConstants.mapTileUrl] (keyless OpenStreetMap by default).
+/// Reusable Google Maps view that renders [MapMarkerData] pins.
 ///
-/// Aims for a Google-Maps-like feel: retina tiles, marker clustering, a
-/// current-location blue dot with a recenter button, and smooth animated
-/// camera moves. Shared between inline previews and the full-screen [MapPage].
+/// Provider-agnostic on the outside: callers pass the app's latlong2 [LatLng]
+/// and feature-neutral [MapMarkerData]; this widget bridges to google_maps.
+/// Keeps a Google-Maps feel with marker clustering, a current-location dot with
+/// a recenter button, and smooth animated camera moves. Shared between inline
+/// previews and the full-screen [MapPage].
 class MapView extends StatefulWidget {
   const MapView({
     required this.markers,
     required this.center,
     this.zoom = 13,
     this.interactive = true,
-    this.mapController,
     this.showMyLocation = true,
     this.showRecenterButton = true,
     this.cluster = true,
@@ -39,12 +41,7 @@ class MapView extends StatefulWidget {
   /// When false the map is fixed (used for small non-interactive previews).
   final bool interactive;
 
-  /// Optional externally-supplied controller. When provided, the view does NOT
-  /// animate it (the owner drives it); otherwise the view manages its own
-  /// animated controller.
-  final MapController? mapController;
-
-  /// Show the current-location blue dot and request location permission.
+  /// Show the current-location dot and request location permission.
   final bool showMyLocation;
 
   /// Show the floating "recenter on me" button.
@@ -61,26 +58,37 @@ class MapView extends StatefulWidget {
   State<MapView> createState() => _MapViewState();
 }
 
-class _MapViewState extends State<MapView> with TickerProviderStateMixin {
-  /// Animated controller used when the caller doesn't supply its own.
-  AnimatedMapController? _animatedController;
+/// Cluster item adapter: wraps a [MapMarkerData] so the cluster manager can
+/// group by location.
+class _MarkerItem with cm.ClusterItem {
+  _MarkerItem(this.data);
 
-  /// Resolved controller actually passed to [FlutterMap].
-  late MapController _controller;
+  final MapMarkerData data;
 
+  @override
+  gmaps.LatLng get location => data.point.toGoogle;
+}
+
+class _MapViewState extends State<MapView> {
+  gmaps.GoogleMapController? _controller;
+  cm.ClusterManager<_MarkerItem>? _clusterManager;
+
+  Set<gmaps.Marker> _markers = {};
   LatLng? _myLocation;
   StreamSubscription<Position>? _positionSub;
+  double _devicePixelRatio = 2;
 
   bool get _interactive => widget.interactive;
 
   @override
   void initState() {
     super.initState();
-    if (widget.mapController != null) {
-      _controller = widget.mapController!;
-    } else {
-      _animatedController = AnimatedMapController(vsync: this);
-      _controller = _animatedController!.mapController;
+    if (widget.cluster) {
+      _clusterManager = cm.ClusterManager<_MarkerItem>(
+        widget.markers.map(_MarkerItem.new),
+        _onClustersReady,
+        markerBuilder: _clusterMarkerBuilder,
+      );
     }
     if (widget.showMyLocation && _interactive) {
       _initLocation();
@@ -88,20 +96,35 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+  }
+
+  @override
   void didUpdateWidget(MapView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Treat [center] as a live "move here" prop: when it changes (e.g. the
-    // caller dropped a pin), recenter the camera. flutter_map's initialCenter
-    // only applies on first build, so without this the map wouldn't follow.
+    // Treat [center] as a live "move here" prop: recenter when it changes (e.g.
+    // the caller dropped a pin) so the camera follows.
     if (widget.center != oldWidget.center) {
-      _moveTo(widget.center, _controller.camera.zoom);
+      _controller?.animateCamera(
+        gmaps.CameraUpdate.newLatLng(widget.center.toGoogle),
+      );
+    }
+    // Rebuild markers when the pin set changes.
+    if (!identical(widget.markers, oldWidget.markers)) {
+      if (_clusterManager != null) {
+        _clusterManager!.setItems(widget.markers.map(_MarkerItem.new).toList());
+      } else {
+        _rebuildFlatMarkers();
+      }
     }
   }
 
   @override
   void dispose() {
     _positionSub?.cancel();
-    _animatedController?.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -117,7 +140,7 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
       return;
     }
 
-    // Live updates so the blue dot tracks the user.
+    // Live updates so the location dot tracks the user.
     _positionSub = Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
@@ -126,79 +149,142 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
     ).listen((pos) {
       if (!mounted) return;
       setState(() => _myLocation = LatLng(pos.latitude, pos.longitude));
+      _refreshMarkers();
     });
   }
 
-  /// Flies the camera to the user's location (or just centers if not animated).
   Future<void> _recenter() async {
     final target = _myLocation;
     if (target == null) {
-      // No fix yet — try a one-shot read.
       try {
         final pos = await Geolocator.getCurrentPosition();
         if (!mounted) return;
         final here = LatLng(pos.latitude, pos.longitude);
         setState(() => _myLocation = here);
-        _moveTo(here, 15);
+        _refreshMarkers();
+        unawaited(_controller?.animateCamera(
+          gmaps.CameraUpdate.newLatLngZoom(here.toGoogle, 15),
+        ));
       } catch (_) {
         // Location unavailable — nothing to recenter on.
       }
       return;
     }
-    _moveTo(target, 15);
+    unawaited(_controller?.animateCamera(
+      gmaps.CameraUpdate.newLatLngZoom(target.toGoogle, 15),
+    ));
   }
 
-  void _moveTo(LatLng target, double zoom) {
-    final animated = _animatedController;
-    if (animated != null) {
-      animated.animateTo(dest: target, zoom: zoom);
+  void _onMapCreated(gmaps.GoogleMapController controller) {
+    _controller = controller;
+    _clusterManager?.setMapId(controller.mapId);
+    if (_clusterManager == null) _rebuildFlatMarkers();
+  }
+
+  // ── Clustering ──────────────────────────────────────────────────────────
+  void _onClustersReady(Set<gmaps.Marker> markers) {
+    if (!mounted) return;
+    setState(() => _markers = markers);
+  }
+
+  Future<gmaps.Marker> _clusterMarkerBuilder(cm.Cluster<_MarkerItem> c) async {
+    if (c.isMultiple) {
+      final icon = await MarkerBitmap.fromPainter(
+        cacheKey: 'cluster-${c.count}-$_devicePixelRatio',
+        painter: ClusterBubblePainter(count: c.count),
+        size: const Size(40, 40),
+        devicePixelRatio: _devicePixelRatio,
+      );
+      return gmaps.Marker(
+        markerId: gmaps.MarkerId(c.getId()),
+        position: c.location,
+        icon: icon,
+        anchor: const Offset(0.5, 0.5),
+        onTap: () => _controller?.animateCamera(
+          gmaps.CameraUpdate.newLatLngZoom(
+            c.location,
+            _zoomForCluster(),
+          ),
+        ),
+      );
+    }
+    return _flatMarker(c.items.single.data);
+  }
+
+  double _zoomForCluster() => 15; // Zoom in to break clusters apart on tap.
+
+  // ── Flat (unclustered) markers ──────────────────────────────────────────
+  Future<void> _rebuildFlatMarkers() async {
+    final built = <gmaps.Marker>{};
+    for (final data in widget.markers) {
+      built.add(await _flatMarker(data));
+    }
+    if (!mounted) return;
+    setState(() => _markers = built);
+  }
+
+  Future<gmaps.Marker> _flatMarker(MapMarkerData data) async {
+    final icon = await MarkerBitmap.fromPainter(
+      cacheKey: 'pin-${data.color.toARGB32()}-${data.icon?.codePoint}'
+          '-$_devicePixelRatio',
+      painter: CircledPinPainter(color: data.color, icon: data.icon),
+      size: const Size(36, 36),
+      devicePixelRatio: _devicePixelRatio,
+    );
+    return gmaps.Marker(
+      markerId: gmaps.MarkerId(data.id),
+      position: data.point.toGoogle,
+      icon: icon,
+      anchor: const Offset(0.5, 0.5),
+      onTap: data.onTap,
+      infoWindow: data.label == null
+          ? gmaps.InfoWindow.noText
+          : gmaps.InfoWindow(title: data.label),
+    );
+  }
+
+  /// Re-derives markers after the location dot moves (cluster path repaints via
+  /// the manager; flat path rebuilds directly).
+  void _refreshMarkers() {
+    if (_clusterManager != null) {
+      _clusterManager!.updateMap();
     } else {
-      _controller.move(target, zoom);
+      _rebuildFlatMarkers();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    // The current-location dot is layered as a Flutter overlay via a marker;
+    // simplest is to add it to the marker set when known.
+    final allMarkers = {..._markers};
+
     return Stack(
       children: [
-        FlutterMap(
-          mapController: _controller,
-          options: MapOptions(
-            initialCenter: widget.center,
-            initialZoom: widget.zoom,
-            interactionOptions: InteractionOptions(
-              flags: _interactive ? InteractiveFlag.all : InteractiveFlag.none,
-            ),
-            onTap: widget.onTap == null
-                ? null
-                : (_, point) => widget.onTap!(point),
+        gmaps.GoogleMap(
+          initialCameraPosition: gmaps.CameraPosition(
+            target: widget.center.toGoogle,
+            zoom: widget.zoom,
           ),
-          children: [
-            TileLayer(
-              urlTemplate: AppConstants.mapTileUrl,
-              // Supply subdomains only when the URL load-balances via `{s}`.
-              subdomains: AppConstants.mapTileUrl.contains('{s}')
-                  ? AppConstants.mapTileSubdomains
-                  : const [],
-              userAgentPackageName: 'com.petaverse.mobile',
-              // Retina only when the tile URL supports it ({r} → "@2x"); the
-              // keyless OSM tiles don't, so this stays off for them.
-              retinaMode: AppConstants.mapTileUrl.contains('{r}') &&
-                  RetinaMode.isHighDensity(context),
-            ),
-            _buildMarkerLayer(),
-            if (widget.showMyLocation && _myLocation != null)
-              MarkerLayer(
-                markers: [
-                  Marker(
-                    point: _myLocation!,
-                    width: 24,
-                    height: 24,
-                    child: const _MyLocationDot(),
-                  ),
-                ],
-              ),
-          ],
+          onMapCreated: _onMapCreated,
+          markers: allMarkers,
+          circles: _myLocationCircle(),
+          onTap: widget.onTap == null
+              ? null
+              : (pos) => widget.onTap!(pos.toLatLng2),
+          onCameraMove: _clusterManager == null
+              ? null
+              : (_) => _clusterManager!.onCameraMove,
+          onCameraIdle: _clusterManager?.updateMap,
+          myLocationEnabled: false,
+          myLocationButtonEnabled: false,
+          zoomControlsEnabled: false,
+          compassEnabled: false,
+          mapToolbarEnabled: false,
+          rotateGesturesEnabled: _interactive,
+          scrollGesturesEnabled: _interactive,
+          zoomGesturesEnabled: _interactive,
+          tiltGesturesEnabled: _interactive,
         ),
         if (_interactive && widget.showRecenterButton)
           PositionedDirectional(
@@ -212,99 +298,29 @@ class _MapViewState extends State<MapView> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildMarkerLayer() {
-    final markers = widget.markers
-        .map(
-          (m) => Marker(
-            point: m.point,
-            width: 36,
-            height: 36,
-            child: _MapPin(data: m),
-          ),
-        )
-        .toList();
-
-    if (!widget.cluster || markers.length < 2) {
-      return MarkerLayer(markers: markers);
-    }
-
-    return MarkerClusterLayerWidget(
-      options: MarkerClusterLayerOptions(
-        markers: markers,
-        maxClusterRadius: 48,
-        size: const Size(40, 40),
-        padding: const EdgeInsets.all(50),
-        builder: (context, clusterMarkers) => _ClusterBubble(
-          count: clusterMarkers.length,
-        ),
+  /// The current-location indicator, drawn as native circles so it never
+  /// desyncs from the map during pans (no bitmap needed).
+  Set<gmaps.Circle> _myLocationCircle() {
+    final here = _myLocation;
+    if (!widget.showMyLocation || here == null) return const {};
+    return {
+      gmaps.Circle(
+        circleId: const gmaps.CircleId('my-location-halo'),
+        center: here.toGoogle,
+        radius: 30,
+        fillColor: AppColors.secondary.withValues(alpha: 0.15),
+        strokeColor: AppColors.secondary.withValues(alpha: 0.3),
+        strokeWidth: 1,
       ),
-    );
-  }
-}
-
-/// Count bubble shown in place of overlapping pins.
-class _ClusterBubble extends StatelessWidget {
-  const _ClusterBubble({required this.count});
-
-  final int count;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: AppColors.primary,
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.white, width: 2),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.4),
-            blurRadius: 6,
-            spreadRadius: 1,
-          ),
-        ],
+      gmaps.Circle(
+        circleId: const gmaps.CircleId('my-location-dot'),
+        center: here.toGoogle,
+        radius: 8,
+        fillColor: AppColors.secondary,
+        strokeColor: Colors.white,
+        strokeWidth: 2,
       ),
-      child: Text(
-        '$count',
-        style: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.w700,
-          fontSize: 13,
-        ),
-      ),
-    );
-  }
-}
-
-/// Pulsing blue dot marking the user's current location.
-class _MyLocationDot extends StatelessWidget {
-  const _MyLocationDot();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.secondary.withValues(alpha: 0.2),
-        shape: BoxShape.circle,
-      ),
-      alignment: Alignment.center,
-      child: Container(
-        width: 14,
-        height: 14,
-        decoration: BoxDecoration(
-          color: AppColors.secondary,
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.white, width: 2),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.secondary.withValues(alpha: 0.5),
-              blurRadius: 6,
-              spreadRadius: 1,
-            ),
-          ],
-        ),
-      ),
-    );
+    };
   }
 }
 
@@ -332,41 +348,6 @@ class _RecenterButton extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _MapPin extends StatelessWidget {
-  const _MapPin({required this.data});
-
-  final MapMarkerData data;
-
-  @override
-  Widget build(BuildContext context) {
-    final pin = Container(
-      decoration: BoxDecoration(
-        color: data.color,
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.white, width: 2),
-        boxShadow: [
-          BoxShadow(
-            color: data.color.withValues(alpha: 0.4),
-            blurRadius: 6,
-            spreadRadius: 1,
-          ),
-        ],
-      ),
-      child: data.icon == null
-          ? null
-          : Icon(data.icon, size: 16, color: Colors.white),
-    );
-
-    return Semantics(
-      label: data.label,
-      button: data.onTap != null,
-      child: data.onTap == null
-          ? pin
-          : GestureDetector(onTap: data.onTap, child: pin),
     );
   }
 }

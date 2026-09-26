@@ -30,9 +30,16 @@ class ProviderRating extends _$ProviderRating {
   Future<ProviderRatingResult> rate(int providerId, int stars) async {
     final result =
         await ref.read(serviceProviderRepositoryProvider).rate(providerId, stars);
+    // Check ref.mounted before accessing ref to guard against disposal during
+    // the async gap (e.g., if the page was scrolled and rebuilt).
+    if (!ref.mounted) {
+      return result.when(
+        success: (r) => r,
+        failure: (f) => throw f,
+      );
+    }
     return result.when(
       success: (r) {
-        // Refresh detail so rating/reviewCount/myStars reflect the new value.
         ref.invalidate(providerDetailProvider(providerId));
         return r;
       },

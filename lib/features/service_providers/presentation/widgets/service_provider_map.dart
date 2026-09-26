@@ -1,13 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_animations/flutter_map_animations.dart';
-import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_cluster_manager_2/google_maps_cluster_manager_2.dart'
+    as cm;
+import 'package:google_maps_flutter/google_maps_flutter.dart' as gmaps;
 import 'package:latlong2/latlong.dart';
 
-import '../../../../core/constants/app_constants.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/widgets/map/latlng_bridge.dart';
+import '../../../../core/widgets/map/map_camera_controller.dart';
+import '../../../../core/widgets/map/map_pin_painters.dart';
+import '../../../../core/widgets/map/marker_bitmap.dart';
 import '../../domain/entities/provider_search.dart';
 import '../../domain/entities/service_provider.dart';
 import 'provider_map_pin.dart';
@@ -18,17 +22,17 @@ typedef ProviderTapped = void Function(int branchId);
 
 /// Reports the visible map bounds once the camera settles after a pan, so the
 /// parent can refetch providers for the new viewport. Emitted as the pure-Dart
-/// [GeoBounds] so the page stays flutter_map-free.
+/// [GeoBounds] so the page stays map-provider-free.
 typedef ViewportChanged = void Function(GeoBounds bounds);
 
-/// Full-bleed interactive map of service providers.
+/// Full-bleed interactive Google Map of service providers.
 ///
-/// Purpose-built for the discovery screen (vs the shared preview [MapView]):
-/// the parent owns selection, so the map exposes an [AnimatedMapController] via
-/// callbacks and flies to whichever provider is [selectedId]. Pins are
-/// category-colored teardrops that grow + bounce when selected; overlapping
-/// pins cluster into count bubbles. Reports [onCameraIdle] after the user stops
-/// panning so results can update to the new viewport.
+/// Purpose-built for the discovery screen (vs the shared preview `MapView`):
+/// the parent owns selection, so the map hands up a [MapCameraController] via
+/// [controllerReady] and flies to whichever provider is [selectedId]. Pins are
+/// category-colored teardrops that grow when selected; overlapping pins cluster
+/// into count bubbles. Reports the visible bounds via [onCameraIdle] after the
+/// user stops panning so results update to the new viewport.
 class ServiceProviderMap extends StatefulWidget {
   const ServiceProviderMap({
     required this.providers,
@@ -55,54 +59,83 @@ class ServiceProviderMap extends StatefulWidget {
   /// Fires the visible bounds once the camera settles after a pan.
   final ViewportChanged? onCameraIdle;
 
-  /// Fires once, after the very first frame, with the initial viewport bounds so
-  /// the first search can run without waiting for a pan.
+  /// Fires once, after the first frame, with the initial viewport bounds so the
+  /// first search can run without waiting for a pan.
   final ViewportChanged? onFirstViewport;
 
-  /// Hands the animated controller to the parent so it can drive recenter /
+  /// Hands the camera controller to the parent so it can drive recenter /
   /// fly-to from the floating controls.
-  final void Function(AnimatedMapController controller)? controllerReady;
+  final void Function(MapCameraController controller)? controllerReady;
 
   @override
   State<ServiceProviderMap> createState() => _ServiceProviderMapState();
 }
 
-class _ServiceProviderMapState extends State<ServiceProviderMap>
-    with TickerProviderStateMixin {
-  late final AnimatedMapController _controller =
-      AnimatedMapController(vsync: this);
+/// Cluster item adapter over a [ServiceProvider] branch.
+class _ProviderItem with cm.ClusterItem {
+  _ProviderItem(this.provider);
 
+  final ServiceProvider provider;
+
+  @override
+  gmaps.LatLng get location => provider.location.toGoogle;
+}
+
+class _ServiceProviderMapState extends State<ServiceProviderMap> {
+  gmaps.GoogleMapController? _controller;
+  late final cm.ClusterManager<_ProviderItem> _clusterManager;
+
+  Set<gmaps.Marker> _markers = {};
   LatLng? _myLocation;
   StreamSubscription<Position>? _positionSub;
-  Timer? _idleTimer;
+  double _devicePixelRatio = 2;
+
+  /// Guards the once-only first-viewport report until the map has laid out.
+  bool _firstViewportSent = false;
 
   @override
   void initState() {
     super.initState();
-    widget.controllerReady?.call(_controller);
+    _clusterManager = cm.ClusterManager<_ProviderItem>(
+      widget.providers.map(_ProviderItem.new),
+      _onClustersReady,
+      markerBuilder: _clusterMarkerBuilder,
+      // Bigger radius groups nearby branches on a dense street.
+      stopClusteringZoom: 17,
+    );
     _initLocation();
-    // Report the initial viewport once the map is laid out so the first search
-    // runs against what's actually on screen (not just the center).
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      widget.onFirstViewport
-          ?.call(_toGeoBounds(_controller.mapController.camera.visibleBounds));
-    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
   }
 
   @override
   void didUpdateWidget(ServiceProviderMap oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Fly to a newly selected pin so it stays visible above the sheet.
-    if (widget.selectedId != oldWidget.selectedId &&
-        widget.selectedId != null) {
-      final target = _providerByBranch(widget.selectedId!);
-      if (target != null) {
-        final zoom =
-            _controller.mapController.camera.zoom.clamp(15.0, 18.0).toDouble();
-        _controller.animateTo(dest: target.location, zoom: zoom);
+    // Refresh the cluster items when the provider set changes.
+    if (!identical(widget.providers, oldWidget.providers)) {
+      _clusterManager
+          .setItems(widget.providers.map(_ProviderItem.new).toList());
+    }
+    // Re-render pins when selection changes (selected pin grows), and fly to it.
+    if (widget.selectedId != oldWidget.selectedId) {
+      _clusterManager.updateMap();
+      final id = widget.selectedId;
+      if (id != null) {
+        final target = _providerByBranch(id);
+        if (target != null) _flyTo(target.location);
       }
     }
+  }
+
+  @override
+  void dispose() {
+    _positionSub?.cancel();
+    _controller?.dispose();
+    super.dispose();
   }
 
   ServiceProvider? _providerByBranch(int branchId) {
@@ -110,6 +143,18 @@ class _ServiceProviderMapState extends State<ServiceProviderMap>
       if (p.branchId == branchId) return p;
     }
     return null;
+  }
+
+  Future<void> _flyTo(LatLng dest) async {
+    final controller = _controller;
+    if (controller == null) return;
+    final zoom = await controller.getZoomLevel();
+    await controller.animateCamera(
+      gmaps.CameraUpdate.newLatLngZoom(
+        dest.toGoogle,
+        zoom.clamp(15.0, 18.0),
+      ),
+    );
   }
 
   Future<void> _initLocation() async {
@@ -133,133 +178,147 @@ class _ServiceProviderMapState extends State<ServiceProviderMap>
     });
   }
 
-  /// Reports the viewport only on gesture-*end* events, debounced.
-  ///
-  /// Using [MapOptions.onMapEvent] instead of `onPositionChanged` is deliberate:
-  /// `onPositionChanged` fires continuously during a pinch/zoom, and each fire
-  /// would refetch → replace the marker set → rebuild the cluster layer while
-  /// the camera is still transforming. Doing that repeatedly during a fast
-  /// zoom-in-out froze the map (gray screen). Ending events fire once the
-  /// gesture settles, and the debounce coalesces a rapid burst into one fetch.
-  void _onMapEvent(MapEvent event) {
-    if (widget.onCameraIdle == null) return;
-    final isEnd = event is MapEventMoveEnd ||
-        event is MapEventFlingAnimationEnd ||
-        event is MapEventDoubleTapZoomEnd ||
-        event is MapEventScrollWheelZoom;
-    if (!isEnd) return;
-
-    _idleTimer?.cancel();
-    _idleTimer = Timer(const Duration(milliseconds: 450), () {
-      if (!mounted) return;
-      widget.onCameraIdle!(
-        _toGeoBounds(_controller.mapController.camera.visibleBounds),
-      );
-    });
+  void _onMapCreated(gmaps.GoogleMapController controller) {
+    _controller = controller;
+    _clusterManager.setMapId(controller.mapId);
+    widget.controllerReady?.call(MapCameraController(controller));
+    // Report the initial viewport once the map is laid out so the first search
+    // runs against what's actually on screen (not just the center).
+    if (!_firstViewportSent) {
+      _firstViewportSent = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) => _reportViewport(
+            widget.onFirstViewport,
+          ));
+    }
   }
 
-  /// Converts flutter_map's [LatLngBounds] into the pure-Dart [GeoBounds] the
-  /// domain/search layer expects.
-  GeoBounds _toGeoBounds(LatLngBounds b) => GeoBounds(
-        south: b.south,
-        west: b.west,
-        north: b.north,
-        east: b.east,
-      );
+  /// Reports the current visible bounds to [callback] as [GeoBounds]. Google's
+  /// [getVisibleRegion] returns the true on-screen rectangle (accounts for the
+  /// bottom sheet overlaying part of the map too — it's the full view rect).
+  Future<void> _reportViewport(ViewportChanged? callback) async {
+    if (callback == null) return;
+    final controller = _controller;
+    if (controller == null) return;
+    final region = await controller.getVisibleRegion();
+    if (!mounted) return;
+    callback(
+      GeoBounds(
+        south: region.southwest.latitude,
+        west: region.southwest.longitude,
+        north: region.northeast.latitude,
+        east: region.northeast.longitude,
+      ),
+    );
+  }
 
-  @override
-  void dispose() {
-    _idleTimer?.cancel();
-    _positionSub?.cancel();
-    _controller.dispose();
-    super.dispose();
+  /// Native camera-idle: fires once the camera settles after any gesture. This
+  /// replaces the old flutter_map end-event detection + debounce — Google only
+  /// fires idle when movement actually stops, so there's no continuous-fire
+  /// problem to debounce against.
+  void _onCameraIdle() {
+    _clusterManager.updateMap();
+    _reportViewport(widget.onCameraIdle);
+  }
+
+  // ── Cluster rendering ─────────────────────────────────────────────────────
+  void _onClustersReady(Set<gmaps.Marker> markers) {
+    if (!mounted) return;
+    setState(() => _markers = markers);
+  }
+
+  Future<gmaps.Marker> _clusterMarkerBuilder(cm.Cluster<_ProviderItem> c) async {
+    if (c.isMultiple) {
+      final icon = await MarkerBitmap.fromPainter(
+        cacheKey: 'sp-cluster-${c.count}-$_devicePixelRatio',
+        painter: ClusterBubblePainter(count: c.count),
+        size: const Size(46, 46),
+        devicePixelRatio: _devicePixelRatio,
+      );
+      return gmaps.Marker(
+        markerId: gmaps.MarkerId(c.getId()),
+        position: c.location,
+        icon: icon,
+        anchor: const Offset(0.5, 0.5),
+        onTap: () async {
+          final controller = _controller;
+          if (controller == null) return;
+          final zoom = await controller.getZoomLevel();
+          await controller.animateCamera(
+            gmaps.CameraUpdate.newLatLngZoom(c.location, zoom + 2),
+          );
+        },
+      );
+    }
+    return _providerMarker(c.items.single.provider);
+  }
+
+  Future<gmaps.Marker> _providerMarker(ServiceProvider p) async {
+    final selected = p.branchId == widget.selectedId;
+    final icon = await MarkerBitmap.fromPainter(
+      cacheKey: 'sp-pin-${p.primaryCategory.name}-$selected-$_devicePixelRatio',
+      painter: ProviderPinPainter(
+        category: p.primaryCategory,
+        selected: selected,
+      ),
+      size: selected ? const Size(60, 70) : const Size(52, 60),
+      devicePixelRatio: _devicePixelRatio,
+    );
+    return gmaps.Marker(
+      markerId: gmaps.MarkerId('branch-${p.branchId}'),
+      position: p.location.toGoogle,
+      icon: icon,
+      // Anchor the tip of the teardrop at the coordinate.
+      anchor: const Offset(0.5, 1),
+      zIndexInt: selected ? 2 : 1,
+      onTap: () => widget.onProviderTap(p.branchId),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return FlutterMap(
-      mapController: _controller.mapController,
-      options: MapOptions(
-        initialCenter: widget.center,
-        initialZoom: 14,
-        minZoom: 3,
-        maxZoom: 18,
-        interactionOptions: const InteractionOptions(
-          flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
-        ),
-        onTap: (_, _) => widget.onMapTap(),
-        onMapEvent: _onMapEvent,
+    return gmaps.GoogleMap(
+      initialCameraPosition: gmaps.CameraPosition(
+        target: widget.center.toGoogle,
+        zoom: 14,
       ),
-      children: [
-        TileLayer(
-          urlTemplate: AppConstants.mapTileUrl,
-          // Supply subdomains only when the URL load-balances via `{s}`.
-          subdomains: AppConstants.mapTileUrl.contains('{s}')
-              ? AppConstants.mapTileSubdomains
-              : const [],
-          userAgentPackageName: 'com.petaverse.mobile',
-          // Retina only when the configured tile URL supports it ({r} → "@2x").
-          retinaMode: AppConstants.mapTileUrl.contains('{r}') &&
-              RetinaMode.isHighDensity(context),
-        ),
-        _buildMarkerLayer(),
-        if (_myLocation != null)
-          MarkerLayer(
-            markers: [
-              Marker(
-                point: _myLocation!,
-                width: 26,
-                height: 26,
-                child: const MyLocationDot(),
-              ),
-            ],
-          ),
-      ],
+      onMapCreated: _onMapCreated,
+      markers: _markers,
+      circles: _myLocationCircle(),
+      onTap: (_) => widget.onMapTap(),
+      onCameraMove: (_) => _clusterManager.onCameraMove,
+      onCameraIdle: _onCameraIdle,
+      minMaxZoomPreference: const gmaps.MinMaxZoomPreference(3, 18),
+      myLocationEnabled: false,
+      myLocationButtonEnabled: false,
+      zoomControlsEnabled: false,
+      compassEnabled: false,
+      mapToolbarEnabled: false,
+      rotateGesturesEnabled: false,
     );
   }
 
-  Widget _buildMarkerLayer() {
-    final selectedId = widget.selectedId;
-    final markers = [
-      for (final p in widget.providers)
-        Marker(
-          key: ValueKey(p.branchId),
-          point: p.location,
-          width: 52,
-          height: 60,
-          // Anchor the marker tip at the coordinate.
-          alignment: Alignment.topCenter,
-          child: ProviderMapPin(
-            category: p.primaryCategory,
-            selected: p.branchId == selectedId,
-            onTap: () => widget.onProviderTap(p.branchId),
-          ),
-        ),
-    ];
-
-    if (markers.length < 2) return MarkerLayer(markers: markers);
-
-    return MarkerClusterLayerWidget(
-      options: MarkerClusterLayerOptions(
-        markers: markers,
-        maxClusterRadius: 46,
-        size: const Size(46, 46),
-        alignment: Alignment.center,
-        padding: const EdgeInsets.all(50),
-        // Disable the layer's own zoom/spiderfy animations: with results
-        // refetching as the camera moves, its animation controller can be
-        // interrupted mid-flight, which froze the whole map.
-        animationsOptions: const AnimationsOptions(
-          zoom: Duration.zero,
-          fitBound: Duration.zero,
-          spiderfy: Duration.zero,
-          centerMarker: Duration.zero,
-        ),
-        // Zoom in to break a cluster apart on tap (Google-Maps behavior).
-        zoomToBoundsOnClick: true,
-        builder: (context, clusterMarkers) =>
-            ClusterBubble(count: clusterMarkers.length),
+  /// Current-location indicator as native circles (stays glued to the map during
+  /// pans; no bitmap needed).
+  Set<gmaps.Circle> _myLocationCircle() {
+    final here = _myLocation;
+    if (here == null) return const {};
+    return {
+      gmaps.Circle(
+        circleId: const gmaps.CircleId('sp-my-location-halo'),
+        center: here.toGoogle,
+        radius: 34,
+        fillColor: AppColors.secondary.withValues(alpha: 0.15),
+        strokeColor: AppColors.secondary.withValues(alpha: 0.3),
+        strokeWidth: 1,
       ),
-    );
+      gmaps.Circle(
+        circleId: const gmaps.CircleId('sp-my-location-dot'),
+        center: here.toGoogle,
+        radius: 8,
+        fillColor: AppColors.secondary,
+        strokeColor: Colors.white,
+        strokeWidth: 3,
+      ),
+    };
   }
 }

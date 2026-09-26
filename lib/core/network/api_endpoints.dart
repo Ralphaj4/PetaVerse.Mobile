@@ -147,7 +147,7 @@ abstract final class ApiEndpoints {
   static const String serviceProviderSearch = '/service-providers/search';
   static const String serviceProviderCategories = '/service-providers/categories';
   static String serviceProvider(int id) => '/service-providers/$id';
-  static String serviceProviderRating(int id) => '/service-providers/$id/rating';
+  static String serviceProviderRating(int id) => '/service-providers/$id/rate';
 
   // Community (PawHub) — per-pet social graph. All under /community.
   // Feeds & post CRUD

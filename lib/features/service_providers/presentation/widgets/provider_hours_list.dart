@@ -38,7 +38,7 @@ class ProviderHoursList extends StatelessWidget {
   }
 
   String _valueFor(List<ProviderHours>? rows) {
-    if (rows == null || rows.isEmpty) return '—';
+    if (rows == null || rows.isEmpty) return 'Closed';
     return rows.map((r) => '${r.startTime} – ${r.endTime}').join(', ');
   }
 
