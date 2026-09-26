@@ -167,34 +167,51 @@ class _CommunitiesPageState extends ConsumerState<CommunitiesPage> {
   }
 
   Widget _searchBar(AppLocalizations l10n) {
-    final field = TextField(
-      controller: _searchController,
-      onChanged: _onSearchChanged,
-      textInputAction: TextInputAction.search,
-      decoration: InputDecoration(
-        hintText: l10n.communitiesSearchHint,
-        prefixIcon: const Icon(FluentIcons.search_24_regular),
-        suffixIcon: _query.isNotEmpty
-            ? IconButton(
-                icon: const Icon(FluentIcons.dismiss_24_regular),
-                onPressed: () {
-                  _searchController.clear();
-                  setState(() => _query = '');
-                },
-              )
-            : null,
-        filled: true,
-        fillColor: AppColors.surface,
-        border: OutlineInputBorder(
-          borderRadius: AppRadius.lgAll,
-          borderSide: BorderSide.none,
-        ),
+    final field = Container(
+      height: 44,
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: AppRadius.lgAll,
+        border: Border.all(color: AppColors.divider),
+      ),
+      child: Row(
+        children: [
+          const Icon(FluentIcons.search_24_regular,
+              size: 20, color: AppColors.textSecondary),
+          const SizedBox(width: AppSpacing.sm),
+          Expanded(
+            child: TextField(
+              controller: _searchController,
+              onChanged: _onSearchChanged,
+              textInputAction: TextInputAction.search,
+              decoration: InputDecoration(
+                hintText: l10n.communitiesSearchHint,
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                isDense: true,
+                contentPadding: const EdgeInsets.symmetric(vertical: 10),
+              ),
+            ),
+          ),
+          if (_query.isNotEmpty)
+            IconButton(
+              constraints: const BoxConstraints(minHeight: 0, minWidth: 0),
+              padding: EdgeInsets.zero,
+              icon: const Icon(FluentIcons.dismiss_24_regular),
+              onPressed: () {
+                _searchController.clear();
+                setState(() => _query = '');
+              },
+            ),
+        ],
       ),
     );
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-          AppSpacing.lg, AppSpacing.sm, AppSpacing.lg, AppSpacing.sm),
+          AppSpacing.md, AppSpacing.sm, AppSpacing.xs, AppSpacing.md),
       // Embedded has no AppBar to host the create action, so surface it here
       // beside the search field. Standalone keeps its AppBar action instead.
       child: widget.embedded
@@ -202,9 +219,11 @@ class _CommunitiesPageState extends ConsumerState<CommunitiesPage> {
               children: [
                 Expanded(child: field),
                 const SizedBox(width: AppSpacing.sm),
-                _CreateCommunityButton(
-                  onTap: () =>
+                IconButton(
+                  onPressed: () =>
                       context.push('/community/communities/create'),
+                  icon: const Icon(FluentIcons.add_24_regular),
+                  tooltip: l10n.communityCreateTitle,
                 ),
               ],
             )
@@ -286,43 +305,6 @@ class _CommunitiesPageState extends ConsumerState<CommunitiesPage> {
           },
         );
       },
-    );
-  }
-}
-
-/// Square brand-orange create-community action, used in embedded mode where
-/// there's no AppBar to host the standalone page's create action.
-class _CreateCommunityButton extends StatelessWidget {
-  const _CreateCommunityButton({required this.onTap});
-
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return Tooltip(
-      message: l10n.communityCreateTitle,
-      child: Material(
-        color: AppColors.primary,
-        shape: const CircleBorder(),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: onTap,
-          customBorder: const CircleBorder(),
-          child: Semantics(
-            button: true,
-            label: l10n.communityCreateTitle,
-            child: const SizedBox(
-              width: 52,
-              height: 52,
-              child: Icon(
-                FluentIcons.add_24_regular,
-                color: AppColors.onPrimary,
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
