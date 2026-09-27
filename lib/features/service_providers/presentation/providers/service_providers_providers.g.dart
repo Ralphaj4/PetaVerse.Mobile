@@ -716,14 +716,85 @@ abstract class _$ServiceProvidersNotifier
   }
 }
 
-/// The branch pins actually shown (map + list). Sourced directly from the
-/// server result — filtering/sort are server-side, so this is a thin accessor.
+/// Caches provider pins across viewport changes. Since the API returns results
+/// for the current viewport (bbox), panning can cause pins to appear/disappear.
+/// This notifier keeps a union of all pins ever fetched and reconciles with new
+/// API results (added/removed/updated). Prevents flickering when zooming in/out.
+
+@ProviderFor(ProviderPinCache)
+final providerPinCacheProvider = ProviderPinCacheProvider._();
+
+/// Caches provider pins across viewport changes. Since the API returns results
+/// for the current viewport (bbox), panning can cause pins to appear/disappear.
+/// This notifier keeps a union of all pins ever fetched and reconciles with new
+/// API results (added/removed/updated). Prevents flickering when zooming in/out.
+final class ProviderPinCacheProvider
+    extends $NotifierProvider<ProviderPinCache, Map<int, ServiceProvider>> {
+  /// Caches provider pins across viewport changes. Since the API returns results
+  /// for the current viewport (bbox), panning can cause pins to appear/disappear.
+  /// This notifier keeps a union of all pins ever fetched and reconciles with new
+  /// API results (added/removed/updated). Prevents flickering when zooming in/out.
+  ProviderPinCacheProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'providerPinCacheProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$providerPinCacheHash();
+
+  @$internal
+  @override
+  ProviderPinCache create() => ProviderPinCache();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Map<int, ServiceProvider> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Map<int, ServiceProvider>>(value),
+    );
+  }
+}
+
+String _$providerPinCacheHash() => r'15ab47b460009af707129c53307d03b68b6d3c16';
+
+/// Caches provider pins across viewport changes. Since the API returns results
+/// for the current viewport (bbox), panning can cause pins to appear/disappear.
+/// This notifier keeps a union of all pins ever fetched and reconciles with new
+/// API results (added/removed/updated). Prevents flickering when zooming in/out.
+
+abstract class _$ProviderPinCache extends $Notifier<Map<int, ServiceProvider>> {
+  Map<int, ServiceProvider> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref =
+        this.ref as $Ref<Map<int, ServiceProvider>, Map<int, ServiceProvider>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<Map<int, ServiceProvider>, Map<int, ServiceProvider>>,
+              Map<int, ServiceProvider>,
+              Object?,
+              Object?
+            >;
+    element.handleCreate(ref, build);
+  }
+}
+
+/// The branch pins actually shown (map + list). Uses cached pins to persist
+/// selection across viewport changes, merged with API results.
 
 @ProviderFor(visibleProviders)
 final visibleProvidersProvider = VisibleProvidersProvider._();
 
-/// The branch pins actually shown (map + list). Sourced directly from the
-/// server result — filtering/sort are server-side, so this is a thin accessor.
+/// The branch pins actually shown (map + list). Uses cached pins to persist
+/// selection across viewport changes, merged with API results.
 
 final class VisibleProvidersProvider
     extends
@@ -733,8 +804,8 @@ final class VisibleProvidersProvider
           List<ServiceProvider>
         >
     with $Provider<List<ServiceProvider>> {
-  /// The branch pins actually shown (map + list). Sourced directly from the
-  /// server result — filtering/sort are server-side, so this is a thin accessor.
+  /// The branch pins actually shown (map + list). Uses cached pins to persist
+  /// selection across viewport changes, merged with API results.
   VisibleProvidersProvider._()
     : super(
         from: null,
@@ -769,4 +840,4 @@ final class VisibleProvidersProvider
   }
 }
 
-String _$visibleProvidersHash() => r'a967e3aa8dd4a62cb9b0149bb865ac79681b115d';
+String _$visibleProvidersHash() => r'dc4732a7d8b87337ea180a31764415a86e18ff8a';

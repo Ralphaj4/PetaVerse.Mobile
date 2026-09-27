@@ -187,10 +187,49 @@ class ServiceProvidersNotifier extends _$ServiceProvidersNotifier {
   }
 }
 
-/// The branch pins actually shown (map + list). Sourced directly from the
-/// server result — filtering/sort are server-side, so this is a thin accessor.
+/// Caches provider pins across viewport changes. Since the API returns results
+/// for the current viewport (bbox), panning can cause pins to appear/disappear.
+/// This notifier keeps a union of all pins ever fetched and reconciles with new
+/// API results (added/removed/updated). Prevents flickering when zooming in/out.
+@riverpod
+class ProviderPinCache extends _$ProviderPinCache {
+  @override
+  Map<int, ServiceProvider> build() => {};
+
+  /// Merges new API results with cached pins.
+  void reconcile(List<ServiceProvider> apiResults) {
+    final byId = Map.fromEntries(apiResults.map((p) => MapEntry(p.branchId, p)));
+    final cache = Map<int, ServiceProvider>.from(state);
+    cache.addAll(byId);
+    state = cache;
+  }
+}
+
+/// The branch pins actually shown (map + list). Uses cached pins to persist
+/// selection across viewport changes, merged with API results.
+/// When a pin is selected, it appears at the top of the list.
 @riverpod
 List<ServiceProvider> visibleProviders(Ref ref) {
-  return ref.watch(serviceProvidersProvider).value?.items ??
+  final apiResult = ref.watch(serviceProvidersProvider).value?.items ??
       const <ServiceProvider>[];
+
+  // Reconcile API results into the cache.
+  ref.read(providerPinCacheProvider.notifier).reconcile(apiResult);
+
+  // Return cached pins, updated with latest API data.
+  final cache = ref.read(providerPinCacheProvider);
+  final providers = cache.values.toList();
+
+  // Sort so selected provider appears at the top
+  final selectedId = ref.watch(selectedProviderProvider);
+  if (selectedId != null) {
+    final selectedIndex =
+        providers.indexWhere((p) => p.branchId == selectedId);
+    if (selectedIndex > 0) {
+      final selected = providers.removeAt(selectedIndex);
+      providers.insert(0, selected);
+    }
+  }
+
+  return providers;
 }

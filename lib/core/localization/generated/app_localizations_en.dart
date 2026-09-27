@@ -258,10 +258,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get upcoming => 'Upcoming';
 
   @override
-  String get quickActions => 'Actions';
+  String get quickActions => 'Quick Access';
 
   @override
   String get bookAppointment => 'Book Appointment';
+
+  @override
+  String get quickAccessAddAppointment => 'Add Appointment';
+
+  @override
+  String get quickAccessCareMap => 'Care Map';
+
+  @override
+  String get quickAccessPetVision => 'Pet Vision';
 
   @override
   String get addRecord => 'Add Record';
@@ -766,6 +775,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aiSwitchPetTitle => 'Chat about';
+
+  @override
+  String get switchPetTitle => 'Switch Pet';
 
   @override
   String get aiSwitchConfirmTitle => 'Start a new chat?';

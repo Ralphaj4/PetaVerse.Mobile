@@ -523,7 +523,7 @@ abstract class AppLocalizations {
   /// No description provided for @quickActions.
   ///
   /// In en, this message translates to:
-  /// **'Actions'**
+  /// **'Quick Access'**
   String get quickActions;
 
   /// No description provided for @bookAppointment.
@@ -531,6 +531,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Book Appointment'**
   String get bookAppointment;
+
+  /// No description provided for @quickAccessAddAppointment.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Appointment'**
+  String get quickAccessAddAppointment;
+
+  /// No description provided for @quickAccessCareMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Care Map'**
+  String get quickAccessCareMap;
+
+  /// No description provided for @quickAccessPetVision.
+  ///
+  /// In en, this message translates to:
+  /// **'Pet Vision'**
+  String get quickAccessPetVision;
 
   /// No description provided for @addRecord.
   ///
@@ -1437,6 +1455,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Chat about'**
   String get aiSwitchPetTitle;
+
+  /// No description provided for @switchPetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch Pet'**
+  String get switchPetTitle;
 
   /// No description provided for @aiSwitchConfirmTitle.
   ///

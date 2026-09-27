@@ -73,9 +73,13 @@ class _PetaCareTabPageState extends ConsumerState<PetaCareTabPage> {
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
         backgroundColor: AppColors.surface,
-        body: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
+        body: RefreshIndicator(
+          color: AppColors.primary,
+          onRefresh: () => _refresh(currentPet?.id),
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Column(
             children: [
               // ── Orange gradient hero ─────────────────────────────────────
               _CareHero(
@@ -132,9 +136,22 @@ class _PetaCareTabPageState extends ConsumerState<PetaCareTabPage> {
               ),
             ],
           ),
+          ),
         ),
       ),
     );
+  }
+
+  /// Pull-to-refresh: re-fetch the reminders and, when a pet is selected, its
+  /// health score and dashboard snapshot. Invalidating re-runs each provider so
+  /// the whole care dashboard reflects fresh data.
+  Future<void> _refresh(int? petId) async {
+    ref.invalidate(upcomingHealthRemindersProvider);
+    if (petId != null) {
+      ref.invalidate(petHealthScoreProvider(petId));
+      ref.invalidate(petHealthSnapshotProvider(petId));
+    }
+    await ref.read(upcomingHealthRemindersProvider.future);
   }
 }
 
@@ -273,7 +290,7 @@ class _HeroPetSwitcher extends ConsumerWidget {
           context,
           pets: pets,
           current: current,
-          title: context.l10n.aiSwitchPetTitle,
+          title: context.l10n.switchPetTitle,
           showMyPostsLink: false,
         );
         if (chosen == null || chosen.backendId == pet.id) return;

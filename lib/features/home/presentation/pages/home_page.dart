@@ -407,7 +407,7 @@ class _QuickActionsRow extends ConsumerWidget {
           child: QuickActionButton(
             icon: FluentIcons.calendar_add_24_regular,
             color: AppColors.primary,
-            label: l10n.bookAppointment,
+            label: l10n.quickAccessAddAppointment,
             onTap: () {
               final pet = ref.read(petsProvider).currentPet;
               if (pet != null) {
@@ -418,18 +418,20 @@ class _QuickActionsRow extends ConsumerWidget {
         ),
         Expanded(
           child: QuickActionButton(
-            icon: FluentIcons.pill_24_regular,
-            color: AppColors.accentCoral,
-            label: l10n.medicationsReminders,
-            onTap: () {},
+            icon: FluentIcons.map_24_regular,
+            color: AppColors.secondary,
+            label: l10n.quickAccessCareMap,
+            // Opens the PawCare service-providers map on the root navigator, so
+            // it overlays Home without switching the bottom-nav tab.
+            onTap: () => context.push(AppRoutes.careMap),
           ),
         ),
         Expanded(
           child: QuickActionButton(
-            icon: FluentIcons.data_trending_24_regular,
+            icon: FluentIcons.eye_24_regular,
             color: AppColors.accentPurple,
-            label: l10n.healthTracker,
-            onTap: () {},
+            label: l10n.quickAccessPetVision,
+            onTap: () => context.push(AppRoutes.petVision),
           ),
         ),
       ],

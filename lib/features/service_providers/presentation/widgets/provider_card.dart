@@ -16,24 +16,22 @@ import 'provider_meta_pills.dart';
 /// Premium provider card used in the expanded list.
 ///
 /// Layout: a square photo on the leading edge, then name + category, the
-/// open/rating/distance meta line, badges, address, and quick actions (Call /
-/// Directions). When [selected], it lifts with a brand-tinted border so the
-/// card tapped on the map is visually linked to its highlighted pin.
+/// open/rating/distance meta line, badges, address, and a "View Details" button.
+/// When [selected], it lifts with a brand-tinted border so the card tapped on
+/// the map is visually linked to its highlighted pin.
 class ProviderCard extends StatelessWidget {
   const ProviderCard({
     required this.provider,
     this.selected = false,
     this.onTap,
-    this.onCall,
-    this.onDirections,
+    this.onViewDetails,
     super.key,
   });
 
   final ServiceProvider provider;
   final bool selected;
   final VoidCallback? onTap;
-  final VoidCallback? onCall;
-  final VoidCallback? onDirections;
+  final VoidCallback? onViewDetails;
 
   @override
   Widget build(BuildContext context) {
@@ -87,25 +85,40 @@ class ProviderCard extends StatelessWidget {
                     ProviderBadges(badges: provider.badges),
                   ],
                   const SizedBox(height: AppSpacing.md),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _QuickAction(
-                          icon: FluentIcons.call_24_regular,
-                          label: l10n.providerCall,
-                          onTap: onCall,
+                  SizedBox(
+                    width: double.infinity,
+                    child: Material(
+                      color: AppColors.primary,
+                      borderRadius: AppRadius.smAll,
+                      child: InkWell(
+                        onTap: onViewDetails,
+                        borderRadius: AppRadius.smAll,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: AppSpacing.sm,
+                            horizontal: AppSpacing.md,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                FluentIcons.open_24_regular,
+                                color: AppColors.onPrimary,
+                                size: 18,
+                              ),
+                              const SizedBox(width: AppSpacing.sm),
+                              Text(
+                                l10n.viewDetails,
+                                style: AppTextStyles.labelMedium.copyWith(
+                                  color: AppColors.onPrimary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      const SizedBox(width: AppSpacing.sm),
-                      Expanded(
-                        child: _QuickAction(
-                          icon: FluentIcons.location_arrow_24_regular,
-                          label: l10n.providerDirections,
-                          filled: true,
-                          onTap: onDirections,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),
@@ -241,56 +254,4 @@ class _Info extends StatelessWidget {
           ),
         ),
       );
-}
-
-class _QuickAction extends StatelessWidget {
-  const _QuickAction({
-    required this.icon,
-    required this.label,
-    this.filled = false,
-    this.onTap,
-  });
-
-  final IconData icon;
-  final String label;
-  final bool filled;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final fg = filled ? AppColors.onSecondary : AppColors.secondary;
-    final bg = filled ? AppColors.secondary : AppColors.secondarySoft;
-
-    return Semantics(
-      button: true,
-      enabled: onTap != null,
-      label: label,
-      child: Material(
-        color: bg,
-        borderRadius: AppRadius.smAll,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: AppRadius.smAll,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm + 2),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(icon, size: 16, color: fg),
-                const SizedBox(width: 6),
-                Text(
-                  label,
-                  style: AppTextStyles.labelMedium.copyWith(
-                    color: fg,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }

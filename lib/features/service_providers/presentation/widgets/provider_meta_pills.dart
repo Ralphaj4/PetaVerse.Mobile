@@ -86,7 +86,7 @@ class OpenStatusPill extends StatelessWidget {
               letterSpacing: 0,
             ),
           ),
-          if (hoursLabel != null) ...[
+          if (isOpen && hoursLabel != null) ...[
             Text(
               ' · ',
               style: AppTextStyles.labelMedium.copyWith(

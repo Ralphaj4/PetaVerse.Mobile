@@ -263,10 +263,19 @@ class AppLocalizationsAr extends AppLocalizations {
   String get upcoming => 'القادمة';
 
   @override
-  String get quickActions => 'إجراءات';
+  String get quickActions => 'وصول سريع';
 
   @override
   String get bookAppointment => 'حجز موعد';
+
+  @override
+  String get quickAccessAddAppointment => 'إضافة موعد';
+
+  @override
+  String get quickAccessCareMap => 'خريطة الرعاية';
+
+  @override
+  String get quickAccessPetVision => 'رؤية الحيوان';
 
   @override
   String get addRecord => 'إضافة سجل';
@@ -769,6 +778,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get aiSwitchPetTitle => 'المحادثة عن';
+
+  @override
+  String get switchPetTitle => 'تبديل الحيوان';
 
   @override
   String get aiSwitchConfirmTitle => 'بدء محادثة جديدة؟';

@@ -1,6 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,6 +17,7 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_cached_image.dart';
 import '../../domain/entities/service_provider_detail.dart';
 import '../providers/provider_detail_providers.dart';
+import '../widgets/provider_actions.dart';
 import '../widgets/provider_hours_list.dart';
 import '../widgets/provider_meta_pills.dart';
 import '../widgets/provider_rate_sheet.dart';
@@ -291,8 +293,8 @@ class _ProviderContent extends ConsumerWidget {
             // Description section
             if (detail.description != null &&
                 detail.description!.isNotEmpty) ...[
-              const SizedBox(height: AppSpacing.lg),
-              _SectionHeader(
+              const SizedBox(height: AppSpacing.xl),
+              const _SectionHeader(
                 icon: FluentIcons.info_24_regular,
                 title: 'About',
               ),
@@ -305,7 +307,7 @@ class _ProviderContent extends ConsumerWidget {
 
             // Services section
             if (detail.services.isNotEmpty) ...[
-              const SizedBox(height: AppSpacing.lg),
+              const SizedBox(height: AppSpacing.xl),
               const _SectionHeader(
                 icon: FluentIcons.checkmark_circle_24_regular,
                 title: 'Services',
@@ -323,7 +325,7 @@ class _ProviderContent extends ConsumerWidget {
 
             // Supported species
             if (detail.supportedSpecies.isNotEmpty) ...[
-              const SizedBox(height: AppSpacing.lg),
+              const SizedBox(height: AppSpacing.xl),
               const _SectionHeader(
                 icon: FluentIcons.animal_dog_24_regular,
                 title: 'Supported Species',
@@ -339,14 +341,14 @@ class _ProviderContent extends ConsumerWidget {
               ),
             ],
 
-            // Locations
+            // Locations & Contact
             if (detail.branches.isNotEmpty) ...[
-              const SizedBox(height: AppSpacing.lg),
+              const SizedBox(height: AppSpacing.xl),
               _SectionHeader(
                 icon: FluentIcons.location_24_regular,
                 title: detail.branches.length > 1
-                    ? '${detail.branches.length} Locations'
-                    : 'Location',
+                    ? '${detail.branches.length} Locations & Contact'
+                    : 'Location & Contact',
               ),
               const SizedBox(height: AppSpacing.sm),
               for (int i = 0; i < detail.branches.length; i++) ...[
@@ -361,7 +363,7 @@ class _ProviderContent extends ConsumerWidget {
 
             // Hours (collapsible)
             if (detail.hours.isNotEmpty) ...[
-              const SizedBox(height: AppSpacing.lg),
+              const SizedBox(height: AppSpacing.xl),
               _CollapsibleHours(hours: detail.hours),
             ],
 
@@ -496,10 +498,16 @@ class _LocationCardState extends State<_LocationCard> {
                           side: const BorderSide(color: AppColors.secondary),
                         ),
                         child: InkWell(
-                          onTap: () {
-                            _mapController?.animateCamera(
-                              CameraUpdate.newLatLng(LatLng(lat, lng)),
+                          onTap: () async {
+                            final ok = await ProviderActions.navigateTo(
+                              widget.branch.location,
+                              widget.providerName,
                             );
+                            if (!ok && context.mounted) {
+                              context.showErrorSnackBar(
+                                context.l10n.providerDirectionsFailed,
+                              );
+                            }
                           },
                           borderRadius: AppRadius.smAll,
                           child: Padding(
@@ -527,6 +535,59 @@ class _LocationCardState extends State<_LocationCard> {
                           ),
                         ),
                       ),
+                      if (widget.branch.whatsApp != null &&
+                          widget.branch.whatsApp!.isNotEmpty) ...[
+                        const SizedBox(height: AppSpacing.sm),
+                        Material(
+                          color: const Color(0xFF25D366),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: AppRadius.smAll,
+                          ),
+                          child: InkWell(
+                            onTap: () async {
+                              final whatsapp = widget.branch.whatsApp;
+                              if (whatsapp == null || whatsapp.isEmpty) return;
+                              final uri = Uri(
+                                scheme: 'https',
+                                host: 'wa.me',
+                                path: '/$whatsapp',
+                                queryParameters: {'text': ''},
+                              );
+                              if (await canLaunchUrl(uri)) {
+                                await launchUrl(uri,
+                                    mode: LaunchMode.externalApplication);
+                              }
+                            },
+                            borderRadius: AppRadius.smAll,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: AppSpacing.sm,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: SvgPicture.asset(
+                                      'assets/icons/whatsapp.svg',
+                                      semanticsLabel: 'WhatsApp',
+                                    ),
+                                  ),
+                                  const SizedBox(width: AppSpacing.xs),
+                                  Text(
+                                    'WhatsApp',
+                                    style: AppTextStyles.labelMedium.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 ],
@@ -536,7 +597,10 @@ class _LocationCardState extends State<_LocationCard> {
             // Right: Google Map
             Container(
               width: 150,
-              height: 135,
+              height: widget.branch.whatsApp != null &&
+                      widget.branch.whatsApp!.isNotEmpty
+                  ? 175
+                  : 135,
               decoration: BoxDecoration(
                 borderRadius: AppRadius.smAll,
                 border: Border.all(color: AppColors.divider),

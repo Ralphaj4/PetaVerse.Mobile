@@ -100,8 +100,11 @@ class _ServiceProviderMapState extends State<ServiceProviderMap> {
       widget.providers.map(_ProviderItem.new),
       _onClustersReady,
       markerBuilder: _clusterMarkerBuilder,
-      // Bigger radius groups nearby branches on a dense street.
-      stopClusteringZoom: 17,
+      // Only cluster when zoomed way out (zoom < 12). At normal exploration
+      // zoom (13+), show individual pins so selection/interaction is crisp.
+      // Reconciliation in the provider cache ensures pins stay visible during
+      // zoom transitions even as the API refetches new viewports.
+      stopClusteringZoom: 12,
     );
     _initLocation();
   }
@@ -267,10 +270,10 @@ class _ServiceProviderMapState extends State<ServiceProviderMap> {
       markerId: gmaps.MarkerId('branch-${p.branchId}'),
       position: p.location.toGoogle,
       icon: icon,
-      // Anchor the tip of the teardrop at the coordinate.
       anchor: const Offset(0.5, 1),
       zIndexInt: selected ? 2 : 1,
       onTap: () => widget.onProviderTap(p.branchId),
+      infoWindow: const gmaps.InfoWindow(),
     );
   }
 
@@ -294,6 +297,7 @@ class _ServiceProviderMapState extends State<ServiceProviderMap> {
       compassEnabled: false,
       mapToolbarEnabled: false,
       rotateGesturesEnabled: false,
+      indoorViewEnabled: false,
     );
   }
 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/errors/failure.dart';
@@ -17,12 +18,11 @@ import '../../domain/entities/service_provider.dart';
 import '../providers/service_providers_providers.dart';
 import '../widgets/bottom_sheet_header.dart';
 import '../widgets/map_controls.dart';
-import '../widgets/provider_actions.dart';
 import '../widgets/provider_card.dart';
 import '../widgets/provider_empty_state.dart';
 import '../widgets/provider_filter_bar.dart';
 import '../widgets/provider_list_skeleton.dart';
-import '../widgets/provider_pet_toggle.dart';
+import '../widgets/provider_pet_selector.dart';
 import '../widgets/provider_search_bar.dart';
 import '../widgets/provider_sort_sheet.dart';
 import '../widgets/service_provider_map.dart';
@@ -114,20 +114,6 @@ class _ServiceProvidersPageState extends ConsumerState<ServiceProvidersPage> {
   }
 
   // ── Quick actions ─────────────────────────────────────────────────────
-  Future<void> _call(ServiceProvider provider) async {
-    final ok = await ProviderActions.call(provider);
-    if (!ok && mounted) {
-      context.showErrorSnackBar(context.l10n.providerCallFailed);
-    }
-  }
-
-  Future<void> _directions(ServiceProvider provider) async {
-    final ok = await ProviderActions.directions(provider);
-    if (!ok && mounted) {
-      context.showErrorSnackBar(context.l10n.providerDirectionsFailed);
-    }
-  }
-
   Future<void> _openSort() async {
     final current = ref.read(providerSortOrderProvider);
     final picked = await ProviderSortSheet.show(context, current: current);
@@ -145,6 +131,26 @@ class _ServiceProvidersPageState extends ConsumerState<ServiceProvidersPage> {
       ref.read(providerUserLocationProvider.notifier).refresh();
     }
     _deselect();
+  }
+
+  /// Zoom out to show all of Lebanon and update the viewport bounds
+  Future<void> _zoomToLebanon() async {
+    if (_mapController == null) return;
+    // Lebanon bounds: approximately 33.05-34.66°N, 35.11-36.64°E
+    // Center: 33.85°N, 35.87°E
+    const lebanonCenter = LatLng(33.85, 35.87);
+    const zoom = 8.5; // Zoom level that shows all of Lebanon
+    await _mapController!.animateTo(dest: lebanonCenter, zoom: zoom);
+    // Update the viewport after animation completes
+    await Future.delayed(const Duration(milliseconds: 400));
+    _onViewport(
+      const GeoBounds(
+        south: 33.05,
+        west: 35.11,
+        north: 34.66,
+        east: 36.64,
+      ),
+    );
   }
 
   @override
@@ -189,24 +195,20 @@ class _ServiceProvidersPageState extends ConsumerState<ServiceProvidersPage> {
               ),
             ),
 
-            // ── Top overlay: back + search + pet toggle + filter chips ───
+            // ── Top overlay: back + search + pet selector + filter chips ───
             _TopOverlay(
               isTablet: isTablet,
               onBack: () => context.pop(),
               searchBar: ProviderSearchBar(
-                onChanged: (q) =>
-                    ref.read(providerSearchQueryProvider.notifier).set(q),
-                onSortTap: _openSort,
-                sortActive: sort != ProviderSort.distance,
+                onChanged: (q) {
+                  // When user types a search query, zoom to Lebanon bounds
+                  if (q.isNotEmpty) {
+                    _zoomToLebanon();
+                  }
+                  ref.read(providerSearchQueryProvider.notifier).set(q);
+                },
               ),
-              petToggle: hasPet
-                  ? ProviderPetToggle(
-                      tailoring: tailoring,
-                      onChanged: () => ref
-                          .read(providerPetTailoringProvider.notifier)
-                          .toggle(),
-                    )
-                  : null,
+              petSelector: hasPet ? const ProviderPetSelector() : null,
               filterBar: ProviderFilterBar(
                 selected: category,
                 onSelected: (c) {
@@ -248,8 +250,6 @@ class _ServiceProvidersPageState extends ConsumerState<ServiceProvidersPage> {
                 onSortTap: _openSort,
                 onSelect: _selectBranch,
                 onOpen: _openProvider,
-                onCall: _call,
-                onDirections: _directions,
                 onRetry: () =>
                     ref.read(serviceProvidersProvider.notifier).refresh(),
                 onClearFilters: () {
@@ -267,20 +267,20 @@ class _ServiceProvidersPageState extends ConsumerState<ServiceProvidersPage> {
   }
 }
 
-/// Top overlay hosting the floating search bar, the optional pet-tailoring
-/// toggle, and the horizontal filter chips.
+/// Top overlay hosting the floating search bar, the optional pet selector,
+/// and the horizontal filter chips.
 class _TopOverlay extends StatelessWidget {
   const _TopOverlay({
     required this.searchBar,
     required this.filterBar,
     required this.isTablet,
     required this.onBack,
-    this.petToggle,
+    this.petSelector,
   });
 
   final Widget searchBar;
   final Widget filterBar;
-  final Widget? petToggle;
+  final Widget? petSelector;
   final bool isTablet;
   final VoidCallback onBack;
 
@@ -306,16 +306,15 @@ class _TopOverlay extends StatelessWidget {
                       _BackButton(onTap: onBack),
                       const SizedBox(width: 12),
                       Expanded(child: searchBar),
+                      if (petSelector != null) ...[
+                        const SizedBox(width: 12),
+                        petSelector!,
+                      ],
                     ],
                   ),
                 ),
               ),
             ),
-            if (petToggle != null)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: petToggle,
-              ),
             filterBar,
           ],
         ),
@@ -415,8 +414,6 @@ class _ResultsSheet extends StatefulWidget {
     required this.onSortTap,
     required this.onSelect,
     required this.onOpen,
-    required this.onCall,
-    required this.onDirections,
     required this.onRetry,
     required this.onClearFilters,
   });
@@ -439,8 +436,6 @@ class _ResultsSheet extends StatefulWidget {
   final VoidCallback onSortTap;
   final void Function(int branchId) onSelect;
   final ValueChanged<ServiceProvider> onOpen;
-  final ValueChanged<ServiceProvider> onCall;
-  final ValueChanged<ServiceProvider> onDirections;
   final VoidCallback onRetry;
   final VoidCallback onClearFilters;
 
@@ -581,12 +576,8 @@ class _ResultsSheetState extends State<_ResultsSheet> {
               key: _keyFor(provider.branchId),
               provider: provider,
               selected: provider.branchId == widget.selectedId,
-              onTap: () {
-                widget.onSelect(provider.branchId);
-                widget.onOpen(provider);
-              },
-              onCall: () => widget.onCall(provider),
-              onDirections: () => widget.onDirections(provider),
+              onTap: () => widget.onSelect(provider.branchId),
+              onViewDetails: () => widget.onOpen(provider),
             );
           },
         );
