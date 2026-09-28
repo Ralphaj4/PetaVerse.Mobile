@@ -789,12 +789,14 @@ abstract class _$ProviderPinCache extends $Notifier<Map<int, ServiceProvider>> {
 
 /// The branch pins actually shown (map + list). Uses cached pins to persist
 /// selection across viewport changes, merged with API results.
+/// When a pin is selected, it appears at the top of the list.
 
 @ProviderFor(visibleProviders)
 final visibleProvidersProvider = VisibleProvidersProvider._();
 
 /// The branch pins actually shown (map + list). Uses cached pins to persist
 /// selection across viewport changes, merged with API results.
+/// When a pin is selected, it appears at the top of the list.
 
 final class VisibleProvidersProvider
     extends
@@ -806,6 +808,7 @@ final class VisibleProvidersProvider
     with $Provider<List<ServiceProvider>> {
   /// The branch pins actually shown (map + list). Uses cached pins to persist
   /// selection across viewport changes, merged with API results.
+  /// When a pin is selected, it appears at the top of the list.
   VisibleProvidersProvider._()
     : super(
         from: null,
@@ -840,4 +843,4 @@ final class VisibleProvidersProvider
   }
 }
 
-String _$visibleProvidersHash() => r'dc4732a7d8b87337ea180a31764415a86e18ff8a';
+String _$visibleProvidersHash() => r'08fe3d10ae1eb4681510dc5b51e49f38093b941e';

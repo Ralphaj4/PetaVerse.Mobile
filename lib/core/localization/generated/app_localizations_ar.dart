@@ -1313,7 +1313,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get healthMedicationsFrequencyLabel => 'التكرار';
 
   @override
-  String get healthMedicationsStartDateLabel => 'تاريخ البدء';
+  String get healthMedicationsStartDateLabel => 'الجرعة الأولى';
 
   @override
   String get healthMedicationsAddedSuccess => 'تمت إضافة الدواء';
@@ -1461,6 +1461,15 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get couldNotSavePhoto => 'تعذر حفظ الصورة';
+
+  @override
+  String get useInPost => 'استخدام في منشور';
+
+  @override
+  String get couldNotPreparePhoto => 'تعذر تجهيز الصورة';
+
+  @override
+  String get flipCamera => 'تبديل الكاميرا';
 
   @override
   String get didYouKnow => 'هل تعلم؟';
@@ -2858,6 +2867,203 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get notifAppointmentDesc =>
       'تذكيرات قبل 24 ساعة وساعة واحدة من المواعيد المجدولة';
+
+  @override
+  String get notifFeeding => 'تذكيرات التغذية';
+
+  @override
+  String get notifFeedingDesc => 'تذكيرات في كل موعد وجبة مجدول';
+
+  @override
+  String get notifGrooming => 'تذكيرات العناية';
+
+  @override
+  String get notifGroomingDesc => 'تنبيهات عند اقتراب موعد العناية أو تأخره';
+
+  @override
+  String get feedingTitle => 'التغذية';
+
+  @override
+  String get feedingSetUp => 'إعداد التغذية';
+
+  @override
+  String get feedingEdit => 'تعديل التغذية';
+
+  @override
+  String get feedingEmpty =>
+      'لا يوجد جدول تغذية بعد. حدّد مواعيد الوجبات لتلقي التذكيرات.';
+
+  @override
+  String get feedingSaved => 'تم حفظ جدول التغذية';
+
+  @override
+  String get feedingDelete => 'حذف الجدول';
+
+  @override
+  String get feedingDeleted => 'تم حذف جدول التغذية';
+
+  @override
+  String get feedingDeleteTitle => 'حذف جدول التغذية؟';
+
+  @override
+  String get feedingDeleteMessage => 'ستتوقف تذكيرات التغذية.';
+
+  @override
+  String get feedingDaysLabel => 'الأيام';
+
+  @override
+  String get feedingMealsLabel => 'الوجبات';
+
+  @override
+  String feedingMealNumber(int number) {
+    return 'الوجبة $number';
+  }
+
+  @override
+  String get feedingAddMeal => 'إضافة وجبة';
+
+  @override
+  String get feedingRemoveMeal => 'إزالة الوجبة';
+
+  @override
+  String get feedingAmountHint => 'الكمية (اختياري)';
+
+  @override
+  String get feedingNoDays => 'لم يتم تحديد أيام';
+
+  @override
+  String get feedingNoDaysError => 'اختر يومًا واحدًا على الأقل';
+
+  @override
+  String get feedingEveryDay => 'كل يوم';
+
+  @override
+  String get feedingWeekdays => 'أيام الأسبوع';
+
+  @override
+  String get feedingWeekends => 'عطلة نهاية الأسبوع';
+
+  @override
+  String get feedUnitGrams => 'غرام';
+
+  @override
+  String get feedUnitCups => 'أكواب';
+
+  @override
+  String get feedUnitCans => 'علب';
+
+  @override
+  String get weekdayShortSun => 'أحد';
+
+  @override
+  String get weekdayShortMon => 'إثن';
+
+  @override
+  String get weekdayShortTue => 'ثلا';
+
+  @override
+  String get weekdayShortWed => 'أرب';
+
+  @override
+  String get weekdayShortThu => 'خمي';
+
+  @override
+  String get weekdayShortFri => 'جمع';
+
+  @override
+  String get weekdayShortSat => 'سبت';
+
+  @override
+  String get weekdaySunday => 'الأحد';
+
+  @override
+  String get weekdayMonday => 'الإثنين';
+
+  @override
+  String get weekdayTuesday => 'الثلاثاء';
+
+  @override
+  String get weekdayWednesday => 'الأربعاء';
+
+  @override
+  String get weekdayThursday => 'الخميس';
+
+  @override
+  String get weekdayFriday => 'الجمعة';
+
+  @override
+  String get weekdaySaturday => 'السبت';
+
+  @override
+  String get feedingUnitLabel => 'الوحدة';
+
+  @override
+  String get feedUnitGramsName => 'غرامات';
+
+  @override
+  String get feedUnitCupsName => 'أكواب';
+
+  @override
+  String get feedUnitCansName => 'علب';
+
+  @override
+  String get done => 'تم';
+
+  @override
+  String get groomingTitle => 'العناية';
+
+  @override
+  String get groomingSetUp => 'إعداد العناية';
+
+  @override
+  String get groomingEdit => 'تعديل العناية';
+
+  @override
+  String get groomingEmpty =>
+      'لا يوجد جدول عناية بعد. حدّد فترة تكرار لتلقي التذكيرات.';
+
+  @override
+  String get groomingSaved => 'تم حفظ جدول العناية';
+
+  @override
+  String get groomingDeleted => 'تم حذف جدول العناية';
+
+  @override
+  String get groomingIntervalLabel => 'التكرار كل';
+
+  @override
+  String get groomingNextDueLabel => 'الموعد التالي';
+
+  @override
+  String groomingEveryDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days أيام',
+      one: 'يوم',
+    );
+    return 'كل $_temp0';
+  }
+
+  @override
+  String groomingNextDue(String date) {
+    return 'الموعد التالي $date';
+  }
+
+  @override
+  String get groomingMarkGroomed => 'تحديد كمُعتنى به';
+
+  @override
+  String get groomingMarkedGroomed => 'تم التحديد كمُعتنى به';
+
+  @override
+  String get groomingDelete => 'حذف الجدول';
+
+  @override
+  String get groomingDeleteTitle => 'حذف جدول العناية؟';
+
+  @override
+  String get groomingDeleteMessage => 'ستتوقف تذكيرات العناية.';
 
   @override
   String get notifCommunityInteractions => 'الإعجابات والتعليقات والردود';

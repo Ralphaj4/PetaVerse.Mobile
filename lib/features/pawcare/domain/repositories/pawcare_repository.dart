@@ -1,5 +1,7 @@
 import '../../../../core/errors/result.dart';
 import '../entities/appointment.dart';
+import '../entities/feeding_schedule.dart';
+import '../entities/grooming_schedule.dart';
 import '../entities/health_lookup.dart';
 import '../entities/medication.dart';
 import '../entities/pet_health_score.dart';
@@ -145,6 +147,47 @@ abstract interface class PawCareRepository {
     int appointmentId, {
     DateTime? completedAt,
   });
+
+  // ── Feeding schedule ──────────────────────────────────────────────────────
+
+  /// The pet's feeding schedule, or null when none is configured. Fetching also
+  /// re-arms the device-local meal reminders (gated on the Feeding pref).
+  Future<Result<FeedingSchedule?>> getFeedingSchedule(int petId);
+
+  /// Creates or fully replaces the feeding schedule and reschedules local meal
+  /// reminders. Passing an empty [times] list clears the schedule.
+  Future<Result<FeedingSchedule>> saveFeedingSchedule(
+    int petId, {
+    required int daysOfWeek,
+    required List<FeedingTime> times,
+  });
+
+  /// Deletes the feeding schedule and cancels its local reminders.
+  Future<Result<void>> deleteFeedingSchedule(int petId);
+
+  // ── Grooming schedule ─────────────────────────────────────────────────────
+
+  /// The pet's grooming schedule, or null when none is configured. Grooming
+  /// reminders are server-pushed (FCM) — nothing is scheduled locally.
+  Future<Result<GroomingSchedule?>> getGroomingSchedule(int petId);
+
+  /// Creates or replaces the grooming schedule.
+  Future<Result<GroomingSchedule>> saveGroomingSchedule(
+    int petId, {
+    required int intervalDays,
+    required DateTime nextDueDate,
+    DateTime? lastGroomedDate,
+  });
+
+  /// Marks the pet as groomed ([groomedDate] defaults to now); the backend sets
+  /// last-groomed, advances the next-due date, and re-arms the push reminders.
+  Future<Result<GroomingSchedule>> markGroomed(
+    int petId, {
+    DateTime? groomedDate,
+  });
+
+  /// Deletes the grooming schedule.
+  Future<Result<void>> deleteGroomingSchedule(int petId);
 
   // ── Health score ──────────────────────────────────────────────────────────
 

@@ -11,6 +11,8 @@ import '../../../../shared/widgets/error_state_widget.dart';
 import '../../domain/entities/medication.dart';
 import '../providers/pawcare_providers.dart';
 import 'appointments_card.dart';
+import 'feeding_card.dart';
+import 'grooming_card.dart';
 import 'health_section_skeleton.dart';
 import 'medications_card.dart';
 import 'vaccinations_card.dart';
@@ -51,6 +53,21 @@ class HealthDashboard extends ConsumerWidget {
       failure: (f) => context.showErrorSnackBar(
         f.localizedMessage(l10n),
       ),
+    );
+  }
+
+  Future<void> _markGroomed(BuildContext context, WidgetRef ref) async {
+    final l10n = context.l10n;
+    final result =
+        await ref.read(pawCareRepositoryProvider).markGroomed(petId);
+    if (!context.mounted) return;
+    result.when(
+      success: (_) {
+        ref.invalidate(petHealthSnapshotProvider(petId));
+        ref.invalidate(petGroomingScheduleProvider(petId));
+        context.showSuccessSnackBar(l10n.groomingMarkedGroomed);
+      },
+      failure: (f) => context.showErrorSnackBar(f.localizedMessage(l10n)),
     );
   }
 
@@ -99,6 +116,17 @@ class HealthDashboard extends ConsumerWidget {
             appointments: snapshot.appointments,
             onAdd: () => context.push(AppRoutes.addAppointmentPath(petId)),
             onOpen: () => context.push(AppRoutes.appointmentsPath(petId)),
+          ),
+          const SizedBox(height: AppSpacing.md),
+          FeedingCard(
+            schedule: snapshot.feeding,
+            onEdit: () => context.push(AppRoutes.feedingSchedulePath(petId)),
+          ),
+          const SizedBox(height: AppSpacing.md),
+          GroomingCard(
+            schedule: snapshot.grooming,
+            onEdit: () => context.push(AppRoutes.groomingSchedulePath(petId)),
+            onMarkGroomed: () => _markGroomed(context, ref),
           ),
         ],
       ),

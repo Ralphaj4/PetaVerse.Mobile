@@ -174,6 +174,7 @@ class FcmHandler {
       'medication' => NotifPrefKeys.medication,
       'vaccination' => NotifPrefKeys.vaccination,
       'appointment' => NotifPrefKeys.appointment,
+      'grooming' => NotifPrefKeys.grooming,
       _ => null, // unknown/marketplace — always allow
     };
   }
@@ -241,6 +242,10 @@ class FcmHandler {
         if (petId != null) router.push(AppRoutes.medicationsPath(petId));
       case NotificationCategory.vaccination:
         if (petId != null) router.push(AppRoutes.vaccinationsPath(petId));
+      case NotificationCategory.grooming:
+        if (petId != null) router.push(AppRoutes.groomingSchedulePath(petId));
+      case NotificationCategory.feeding:
+        if (petId != null) router.push(AppRoutes.feedingSchedulePath(petId));
       case NotificationCategory.social:
         // Community is a shell tab — use go() so the shell is preserved.
         router.go(AppRoutes.community);

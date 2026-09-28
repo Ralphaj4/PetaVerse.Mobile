@@ -1323,7 +1323,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get healthMedicationsFrequencyLabel => 'Fréquence';
 
   @override
-  String get healthMedicationsStartDateLabel => 'Date de début';
+  String get healthMedicationsStartDateLabel => 'Première dose';
 
   @override
   String get healthMedicationsAddedSuccess => 'Médicament ajouté';
@@ -1470,6 +1470,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get couldNotSavePhoto => 'Impossible d\'enregistrer la photo';
+
+  @override
+  String get useInPost => 'Utiliser dans une publication';
+
+  @override
+  String get couldNotPreparePhoto => 'Impossible de préparer la photo';
+
+  @override
+  String get flipCamera => 'Changer de caméra';
 
   @override
   String get didYouKnow => 'Le saviez-vous?';
@@ -2865,6 +2874,205 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get notifAppointmentDesc =>
       'Rappels 24h et 1h avant les rendez-vous programmés';
+
+  @override
+  String get notifFeeding => 'Rappels de repas';
+
+  @override
+  String get notifFeedingDesc => 'Rappels à chaque heure de repas programmée';
+
+  @override
+  String get notifGrooming => 'Rappels de toilettage';
+
+  @override
+  String get notifGroomingDesc =>
+      'Alertes lorsque le toilettage approche ou est en retard';
+
+  @override
+  String get feedingTitle => 'Alimentation';
+
+  @override
+  String get feedingSetUp => 'Configurer l\'alimentation';
+
+  @override
+  String get feedingEdit => 'Modifier l\'alimentation';
+
+  @override
+  String get feedingEmpty =>
+      'Aucun horaire de repas. Définissez des heures pour recevoir des rappels.';
+
+  @override
+  String get feedingSaved => 'Horaire d\'alimentation enregistré';
+
+  @override
+  String get feedingDelete => 'Supprimer l\'horaire';
+
+  @override
+  String get feedingDeleted => 'Horaire d\'alimentation supprimé';
+
+  @override
+  String get feedingDeleteTitle => 'Supprimer l\'horaire d\'alimentation ?';
+
+  @override
+  String get feedingDeleteMessage => 'Les rappels de repas s\'arrêteront.';
+
+  @override
+  String get feedingDaysLabel => 'Jours';
+
+  @override
+  String get feedingMealsLabel => 'Repas';
+
+  @override
+  String feedingMealNumber(int number) {
+    return 'Repas $number';
+  }
+
+  @override
+  String get feedingAddMeal => 'Ajouter un repas';
+
+  @override
+  String get feedingRemoveMeal => 'Retirer le repas';
+
+  @override
+  String get feedingAmountHint => 'Quantité (facultatif)';
+
+  @override
+  String get feedingNoDays => 'Aucun jour sélectionné';
+
+  @override
+  String get feedingNoDaysError => 'Sélectionnez au moins un jour';
+
+  @override
+  String get feedingEveryDay => 'Tous les jours';
+
+  @override
+  String get feedingWeekdays => 'En semaine';
+
+  @override
+  String get feedingWeekends => 'Week-ends';
+
+  @override
+  String get feedUnitGrams => 'g';
+
+  @override
+  String get feedUnitCups => 'tasses';
+
+  @override
+  String get feedUnitCans => 'boîtes';
+
+  @override
+  String get weekdayShortSun => 'Dim';
+
+  @override
+  String get weekdayShortMon => 'Lun';
+
+  @override
+  String get weekdayShortTue => 'Mar';
+
+  @override
+  String get weekdayShortWed => 'Mer';
+
+  @override
+  String get weekdayShortThu => 'Jeu';
+
+  @override
+  String get weekdayShortFri => 'Ven';
+
+  @override
+  String get weekdayShortSat => 'Sam';
+
+  @override
+  String get weekdaySunday => 'Dimanche';
+
+  @override
+  String get weekdayMonday => 'Lundi';
+
+  @override
+  String get weekdayTuesday => 'Mardi';
+
+  @override
+  String get weekdayWednesday => 'Mercredi';
+
+  @override
+  String get weekdayThursday => 'Jeudi';
+
+  @override
+  String get weekdayFriday => 'Vendredi';
+
+  @override
+  String get weekdaySaturday => 'Samedi';
+
+  @override
+  String get feedingUnitLabel => 'Unité';
+
+  @override
+  String get feedUnitGramsName => 'Grammes';
+
+  @override
+  String get feedUnitCupsName => 'Tasses';
+
+  @override
+  String get feedUnitCansName => 'Boîtes';
+
+  @override
+  String get done => 'Terminé';
+
+  @override
+  String get groomingTitle => 'Toilettage';
+
+  @override
+  String get groomingSetUp => 'Configurer le toilettage';
+
+  @override
+  String get groomingEdit => 'Modifier le toilettage';
+
+  @override
+  String get groomingEmpty =>
+      'Aucun horaire de toilettage. Définissez un intervalle pour recevoir des rappels.';
+
+  @override
+  String get groomingSaved => 'Horaire de toilettage enregistré';
+
+  @override
+  String get groomingDeleted => 'Horaire de toilettage supprimé';
+
+  @override
+  String get groomingIntervalLabel => 'Répéter tous les';
+
+  @override
+  String get groomingNextDueLabel => 'Prochaine échéance';
+
+  @override
+  String groomingEveryDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days jours',
+      one: 'jour',
+    );
+    return 'Tous les $_temp0';
+  }
+
+  @override
+  String groomingNextDue(String date) {
+    return 'Prochaine échéance $date';
+  }
+
+  @override
+  String get groomingMarkGroomed => 'Marquer comme toiletté';
+
+  @override
+  String get groomingMarkedGroomed => 'Marqué comme toiletté';
+
+  @override
+  String get groomingDelete => 'Supprimer l\'horaire';
+
+  @override
+  String get groomingDeleteTitle => 'Supprimer l\'horaire de toilettage ?';
+
+  @override
+  String get groomingDeleteMessage =>
+      'Les rappels de toilettage s\'arrêteront.';
 
   @override
   String get notifCommunityInteractions => 'J\'aime, commentaires et réponses';

@@ -261,6 +261,16 @@ abstract final class ApiEndpoints {
   static String completePetAppointment(int petId, int appointmentId) =>
       '/pets/$petId/appointments/$appointmentId/complete';
 
+  // PawCare — feeding schedule (under a pet; device-local reminders)
+  static String petFeedingSchedule(int petId) =>
+      '/pets/$petId/feeding-schedule';
+
+  // PawCare — grooming schedule (under a pet; FCM server-push reminders)
+  static String petGroomingSchedule(int petId) =>
+      '/pets/$petId/grooming-schedule';
+  static String markGroomed(int petId) =>
+      '/pets/$petId/grooming-schedule/mark-groomed';
+
   // Walk activities (under a pet)
   static String petActivities(int petId) => '/pets/$petId/activities';
   static String petActivity(int petId, int activityId) =>

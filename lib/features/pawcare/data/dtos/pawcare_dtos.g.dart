@@ -253,3 +253,60 @@ Map<String, dynamic> _$AppointmentDtoToJson(_AppointmentDto instance) =>
       'completedAt': instance.completedAt?.toIso8601String(),
       'isCompleted': instance.isCompleted,
     };
+
+_FeedingScheduleDto _$FeedingScheduleDtoFromJson(Map<String, dynamic> json) =>
+    _FeedingScheduleDto(
+      id: (json['id'] as num).toInt(),
+      petId: (json['petId'] as num).toInt(),
+      daysOfWeek: (json['daysOfWeek'] as num?)?.toInt() ?? 0,
+      times:
+          (json['times'] as List<dynamic>?)
+              ?.map((e) => FeedingTimeDto.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const <FeedingTimeDto>[],
+    );
+
+Map<String, dynamic> _$FeedingScheduleDtoToJson(_FeedingScheduleDto instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'petId': instance.petId,
+      'daysOfWeek': instance.daysOfWeek,
+      'times': instance.times,
+    };
+
+_FeedingTimeDto _$FeedingTimeDtoFromJson(Map<String, dynamic> json) =>
+    _FeedingTimeDto(
+      id: (json['id'] as num?)?.toInt(),
+      timeOfDay: json['timeOfDay'] as String? ?? '00:00:00',
+      quantity: (json['quantity'] as num?)?.toDouble(),
+      unit: (json['unit'] as num?)?.toInt() ?? 0,
+    );
+
+Map<String, dynamic> _$FeedingTimeDtoToJson(_FeedingTimeDto instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'timeOfDay': instance.timeOfDay,
+      'quantity': instance.quantity,
+      'unit': instance.unit,
+    };
+
+_GroomingScheduleDto _$GroomingScheduleDtoFromJson(Map<String, dynamic> json) =>
+    _GroomingScheduleDto(
+      id: (json['id'] as num).toInt(),
+      petId: (json['petId'] as num).toInt(),
+      intervalDays: (json['intervalDays'] as num?)?.toInt() ?? 1,
+      nextDueDate: DateTime.parse(json['nextDueDate'] as String),
+      lastGroomedDate: json['lastGroomedDate'] == null
+          ? null
+          : DateTime.parse(json['lastGroomedDate'] as String),
+    );
+
+Map<String, dynamic> _$GroomingScheduleDtoToJson(
+  _GroomingScheduleDto instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'petId': instance.petId,
+  'intervalDays': instance.intervalDays,
+  'nextDueDate': instance.nextDueDate.toIso8601String(),
+  'lastGroomedDate': instance.lastGroomedDate?.toIso8601String(),
+};

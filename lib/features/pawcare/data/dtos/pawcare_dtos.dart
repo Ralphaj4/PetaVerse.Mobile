@@ -1,6 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/entities/appointment.dart';
+import '../../domain/entities/feeding_schedule.dart';
+import '../../domain/entities/grooming_schedule.dart';
 import '../../domain/entities/health_lookup.dart';
 import '../../domain/entities/medication.dart';
 import '../../domain/entities/pet_health_score.dart';
@@ -311,5 +313,107 @@ abstract class AppointmentDto with _$AppointmentDto {
         location: location,
         notes: notes,
         completedAt: completedAt?.toLocal(),
+      );
+}
+
+// ── Feeding schedule ────────────────────────────────────────────────────────
+
+/// Wire shape of `GET/PUT /api/pets/{petId}/feeding-schedule`.
+@freezed
+abstract class FeedingScheduleDto with _$FeedingScheduleDto {
+  const factory FeedingScheduleDto({
+    required int id,
+    required int petId,
+    @Default(0) int daysOfWeek,
+    @Default(<FeedingTimeDto>[]) List<FeedingTimeDto> times,
+  }) = _FeedingScheduleDto;
+
+  const FeedingScheduleDto._();
+
+  factory FeedingScheduleDto.fromJson(Map<String, dynamic> json) =>
+      _$FeedingScheduleDtoFromJson(json);
+
+  FeedingSchedule toEntity() => FeedingSchedule(
+        id: id,
+        petId: petId,
+        daysOfWeek: daysOfWeek,
+        times: times.map((e) => e.toEntity()).toList(growable: false),
+      );
+}
+
+/// Wire shape of one meal (`{id, timeOfDay: "HH:mm:ss", quantity?, unit}`).
+@freezed
+abstract class FeedingTimeDto with _$FeedingTimeDto {
+  const factory FeedingTimeDto({
+    int? id,
+    @Default('00:00:00') String timeOfDay,
+    double? quantity,
+    @Default(0) int unit,
+  }) = _FeedingTimeDto;
+
+  const FeedingTimeDto._();
+
+  factory FeedingTimeDto.fromJson(Map<String, dynamic> json) =>
+      _$FeedingTimeDtoFromJson(json);
+
+  FeedingTime toEntity() {
+    final (hour, minute) = _parseTimeOfDay(timeOfDay);
+    return FeedingTime(
+      id: id,
+      hour: hour,
+      minute: minute,
+      quantity: quantity,
+      unit: FeedUnit.fromWire(unit),
+    );
+  }
+
+  /// Builds the request-side DTO from a domain time (no id — the server assigns
+  /// one and echoes it in the PUT response).
+  factory FeedingTimeDto.fromEntity(FeedingTime time) => FeedingTimeDto(
+        timeOfDay: formatTimeOfDay(time.hour, time.minute),
+        quantity: time.quantity,
+        unit: time.unit.wire,
+      );
+}
+
+/// Parses an "HH:mm:ss" (or "HH:mm") wire time into (hour, minute).
+(int, int) _parseTimeOfDay(String value) {
+  final parts = value.split(':');
+  final hour = parts.isNotEmpty ? int.tryParse(parts[0]) ?? 0 : 0;
+  final minute = parts.length > 1 ? int.tryParse(parts[1]) ?? 0 : 0;
+  return (hour, minute);
+}
+
+/// Formats (hour, minute) into the "HH:mm:ss" wire time.
+String formatTimeOfDay(int hour, int minute) {
+  final h = hour.toString().padLeft(2, '0');
+  final m = minute.toString().padLeft(2, '0');
+  return '$h:$m:00';
+}
+
+// ── Grooming schedule ───────────────────────────────────────────────────────
+
+/// Wire shape of `GET/PUT /api/pets/{petId}/grooming-schedule`.
+@freezed
+abstract class GroomingScheduleDto with _$GroomingScheduleDto {
+  const factory GroomingScheduleDto({
+    required int id,
+    required int petId,
+    @Default(1) int intervalDays,
+    required DateTime nextDueDate,
+    DateTime? lastGroomedDate,
+  }) = _GroomingScheduleDto;
+
+  const GroomingScheduleDto._();
+
+  factory GroomingScheduleDto.fromJson(Map<String, dynamic> json) =>
+      _$GroomingScheduleDtoFromJson(json);
+
+  GroomingSchedule toEntity() => GroomingSchedule(
+        id: id,
+        petId: petId,
+        intervalDays: intervalDays,
+        nextDueDate: nextDueDate.toLocal(),
+        lastGroomedDate: lastGroomedDate?.toLocal(),
       );
 }

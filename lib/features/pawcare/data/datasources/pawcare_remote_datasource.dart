@@ -336,6 +336,106 @@ class PawCareRemoteDataSource {
     return AppointmentDto.fromJson(json);
   }
 
+  // ── Feeding schedule ──────────────────────────────────────────────────────
+
+  /// GET /pets/{petId}/feeding-schedule → the schedule, or null when the API
+  /// returns 204 (nothing configured). The nullable body type keeps the 204's
+  /// null payload from throwing on the cast.
+  Future<FeedingScheduleDto?> getFeedingSchedule(int petId) async {
+    final json = await _client.get<Map<String, dynamic>?>(
+      ApiEndpoints.petFeedingSchedule(petId),
+    );
+    return json == null ? null : FeedingScheduleDto.fromJson(json);
+  }
+
+  /// PUT /pets/{petId}/feeding-schedule → the saved schedule (each time now
+  /// carries a stable id). An empty [times] list clears the schedule.
+  Future<FeedingScheduleDto> putFeedingSchedule(
+    int petId, {
+    required int daysOfWeek,
+    required List<FeedingTimeDto> times,
+  }) async {
+    final json = await _client.put<Map<String, dynamic>>(
+      ApiEndpoints.petFeedingSchedule(petId),
+      data: {
+        'daysOfWeek': daysOfWeek,
+        'times': [
+          for (final t in times)
+            {
+              'timeOfDay': t.timeOfDay,
+              if (t.quantity != null) 'quantity': t.quantity,
+              'unit': t.unit,
+            },
+        ],
+      },
+      options: await _mutationOptions(),
+    );
+    return FeedingScheduleDto.fromJson(json);
+  }
+
+  /// DELETE /pets/{petId}/feeding-schedule → 204.
+  Future<void> deleteFeedingSchedule(int petId) async {
+    await _client.delete<void>(
+      ApiEndpoints.petFeedingSchedule(petId),
+      options: await _mutationOptions(),
+    );
+  }
+
+  // ── Grooming schedule ─────────────────────────────────────────────────────
+
+  /// GET /pets/{petId}/grooming-schedule → the schedule, or null on 204.
+  Future<GroomingScheduleDto?> getGroomingSchedule(int petId) async {
+    final json = await _client.get<Map<String, dynamic>?>(
+      ApiEndpoints.petGroomingSchedule(petId),
+    );
+    return json == null ? null : GroomingScheduleDto.fromJson(json);
+  }
+
+  /// PUT /pets/{petId}/grooming-schedule → the saved schedule.
+  Future<GroomingScheduleDto> putGroomingSchedule(
+    int petId, {
+    required int intervalDays,
+    required DateTime nextDueDate,
+    DateTime? lastGroomedDate,
+  }) async {
+    final json = await _client.put<Map<String, dynamic>>(
+      ApiEndpoints.petGroomingSchedule(petId),
+      data: {
+        'intervalDays': intervalDays,
+        'nextDueDate': nextDueDate.toUtc().toIso8601String(),
+        'lastGroomedDate': lastGroomedDate?.toUtc().toIso8601String(),
+      },
+      options: await _mutationOptions(),
+    );
+    return GroomingScheduleDto.fromJson(json);
+  }
+
+  /// POST /pets/{petId}/grooming-schedule/mark-groomed → the updated schedule
+  /// with [lastGroomedDate] set and [nextDueDate] advanced. [groomedDate]
+  /// defaults to now server-side and must not be in the future.
+  Future<GroomingScheduleDto> markGroomed(
+    int petId, {
+    DateTime? groomedDate,
+  }) async {
+    final json = await _client.post<Map<String, dynamic>>(
+      ApiEndpoints.markGroomed(petId),
+      data: {
+        if (groomedDate != null)
+          'groomedDate': groomedDate.toUtc().toIso8601String(),
+      },
+      options: await _mutationOptions(),
+    );
+    return GroomingScheduleDto.fromJson(json);
+  }
+
+  /// DELETE /pets/{petId}/grooming-schedule → 204.
+  Future<void> deleteGroomingSchedule(int petId) async {
+    await _client.delete<void>(
+      ApiEndpoints.petGroomingSchedule(petId),
+      options: await _mutationOptions(),
+    );
+  }
+
   // ── Health score ──────────────────────────────────────────────────────────
 
   /// GET /pets/{petId}/health-score → the server-computed score. Computed fresh

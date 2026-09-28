@@ -31,7 +31,7 @@ class VaccinationsCard extends StatelessWidget {
     final now = DateTime.now();
 
     return HealthSectionCard(
-      icon: FluentIcons.shield_checkmark_24_regular,
+      icon: FluentIcons.syringe_24_regular,
       title: l10n.healthVaccinationsTitle,
       onAdd: onAdd,
       addTooltip: l10n.healthVaccinationsAdd,

@@ -78,6 +78,20 @@ class NotificationSettingsPage extends ConsumerWidget {
               subtitle: l10n.notifAppointmentDesc,
               prefKey: NotifPrefKeys.appointment,
             ),
+            _PrefTile(
+              icon: FluentIcons.bowl_chopsticks_24_regular,
+              iconColor: AppColors.accentCoral,
+              title: l10n.notifFeeding,
+              subtitle: l10n.notifFeedingDesc,
+              prefKey: NotifPrefKeys.feeding,
+            ),
+            _PrefTile(
+              icon: FluentIcons.sparkle_24_regular,
+              iconColor: AppColors.secondary,
+              title: l10n.notifGrooming,
+              subtitle: l10n.notifGroomingDesc,
+              prefKey: NotifPrefKeys.grooming,
+            ),
 
             const SizedBox(height: AppSpacing.lg),
 

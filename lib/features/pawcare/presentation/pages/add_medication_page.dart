@@ -57,7 +57,7 @@ class _AddMedicationPageState extends ConsumerState<AddMedicationPage> {
       context: context,
       initialDate: _startDate,
       firstDate: DateTime(now.year - 5),
-      lastDate: now,
+      lastDate: DateTime(now.year + 5),
     );
     if (picked != null) setState(() => _startDate = picked);
   }

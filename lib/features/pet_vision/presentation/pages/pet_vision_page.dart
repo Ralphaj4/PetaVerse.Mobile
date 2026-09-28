@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
@@ -7,12 +8,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gal/gal.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../features/community/presentation/models/pawhub_models.dart';
+import '../../../../features/community/presentation/providers/community_providers.dart';
+import '../../../../features/community/presentation/widgets/post_composer_page.dart';
 import '../../../../features/pets/domain/entities/pet.dart';
 import '../../../../features/pets/domain/entities/pet_ref.dart';
 import '../../../../features/pets/presentation/providers/pet_detail_provider.dart';
@@ -33,9 +38,11 @@ class _PetVisionPageState extends ConsumerState<PetVisionPage>
   List<CameraDescription> _cameras = [];
   bool _cameraReady = false;
   String? _cameraError;
+  CameraLensDirection _lensDirection = CameraLensDirection.back;
 
   XFile? _capturedImage;
   bool _showOriginal = false;
+  bool _preparingForPost = false;
 
   @override
   void initState() {
@@ -99,15 +106,15 @@ class _PetVisionPageState extends ConsumerState<PetVisionPage>
         setState(() => _cameraError = 'No cameras found');
         return;
       }
-      final back = _cameras.firstWhere(
-        (c) => c.lensDirection == CameraLensDirection.back,
+      final camera = _cameras.firstWhere(
+        (c) => c.lensDirection == _lensDirection,
         orElse: () => _cameras.first,
       );
       // Medium is plenty for a full-screen preview and keeps the per-frame
       // ColorFilter cheap; the capture path re-decodes the still separately so
       // saved photos aren't limited by this.
       final controller = CameraController(
-        back,
+        camera,
         ResolutionPreset.medium,
         enableAudio: false,
         imageFormatGroup: ImageFormatGroup.jpeg,
@@ -143,65 +150,166 @@ class _PetVisionPageState extends ConsumerState<PetVisionPage>
 
   void _retake() => setState(() => _capturedImage = null);
 
+  /// Toggles between the back and front camera. Tears the current preview down
+  /// and re-initializes on the chosen lens (the platform can't switch a live
+  /// controller's camera in place). No-op while an image is captured or when
+  /// only one lens is available.
+  Future<void> _flipCamera() async {
+    if (_capturedImage != null || _cameras.length < 2) return;
+    final controller = _controller;
+    _lensDirection = _lensDirection == CameraLensDirection.back
+        ? CameraLensDirection.front
+        : CameraLensDirection.back;
+    if (controller != null && controller.value.isInitialized) {
+      await controller.dispose();
+    }
+    if (!mounted) return;
+    setState(() {
+      _controller = null;
+      _cameraReady = false;
+    });
+    await _initCamera();
+  }
+
+  /// Decodes the captured still and bakes the active pet-vision filter into the
+  /// pixels, returning encoded JPEG bytes. When [showOriginal] is on (or no
+  /// profile is available) the original bytes are returned unchanged so what's
+  /// exported matches what's on screen. Returns null on decode failure.
+  Future<List<int>?> _renderFilteredBytes(XFile file) async {
+    final imageBytes = await File(file.path).readAsBytes();
+
+    // "Show original" is on → export exactly what the user sees (no filter).
+    if (_showOriginal) return imageBytes;
+
+    final image = img.decodeImage(imageBytes);
+    if (image == null) return null;
+
+    // Resolve the active pet's vision profile from the provider caches. If any
+    // link is missing, fall back to the untouched capture rather than failing.
+    final petRef = ref.read(petsProvider).currentPet;
+    if (petRef == null) return imageBytes;
+    final petDetail = ref.read(petDetailProvider(petRef.id)).asData?.value;
+    final speciesName = petDetail?.speciesName;
+    if (speciesName == null) return imageBytes;
+    final profile =
+        ref.read(visionProfileByNameProvider(speciesName)).asData?.value;
+    if (profile == null) return imageBytes;
+
+    final colorMatrix = profile.colorMatrix;
+    final saturation = profile.saturation;
+    final brightness = profile.brightness;
+
+    for (int y = 0; y < image.height; y++) {
+      for (int x = 0; x < image.width; x++) {
+        final pixel = image.getPixelSafe(x, y);
+        final r = pixel.r.toDouble() / 255.0;
+        final g = pixel.g.toDouble() / 255.0;
+        final b = pixel.b.toDouble() / 255.0;
+
+        // Apply 3x3 color matrix
+        final nr = (colorMatrix[0][0] * r + colorMatrix[0][1] * g + colorMatrix[0][2] * b) * saturation + (1 - saturation) * (0.2126 * r + 0.7152 * g + 0.0722 * b);
+        final ng = (colorMatrix[1][0] * r + colorMatrix[1][1] * g + colorMatrix[1][2] * b) * saturation + (1 - saturation) * (0.2126 * r + 0.7152 * g + 0.0722 * b);
+        final nb = (colorMatrix[2][0] * r + colorMatrix[2][1] * g + colorMatrix[2][2] * b) * saturation + (1 - saturation) * (0.2126 * r + 0.7152 * g + 0.0722 * b);
+
+        // Apply brightness
+        final finalR = (nr * brightness * 255).clamp(0, 255).toInt();
+        final finalG = (ng * brightness * 255).clamp(0, 255).toInt();
+        final finalB = (nb * brightness * 255).clamp(0, 255).toInt();
+
+        image.setPixelRgba(x, y, finalR, finalG, finalB, pixel.a.toInt());
+      }
+    }
+
+    return img.encodeJpg(image);
+  }
+
   Future<void> _saveToGallery() async {
     final file = _capturedImage;
     if (file == null) return;
     try {
-      // Read the image file
-      final imageBytes = await File(file.path).readAsBytes();
-      final image = img.decodeImage(imageBytes);
-      if (image == null) throw Exception('Failed to decode image');
-
-      // Get the current pet for filter
-      final petsState = ref.read(petsProvider);
-      final petRef = petsState.currentPet;
-      if (petRef == null) throw Exception('No pet selected');
-
-      // Get the pet detail to access speciesName
-      final petDetail = ref.read(petDetailProvider(petRef.id)).asData?.value;
-      if (petDetail == null || petDetail.speciesName == null) {
-        throw Exception('Species not found');
-      }
-
-      // Get the vision profile synchronously using the provider's cached value
-      final profileState = ref.read(visionProfileByNameProvider(petDetail.speciesName!));
-      final profile = profileState.asData?.value;
-      if (profile == null) throw Exception('Vision profile not available');
-
-      // Apply color filter to the image
-      final colorMatrix = profile.colorMatrix;
-      final saturation = profile.saturation;
-      final brightness = profile.brightness;
-
-      for (int y = 0; y < image.height; y++) {
-        for (int x = 0; x < image.width; x++) {
-          final pixel = image.getPixelSafe(x, y);
-          final r = pixel.r.toDouble() / 255.0;
-          final g = pixel.g.toDouble() / 255.0;
-          final b = pixel.b.toDouble() / 255.0;
-
-          // Apply 3x3 color matrix
-          final nr = (colorMatrix[0][0] * r + colorMatrix[0][1] * g + colorMatrix[0][2] * b) * saturation + (1 - saturation) * (0.2126 * r + 0.7152 * g + 0.0722 * b);
-          final ng = (colorMatrix[1][0] * r + colorMatrix[1][1] * g + colorMatrix[1][2] * b) * saturation + (1 - saturation) * (0.2126 * r + 0.7152 * g + 0.0722 * b);
-          final nb = (colorMatrix[2][0] * r + colorMatrix[2][1] * g + colorMatrix[2][2] * b) * saturation + (1 - saturation) * (0.2126 * r + 0.7152 * g + 0.0722 * b);
-
-          // Apply brightness
-          final finalR = (nr * brightness * 255).clamp(0, 255).toInt();
-          final finalG = (ng * brightness * 255).clamp(0, 255).toInt();
-          final finalB = (nb * brightness * 255).clamp(0, 255).toInt();
-
-          image.setPixelRgba(x, y, finalR, finalG, finalB, pixel.a.toInt());
-        }
-      }
-
-      // Encode and save to gallery
-      final filteredBytes = img.encodeJpg(image);
-      await Gal.putImageBytes(filteredBytes);
+      final bytes = await _renderFilteredBytes(file);
+      if (bytes == null) throw Exception('Failed to decode image');
+      await Gal.putImageBytes(Uint8List.fromList(bytes));
       if (mounted) context.showSuccessSnackBar(context.l10n.photoSavedToGallery);
     } catch (_) {
       if (mounted) context.showErrorSnackBar(context.l10n.couldNotSavePhoto);
     }
   }
+
+  /// Bakes the current filter into the captured still, writes it to a temp file,
+  /// and opens the post composer pre-seeded with that image. The camera preview
+  /// is torn down first (the composer runs on the root navigator over this
+  /// page) so it isn't left running behind the composer.
+  Future<void> _useInPost() async {
+    final file = _capturedImage;
+    if (file == null || _preparingForPost) return;
+
+    final myPets = ref
+        .read(switchablePetsProvider)
+        .map(_toPawPet)
+        .toList();
+    if (myPets.isEmpty) return;
+    final actingRef = ref.read(actingPetProvider);
+    final actingPaw =
+        actingRef != null ? _toPawPet(actingRef) : myPets.first;
+
+    setState(() => _preparingForPost = true);
+    try {
+      final bytes = await _renderFilteredBytes(file);
+      if (bytes == null) throw Exception('Failed to decode image');
+
+      final dir = await getTemporaryDirectory();
+      final path =
+          '${dir.path}/pet_vision_${file.name.hashCode}_${bytes.length}.jpg';
+      await File(path).writeAsBytes(bytes, flush: true);
+
+      if (!mounted) return;
+      // Release the camera before the composer covers this page so the preview
+      // isn't left running behind it. It re-initializes when we return.
+      final controller = _controller;
+      if (controller != null && controller.value.isInitialized) {
+        await controller.dispose();
+      }
+      if (!mounted) return;
+      setState(() {
+        _controller = null;
+        _cameraReady = false;
+      });
+
+      await Navigator.of(context, rootNavigator: true).push<void>(
+        MaterialPageRoute(
+          fullscreenDialog: true,
+          builder: (_) => PostComposerPage(
+            myPets: myPets,
+            actingAs: actingPaw,
+            taggablePets: const [],
+            initialImagePaths: [path],
+          ),
+        ),
+      );
+      // Back from the composer: bring the preview back and clear the still so
+      // the user lands on a live camera again.
+      if (mounted) {
+        setState(() => _capturedImage = null);
+        await _initCamera();
+      }
+    } catch (_) {
+      if (mounted) context.showErrorSnackBar(context.l10n.couldNotPreparePhoto);
+    } finally {
+      if (mounted) setState(() => _preparingForPost = false);
+    }
+  }
+
+  PawPet _toPawPet(PetRef r) => PawPet(
+        id: r.id.toString(),
+        backendId: r.id,
+        name: r.name,
+        breed: '',
+        species: '',
+        avatarUrl: r.imagePath,
+        ownerName: 'You',
+        isMine: true,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -218,11 +326,15 @@ class _PetVisionPageState extends ConsumerState<PetVisionPage>
               cameraError: _cameraError,
               capturedImage: _capturedImage,
               showOriginal: _showOriginal,
+              canFlip: _cameras.length > 1,
+              preparingForPost: _preparingForPost,
               allPets: petsState.refs,
               onBack: _navigateBack,
               onCapture: _capture,
+              onFlip: _flipCamera,
               onGalleryPressed: _openGallery,
               onSave: _saveToGallery,
+              onUseInPost: _useInPost,
               onRetake: _retake,
               onToggleOriginal: (v) => setState(() => _showOriginal = v),
               onPetSelected: (id) =>
@@ -241,11 +353,15 @@ class _PetVisionBody extends ConsumerWidget {
     required this.cameraError,
     required this.capturedImage,
     required this.showOriginal,
+    required this.canFlip,
+    required this.preparingForPost,
     required this.allPets,
     required this.onBack,
     required this.onCapture,
+    required this.onFlip,
     required this.onGalleryPressed,
     required this.onSave,
+    required this.onUseInPost,
     required this.onRetake,
     required this.onToggleOriginal,
     required this.onPetSelected,
@@ -256,11 +372,15 @@ class _PetVisionBody extends ConsumerWidget {
   final String? cameraError;
   final XFile? capturedImage;
   final bool showOriginal;
+  final bool canFlip;
+  final bool preparingForPost;
   final List<PetRef> allPets;
   final VoidCallback onBack;
   final VoidCallback onCapture;
+  final VoidCallback onFlip;
   final VoidCallback onGalleryPressed;
   final VoidCallback onSave;
+  final VoidCallback onUseInPost;
   final VoidCallback onRetake;
   final ValueChanged<bool> onToggleOriginal;
   final ValueChanged<int> onPetSelected;
@@ -307,11 +427,15 @@ class _PetVisionBody extends ConsumerWidget {
               cameraError: cameraError,
               capturedImage: capturedImage,
               showOriginal: showOriginal,
+              canFlip: canFlip,
+              preparingForPost: preparingForPost,
               allPets: allPets,
               onBack: onBack,
               onCapture: onCapture,
+              onFlip: onFlip,
               onGalleryPressed: onGalleryPressed,
               onSave: onSave,
+              onUseInPost: onUseInPost,
               onRetake: onRetake,
               onToggleOriginal: onToggleOriginal,
               onPetSelected: onPetSelected,
@@ -343,11 +467,15 @@ class _PetVisionBody extends ConsumerWidget {
               cameraError: cameraError,
               capturedImage: capturedImage,
               showOriginal: showOriginal,
+              canFlip: canFlip,
+              preparingForPost: preparingForPost,
               allPets: allPets,
               onBack: onBack,
               onCapture: onCapture,
+              onFlip: onFlip,
               onGalleryPressed: onGalleryPressed,
               onSave: onSave,
+              onUseInPost: onUseInPost,
               onRetake: onRetake,
               onToggleOriginal: onToggleOriginal,
               onPetSelected: onPetSelected,
@@ -369,11 +497,15 @@ class _VisionLayout extends StatelessWidget {
     required this.cameraError,
     required this.capturedImage,
     required this.showOriginal,
+    required this.canFlip,
+    required this.preparingForPost,
     required this.allPets,
     required this.onBack,
     required this.onCapture,
+    required this.onFlip,
     required this.onGalleryPressed,
     required this.onSave,
+    required this.onUseInPost,
     required this.onRetake,
     required this.onToggleOriginal,
     required this.onPetSelected,
@@ -385,11 +517,15 @@ class _VisionLayout extends StatelessWidget {
   final String? cameraError;
   final XFile? capturedImage;
   final bool showOriginal;
+  final bool canFlip;
+  final bool preparingForPost;
   final List<PetRef> allPets;
   final VoidCallback onBack;
   final VoidCallback onCapture;
+  final VoidCallback onFlip;
   final VoidCallback onGalleryPressed;
   final VoidCallback onSave;
+  final VoidCallback onUseInPost;
   final VoidCallback onRetake;
   final ValueChanged<bool> onToggleOriginal;
   final ValueChanged<int> onPetSelected;
@@ -471,9 +607,13 @@ class _VisionLayout extends StatelessWidget {
           right: AppSpacing.lg,
           child: _BottomControls(
             hasCaptured: capturedImage != null,
+            canFlip: canFlip,
+            preparingForPost: preparingForPost,
             onCapture: onCapture,
+            onFlip: onFlip,
             onGalleryPressed: onGalleryPressed,
             onSave: onSave,
+            onUseInPost: onUseInPost,
             onRetake: onRetake,
           ),
         ),
@@ -892,28 +1032,41 @@ class _PetSelectorStrip extends StatelessWidget {
 class _BottomControls extends StatelessWidget {
   const _BottomControls({
     required this.hasCaptured,
+    required this.canFlip,
+    required this.preparingForPost,
     required this.onCapture,
+    required this.onFlip,
     required this.onGalleryPressed,
     required this.onSave,
+    required this.onUseInPost,
     required this.onRetake,
   });
 
   final bool hasCaptured;
+  final bool canFlip;
+  final bool preparingForPost;
   final VoidCallback onCapture;
+  final VoidCallback onFlip;
   final VoidCallback onGalleryPressed;
   final VoidCallback onSave;
+  final VoidCallback onUseInPost;
   final VoidCallback onRetake;
 
   @override
   Widget build(BuildContext context) {
     if (hasCaptured) {
       return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           _GlassButton(
             onTap: onRetake,
             child: const Icon(FluentIcons.arrow_counterclockwise_24_regular,
                 color: Colors.white, size: 22),
+          ),
+          // Primary action: carry this shot into a new post.
+          _UseInPostButton(
+            busy: preparingForPost,
+            onTap: preparingForPost ? null : onUseInPost,
           ),
           _GlassButton(
             onTap: onSave,
@@ -952,8 +1105,74 @@ class _BottomControls extends StatelessWidget {
                 color: Colors.white, size: 28),
           ),
         ),
-        const SizedBox(width: 48),
+        // Flip camera — kept in the layout as a fixed-width slot so the shutter
+        // stays centered whether or not a second lens exists.
+        canFlip
+            ? Semantics(
+                button: true,
+                label: context.l10n.flipCamera,
+                child: _GlassButton(
+                  onTap: onFlip,
+                  child: const Icon(FluentIcons.camera_switch_24_regular,
+                      color: Colors.white, size: 22),
+                ),
+              )
+            : const SizedBox(width: 48),
       ],
+    );
+  }
+}
+
+/// The orange "Use in post" pill shown under a captured still. Shows a spinner
+/// while the filtered image is being baked out to a temp file.
+class _UseInPostButton extends StatelessWidget {
+  const _UseInPostButton({required this.busy, required this.onTap});
+
+  final bool busy;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: context.l10n.useInPost,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          height: 48,
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          decoration: BoxDecoration(
+            color: AppColors.primary.withValues(alpha: onTap == null ? 0.6 : 1),
+            borderRadius: BorderRadius.circular(50),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primary.withValues(alpha: 0.4),
+                blurRadius: 16,
+                spreadRadius: 2,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              busy
+                  ? const SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(
+                          strokeWidth: 2, color: Colors.white),
+                    )
+                  : const Icon(FluentIcons.send_24_filled,
+                      color: Colors.white, size: 20),
+              const SizedBox(width: AppSpacing.sm),
+              Text(
+                context.l10n.useInPost,
+                style: AppTextStyles.titleSmall.copyWith(color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

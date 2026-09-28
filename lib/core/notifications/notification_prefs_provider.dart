@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../app/notification_service.dart';
 import '../network/api_client.dart';
 import 'notification_prefs_remote_datasource.dart';
 import 'notification_prefs_store.dart';
@@ -62,6 +63,16 @@ class NotificationPrefsNotifier extends _$NotificationPrefsNotifier {
     final optimistic = {...previous, key: enabled};
     await store.set(key, enabled: enabled);
     state = AsyncData(optimistic);
+
+    // Feeding reminders are device-local and enforced app-side: disabling the
+    // pref must immediately tear down the scheduled meal notifications. Re-enabling
+    // re-arms them on the next feeding-schedule fetch (dashboard / edit page).
+    if (key == NotifPrefKeys.feeding && !enabled) {
+      await ref.read(notificationServiceProvider).cancelInRange(
+            NotificationService.feedingIdStart,
+            NotificationService.feedingIdEnd,
+          );
+    }
 
     // 2. Sync single field to API; revert on failure.
     try {

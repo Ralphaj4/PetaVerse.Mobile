@@ -3111,4 +3111,829 @@ as bool,
 
 }
 
+
+/// @nodoc
+mixin _$FeedingScheduleDto {
+
+ int get id; int get petId; int get daysOfWeek; List<FeedingTimeDto> get times;
+/// Create a copy of FeedingScheduleDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$FeedingScheduleDtoCopyWith<FeedingScheduleDto> get copyWith => _$FeedingScheduleDtoCopyWithImpl<FeedingScheduleDto>(this as FeedingScheduleDto, _$identity);
+
+  /// Serializes this FeedingScheduleDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedingScheduleDto&&(identical(other.id, id) || other.id == id)&&(identical(other.petId, petId) || other.petId == petId)&&(identical(other.daysOfWeek, daysOfWeek) || other.daysOfWeek == daysOfWeek)&&const DeepCollectionEquality().equals(other.times, times));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,petId,daysOfWeek,const DeepCollectionEquality().hash(times));
+
+@override
+String toString() {
+  return 'FeedingScheduleDto(id: $id, petId: $petId, daysOfWeek: $daysOfWeek, times: $times)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $FeedingScheduleDtoCopyWith<$Res>  {
+  factory $FeedingScheduleDtoCopyWith(FeedingScheduleDto value, $Res Function(FeedingScheduleDto) _then) = _$FeedingScheduleDtoCopyWithImpl;
+@useResult
+$Res call({
+ int id, int petId, int daysOfWeek, List<FeedingTimeDto> times
+});
+
+
+
+
+}
+/// @nodoc
+class _$FeedingScheduleDtoCopyWithImpl<$Res>
+    implements $FeedingScheduleDtoCopyWith<$Res> {
+  _$FeedingScheduleDtoCopyWithImpl(this._self, this._then);
+
+  final FeedingScheduleDto _self;
+  final $Res Function(FeedingScheduleDto) _then;
+
+/// Create a copy of FeedingScheduleDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? petId = null,Object? daysOfWeek = null,Object? times = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,petId: null == petId ? _self.petId : petId // ignore: cast_nullable_to_non_nullable
+as int,daysOfWeek: null == daysOfWeek ? _self.daysOfWeek : daysOfWeek // ignore: cast_nullable_to_non_nullable
+as int,times: null == times ? _self.times : times // ignore: cast_nullable_to_non_nullable
+as List<FeedingTimeDto>,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [FeedingScheduleDto].
+extension FeedingScheduleDtoPatterns on FeedingScheduleDto {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _FeedingScheduleDto value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _FeedingScheduleDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _FeedingScheduleDto value)  $default,){
+final _that = this;
+switch (_that) {
+case _FeedingScheduleDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _FeedingScheduleDto value)?  $default,){
+final _that = this;
+switch (_that) {
+case _FeedingScheduleDto() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int petId,  int daysOfWeek,  List<FeedingTimeDto> times)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _FeedingScheduleDto() when $default != null:
+return $default(_that.id,_that.petId,_that.daysOfWeek,_that.times);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int petId,  int daysOfWeek,  List<FeedingTimeDto> times)  $default,) {final _that = this;
+switch (_that) {
+case _FeedingScheduleDto():
+return $default(_that.id,_that.petId,_that.daysOfWeek,_that.times);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int petId,  int daysOfWeek,  List<FeedingTimeDto> times)?  $default,) {final _that = this;
+switch (_that) {
+case _FeedingScheduleDto() when $default != null:
+return $default(_that.id,_that.petId,_that.daysOfWeek,_that.times);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _FeedingScheduleDto extends FeedingScheduleDto {
+  const _FeedingScheduleDto({required this.id, required this.petId, this.daysOfWeek = 0, final  List<FeedingTimeDto> times = const <FeedingTimeDto>[]}): _times = times,super._();
+  factory _FeedingScheduleDto.fromJson(Map<String, dynamic> json) => _$FeedingScheduleDtoFromJson(json);
+
+@override final  int id;
+@override final  int petId;
+@override@JsonKey() final  int daysOfWeek;
+ final  List<FeedingTimeDto> _times;
+@override@JsonKey() List<FeedingTimeDto> get times {
+  if (_times is EqualUnmodifiableListView) return _times;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_times);
+}
+
+
+/// Create a copy of FeedingScheduleDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$FeedingScheduleDtoCopyWith<_FeedingScheduleDto> get copyWith => __$FeedingScheduleDtoCopyWithImpl<_FeedingScheduleDto>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$FeedingScheduleDtoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedingScheduleDto&&(identical(other.id, id) || other.id == id)&&(identical(other.petId, petId) || other.petId == petId)&&(identical(other.daysOfWeek, daysOfWeek) || other.daysOfWeek == daysOfWeek)&&const DeepCollectionEquality().equals(other._times, _times));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,petId,daysOfWeek,const DeepCollectionEquality().hash(_times));
+
+@override
+String toString() {
+  return 'FeedingScheduleDto(id: $id, petId: $petId, daysOfWeek: $daysOfWeek, times: $times)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$FeedingScheduleDtoCopyWith<$Res> implements $FeedingScheduleDtoCopyWith<$Res> {
+  factory _$FeedingScheduleDtoCopyWith(_FeedingScheduleDto value, $Res Function(_FeedingScheduleDto) _then) = __$FeedingScheduleDtoCopyWithImpl;
+@override @useResult
+$Res call({
+ int id, int petId, int daysOfWeek, List<FeedingTimeDto> times
+});
+
+
+
+
+}
+/// @nodoc
+class __$FeedingScheduleDtoCopyWithImpl<$Res>
+    implements _$FeedingScheduleDtoCopyWith<$Res> {
+  __$FeedingScheduleDtoCopyWithImpl(this._self, this._then);
+
+  final _FeedingScheduleDto _self;
+  final $Res Function(_FeedingScheduleDto) _then;
+
+/// Create a copy of FeedingScheduleDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? petId = null,Object? daysOfWeek = null,Object? times = null,}) {
+  return _then(_FeedingScheduleDto(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,petId: null == petId ? _self.petId : petId // ignore: cast_nullable_to_non_nullable
+as int,daysOfWeek: null == daysOfWeek ? _self.daysOfWeek : daysOfWeek // ignore: cast_nullable_to_non_nullable
+as int,times: null == times ? _self._times : times // ignore: cast_nullable_to_non_nullable
+as List<FeedingTimeDto>,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$FeedingTimeDto {
+
+ int? get id; String get timeOfDay; double? get quantity; int get unit;
+/// Create a copy of FeedingTimeDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$FeedingTimeDtoCopyWith<FeedingTimeDto> get copyWith => _$FeedingTimeDtoCopyWithImpl<FeedingTimeDto>(this as FeedingTimeDto, _$identity);
+
+  /// Serializes this FeedingTimeDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedingTimeDto&&(identical(other.id, id) || other.id == id)&&(identical(other.timeOfDay, timeOfDay) || other.timeOfDay == timeOfDay)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unit, unit) || other.unit == unit));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,timeOfDay,quantity,unit);
+
+@override
+String toString() {
+  return 'FeedingTimeDto(id: $id, timeOfDay: $timeOfDay, quantity: $quantity, unit: $unit)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $FeedingTimeDtoCopyWith<$Res>  {
+  factory $FeedingTimeDtoCopyWith(FeedingTimeDto value, $Res Function(FeedingTimeDto) _then) = _$FeedingTimeDtoCopyWithImpl;
+@useResult
+$Res call({
+ int? id, String timeOfDay, double? quantity, int unit
+});
+
+
+
+
+}
+/// @nodoc
+class _$FeedingTimeDtoCopyWithImpl<$Res>
+    implements $FeedingTimeDtoCopyWith<$Res> {
+  _$FeedingTimeDtoCopyWithImpl(this._self, this._then);
+
+  final FeedingTimeDto _self;
+  final $Res Function(FeedingTimeDto) _then;
+
+/// Create a copy of FeedingTimeDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? timeOfDay = null,Object? quantity = freezed,Object? unit = null,}) {
+  return _then(_self.copyWith(
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,timeOfDay: null == timeOfDay ? _self.timeOfDay : timeOfDay // ignore: cast_nullable_to_non_nullable
+as String,quantity: freezed == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
+as double?,unit: null == unit ? _self.unit : unit // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [FeedingTimeDto].
+extension FeedingTimeDtoPatterns on FeedingTimeDto {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _FeedingTimeDto value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _FeedingTimeDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _FeedingTimeDto value)  $default,){
+final _that = this;
+switch (_that) {
+case _FeedingTimeDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _FeedingTimeDto value)?  $default,){
+final _that = this;
+switch (_that) {
+case _FeedingTimeDto() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String timeOfDay,  double? quantity,  int unit)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _FeedingTimeDto() when $default != null:
+return $default(_that.id,_that.timeOfDay,_that.quantity,_that.unit);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String timeOfDay,  double? quantity,  int unit)  $default,) {final _that = this;
+switch (_that) {
+case _FeedingTimeDto():
+return $default(_that.id,_that.timeOfDay,_that.quantity,_that.unit);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String timeOfDay,  double? quantity,  int unit)?  $default,) {final _that = this;
+switch (_that) {
+case _FeedingTimeDto() when $default != null:
+return $default(_that.id,_that.timeOfDay,_that.quantity,_that.unit);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _FeedingTimeDto extends FeedingTimeDto {
+  const _FeedingTimeDto({this.id, this.timeOfDay = '00:00:00', this.quantity, this.unit = 0}): super._();
+  factory _FeedingTimeDto.fromJson(Map<String, dynamic> json) => _$FeedingTimeDtoFromJson(json);
+
+@override final  int? id;
+@override@JsonKey() final  String timeOfDay;
+@override final  double? quantity;
+@override@JsonKey() final  int unit;
+
+/// Create a copy of FeedingTimeDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$FeedingTimeDtoCopyWith<_FeedingTimeDto> get copyWith => __$FeedingTimeDtoCopyWithImpl<_FeedingTimeDto>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$FeedingTimeDtoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedingTimeDto&&(identical(other.id, id) || other.id == id)&&(identical(other.timeOfDay, timeOfDay) || other.timeOfDay == timeOfDay)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unit, unit) || other.unit == unit));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,timeOfDay,quantity,unit);
+
+@override
+String toString() {
+  return 'FeedingTimeDto(id: $id, timeOfDay: $timeOfDay, quantity: $quantity, unit: $unit)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$FeedingTimeDtoCopyWith<$Res> implements $FeedingTimeDtoCopyWith<$Res> {
+  factory _$FeedingTimeDtoCopyWith(_FeedingTimeDto value, $Res Function(_FeedingTimeDto) _then) = __$FeedingTimeDtoCopyWithImpl;
+@override @useResult
+$Res call({
+ int? id, String timeOfDay, double? quantity, int unit
+});
+
+
+
+
+}
+/// @nodoc
+class __$FeedingTimeDtoCopyWithImpl<$Res>
+    implements _$FeedingTimeDtoCopyWith<$Res> {
+  __$FeedingTimeDtoCopyWithImpl(this._self, this._then);
+
+  final _FeedingTimeDto _self;
+  final $Res Function(_FeedingTimeDto) _then;
+
+/// Create a copy of FeedingTimeDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? timeOfDay = null,Object? quantity = freezed,Object? unit = null,}) {
+  return _then(_FeedingTimeDto(
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int?,timeOfDay: null == timeOfDay ? _self.timeOfDay : timeOfDay // ignore: cast_nullable_to_non_nullable
+as String,quantity: freezed == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
+as double?,unit: null == unit ? _self.unit : unit // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$GroomingScheduleDto {
+
+ int get id; int get petId; int get intervalDays; DateTime get nextDueDate; DateTime? get lastGroomedDate;
+/// Create a copy of GroomingScheduleDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$GroomingScheduleDtoCopyWith<GroomingScheduleDto> get copyWith => _$GroomingScheduleDtoCopyWithImpl<GroomingScheduleDto>(this as GroomingScheduleDto, _$identity);
+
+  /// Serializes this GroomingScheduleDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GroomingScheduleDto&&(identical(other.id, id) || other.id == id)&&(identical(other.petId, petId) || other.petId == petId)&&(identical(other.intervalDays, intervalDays) || other.intervalDays == intervalDays)&&(identical(other.nextDueDate, nextDueDate) || other.nextDueDate == nextDueDate)&&(identical(other.lastGroomedDate, lastGroomedDate) || other.lastGroomedDate == lastGroomedDate));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,petId,intervalDays,nextDueDate,lastGroomedDate);
+
+@override
+String toString() {
+  return 'GroomingScheduleDto(id: $id, petId: $petId, intervalDays: $intervalDays, nextDueDate: $nextDueDate, lastGroomedDate: $lastGroomedDate)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $GroomingScheduleDtoCopyWith<$Res>  {
+  factory $GroomingScheduleDtoCopyWith(GroomingScheduleDto value, $Res Function(GroomingScheduleDto) _then) = _$GroomingScheduleDtoCopyWithImpl;
+@useResult
+$Res call({
+ int id, int petId, int intervalDays, DateTime nextDueDate, DateTime? lastGroomedDate
+});
+
+
+
+
+}
+/// @nodoc
+class _$GroomingScheduleDtoCopyWithImpl<$Res>
+    implements $GroomingScheduleDtoCopyWith<$Res> {
+  _$GroomingScheduleDtoCopyWithImpl(this._self, this._then);
+
+  final GroomingScheduleDto _self;
+  final $Res Function(GroomingScheduleDto) _then;
+
+/// Create a copy of GroomingScheduleDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? petId = null,Object? intervalDays = null,Object? nextDueDate = null,Object? lastGroomedDate = freezed,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,petId: null == petId ? _self.petId : petId // ignore: cast_nullable_to_non_nullable
+as int,intervalDays: null == intervalDays ? _self.intervalDays : intervalDays // ignore: cast_nullable_to_non_nullable
+as int,nextDueDate: null == nextDueDate ? _self.nextDueDate : nextDueDate // ignore: cast_nullable_to_non_nullable
+as DateTime,lastGroomedDate: freezed == lastGroomedDate ? _self.lastGroomedDate : lastGroomedDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [GroomingScheduleDto].
+extension GroomingScheduleDtoPatterns on GroomingScheduleDto {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _GroomingScheduleDto value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _GroomingScheduleDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _GroomingScheduleDto value)  $default,){
+final _that = this;
+switch (_that) {
+case _GroomingScheduleDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _GroomingScheduleDto value)?  $default,){
+final _that = this;
+switch (_that) {
+case _GroomingScheduleDto() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int petId,  int intervalDays,  DateTime nextDueDate,  DateTime? lastGroomedDate)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _GroomingScheduleDto() when $default != null:
+return $default(_that.id,_that.petId,_that.intervalDays,_that.nextDueDate,_that.lastGroomedDate);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int petId,  int intervalDays,  DateTime nextDueDate,  DateTime? lastGroomedDate)  $default,) {final _that = this;
+switch (_that) {
+case _GroomingScheduleDto():
+return $default(_that.id,_that.petId,_that.intervalDays,_that.nextDueDate,_that.lastGroomedDate);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int petId,  int intervalDays,  DateTime nextDueDate,  DateTime? lastGroomedDate)?  $default,) {final _that = this;
+switch (_that) {
+case _GroomingScheduleDto() when $default != null:
+return $default(_that.id,_that.petId,_that.intervalDays,_that.nextDueDate,_that.lastGroomedDate);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _GroomingScheduleDto extends GroomingScheduleDto {
+  const _GroomingScheduleDto({required this.id, required this.petId, this.intervalDays = 1, required this.nextDueDate, this.lastGroomedDate}): super._();
+  factory _GroomingScheduleDto.fromJson(Map<String, dynamic> json) => _$GroomingScheduleDtoFromJson(json);
+
+@override final  int id;
+@override final  int petId;
+@override@JsonKey() final  int intervalDays;
+@override final  DateTime nextDueDate;
+@override final  DateTime? lastGroomedDate;
+
+/// Create a copy of GroomingScheduleDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$GroomingScheduleDtoCopyWith<_GroomingScheduleDto> get copyWith => __$GroomingScheduleDtoCopyWithImpl<_GroomingScheduleDto>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$GroomingScheduleDtoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GroomingScheduleDto&&(identical(other.id, id) || other.id == id)&&(identical(other.petId, petId) || other.petId == petId)&&(identical(other.intervalDays, intervalDays) || other.intervalDays == intervalDays)&&(identical(other.nextDueDate, nextDueDate) || other.nextDueDate == nextDueDate)&&(identical(other.lastGroomedDate, lastGroomedDate) || other.lastGroomedDate == lastGroomedDate));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,petId,intervalDays,nextDueDate,lastGroomedDate);
+
+@override
+String toString() {
+  return 'GroomingScheduleDto(id: $id, petId: $petId, intervalDays: $intervalDays, nextDueDate: $nextDueDate, lastGroomedDate: $lastGroomedDate)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$GroomingScheduleDtoCopyWith<$Res> implements $GroomingScheduleDtoCopyWith<$Res> {
+  factory _$GroomingScheduleDtoCopyWith(_GroomingScheduleDto value, $Res Function(_GroomingScheduleDto) _then) = __$GroomingScheduleDtoCopyWithImpl;
+@override @useResult
+$Res call({
+ int id, int petId, int intervalDays, DateTime nextDueDate, DateTime? lastGroomedDate
+});
+
+
+
+
+}
+/// @nodoc
+class __$GroomingScheduleDtoCopyWithImpl<$Res>
+    implements _$GroomingScheduleDtoCopyWith<$Res> {
+  __$GroomingScheduleDtoCopyWithImpl(this._self, this._then);
+
+  final _GroomingScheduleDto _self;
+  final $Res Function(_GroomingScheduleDto) _then;
+
+/// Create a copy of GroomingScheduleDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? petId = null,Object? intervalDays = null,Object? nextDueDate = null,Object? lastGroomedDate = freezed,}) {
+  return _then(_GroomingScheduleDto(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,petId: null == petId ? _self.petId : petId // ignore: cast_nullable_to_non_nullable
+as int,intervalDays: null == intervalDays ? _self.intervalDays : intervalDays // ignore: cast_nullable_to_non_nullable
+as int,nextDueDate: null == nextDueDate ? _self.nextDueDate : nextDueDate // ignore: cast_nullable_to_non_nullable
+as DateTime,lastGroomedDate: freezed == lastGroomedDate ? _self.lastGroomedDate : lastGroomedDate // ignore: cast_nullable_to_non_nullable
+as DateTime?,
+  ));
+}
+
+
+}
+
 // dart format on

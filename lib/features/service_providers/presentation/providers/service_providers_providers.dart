@@ -191,33 +191,46 @@ class ServiceProvidersNotifier extends _$ServiceProvidersNotifier {
 /// for the current viewport (bbox), panning can cause pins to appear/disappear.
 /// This notifier keeps a union of all pins ever fetched and reconciles with new
 /// API results (added/removed/updated). Prevents flickering when zooming in/out.
+///
+/// Reconciliation is driven by listening to [serviceProvidersProvider] rather
+/// than by a derived provider writing here during its build — Riverpod forbids
+/// one provider mutating another mid-build.
 @riverpod
 class ProviderPinCache extends _$ProviderPinCache {
   @override
-  Map<int, ServiceProvider> build() => {};
+  Map<int, ServiceProvider> build() {
+    // Merge each new search result into the union as it lands. The listener
+    // fires after this build completes, so mutating state from it is safe.
+    ref.listen(serviceProvidersProvider, (_, next) {
+      final items = next.value?.items;
+      if (items != null && items.isNotEmpty) _reconcile(items);
+    });
+
+    // Seed from whatever the search already holds (e.g. a cached result on a
+    // rebuild) so the first frame isn't empty.
+    return {
+      for (final p
+          in ref.read(serviceProvidersProvider).value?.items ??
+              const <ServiceProvider>[])
+        p.branchId: p,
+    };
+  }
 
   /// Merges new API results with cached pins.
-  void reconcile(List<ServiceProvider> apiResults) {
-    final byId = Map.fromEntries(apiResults.map((p) => MapEntry(p.branchId, p)));
+  void _reconcile(List<ServiceProvider> apiResults) {
     final cache = Map<int, ServiceProvider>.from(state);
-    cache.addAll(byId);
+    for (final p in apiResults) {
+      cache[p.branchId] = p;
+    }
     state = cache;
   }
 }
 
-/// The branch pins actually shown (map + list). Uses cached pins to persist
-/// selection across viewport changes, merged with API results.
-/// When a pin is selected, it appears at the top of the list.
+/// The branch pins actually shown (map + list). A pure derivation of the pin
+/// cache and the current selection — the selected pin floats to the top.
 @riverpod
 List<ServiceProvider> visibleProviders(Ref ref) {
-  final apiResult = ref.watch(serviceProvidersProvider).value?.items ??
-      const <ServiceProvider>[];
-
-  // Reconcile API results into the cache.
-  ref.read(providerPinCacheProvider.notifier).reconcile(apiResult);
-
-  // Return cached pins, updated with latest API data.
-  final cache = ref.read(providerPinCacheProvider);
+  final cache = ref.watch(providerPinCacheProvider);
   final providers = cache.values.toList();
 
   // Sort so selected provider appears at the top

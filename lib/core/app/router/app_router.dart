@@ -69,6 +69,8 @@ import '../../../features/pawcare/presentation/pages/edit_appointment_page.dart'
 import '../../../features/pawcare/presentation/pages/add_medication_page.dart';
 import '../../../features/pawcare/presentation/pages/add_vaccination_page.dart';
 import '../../../features/pawcare/presentation/pages/add_weight_page.dart';
+import '../../../features/pawcare/presentation/pages/edit_feeding_schedule_page.dart';
+import '../../../features/pawcare/presentation/pages/edit_grooming_schedule_page.dart';
 import '../../../features/pawcare/presentation/pages/appointments_list_page.dart';
 import '../../../features/pawcare/domain/entities/appointment.dart';
 import '../../../features/pawcare/presentation/pages/health_score_page.dart';
@@ -173,6 +175,10 @@ abstract final class AppRoutes {
   static const String vaccinations = '/pet/:id/vaccinations';
   static String healthScorePath(int petId) => '/pet/$petId/health-score';
   static const String healthScore = '/pet/:id/health-score';
+  static String feedingSchedulePath(int petId) => '/pet/$petId/feeding';
+  static const String feedingSchedule = '/pet/:id/feeding';
+  static String groomingSchedulePath(int petId) => '/pet/$petId/grooming';
+  static const String groomingSchedule = '/pet/:id/grooming';
 
   // Full-screen image viewer (image URL + optional hero tag passed via extra).
   static const String imageViewer = '/image-viewer';
@@ -616,6 +622,28 @@ GoRouter appRouter(Ref ref) {
           child: EditAppointmentPage(
             petId: int.parse(state.pathParameters['id']!),
             appointment: state.extra as Appointment,
+          ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.feedingSchedule,
+        name: 'feedingSchedule',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppSlideUpTransitionPage(
+          key: state.pageKey,
+          child: EditFeedingSchedulePage(
+            petId: int.parse(state.pathParameters['id']!),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: AppRoutes.groomingSchedule,
+        name: 'groomingSchedule',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppSlideUpTransitionPage(
+          key: state.pageKey,
+          child: EditGroomingSchedulePage(
+            petId: int.parse(state.pathParameters['id']!),
           ),
         ),
       ),

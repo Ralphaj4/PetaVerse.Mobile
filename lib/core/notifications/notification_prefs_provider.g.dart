@@ -154,7 +154,7 @@ final class NotificationPrefsNotifierProvider
 }
 
 String _$notificationPrefsNotifierHash() =>
-    r'5536dfcab98f17d36e29e15e26b02c837ce950ee';
+    r'e55d68c9cda844da68a4839d865a0c8c9871ad2f';
 
 /// Live map of all notification preferences. keepAlive so every consumer
 /// (FCM handler, notification service, settings page) shares one instance.

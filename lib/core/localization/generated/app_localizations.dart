@@ -2413,7 +2413,7 @@ abstract class AppLocalizations {
   /// No description provided for @healthMedicationsStartDateLabel.
   ///
   /// In en, this message translates to:
-  /// **'Start date'**
+  /// **'First dose'**
   String get healthMedicationsStartDateLabel;
 
   /// No description provided for @healthMedicationsAddedSuccess.
@@ -2661,6 +2661,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not save photo'**
   String get couldNotSavePhoto;
+
+  /// No description provided for @useInPost.
+  ///
+  /// In en, this message translates to:
+  /// **'Use in post'**
+  String get useInPost;
+
+  /// No description provided for @couldNotPreparePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not prepare photo'**
+  String get couldNotPreparePhoto;
+
+  /// No description provided for @flipCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Flip camera'**
+  String get flipCamera;
 
   /// No description provided for @didYouKnow.
   ///
@@ -4977,6 +4995,372 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'24-hour and 1-hour reminders before scheduled appointments'**
   String get notifAppointmentDesc;
+
+  /// No description provided for @notifFeeding.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeding reminders'**
+  String get notifFeeding;
+
+  /// No description provided for @notifFeedingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders at each scheduled mealtime'**
+  String get notifFeedingDesc;
+
+  /// No description provided for @notifGrooming.
+  ///
+  /// In en, this message translates to:
+  /// **'Grooming reminders'**
+  String get notifGrooming;
+
+  /// No description provided for @notifGroomingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Alerts when grooming is coming up or overdue'**
+  String get notifGroomingDesc;
+
+  /// No description provided for @feedingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeding'**
+  String get feedingTitle;
+
+  /// No description provided for @feedingSetUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up feeding'**
+  String get feedingSetUp;
+
+  /// No description provided for @feedingEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit feeding'**
+  String get feedingEdit;
+
+  /// No description provided for @feedingEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No feeding schedule yet. Set mealtimes to get reminders.'**
+  String get feedingEmpty;
+
+  /// No description provided for @feedingSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeding schedule saved'**
+  String get feedingSaved;
+
+  /// No description provided for @feedingDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete schedule'**
+  String get feedingDelete;
+
+  /// No description provided for @feedingDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeding schedule deleted'**
+  String get feedingDeleted;
+
+  /// No description provided for @feedingDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete feeding schedule?'**
+  String get feedingDeleteTitle;
+
+  /// No description provided for @feedingDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeding reminders will stop.'**
+  String get feedingDeleteMessage;
+
+  /// No description provided for @feedingDaysLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Days'**
+  String get feedingDaysLabel;
+
+  /// No description provided for @feedingMealsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Meals'**
+  String get feedingMealsLabel;
+
+  /// No description provided for @feedingMealNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Meal {number}'**
+  String feedingMealNumber(int number);
+
+  /// No description provided for @feedingAddMeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Add meal'**
+  String get feedingAddMeal;
+
+  /// No description provided for @feedingRemoveMeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove meal'**
+  String get feedingRemoveMeal;
+
+  /// No description provided for @feedingAmountHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount (optional)'**
+  String get feedingAmountHint;
+
+  /// No description provided for @feedingNoDays.
+  ///
+  /// In en, this message translates to:
+  /// **'No days selected'**
+  String get feedingNoDays;
+
+  /// No description provided for @feedingNoDaysError.
+  ///
+  /// In en, this message translates to:
+  /// **'Select at least one day'**
+  String get feedingNoDaysError;
+
+  /// No description provided for @feedingEveryDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Every day'**
+  String get feedingEveryDay;
+
+  /// No description provided for @feedingWeekdays.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekdays'**
+  String get feedingWeekdays;
+
+  /// No description provided for @feedingWeekends.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekends'**
+  String get feedingWeekends;
+
+  /// No description provided for @feedUnitGrams.
+  ///
+  /// In en, this message translates to:
+  /// **'g'**
+  String get feedUnitGrams;
+
+  /// No description provided for @feedUnitCups.
+  ///
+  /// In en, this message translates to:
+  /// **'cups'**
+  String get feedUnitCups;
+
+  /// No description provided for @feedUnitCans.
+  ///
+  /// In en, this message translates to:
+  /// **'cans'**
+  String get feedUnitCans;
+
+  /// No description provided for @weekdayShortSun.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun'**
+  String get weekdayShortSun;
+
+  /// No description provided for @weekdayShortMon.
+  ///
+  /// In en, this message translates to:
+  /// **'Mon'**
+  String get weekdayShortMon;
+
+  /// No description provided for @weekdayShortTue.
+  ///
+  /// In en, this message translates to:
+  /// **'Tue'**
+  String get weekdayShortTue;
+
+  /// No description provided for @weekdayShortWed.
+  ///
+  /// In en, this message translates to:
+  /// **'Wed'**
+  String get weekdayShortWed;
+
+  /// No description provided for @weekdayShortThu.
+  ///
+  /// In en, this message translates to:
+  /// **'Thu'**
+  String get weekdayShortThu;
+
+  /// No description provided for @weekdayShortFri.
+  ///
+  /// In en, this message translates to:
+  /// **'Fri'**
+  String get weekdayShortFri;
+
+  /// No description provided for @weekdayShortSat.
+  ///
+  /// In en, this message translates to:
+  /// **'Sat'**
+  String get weekdayShortSat;
+
+  /// No description provided for @weekdaySunday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunday'**
+  String get weekdaySunday;
+
+  /// No description provided for @weekdayMonday.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday'**
+  String get weekdayMonday;
+
+  /// No description provided for @weekdayTuesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuesday'**
+  String get weekdayTuesday;
+
+  /// No description provided for @weekdayWednesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Wednesday'**
+  String get weekdayWednesday;
+
+  /// No description provided for @weekdayThursday.
+  ///
+  /// In en, this message translates to:
+  /// **'Thursday'**
+  String get weekdayThursday;
+
+  /// No description provided for @weekdayFriday.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday'**
+  String get weekdayFriday;
+
+  /// No description provided for @weekdaySaturday.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturday'**
+  String get weekdaySaturday;
+
+  /// No description provided for @feedingUnitLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Unit'**
+  String get feedingUnitLabel;
+
+  /// No description provided for @feedUnitGramsName.
+  ///
+  /// In en, this message translates to:
+  /// **'Grams'**
+  String get feedUnitGramsName;
+
+  /// No description provided for @feedUnitCupsName.
+  ///
+  /// In en, this message translates to:
+  /// **'Cups'**
+  String get feedUnitCupsName;
+
+  /// No description provided for @feedUnitCansName.
+  ///
+  /// In en, this message translates to:
+  /// **'Cans'**
+  String get feedUnitCansName;
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// No description provided for @groomingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Grooming'**
+  String get groomingTitle;
+
+  /// No description provided for @groomingSetUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up grooming'**
+  String get groomingSetUp;
+
+  /// No description provided for @groomingEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit grooming'**
+  String get groomingEdit;
+
+  /// No description provided for @groomingEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No grooming schedule yet. Set an interval to get reminders.'**
+  String get groomingEmpty;
+
+  /// No description provided for @groomingSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Grooming schedule saved'**
+  String get groomingSaved;
+
+  /// No description provided for @groomingDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Grooming schedule deleted'**
+  String get groomingDeleted;
+
+  /// No description provided for @groomingIntervalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat every'**
+  String get groomingIntervalLabel;
+
+  /// No description provided for @groomingNextDueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Next due'**
+  String get groomingNextDueLabel;
+
+  /// No description provided for @groomingEveryDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Every {days, plural, =1{day} other{{days} days}}'**
+  String groomingEveryDays(int days);
+
+  /// No description provided for @groomingNextDue.
+  ///
+  /// In en, this message translates to:
+  /// **'Next due {date}'**
+  String groomingNextDue(String date);
+
+  /// No description provided for @groomingMarkGroomed.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as groomed'**
+  String get groomingMarkGroomed;
+
+  /// No description provided for @groomingMarkedGroomed.
+  ///
+  /// In en, this message translates to:
+  /// **'Marked as groomed'**
+  String get groomingMarkedGroomed;
+
+  /// No description provided for @groomingDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete schedule'**
+  String get groomingDelete;
+
+  /// No description provided for @groomingDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete grooming schedule?'**
+  String get groomingDeleteTitle;
+
+  /// No description provided for @groomingDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Grooming reminders will stop.'**
+  String get groomingDeleteMessage;
 
   /// No description provided for @notifCommunityInteractions.
   ///

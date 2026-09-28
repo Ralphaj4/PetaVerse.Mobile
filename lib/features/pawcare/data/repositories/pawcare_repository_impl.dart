@@ -1,9 +1,15 @@
-﻿import '../../../../core/app/notification_service.dart';
+﻿import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import '../../../../core/app/notification_service.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
+import '../../../../core/notifications/notification_prefs_store.dart';
 import '../../../../core/storage/sync_flag_store.dart';
 import '../../domain/entities/appointment.dart';
+import '../../domain/entities/feeding_schedule.dart';
+import '../../domain/entities/grooming_schedule.dart';
 import '../../domain/entities/health_lookup.dart';
 import '../../domain/entities/health_reminder.dart';
 import '../../domain/entities/medication.dart';
@@ -13,6 +19,7 @@ import '../../domain/entities/weight_record.dart';
 import '../../domain/repositories/pawcare_repository.dart';
 import '../datasources/health_reminder_local_datasource.dart';
 import '../datasources/pawcare_remote_datasource.dart';
+import '../dtos/pawcare_dtos.dart';
 
 /// Notification ID ranges — stable so cancel + reschedule always targets the
 /// same slot. Derived from entity IDs to avoid collisions across pets.
@@ -21,9 +28,16 @@ import '../datasources/pawcare_remote_datasource.dart';
 /// Vaccination:  20_000_000 + vaccinationId
 /// Appointment:  30_000_000 + appointmentId * 10      (day-before reminder)
 ///               30_000_000 + appointmentId * 10 + 1  (hour-before reminder)
+/// Feeding:     40_000_000 + feedingTime.id * 10 + weekday.bit   (one slot per
+///              meal per active weekday — weekly-recurring local notifications).
+///              The whole band is swept on reconcile since the server reassigns
+///              time ids on each full-replace. Band bounds live on
+///              [NotificationService] so the prefs toggle can sweep them too.
 const int _medBase = 10000000;
 const int _vacBase = 20000000;
 const int _apptBase = 30000000;
+const int _feedBase = NotificationService.feedingIdStart;
+const int _feedBandEnd = NotificationService.feedingIdEnd;
 
 /// PawCare repository. Maps remote DTOs onto domain entities and turns
 /// [AppException]s into [Failure]s.
@@ -369,6 +383,82 @@ class PawCareRepositoryImpl implements PawCareRepository {
         return dtos.map((e) => e.toEntity()).toList(growable: false);
       });
 
+  // ── Feeding schedule ──────────────────────────────────────────────────────
+
+  @override
+  Future<Result<FeedingSchedule?>> getFeedingSchedule(int petId) =>
+      _guard(() async {
+        final dto = await _remote.getFeedingSchedule(petId);
+        final schedule = dto?.toEntity();
+        await _reconcileFeedingNotifications(schedule);
+        return schedule;
+      });
+
+  @override
+  Future<Result<FeedingSchedule>> saveFeedingSchedule(
+    int petId, {
+    required int daysOfWeek,
+    required List<FeedingTime> times,
+  }) =>
+      _guard(() async {
+        final dto = await _remote.putFeedingSchedule(
+          petId,
+          daysOfWeek: daysOfWeek,
+          times: times
+              .map(FeedingTimeDto.fromEntity)
+              .toList(growable: false),
+        );
+        final schedule = dto.toEntity();
+        await _reconcileFeedingNotifications(schedule);
+        return schedule;
+      });
+
+  @override
+  Future<Result<void>> deleteFeedingSchedule(int petId) => _guard(() async {
+        await _remote.deleteFeedingSchedule(petId);
+        await _notifications.cancelInRange(_feedBase, _feedBandEnd);
+      });
+
+  // ── Grooming schedule ─────────────────────────────────────────────────────
+
+  @override
+  Future<Result<GroomingSchedule?>> getGroomingSchedule(int petId) =>
+      _guard(() async {
+        final dto = await _remote.getGroomingSchedule(petId);
+        return dto?.toEntity();
+      });
+
+  @override
+  Future<Result<GroomingSchedule>> saveGroomingSchedule(
+    int petId, {
+    required int intervalDays,
+    required DateTime nextDueDate,
+    DateTime? lastGroomedDate,
+  }) =>
+      _guard(() async {
+        final dto = await _remote.putGroomingSchedule(
+          petId,
+          intervalDays: intervalDays,
+          nextDueDate: nextDueDate,
+          lastGroomedDate: lastGroomedDate,
+        );
+        return dto.toEntity();
+      });
+
+  @override
+  Future<Result<GroomingSchedule>> markGroomed(
+    int petId, {
+    DateTime? groomedDate,
+  }) =>
+      _guard(() async {
+        final dto = await _remote.markGroomed(petId, groomedDate: groomedDate);
+        return dto.toEntity();
+      });
+
+  @override
+  Future<Result<void>> deleteGroomingSchedule(int petId) =>
+      _guard(() => _remote.deleteGroomingSchedule(petId));
+
   // ── Health score ──────────────────────────────────────────────────────────
 
   @override
@@ -454,6 +544,75 @@ class PawCareRepositoryImpl implements PawCareRepository {
       await _cancelAppointmentNotifications(a.id);
       if (!a.isPast && !a.isCompleted) await _scheduleAppointment(a);
     }
+  }
+
+  // ── Feeding (device-local, weekly-recurring) ────────────────────────────────
+
+  /// Reads the Feeding notification pref from the Hive prefs box. Opens the box
+  /// (idempotent — returns the already-open instance) rather than assuming it's
+  /// open, because it is only lazily opened when the notification-settings page
+  /// is visited; a synchronous `Hive.box(...)` peek would throw on a fresh
+  /// launch and fail open, re-arming notifications the user disabled. Defaults
+  /// to enabled only when Hive itself is unavailable.
+  Future<bool> _feedingEnabled() async {
+    try {
+      final box = await Hive.openBox<bool>('notification_prefs');
+      return box.get(NotifPrefKeys.feeding, defaultValue: true) ?? true;
+    } catch (_) {
+      return true;
+    }
+  }
+
+  /// Cancels the whole feeding id band, then reschedules from [schedule] — one
+  /// weekly-recurring notification per meal per active weekday. No-ops the
+  /// reschedule (leaving everything cancelled) when the Feeding pref is off or
+  /// there is no schedule. Feeding prefs are enforced app-side, so a disabled
+  /// pref means we simply don't arm the notifications.
+  Future<void> _reconcileFeedingNotifications(FeedingSchedule? schedule) async {
+    await _notifications.cancelInRange(_feedBase, _feedBandEnd);
+    if (schedule == null || !await _feedingEnabled()) return;
+    // The per-slot schedule() calls are independent — fan them out concurrently
+    // (a dense schedule is up to 7 meals × 7 days of platform-channel calls).
+    await Future.wait([
+      for (final time in schedule.times)
+        if (time.id case final timeId?) // unsaved times have no stable slot
+          for (final day in schedule.activeDays)
+            _notifications.schedule(
+              id: _feedBase + timeId * 10 + day.bit,
+              title: 'Feeding time',
+              body: time.quantity != null
+                  ? 'Time to feed your pet — ${_amountLabel(time)}.'
+                  : 'Time to feed your pet.',
+              when: _nextWeekdayTime(day, time.hour, time.minute),
+              category: NotificationCategory.feeding,
+              matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+            ),
+    ]);
+  }
+
+  /// The next DateTime matching [day]'s weekday at [hour]:[minute], today or in
+  /// the coming week — the anchor for a weekly-recurring notification.
+  DateTime _nextWeekdayTime(Weekday day, int hour, int minute) {
+    final now = DateTime.now();
+    var candidate = DateTime(now.year, now.month, now.day, hour, minute);
+    // Advance to the target weekday (0–6 days out).
+    final delta = (day.dartWeekday - candidate.weekday + 7) % 7;
+    candidate = candidate.add(Duration(days: delta));
+    // If that lands earlier today, roll to next week's occurrence.
+    if (candidate.isBefore(now)) candidate = candidate.add(const Duration(days: 7));
+    return candidate;
+  }
+
+  String _amountLabel(FeedingTime time) {
+    final qty = time.quantity;
+    if (qty == null) return '';
+    final n = qty == qty.roundToDouble() ? qty.toInt().toString() : qty.toString();
+    final unit = switch (time.unit) {
+      FeedUnit.grams => 'g',
+      FeedUnit.cups => 'cups',
+      FeedUnit.cans => 'cans',
+    };
+    return '$n $unit';
   }
 
   // ── Reminder caching ──────────────────────────────────────────────────────

@@ -174,7 +174,7 @@ final class PetHealthSnapshotProvider
   }
 }
 
-String _$petHealthSnapshotHash() => r'4aa1de7a83011377e87c1d51df1fa065ca1dc12f';
+String _$petHealthSnapshotHash() => r'e59b4fffcb7d9134ba3c6a17f8c0f9b0ca6ee8a3';
 
 /// Loads the health snapshot for a pet — the three sections in parallel, with a
 /// single loading / error surface for the dashboard. Family-keyed so each pet
@@ -885,4 +885,186 @@ final class PetHealthScoreFamily extends $Family
 
   @override
   String toString() => r'petHealthScoreProvider';
+}
+
+/// The pet's feeding schedule, or null when none is configured (204). Fetching
+/// re-arms the device-local meal reminders. Family-keyed per pet.
+
+@ProviderFor(petFeedingSchedule)
+final petFeedingScheduleProvider = PetFeedingScheduleFamily._();
+
+/// The pet's feeding schedule, or null when none is configured (204). Fetching
+/// re-arms the device-local meal reminders. Family-keyed per pet.
+
+final class PetFeedingScheduleProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<FeedingSchedule?>,
+          FeedingSchedule?,
+          FutureOr<FeedingSchedule?>
+        >
+    with $FutureModifier<FeedingSchedule?>, $FutureProvider<FeedingSchedule?> {
+  /// The pet's feeding schedule, or null when none is configured (204). Fetching
+  /// re-arms the device-local meal reminders. Family-keyed per pet.
+  PetFeedingScheduleProvider._({
+    required PetFeedingScheduleFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'petFeedingScheduleProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$petFeedingScheduleHash();
+
+  @override
+  String toString() {
+    return r'petFeedingScheduleProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<FeedingSchedule?> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<FeedingSchedule?> create(Ref ref) {
+    final argument = this.argument as int;
+    return petFeedingSchedule(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is PetFeedingScheduleProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$petFeedingScheduleHash() =>
+    r'84378b3b9de1afe6d2a34e224db42f87312c1897';
+
+/// The pet's feeding schedule, or null when none is configured (204). Fetching
+/// re-arms the device-local meal reminders. Family-keyed per pet.
+
+final class PetFeedingScheduleFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<FeedingSchedule?>, int> {
+  PetFeedingScheduleFamily._()
+    : super(
+        retry: null,
+        name: r'petFeedingScheduleProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// The pet's feeding schedule, or null when none is configured (204). Fetching
+  /// re-arms the device-local meal reminders. Family-keyed per pet.
+
+  PetFeedingScheduleProvider call(int petId) =>
+      PetFeedingScheduleProvider._(argument: petId, from: this);
+
+  @override
+  String toString() => r'petFeedingScheduleProvider';
+}
+
+/// The pet's grooming schedule, or null when none is configured (204).
+/// Family-keyed per pet.
+
+@ProviderFor(petGroomingSchedule)
+final petGroomingScheduleProvider = PetGroomingScheduleFamily._();
+
+/// The pet's grooming schedule, or null when none is configured (204).
+/// Family-keyed per pet.
+
+final class PetGroomingScheduleProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<GroomingSchedule?>,
+          GroomingSchedule?,
+          FutureOr<GroomingSchedule?>
+        >
+    with
+        $FutureModifier<GroomingSchedule?>,
+        $FutureProvider<GroomingSchedule?> {
+  /// The pet's grooming schedule, or null when none is configured (204).
+  /// Family-keyed per pet.
+  PetGroomingScheduleProvider._({
+    required PetGroomingScheduleFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'petGroomingScheduleProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$petGroomingScheduleHash();
+
+  @override
+  String toString() {
+    return r'petGroomingScheduleProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<GroomingSchedule?> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<GroomingSchedule?> create(Ref ref) {
+    final argument = this.argument as int;
+    return petGroomingSchedule(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is PetGroomingScheduleProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$petGroomingScheduleHash() =>
+    r'60faaa1e54b0241239bc15520b9aba1cc8d24e2b';
+
+/// The pet's grooming schedule, or null when none is configured (204).
+/// Family-keyed per pet.
+
+final class PetGroomingScheduleFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<GroomingSchedule?>, int> {
+  PetGroomingScheduleFamily._()
+    : super(
+        retry: null,
+        name: r'petGroomingScheduleProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// The pet's grooming schedule, or null when none is configured (204).
+  /// Family-keyed per pet.
+
+  PetGroomingScheduleProvider call(int petId) =>
+      PetGroomingScheduleProvider._(argument: petId, from: this);
+
+  @override
+  String toString() => r'petGroomingScheduleProvider';
 }

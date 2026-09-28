@@ -29,6 +29,10 @@ class NotificationPrefsRemoteDataSource {
             (json['vaccination'] as bool?) ?? true,
         NotifPrefKeys.appointment:
             (json['appointment'] as bool?) ?? true,
+        NotifPrefKeys.feeding:
+            (json['feeding'] as bool?) ?? true,
+        NotifPrefKeys.grooming:
+            (json['grooming'] as bool?) ?? true,
         NotifPrefKeys.communityInteractions:
             (json['communityInteractions'] as bool?) ?? true,
         NotifPrefKeys.newFollower:
@@ -50,6 +54,10 @@ class NotificationPrefsRemoteDataSource {
           'vaccination': prefs[NotifPrefKeys.vaccination],
         if (prefs.containsKey(NotifPrefKeys.appointment))
           'appointment': prefs[NotifPrefKeys.appointment],
+        if (prefs.containsKey(NotifPrefKeys.feeding))
+          'feeding': prefs[NotifPrefKeys.feeding],
+        if (prefs.containsKey(NotifPrefKeys.grooming))
+          'grooming': prefs[NotifPrefKeys.grooming],
         if (prefs.containsKey(NotifPrefKeys.communityInteractions))
           'communityInteractions':
               prefs[NotifPrefKeys.communityInteractions],

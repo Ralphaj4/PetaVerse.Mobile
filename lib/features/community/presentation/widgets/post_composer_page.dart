@@ -35,6 +35,7 @@ class PostComposerPage extends ConsumerStatefulWidget {
     required this.taggablePets,
     this.communityId,
     this.communityName,
+    this.initialImagePaths = const [],
     super.key,
   });
 
@@ -46,6 +47,10 @@ class PostComposerPage extends ConsumerStatefulWidget {
   /// personal one). [communityName] is shown as a "Posting in …" banner.
   final int? communityId;
   final String? communityName;
+
+  /// Local image file paths to pre-seed the media strip with (e.g. a photo
+  /// captured in Pet Vision). Images only — treated as regular photo media.
+  final List<String> initialImagePaths;
 
   @override
   ConsumerState<PostComposerPage> createState() => _PostComposerPageState();
@@ -70,6 +75,10 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
     super.initState();
     // Drive the "n / 2,200" counter in the caption card.
     _caption.addListener(_onCaptionChanged);
+    // Pre-seed any images handed in by the caller (e.g. a Pet Vision capture).
+    for (final path in widget.initialImagePaths) {
+      _media.add(PawMedia(url: path, altText: ''));
+    }
   }
 
   void _onCaptionChanged() => setState(() {});

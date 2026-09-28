@@ -8,6 +8,10 @@ abstract final class NotifPrefKeys {
   static const String vaccination = 'pref_vaccination';
   static const String appointment = 'pref_appointment';
 
+  // Care schedules
+  static const String feeding = 'pref_feeding';
+  static const String grooming = 'pref_grooming';
+
   // Community / PawHub interactions
   static const String communityInteractions = 'pref_community_interactions';
   static const String newFollower = 'pref_new_follower';
@@ -28,6 +32,8 @@ abstract final class NotifPrefKeys {
     medication,
     vaccination,
     appointment,
+    feeding,
+    grooming,
     communityInteractions,
     newFollower,
     mentions,

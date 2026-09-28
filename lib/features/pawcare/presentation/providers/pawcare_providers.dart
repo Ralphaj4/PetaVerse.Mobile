@@ -10,6 +10,8 @@ import '../../data/datasources/health_reminder_local_datasource.dart';
 import '../../data/datasources/pawcare_remote_datasource.dart';
 import '../../data/repositories/pawcare_repository_impl.dart';
 import '../../domain/entities/appointment.dart';
+import '../../domain/entities/feeding_schedule.dart';
+import '../../domain/entities/grooming_schedule.dart';
 import '../../domain/entities/health_lookup.dart';
 import '../../domain/entities/health_reminder.dart';
 import '../../domain/entities/medication.dart';
@@ -40,6 +42,8 @@ class PetHealthSnapshot {
     required this.medications,
     required this.vaccinations,
     required this.appointments,
+    required this.feeding,
+    required this.grooming,
   });
 
   /// Weight history, oldest first.
@@ -53,6 +57,12 @@ class PetHealthSnapshot {
 
   /// Upcoming appointments, soonest first.
   final List<Appointment> appointments;
+
+  /// Feeding schedule, or null when none is configured.
+  final FeedingSchedule? feeding;
+
+  /// Grooming schedule, or null when none is configured.
+  final GroomingSchedule? grooming;
 
   WeightRecord? get latestWeight => weights.isEmpty ? null : weights.last;
 }
@@ -70,17 +80,26 @@ List<T> _listOrEmptyOnNotFound<T>(Result<List<T>> result) => result.when(
       failure: (f) => f is NotFoundFailure ? <T>[] : throw f,
     );
 
+/// Unwraps a nullable [Result], treating a 404 as "not configured" (null).
+T? _valueOrNullOnNotFound<T>(Result<T?> result) => result.when(
+      success: (v) => v,
+      failure: (f) => f is NotFoundFailure ? null : throw f,
+    );
+
 /// Loads the health snapshot for a pet — the three sections in parallel, with a
 /// single loading / error surface for the dashboard. Family-keyed so each pet
 /// caches independently.
 @riverpod
 Future<PetHealthSnapshot> petHealthSnapshot(Ref ref, int petId) async {
   final repo = ref.watch(pawCareRepositoryProvider);
-  final (weights, medications, vaccinations, appointments) = await (
+  final (weights, medications, vaccinations, appointments, feeding, grooming) =
+      await (
     repo.getWeightHistory(petId),
     repo.getMedications(petId),
     repo.getVaccinations(petId),
     repo.getAppointments(petId),
+    repo.getFeedingSchedule(petId),
+    repo.getGroomingSchedule(petId),
   ).wait;
 
   return PetHealthSnapshot(
@@ -88,6 +107,8 @@ Future<PetHealthSnapshot> petHealthSnapshot(Ref ref, int petId) async {
     medications: _listOrEmptyOnNotFound(medications),
     vaccinations: _listOrEmptyOnNotFound(vaccinations),
     appointments: _listOrEmptyOnNotFound(appointments),
+    feeding: _valueOrNullOnNotFound(feeding),
+    grooming: _valueOrNullOnNotFound(grooming),
   );
 }
 
@@ -191,5 +212,23 @@ Future<List<Appointment>> petAppointments(Ref ref, int petId) async {
 Future<PetHealthScore> petHealthScore(Ref ref, int petId) async {
   return _unwrap(
     await ref.watch(pawCareRepositoryProvider).getHealthScore(petId),
+  );
+}
+
+/// The pet's feeding schedule, or null when none is configured (204). Fetching
+/// re-arms the device-local meal reminders. Family-keyed per pet.
+@riverpod
+Future<FeedingSchedule?> petFeedingSchedule(Ref ref, int petId) async {
+  return _valueOrNullOnNotFound(
+    await ref.watch(pawCareRepositoryProvider).getFeedingSchedule(petId),
+  );
+}
+
+/// The pet's grooming schedule, or null when none is configured (204).
+/// Family-keyed per pet.
+@riverpod
+Future<GroomingSchedule?> petGroomingSchedule(Ref ref, int petId) async {
+  return _valueOrNullOnNotFound(
+    await ref.watch(pawCareRepositoryProvider).getGroomingSchedule(petId),
   );
 }

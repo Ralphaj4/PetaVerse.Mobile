@@ -1311,7 +1311,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get healthMedicationsFrequencyLabel => 'Frequency';
 
   @override
-  String get healthMedicationsStartDateLabel => 'Start date';
+  String get healthMedicationsStartDateLabel => 'First dose';
 
   @override
   String get healthMedicationsAddedSuccess => 'Medication added';
@@ -1458,6 +1458,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get couldNotSavePhoto => 'Could not save photo';
+
+  @override
+  String get useInPost => 'Use in post';
+
+  @override
+  String get couldNotPreparePhoto => 'Could not prepare photo';
+
+  @override
+  String get flipCamera => 'Flip camera';
 
   @override
   String get didYouKnow => 'Did you know?';
@@ -2837,6 +2846,204 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notifAppointmentDesc =>
       '24-hour and 1-hour reminders before scheduled appointments';
+
+  @override
+  String get notifFeeding => 'Feeding reminders';
+
+  @override
+  String get notifFeedingDesc => 'Reminders at each scheduled mealtime';
+
+  @override
+  String get notifGrooming => 'Grooming reminders';
+
+  @override
+  String get notifGroomingDesc =>
+      'Alerts when grooming is coming up or overdue';
+
+  @override
+  String get feedingTitle => 'Feeding';
+
+  @override
+  String get feedingSetUp => 'Set up feeding';
+
+  @override
+  String get feedingEdit => 'Edit feeding';
+
+  @override
+  String get feedingEmpty =>
+      'No feeding schedule yet. Set mealtimes to get reminders.';
+
+  @override
+  String get feedingSaved => 'Feeding schedule saved';
+
+  @override
+  String get feedingDelete => 'Delete schedule';
+
+  @override
+  String get feedingDeleted => 'Feeding schedule deleted';
+
+  @override
+  String get feedingDeleteTitle => 'Delete feeding schedule?';
+
+  @override
+  String get feedingDeleteMessage => 'Feeding reminders will stop.';
+
+  @override
+  String get feedingDaysLabel => 'Days';
+
+  @override
+  String get feedingMealsLabel => 'Meals';
+
+  @override
+  String feedingMealNumber(int number) {
+    return 'Meal $number';
+  }
+
+  @override
+  String get feedingAddMeal => 'Add meal';
+
+  @override
+  String get feedingRemoveMeal => 'Remove meal';
+
+  @override
+  String get feedingAmountHint => 'Amount (optional)';
+
+  @override
+  String get feedingNoDays => 'No days selected';
+
+  @override
+  String get feedingNoDaysError => 'Select at least one day';
+
+  @override
+  String get feedingEveryDay => 'Every day';
+
+  @override
+  String get feedingWeekdays => 'Weekdays';
+
+  @override
+  String get feedingWeekends => 'Weekends';
+
+  @override
+  String get feedUnitGrams => 'g';
+
+  @override
+  String get feedUnitCups => 'cups';
+
+  @override
+  String get feedUnitCans => 'cans';
+
+  @override
+  String get weekdayShortSun => 'Sun';
+
+  @override
+  String get weekdayShortMon => 'Mon';
+
+  @override
+  String get weekdayShortTue => 'Tue';
+
+  @override
+  String get weekdayShortWed => 'Wed';
+
+  @override
+  String get weekdayShortThu => 'Thu';
+
+  @override
+  String get weekdayShortFri => 'Fri';
+
+  @override
+  String get weekdayShortSat => 'Sat';
+
+  @override
+  String get weekdaySunday => 'Sunday';
+
+  @override
+  String get weekdayMonday => 'Monday';
+
+  @override
+  String get weekdayTuesday => 'Tuesday';
+
+  @override
+  String get weekdayWednesday => 'Wednesday';
+
+  @override
+  String get weekdayThursday => 'Thursday';
+
+  @override
+  String get weekdayFriday => 'Friday';
+
+  @override
+  String get weekdaySaturday => 'Saturday';
+
+  @override
+  String get feedingUnitLabel => 'Unit';
+
+  @override
+  String get feedUnitGramsName => 'Grams';
+
+  @override
+  String get feedUnitCupsName => 'Cups';
+
+  @override
+  String get feedUnitCansName => 'Cans';
+
+  @override
+  String get done => 'Done';
+
+  @override
+  String get groomingTitle => 'Grooming';
+
+  @override
+  String get groomingSetUp => 'Set up grooming';
+
+  @override
+  String get groomingEdit => 'Edit grooming';
+
+  @override
+  String get groomingEmpty =>
+      'No grooming schedule yet. Set an interval to get reminders.';
+
+  @override
+  String get groomingSaved => 'Grooming schedule saved';
+
+  @override
+  String get groomingDeleted => 'Grooming schedule deleted';
+
+  @override
+  String get groomingIntervalLabel => 'Repeat every';
+
+  @override
+  String get groomingNextDueLabel => 'Next due';
+
+  @override
+  String groomingEveryDays(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: 'day',
+    );
+    return 'Every $_temp0';
+  }
+
+  @override
+  String groomingNextDue(String date) {
+    return 'Next due $date';
+  }
+
+  @override
+  String get groomingMarkGroomed => 'Mark as groomed';
+
+  @override
+  String get groomingMarkedGroomed => 'Marked as groomed';
+
+  @override
+  String get groomingDelete => 'Delete schedule';
+
+  @override
+  String get groomingDeleteTitle => 'Delete grooming schedule?';
+
+  @override
+  String get groomingDeleteMessage => 'Grooming reminders will stop.';
 
   @override
   String get notifCommunityInteractions => 'Likes, comments & replies';
