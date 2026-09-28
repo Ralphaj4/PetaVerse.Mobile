@@ -1,0 +1,51 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'macOS-15'
+
+steps:
+
+# Install Flutter
+- task: FlutterInstall@0
+  displayName: 'Install Flutter'
+  inputs:
+    mode: 'auto'
+    channel: 'stable'
+
+
+# Check versions
+- script: |
+    flutter --version
+    xcodebuild -version
+    pod --version
+  displayName: 'Check build environment'
+
+
+# Get dependencies
+- script: |
+    flutter pub get
+  displayName: 'Flutter pub get'
+
+
+# Install iOS dependencies
+- script: |
+    cd ios
+    pod install --repo-update
+  displayName: 'Install CocoaPods'
+
+
+# Build iOS IPA
+- script: |
+    flutter build ipa --release
+  displayName: 'Build IPA'
+
+
+# Publish IPA as pipeline artifact
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish IPA'
+  inputs:
+    targetPath: 'build/ios/ipa'
+    artifact: 'ios-ipa'
