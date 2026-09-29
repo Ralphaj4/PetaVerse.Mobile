@@ -1,0 +1,490 @@
+import 'dart:async';
+
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../core/extensions/context_extensions.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_radius.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
+import '../../domain/entities/community_entities.dart' as domain;
+import '../../domain/entities/community_enums.dart' show PostFeeling;
+import '../models/pawhub_models.dart';
+import '../providers/community_actions_providers.dart';
+import 'community_post_badge.dart';
+import 'pawhub_common.dart';
+import 'pawhub_media.dart';
+import 'post_feeling_display.dart';
+
+/// The main feed post card. Fully self-contained interactivity: like (tap +
+/// double-tap paw burst), save, comment, share, options, caption expand,
+/// media carousel + zoom. All callbacks bubble up so the page can react
+/// (open comments sheet, open options sheet, open viewer, open profile).
+/// Wired to communityActionsProvider for backend syncing.
+class PostCard extends ConsumerStatefulWidget {
+  const PostCard({
+    required this.post,
+    required this.onOpenComments,
+    required this.onOpenOptions,
+    required this.onOpenProfile,
+    required this.onShare,
+    this.showCommunityBadge = true,
+    super.key,
+  });
+
+  final PawPost post;
+  final VoidCallback onOpenComments;
+  final VoidCallback onOpenOptions;
+  final void Function(PawPet pet) onOpenProfile;
+  final VoidCallback onShare;
+
+  /// Whether to show the "posted in `<community>`" badge. Suppressed inside a
+  /// community's own feed, where the tag would be redundant.
+  final bool showCommunityBadge;
+
+  @override
+  ConsumerState<PostCard> createState() => _PostCardState();
+}
+
+class _PostCardState extends ConsumerState<PostCard>
+    with SingleTickerProviderStateMixin {
+  bool _captionExpanded = false;
+
+  late final AnimationController _likePop = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 280),
+    lowerBound: 0.85,
+    upperBound: 1.0,
+    value: 1,
+  );
+
+  @override
+  void dispose() {
+    _likePop.dispose();
+    super.dispose();
+  }
+
+  PawPost get post => widget.post;
+
+  Future<void> _toggleLike() async {
+    final domainPost = _toDomainPost();
+
+    setState(() {
+      post.likedByMe = !post.likedByMe;
+      post.likes += post.likedByMe ? 1 : -1;
+    });
+    if (post.likedByMe) {
+      await _likePop.forward(from: 0.85);
+      unawaited(HapticFeedback.lightImpact());
+    }
+
+    await ref.read(communityActionsProvider).toggleLike(domainPost);
+  }
+
+  domain.Post _toDomainPost() => domain.Post(
+        id: post.backendId,
+        author: domain.CommunityPet(
+          id: post.author.backendId,
+          name: post.author.name,
+          breed: post.author.breed,
+          species: post.author.species,
+          avatarUrl: post.author.avatarUrl,
+          ownerName: post.author.ownerName,
+          isVerified: post.author.isVerified,
+          followers: post.author.followers,
+          isFollowing: post.author.isFollowing,
+          isMine: post.author.isMine,
+        ),
+        media: post.media
+            .map((m) => domain.PostMedia(
+                  url: m.url,
+                  isVideo: m.isVideo,
+                  altText: m.altText,
+                ))
+            .toList(),
+        hashtags: post.hashtags,
+        taggedPets: const [],
+        likes: post.likes,
+        comments: post.commentCount,
+        likedByMe: post.likedByMe,
+        saved: post.saved,
+        isEdited: post.isEdited,
+        createdAt: DateTime.now(),
+        caption: post.caption,
+        locationName: post.locationName,
+        visibility: post.visibility.toDomain,
+        timeAgo: post.timeAgo,
+      );
+
+  void _doubleTapLike() {
+    if (!post.likedByMe) {
+      setState(() {
+        post.likedByMe = true;
+        post.likes += 1;
+      });
+      _likePop.forward(from: 0.85);
+      HapticFeedback.lightImpact();
+    }
+  }
+
+  Future<void> _toggleSave() async {
+    final domainPost = _toDomainPost();
+
+    setState(() => post.saved = !post.saved);
+    await HapticFeedback.selectionClick();
+
+    await ref.read(communityActionsProvider).toggleSave(domainPost);
+  }
+
+  void _openViewer(int index) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (_) =>
+            MediaZoomViewer(media: post.media, initialIndex: index),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: AppRadius.lgAll,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.textPrimary.withValues(alpha: 0.05),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _header(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+            child: PostMediaCarousel(
+              media: post.media,
+              liked: post.likedByMe,
+              onDoubleTapLike: _doubleTapLike,
+              onOpenViewer: _openViewer,
+            ),
+          ),
+          _actionRow(),
+          _likeCount(),
+          _caption(),
+          _commentPreview(),
+          const SizedBox(height: AppSpacing.md),
+        ],
+      ),
+    );
+  }
+
+  Widget _header() {
+    final subtitleParts = <String>[
+      post.author.breedOrSpecies,
+      if (post.locationName != null) post.locationName!,
+    ];
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.md,
+        AppSpacing.md,
+        AppSpacing.sm,
+        AppSpacing.sm,
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: PetIdentity(
+              pet: post.author,
+              subtitle: subtitleParts.join(' · '),
+              onTap: () => widget.onOpenProfile(post.author),
+            ),
+          ),
+          if (post.feeling != null) ...[
+            _FeelingChip(feeling: post.feeling!),
+            const SizedBox(width: AppSpacing.xs),
+          ],
+          if (widget.showCommunityBadge &&
+              post.communityId != null &&
+              post.communityName != null) ...[
+            // Capped, shrink-wrapped so it sits just left of the chip/ellipsis
+            // without stealing flex from the identity — the ellipsis keeps the
+            // same right-edge position as on non-community posts.
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 140),
+              child: CommunityPostBadge(
+                communityId: post.communityId!,
+                communityName: post.communityName!,
+              ),
+            ),
+            const SizedBox(width: AppSpacing.xs),
+          ],
+          _VisibilityChip(visibility: post.visibility),
+          IconButton(
+            onPressed: widget.onOpenOptions,
+            icon: const Icon(FluentIcons.more_horizontal_24_regular,
+                color: AppColors.textSecondary),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _actionRow() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.md,
+        AppSpacing.sm,
+        AppSpacing.md,
+        0,
+      ),
+      child: Row(
+        children: [
+          ScaleTransition(
+            scale: _likePop,
+            child: _ActionIcon(
+              onTap: _toggleLike,
+              tooltip: context.l10n.pawhubLike,
+              child: PawGlyph(filled: post.likedByMe),
+            ),
+          ),
+          const SizedBox(width: AppSpacing.xs),
+          _ActionIcon(
+            onTap: widget.onOpenComments,
+            tooltip: context.l10n.pawhubComment,
+            child: const Icon(FluentIcons.comment_24_regular,
+                color: AppColors.textSecondary),
+          ),
+          const SizedBox(width: AppSpacing.xs),
+          _ActionIcon(
+            onTap: widget.onShare,
+            tooltip: context.l10n.pawHubShare,
+            child: const Icon(FluentIcons.share_24_regular,
+                color: AppColors.textSecondary),
+          ),
+          const Spacer(),
+          _ActionIcon(
+            onTap: _toggleSave,
+            tooltip: context.l10n.save,
+            child: Icon(
+              post.saved
+                  ? FluentIcons.bookmark_24_filled
+                  : FluentIcons.bookmark_24_regular,
+              color: post.saved ? AppColors.primary : AppColors.textSecondary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _likeCount() {
+    if (post.likes <= 0) return const SizedBox(height: AppSpacing.xs);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.xs,
+          AppSpacing.md, 0),
+      child: Text(
+        '${post.likes} ${post.likes == 1 ? 'paw' : 'paws'}',
+        style: AppTextStyles.labelLarge,
+      ),
+    );
+  }
+
+  /// "with Buddy, Luna" where each name is a real tappable widget → opens that
+  /// pet's profile. Built as a Wrap of widgets (not rich-text spans) so each
+  /// name reliably gets its own hit target.
+  Widget _taggedPetsText(List<PawPet> tags) {
+    final base =
+        AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary);
+    final nameStyle = base.copyWith(
+      color: AppColors.secondaryDark,
+      fontWeight: FontWeight.w600,
+    );
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        Text('with ', style: base),
+        for (var i = 0; i < tags.length; i++) ...[
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: () => widget.onOpenProfile(tags[i]),
+            child: Text(tags[i].name, style: nameStyle),
+          ),
+          if (i < tags.length - 1) Text(', ', style: base),
+        ],
+      ],
+    );
+  }
+
+  Widget _caption() {
+    final tags = post.taggedPets;
+    final captionText = post.hashtags.isEmpty
+        ? post.caption
+        : '${post.caption} ${post.hashtags.map((h) => '#$h').join(' ')}'.trim();
+    // Only lead with the bold author name when there's actual caption text —
+    // an empty-caption post shouldn't render a lone name.
+    final hasCaption = captionText.trim().isNotEmpty;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.md,
+        AppSpacing.xs,
+        AppSpacing.md,
+        0,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (hasCaption)
+            GestureDetector(
+              onTap: () => setState(() => _captionExpanded = !_captionExpanded),
+              child: RichCaption(
+                // Instagram-style: bold author name leads the caption; tapping
+                // it opens the author's profile.
+                leadingName: post.author.name,
+                onLeadingTap: () => widget.onOpenProfile(post.author),
+                text: captionText,
+                style: AppTextStyles.bodyMedium,
+                maxLines: _captionExpanded ? null : 2,
+              ),
+            ),
+          if (tags.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.xs),
+            Row(
+              children: [
+                const Icon(FluentIcons.tag_24_regular,
+                    size: 14, color: AppColors.textTertiary),
+                const SizedBox(width: 4),
+                Flexible(child: _taggedPetsText(tags)),
+              ],
+            ),
+          ],
+          const SizedBox(height: AppSpacing.xs),
+          Row(
+            children: [
+              Text(post.timeAgo,
+                  style: AppTextStyles.bodySmall
+                      .copyWith(color: AppColors.textTertiary)),
+              if (post.isEdited) ...[
+                Text(' · Edited',
+                    style: AppTextStyles.bodySmall
+                        .copyWith(color: AppColors.textTertiary)),
+              ],
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _commentPreview() {
+    if (post.commentCount == 0) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.md,
+        AppSpacing.xs,
+        AppSpacing.md,
+        0,
+      ),
+      child: GestureDetector(
+        onTap: widget.onOpenComments,
+        child: Text(
+          'View all ${post.commentCount} comments',
+          style:
+              AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
+        ),
+      ),
+    );
+  }
+}
+
+class _ActionIcon extends StatelessWidget {
+  const _ActionIcon({
+    required this.onTap,
+    required this.tooltip,
+    required this.child,
+  });
+
+  final VoidCallback onTap;
+  final String tooltip;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: tooltip,
+      child: InkWell(
+        onTap: onTap,
+        customBorder: const CircleBorder(),
+        child: Padding(padding: const EdgeInsets.all(AppSpacing.xs), child: child),
+      ),
+    );
+  }
+}
+
+/// Compact icon + label pill showing the post's feeling in the header.
+class _FeelingChip extends StatelessWidget {
+  const _FeelingChip({required this.feeling});
+
+  final PostFeeling feeling;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding:
+          const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 3),
+      decoration: BoxDecoration(
+        color: AppColors.primarySoft,
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(feeling.emoji, style: const TextStyle(fontSize: 12)),
+          const SizedBox(width: 4),
+          Text(feeling.label(context.l10n),
+              style: AppTextStyles.labelSmall
+                  .copyWith(color: AppColors.primaryDark)),
+        ],
+      ),
+    );
+  }
+}
+
+class _VisibilityChip extends StatelessWidget {
+  const _VisibilityChip({required this.visibility});
+  final PostVisibility visibility;
+
+  @override
+  Widget build(BuildContext context) {
+    if (visibility == PostVisibility.public) return const SizedBox.shrink();
+    final icon = visibility == PostVisibility.followers
+        ? FluentIcons.people_24_regular
+        : FluentIcons.lock_closed_24_regular;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 3),
+      decoration: BoxDecoration(
+        color: AppColors.background,
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 12, color: AppColors.textSecondary),
+          const SizedBox(width: 4),
+          Text(visibility.label,
+              style: AppTextStyles.labelSmall
+                  .copyWith(color: AppColors.textSecondary)),
+        ],
+      ),
+    );
+  }
+}

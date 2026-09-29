@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$LoginResponseDto {
 
- bool get requiresVerification; String? get accessToken; String? get refreshToken; String? get userId; List<String> get roles; String? get mobileNumber; String? get devOtp;
+ bool get requiresVerification; String? get accessToken; String? get refreshToken; String? get userId; String? get userCode; List<String> get roles; String? get mobileNumber; String? get devOtp;
 /// Create a copy of LoginResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $LoginResponseDtoCopyWith<LoginResponseDto> get copyWith => _$LoginResponseDtoCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoginResponseDto&&(identical(other.requiresVerification, requiresVerification) || other.requiresVerification == requiresVerification)&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.userId, userId) || other.userId == userId)&&const DeepCollectionEquality().equals(other.roles, roles)&&(identical(other.mobileNumber, mobileNumber) || other.mobileNumber == mobileNumber)&&(identical(other.devOtp, devOtp) || other.devOtp == devOtp));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LoginResponseDto&&(identical(other.requiresVerification, requiresVerification) || other.requiresVerification == requiresVerification)&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.userCode, userCode) || other.userCode == userCode)&&const DeepCollectionEquality().equals(other.roles, roles)&&(identical(other.mobileNumber, mobileNumber) || other.mobileNumber == mobileNumber)&&(identical(other.devOtp, devOtp) || other.devOtp == devOtp));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,requiresVerification,accessToken,refreshToken,userId,const DeepCollectionEquality().hash(roles),mobileNumber,devOtp);
+int get hashCode => Object.hash(runtimeType,requiresVerification,accessToken,refreshToken,userId,userCode,const DeepCollectionEquality().hash(roles),mobileNumber,devOtp);
 
 @override
 String toString() {
-  return 'LoginResponseDto(requiresVerification: $requiresVerification, accessToken: $accessToken, refreshToken: $refreshToken, userId: $userId, roles: $roles, mobileNumber: $mobileNumber, devOtp: $devOtp)';
+  return 'LoginResponseDto(requiresVerification: $requiresVerification, accessToken: $accessToken, refreshToken: $refreshToken, userId: $userId, userCode: $userCode, roles: $roles, mobileNumber: $mobileNumber, devOtp: $devOtp)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $LoginResponseDtoCopyWith<$Res>  {
   factory $LoginResponseDtoCopyWith(LoginResponseDto value, $Res Function(LoginResponseDto) _then) = _$LoginResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- bool requiresVerification, String? accessToken, String? refreshToken, String? userId, List<String> roles, String? mobileNumber, String? devOtp
+ bool requiresVerification, String? accessToken, String? refreshToken, String? userId, String? userCode, List<String> roles, String? mobileNumber, String? devOtp
 });
 
 
@@ -65,12 +65,13 @@ class _$LoginResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of LoginResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? requiresVerification = null,Object? accessToken = freezed,Object? refreshToken = freezed,Object? userId = freezed,Object? roles = null,Object? mobileNumber = freezed,Object? devOtp = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? requiresVerification = null,Object? accessToken = freezed,Object? refreshToken = freezed,Object? userId = freezed,Object? userCode = freezed,Object? roles = null,Object? mobileNumber = freezed,Object? devOtp = freezed,}) {
   return _then(_self.copyWith(
 requiresVerification: null == requiresVerification ? _self.requiresVerification : requiresVerification // ignore: cast_nullable_to_non_nullable
 as bool,accessToken: freezed == accessToken ? _self.accessToken : accessToken // ignore: cast_nullable_to_non_nullable
 as String?,refreshToken: freezed == refreshToken ? _self.refreshToken : refreshToken // ignore: cast_nullable_to_non_nullable
 as String?,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String?,userCode: freezed == userCode ? _self.userCode : userCode // ignore: cast_nullable_to_non_nullable
 as String?,roles: null == roles ? _self.roles : roles // ignore: cast_nullable_to_non_nullable
 as List<String>,mobileNumber: freezed == mobileNumber ? _self.mobileNumber : mobileNumber // ignore: cast_nullable_to_non_nullable
 as String?,devOtp: freezed == devOtp ? _self.devOtp : devOtp // ignore: cast_nullable_to_non_nullable
@@ -159,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool requiresVerification,  String? accessToken,  String? refreshToken,  String? userId,  List<String> roles,  String? mobileNumber,  String? devOtp)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool requiresVerification,  String? accessToken,  String? refreshToken,  String? userId,  String? userCode,  List<String> roles,  String? mobileNumber,  String? devOtp)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LoginResponseDto() when $default != null:
-return $default(_that.requiresVerification,_that.accessToken,_that.refreshToken,_that.userId,_that.roles,_that.mobileNumber,_that.devOtp);case _:
+return $default(_that.requiresVerification,_that.accessToken,_that.refreshToken,_that.userId,_that.userCode,_that.roles,_that.mobileNumber,_that.devOtp);case _:
   return orElse();
 
 }
@@ -180,10 +181,10 @@ return $default(_that.requiresVerification,_that.accessToken,_that.refreshToken,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool requiresVerification,  String? accessToken,  String? refreshToken,  String? userId,  List<String> roles,  String? mobileNumber,  String? devOtp)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool requiresVerification,  String? accessToken,  String? refreshToken,  String? userId,  String? userCode,  List<String> roles,  String? mobileNumber,  String? devOtp)  $default,) {final _that = this;
 switch (_that) {
 case _LoginResponseDto():
-return $default(_that.requiresVerification,_that.accessToken,_that.refreshToken,_that.userId,_that.roles,_that.mobileNumber,_that.devOtp);case _:
+return $default(_that.requiresVerification,_that.accessToken,_that.refreshToken,_that.userId,_that.userCode,_that.roles,_that.mobileNumber,_that.devOtp);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -200,10 +201,10 @@ return $default(_that.requiresVerification,_that.accessToken,_that.refreshToken,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool requiresVerification,  String? accessToken,  String? refreshToken,  String? userId,  List<String> roles,  String? mobileNumber,  String? devOtp)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool requiresVerification,  String? accessToken,  String? refreshToken,  String? userId,  String? userCode,  List<String> roles,  String? mobileNumber,  String? devOtp)?  $default,) {final _that = this;
 switch (_that) {
 case _LoginResponseDto() when $default != null:
-return $default(_that.requiresVerification,_that.accessToken,_that.refreshToken,_that.userId,_that.roles,_that.mobileNumber,_that.devOtp);case _:
+return $default(_that.requiresVerification,_that.accessToken,_that.refreshToken,_that.userId,_that.userCode,_that.roles,_that.mobileNumber,_that.devOtp);case _:
   return null;
 
 }
@@ -215,13 +216,14 @@ return $default(_that.requiresVerification,_that.accessToken,_that.refreshToken,
 @JsonSerializable()
 
 class _LoginResponseDto implements LoginResponseDto {
-  const _LoginResponseDto({this.requiresVerification = false, this.accessToken, this.refreshToken, this.userId, final  List<String> roles = const <String>[], this.mobileNumber, this.devOtp}): _roles = roles;
+  const _LoginResponseDto({this.requiresVerification = false, this.accessToken, this.refreshToken, this.userId, this.userCode, final  List<String> roles = const <String>[], this.mobileNumber, this.devOtp}): _roles = roles;
   factory _LoginResponseDto.fromJson(Map<String, dynamic> json) => _$LoginResponseDtoFromJson(json);
 
 @override@JsonKey() final  bool requiresVerification;
 @override final  String? accessToken;
 @override final  String? refreshToken;
 @override final  String? userId;
+@override final  String? userCode;
  final  List<String> _roles;
 @override@JsonKey() List<String> get roles {
   if (_roles is EqualUnmodifiableListView) return _roles;
@@ -245,16 +247,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoginResponseDto&&(identical(other.requiresVerification, requiresVerification) || other.requiresVerification == requiresVerification)&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.userId, userId) || other.userId == userId)&&const DeepCollectionEquality().equals(other._roles, _roles)&&(identical(other.mobileNumber, mobileNumber) || other.mobileNumber == mobileNumber)&&(identical(other.devOtp, devOtp) || other.devOtp == devOtp));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoginResponseDto&&(identical(other.requiresVerification, requiresVerification) || other.requiresVerification == requiresVerification)&&(identical(other.accessToken, accessToken) || other.accessToken == accessToken)&&(identical(other.refreshToken, refreshToken) || other.refreshToken == refreshToken)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.userCode, userCode) || other.userCode == userCode)&&const DeepCollectionEquality().equals(other._roles, _roles)&&(identical(other.mobileNumber, mobileNumber) || other.mobileNumber == mobileNumber)&&(identical(other.devOtp, devOtp) || other.devOtp == devOtp));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,requiresVerification,accessToken,refreshToken,userId,const DeepCollectionEquality().hash(_roles),mobileNumber,devOtp);
+int get hashCode => Object.hash(runtimeType,requiresVerification,accessToken,refreshToken,userId,userCode,const DeepCollectionEquality().hash(_roles),mobileNumber,devOtp);
 
 @override
 String toString() {
-  return 'LoginResponseDto(requiresVerification: $requiresVerification, accessToken: $accessToken, refreshToken: $refreshToken, userId: $userId, roles: $roles, mobileNumber: $mobileNumber, devOtp: $devOtp)';
+  return 'LoginResponseDto(requiresVerification: $requiresVerification, accessToken: $accessToken, refreshToken: $refreshToken, userId: $userId, userCode: $userCode, roles: $roles, mobileNumber: $mobileNumber, devOtp: $devOtp)';
 }
 
 
@@ -265,7 +267,7 @@ abstract mixin class _$LoginResponseDtoCopyWith<$Res> implements $LoginResponseD
   factory _$LoginResponseDtoCopyWith(_LoginResponseDto value, $Res Function(_LoginResponseDto) _then) = __$LoginResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- bool requiresVerification, String? accessToken, String? refreshToken, String? userId, List<String> roles, String? mobileNumber, String? devOtp
+ bool requiresVerification, String? accessToken, String? refreshToken, String? userId, String? userCode, List<String> roles, String? mobileNumber, String? devOtp
 });
 
 
@@ -282,12 +284,13 @@ class __$LoginResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of LoginResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? requiresVerification = null,Object? accessToken = freezed,Object? refreshToken = freezed,Object? userId = freezed,Object? roles = null,Object? mobileNumber = freezed,Object? devOtp = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? requiresVerification = null,Object? accessToken = freezed,Object? refreshToken = freezed,Object? userId = freezed,Object? userCode = freezed,Object? roles = null,Object? mobileNumber = freezed,Object? devOtp = freezed,}) {
   return _then(_LoginResponseDto(
 requiresVerification: null == requiresVerification ? _self.requiresVerification : requiresVerification // ignore: cast_nullable_to_non_nullable
 as bool,accessToken: freezed == accessToken ? _self.accessToken : accessToken // ignore: cast_nullable_to_non_nullable
 as String?,refreshToken: freezed == refreshToken ? _self.refreshToken : refreshToken // ignore: cast_nullable_to_non_nullable
 as String?,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String?,userCode: freezed == userCode ? _self.userCode : userCode // ignore: cast_nullable_to_non_nullable
 as String?,roles: null == roles ? _self._roles : roles // ignore: cast_nullable_to_non_nullable
 as List<String>,mobileNumber: freezed == mobileNumber ? _self.mobileNumber : mobileNumber // ignore: cast_nullable_to_non_nullable
 as String?,devOtp: freezed == devOtp ? _self.devOtp : devOtp // ignore: cast_nullable_to_non_nullable

@@ -1,9 +1,14 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/notifications/presentation/providers/notification_providers.dart';
+import '../../features/pets/presentation/providers/pet_list_provider.dart';
 import '../extensions/context_extensions.dart';
 import '../theme/app_colors.dart';
+import 'fcm_handler.dart';
+import 'tab_scroll_to_top_provider.dart';
 
 const double _navBarHeight = 64;
 
@@ -15,6 +20,10 @@ const double _fabOverlap = 55;
 
 /// centerFloat shifted down so the FAB renders on top of the bottom bar
 /// (FABs always paint above the bottomNavigationBar in the Scaffold).
+///
+/// The keyboard inset ([ScaffoldPrelayoutGeometry.minInsets] bottom) is added
+/// back so the button stays pinned to the bottom bar instead of riding up when
+/// the keyboard opens — the center AI button must always stay put.
 class _OverlappingCenterFabLocation extends FloatingActionButtonLocation {
   const _OverlappingCenterFabLocation();
 
@@ -22,29 +31,87 @@ class _OverlappingCenterFabLocation extends FloatingActionButtonLocation {
   Offset getOffset(ScaffoldPrelayoutGeometry scaffoldGeometry) {
     final base =
         FloatingActionButtonLocation.centerFloat.getOffset(scaffoldGeometry);
-    return Offset(base.dx, base.dy + _fabOverlap);
+    return Offset(base.dx, base.dy + _fabOverlap + scaffoldGeometry.minInsets.bottom);
   }
 }
 
+/// Index of the profile branch in the bottom navigation.
+const int _profileBranchIndex = 3;
+
 /// Scaffold with the design's bottom navigation: four tabs and a
 /// prominent center paw button that opens the AI assistant.
-class AppShell extends StatelessWidget {
+class AppShell extends ConsumerStatefulWidget {
   const AppShell({required this.navigationShell, super.key});
 
   final StatefulNavigationShell navigationShell;
 
   @override
+  ConsumerState<AppShell> createState() => _AppShellState();
+}
+
+class _AppShellState extends ConsumerState<AppShell>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    FcmHandler.init(ref);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      ref.invalidate(notificationUnreadCountProvider);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+
+    void goBranch(int index) {
+      final isReselect = index == widget.navigationShell.currentIndex;
+      // Re-tapping the already-selected tab, while its branch is at its root
+      // (no page pushed on top), scrolls that tab's root page to the top.
+      // If the branch navigator can pop, a sub-page is showing — leave it be.
+      if (isReselect) {
+        final branchCanPop = widget.navigationShell.route.branches[index]
+                .navigatorKey.currentState
+                ?.canPop() ??
+            false;
+        if (!branchCanPop) {
+          ref.read(tabScrollToTopProvider.notifier).request(index);
+        }
+      }
+      // Offline-first refresh: reconcile the pet list when entering the
+      // profile tab (it shows the cached list instantly, then updates).
+      if (index == _profileBranchIndex && !isReselect) {
+        ref.read(petListProvider.notifier).refresh();
+      }
+      widget.navigationShell.goBranch(
+        index,
+        initialLocation: isReselect,
+      );
+    }
+
     return Scaffold(
-      body: navigationShell,
+      body: widget.navigationShell,
       floatingActionButton: SizedBox(
         width: _fabSize,
         height: _fabSize,
         child: FloatingActionButton(
+          // Explicit tag so this always-present shell FAB never collides with a
+          // screen-level FAB's default Hero tag during route transitions.
+          heroTag: 'app_shell_ai_fab',
           onPressed: () => context.push('/assistant'),
           tooltip: l10n.aiAssistant,
-          child: const Icon(FluentIcons.animal_paw_print_24_filled, size: 32),
+          child: Image.asset('assets/logo.png', width: 40, height: 40),
         ),
       ),
       floatingActionButtonLocation: const _OverlappingCenterFabLocation(),
@@ -58,41 +125,36 @@ class AppShell extends StatelessWidget {
               icon: FluentIcons.home_24_regular,
               selectedIcon: FluentIcons.home_24_filled,
               label: l10n.navHome,
-              isSelected: navigationShell.currentIndex == 0,
-              onTap: () => _goBranch(0),
+              isSelected: widget.navigationShell.currentIndex == 0,
+              onTap: () => goBranch(0),
             ),
             _NavItem(
               icon: FluentIcons.people_community_24_regular,
               selectedIcon: FluentIcons.people_community_24_filled,
               label: l10n.navCommunity,
-              isSelected: navigationShell.currentIndex == 1,
-              onTap: () => _goBranch(1),
+              isSelected: widget.navigationShell.currentIndex == 1,
+              onTap: () => goBranch(1),
             ),
             const Spacer(),
             _NavItem(
               icon: FluentIcons.stethoscope_24_regular,
               selectedIcon: FluentIcons.stethoscope_24_filled,
               label: l10n.navCare,
-              isSelected: navigationShell.currentIndex == 2,
-              onTap: () => _goBranch(2),
+              isSelected: widget.navigationShell.currentIndex == 2,
+              onTap: () => goBranch(2),
             ),
             _NavItem(
               icon: FluentIcons.person_24_regular,
               selectedIcon: FluentIcons.person_24_filled,
               label: l10n.navProfile,
-              isSelected: navigationShell.currentIndex == 3,
-              onTap: () => _goBranch(3),
+              isSelected: widget.navigationShell.currentIndex == _profileBranchIndex,
+              onTap: () => goBranch(_profileBranchIndex),
             ),
           ],
         ),
       ),
     );
   }
-
-  void _goBranch(int index) => navigationShell.goBranch(
-        index,
-        initialLocation: index == navigationShell.currentIndex,
-      );
 }
 
 class _NavItem extends StatelessWidget {

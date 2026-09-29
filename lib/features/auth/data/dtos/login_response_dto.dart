@@ -14,6 +14,7 @@ abstract class LoginResponseDto with _$LoginResponseDto {
     String? accessToken,
     String? refreshToken,
     String? userId,
+    String? userCode,
     @Default(<String>[]) List<String> roles,
     String? mobileNumber,
     String? devOtp,

@@ -44,3 +44,27 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Firebase config — contain API keys and project credentials
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+ios/firebase_app_id_file.json
+lib/firebase_options.dart
+firebase.json
+.firebaserc
+
+# Signing keystores and certificates
+*.keystore
+*.jks
+*.p12
+*.cer
+*.mobileprovision
+android/key.properties
+
+# Environment / secrets
+.env
+.env.*
+*.secret
+
+# iOS sensitive
+ios/Runner/Runner.entitlements

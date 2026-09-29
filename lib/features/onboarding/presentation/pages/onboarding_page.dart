@@ -31,7 +31,7 @@ List<OnboardingSlideData> _slides(AppLocalizations l10n) => [
         showBlob: true
       ),
       OnboardingSlideData(
-        lottieAsset: 'assets/lotties/dog_floating.json',
+        lottieAsset: 'assets/lotties/community.json',
         titleTop: l10n.onboardingTitle3a,
         titleAccent: l10n.onboardingTitle3b,
         description: l10n.onboardingDesc3,

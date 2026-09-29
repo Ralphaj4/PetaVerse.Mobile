@@ -13,6 +13,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../pets/presentation/providers/pets_provider.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/auth_layout.dart';
 import '../widgets/auth_submit_button.dart';
@@ -24,17 +25,28 @@ const int _resendCooldownSeconds = 30;
 /// Arguments for the OTP route: the phone to verify and, in Development,
 /// the OTP echoed back by the backend so testers don't need a real SMS.
 class OtpArgs {
-  const OtpArgs({required this.phone, this.devOtp});
+  const OtpArgs({
+    required this.phone,
+    this.devOtp,
+    this.isRegister = false,
+  });
 
   final String phone;
   final String? devOtp;
+  final bool isRegister;
 }
 
 class OtpVerificationPage extends ConsumerStatefulWidget {
-  const OtpVerificationPage({required this.phone, this.devOtp, super.key});
+  const OtpVerificationPage({
+    required this.phone,
+    this.devOtp,
+    this.isRegister = false,
+    super.key,
+  });
 
   final String phone;
   final String? devOtp;
+  final bool isRegister;
 
   @override
   ConsumerState<OtpVerificationPage> createState() =>
@@ -79,7 +91,15 @@ class _OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
     final ok = await notifier.verifyOtp(phone: widget.phone, code: _code);
     if (!mounted) return;
     if (ok) {
-      context.go(AppRoutes.home);
+      if (widget.isRegister) {
+        // New user: go to avatar setup (use go to replace stack and prevent redirect)
+        context.go(AppRoutes.avatarSetup);
+      } else {
+        // Login: resolve pet gate and navigate directly
+        await ref.read(petsProvider.notifier).reconcile();
+        if (!mounted) return;
+        context.go(petLandingFor(ref.read(petsProvider)));
+      }
     } else {
       final failure = notifier.lastFailure;
       if (failure != null) {

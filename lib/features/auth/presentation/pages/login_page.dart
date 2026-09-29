@@ -13,6 +13,8 @@ import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
+import '../../../pets/presentation/providers/pets_provider.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/auth_layout.dart';
 import '../widgets/auth_submit_button.dart';
@@ -34,6 +36,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Future<void> _submit() async {
     final form = _formKey.currentState!;
     if (!form.saveAndValidate()) return;
+    if (_completePhone.isEmpty) return;
 
     final notifier = ref.read(authProvider.notifier);
     final outcome = await notifier.login(
@@ -43,7 +46,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     if (!mounted) return;
     switch (outcome.result) {
       case LoginResult.authenticated:
-        context.go(AppRoutes.home);
+        // Resolve the pet gate BEFORE navigating so we land on the right
+        // screen directly — no home/splash flash. The spinner stays up during
+        // this short fetch. Destination: home / pet-onboarding / select-pet.
+        await ref.read(petsProvider.notifier).reconcile();
+        if (!mounted) return;
+        context.go(petLandingFor(ref.read(petsProvider)));
       case LoginResult.needsVerification:
         // Account exists but the phone isn't confirmed — the backend
         // resent an OTP, so continue to verification.
@@ -109,7 +117,20 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
               ]),
             ),
-            const SizedBox(height: AppSpacing.xxl),
+            const SizedBox(height: AppSpacing.sm),
+            Align(
+              alignment: AlignmentDirectional.centerEnd,
+              child: TextButton(
+                onPressed: () => context.push(AppRoutes.forgotPassword),
+                child: Text(
+                  l10n.forgotPassword,
+                  style: AppTextStyles.labelLarge.copyWith(
+                    color: AppColors.primary,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
             AuthSubmitButton(
               label: l10n.logIn,
               isLoading: isLoading,

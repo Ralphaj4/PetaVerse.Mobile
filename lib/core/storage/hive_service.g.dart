@@ -49,3 +49,44 @@ final class HiveServiceProvider
 }
 
 String _$hiveServiceHash() => r'c9d824b0522c0ac427f042ab5cae0343a242bdd7';
+
+@ProviderFor(syncFlagStore)
+final syncFlagStoreProvider = SyncFlagStoreProvider._();
+
+final class SyncFlagStoreProvider
+    extends $FunctionalProvider<SyncFlagStore, SyncFlagStore, SyncFlagStore>
+    with $Provider<SyncFlagStore> {
+  SyncFlagStoreProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'syncFlagStoreProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$syncFlagStoreHash();
+
+  @$internal
+  @override
+  $ProviderElement<SyncFlagStore> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  SyncFlagStore create(Ref ref) {
+    return syncFlagStore(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SyncFlagStore value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SyncFlagStore>(value),
+    );
+  }
+}
+
+String _$syncFlagStoreHash() => r'da96309fcb046df039a5f672b4cebe1d1b598d84';

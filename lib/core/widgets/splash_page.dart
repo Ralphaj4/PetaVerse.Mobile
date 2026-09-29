@@ -1,39 +1,57 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
-import '../theme/app_spacing.dart';
 
 /// Neutral launch screen shown while the app resolves which destination
 /// to open (onboarding vs. login vs. home). It never flashes a real
 /// screen: the router parks here until the onboarding + session gates
 /// have loaded, then redirects to the correct route.
-class SplashPage extends StatelessWidget {
+///
+/// The logo pulses (zooms in and out) continuously to signal activity in
+/// place of a spinner.
+class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
 
   @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _scale;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 900),
+    )..repeat(reverse: true);
+    _scale = Tween<double>(begin: 0.85, end: 1.15).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       backgroundColor: AppColors.primary,
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              FluentIcons.animal_paw_print_24_filled,
-              size: 72,
-              color: AppColors.onPrimary,
-            ),
-            SizedBox(height: AppSpacing.xl),
-            SizedBox(
-              width: 28,
-              height: 28,
-              child: CircularProgressIndicator(
-                strokeWidth: 2.5,
-                color: AppColors.onPrimary,
-              ),
-            ),
-          ],
+        // The logo itself pulses (zooms in and out) to signal activity.
+        child: ScaleTransition(
+          scale: _scale,
+          child: Image.asset(
+            'assets/logo.png',
+            width: 200,
+            height: 200,
+          ),
         ),
       ),
     );

@@ -3,33 +3,128 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../core/app/router/app_router.dart';
+import '../../../../core/app/tab_scroll_to_top_provider.dart';
+import '../../../../core/network/app_config_datasource.dart';
+import '../../../../core/errors/failure.dart';
+import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_confirm_dialog.dart';
+import '../../../../shared/widgets/shimmer.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../../../auth/presentation/providers/session_provider.dart';
+import '../../../co_ownership/presentation/providers/co_ownership_providers.dart';
+import '../../../pets/presentation/providers/pet_list_provider.dart';
+import '../../../pets/presentation/providers/pets_provider.dart';
+import '../../../pets/presentation/widgets/pet_card_grid.dart';
+import '../providers/user_provider.dart';
+import '../widgets/delete_account_dialog.dart';
 import '../widgets/log_out_button.dart';
-import '../widgets/pet_profile_card.dart';
 import '../widgets/profile_header.dart';
 import '../widgets/settings_tile.dart';
 
 /// Profile tab. Data is mocked until the user/pets backend is wired;
 /// the layout and widgets are final.
-class ProfilePage extends ConsumerWidget {
+class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends ConsumerState<ProfilePage> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Refresh incoming co-owner invites when the tab mounts so the badge is
+    // current (the provider is keepAlive and won't refetch on its own).
+    Future.microtask(() => ref.invalidate(incomingInvitesProvider));
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToTop() {
+    if (!_scrollController.hasClients) return;
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOutCubic,
+    );
+  }
+
+  Future<void> _onDeleteAccount(BuildContext context) async {
+    final confirmed = await DeleteAccountDialog.show(context);
+    if (!confirmed || !context.mounted) return;
+
+    // Read all stable refs before any await — the providers we touch
+    // (authProvider in particular) are auto-disposed and their refs become
+    // invalid the moment the session gate flips and the router rebuilds.
+    final petsNotifier = ref.read(petsProvider.notifier);
+    final authNotifier = ref.read(authProvider.notifier);
+    final sessionNotifier = ref.read(sessionProvider.notifier);
+
+    final result = await authNotifier.deleteAccount();
+
+    if (result.isFailure) {
+      if (!context.mounted) return;
+      context.showErrorSnackBar(
+        result.failureOrNull!.localizedMessage(context.l10n),
+      );
+      return;
+    }
+
+    // Flip the session gate FIRST (synchronous) — the router immediately
+    // redirects to /login. Any remaining async teardown (pet cache reset)
+    // runs after, mirroring the logout sequence.
+    sessionNotifier.setLoggedIn(false);
+    await petsNotifier.reset();
+  }
+
+  Future<void> _openUrl(BuildContext context, String url) async {
+    if (url.isEmpty) return;
+    final uri = Uri.tryParse(url);
+    if (uri == null) return;
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      if (context.mounted) context.showErrorSnackBar(context.l10n.errorServer);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Bottom nav bumps this when the Profile tab (branch 3) is re-tapped at root.
+    ref.listen(
+      tabScrollToTopProvider.select((m) => m[3]),
+      (_, _) => _scrollToTop(),
+    );
+
     final l10n = context.l10n;
+    final user = ref.watch(userProvider).value;
+    final userName = user == null
+        ? ''
+        : '${user.firstName} ${user.lastName}'.trim();
+    // Live count of incoming co-owner invites (same source as onboarding).
+    final pendingInvites =
+        ref.watch(incomingInvitesProvider).value?.length ?? 0;
 
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
         bottom: false,
         child: SingleChildScrollView(
+          controller: _scrollController,
           padding: const EdgeInsets.fromLTRB(
             AppSpacing.lg,
             AppSpacing.md,
@@ -40,7 +135,8 @@ class ProfilePage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ProfileHeader(
-                name: 'Sarah Mitchell',
+                name: userName,
+                avatarUrl: user?.avatarUrl,
                 tierLabel: l10n.premiumMember,
                 onBellTap: () {},
               ),
@@ -50,7 +146,14 @@ class ProfilePage extends ConsumerWidget {
               _PetSectionHeader(
                 title: l10n.petProfiles,
                 actionLabel: l10n.addPet,
-                onAdd: () {},
+                onAdd: () async {
+                  await context.push(AppRoutes.createPet);
+                  // Invalidate so the list rebuilds with any newly created
+                  // pet. Using invalidate (not .refresh()) avoids touching a
+                  // potentially-disposed notifier after the provider went
+                  // off-screen during navigation.
+                  if (context.mounted) ref.invalidate(petListProvider);
+                },
               ),
               const SizedBox(height: AppSpacing.md),
               const _PetGrid(),
@@ -63,47 +166,97 @@ class ProfilePage extends ConsumerWidget {
                 icon: FluentIcons.person_24_regular,
                 iconColor: AppColors.secondary,
                 label: l10n.personalInformation,
-                onTap: () {},
+                onTap: () => context.push(AppRoutes.personalInformation),
               ),
-              const SizedBox(height: AppSpacing.sm),
-              SettingsTile(
-                icon: FluentIcons.shield_24_regular,
-                iconColor: AppColors.accentPurple,
-                label: l10n.securityPrivacy,
-                onTap: () {},
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              SettingsTile(
-                icon: FluentIcons.wallet_24_regular,
-                iconColor: AppColors.primary,
-                label: l10n.paymentMethods,
-                onTap: () {},
-              ),
+              // Pet Invitations — shown only when there are pending invites.
+              if (pendingInvites > 0) ...[
+                const SizedBox(height: AppSpacing.sm),
+                SettingsTile(
+                  icon: FluentIcons.people_team_24_regular,
+                  iconColor: AppColors.secondary,
+                  label: l10n.coOwnerInvitationsTitle,
+                  badgeCount: pendingInvites,
+                  onTap: () => context.push(AppRoutes.coOwnerInvitations),
+                ),
+              ],
+              // const SizedBox(height: AppSpacing.sm),
+              // SettingsTile(
+              //   icon: FluentIcons.wallet_24_regular,
+              //   iconColor: AppColors.primary,
+              //   label: l10n.paymentMethods,
+              //   onTap: () {},
+              // ),
               const SizedBox(height: AppSpacing.xl),
 
-              // ── Notifications & Support ──────────────────────────────
-              _GroupTitle(title: l10n.notificationsSupport),
+              // ── Preferences ──────────────────────────────────────────
+              _GroupTitle(title: l10n.preferences),
               const SizedBox(height: AppSpacing.md),
               SettingsTile(
                 icon: FluentIcons.alert_24_regular,
                 iconColor: AppColors.secondary,
                 label: l10n.notifications,
-                statusLabel: l10n.toggleOn,
-                onTap: () {},
+                onTap: () => context.push(AppRoutes.notificationSettings),
               ),
               const SizedBox(height: AppSpacing.sm),
               SettingsTile(
-                icon: FluentIcons.question_circle_24_regular,
-                iconColor: AppColors.accentPurple,
-                label: l10n.helpCenter,
-                onTap: () {},
+                icon: FluentIcons.local_language_24_regular,
+                iconColor: AppColors.primary,
+                label: l10n.language,
+                onTap: () => context.push(AppRoutes.changeLanguage),
               ),
-              const SizedBox(height: AppSpacing.sm),
+              const SizedBox(height: AppSpacing.xl),
+
+              // ── Security & Privacy ───────────────────────────────────
+              _GroupTitle(title: l10n.securityPrivacy),
+              const SizedBox(height: AppSpacing.md),
+              SettingsTile(
+                icon: FluentIcons.lock_closed_24_regular,
+                iconColor: AppColors.accentPurple,
+                label: l10n.changePassword,
+                onTap: () => context.push(AppRoutes.changePassword),
+              ),
+              const SizedBox(height: AppSpacing.xl),
+
+              // ── Support ──────────────────────────────────────────────
+              _GroupTitle(title: l10n.support),
+              const SizedBox(height: AppSpacing.md),
+              SettingsTile(
+                icon: FluentIcons.mail_24_regular,
+                iconColor: AppColors.secondary,
+                label: l10n.contactUs,
+                onTap: () => context.push(AppRoutes.contactUs),
+              ),
+              const SizedBox(height: AppSpacing.xl),
+
+              // ── Terms & Privacy ──────────────────────────────────────
+              _GroupTitle(title: l10n.termsPrivacy),
+              const SizedBox(height: AppSpacing.md),
               SettingsTile(
                 icon: FluentIcons.document_24_regular,
                 iconColor: AppColors.primary,
                 label: l10n.privacyPolicy,
-                onTap: () {},
+                onTap: () => _openUrl(
+                  context,
+                  ref.read(appConfigProvider).value?.valueOrNull?.links.privacy ?? '',
+                ),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              SettingsTile(
+                icon: FluentIcons.document_bullet_list_24_regular,
+                iconColor: AppColors.accentPurple,
+                label: l10n.termsConditions,
+                onTap: () => _openUrl(
+                  context,
+                  ref.read(appConfigProvider).value?.valueOrNull?.links.terms ?? '',
+                ),
+              ),
+              const SizedBox(height: AppSpacing.xl),
+
+              // ── Account Actions ──────────────────────────────────────
+              _GroupTitle(title: l10n.accountActions),
+              const SizedBox(height: AppSpacing.md),
+              _DeleteAccountTile(
+                onTap: () => _onDeleteAccount(context),
               ),
               const SizedBox(height: AppSpacing.xxl),
 
@@ -121,25 +274,25 @@ class ProfilePage extends ConsumerWidget {
                     isDestructive: true,
                   );
                   if (!confirmed) return;
-                  // Flip the session gate FIRST, from this page's stable ref
-                  // (not the auto-disposed AuthNotifier, whose ref may be gone
-                  // after an await). The router's redirect reacts to the gate
-                  // change and sends us to /login, replacing the stack.
-                  ref.read(sessionProvider.notifier).setLoggedIn(false);
-                  // Best-effort token clear + server revoke; not awaited
-                  // (navigation is already driven by the gate flip above).
-                  unawaited(ref.read(authProvider.notifier).logout());
+                  // Read providers up front (stable ref) before any await.
+                  final petsNotifier = ref.read(petsProvider.notifier);
+                  final authNotifier = ref.read(authProvider.notifier);
+                  final sessionNotifier = ref.read(sessionProvider.notifier);
+                  // 1) Flip the session gate FIRST — this is synchronous and
+                  // sends the router straight to /login (the auth gate wins
+                  // regardless of pet-gate readiness). Clearing pets first
+                  // would set pets.ready=false while still logged in, which
+                  // bounces the router to the splash and strands it there.
+                  sessionNotifier.setLoggedIn(false);
+                  // 2) Then AWAIT the destructive local clears so nothing
+                  // survives if the app is killed right after logout:
+                  //   • tokens + user cache (login isn't skipped next launch),
+                  //   • pet cache + gate (no previous user's pets on relaunch).
+                  await authNotifier.logout();
+                  await petsNotifier.reset();
                 },
               ),
               const SizedBox(height: AppSpacing.lg),
-              Center(
-                child: Text(
-                  l10n.appVersion('2.4.1', '108'),
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textTertiary,
-                  ),
-                ),
-              ),
             ],
           ),
         ),
@@ -204,31 +357,196 @@ class _GroupTitle extends StatelessWidget {
   }
 }
 
-class _PetGrid extends StatelessWidget {
+/// The user's pets, offline-first via [petListProvider]. Tapping a
+/// card makes that pet the active one (live "ACTIVE" badge).
+class _PetGrid extends ConsumerWidget {
   const _PetGrid();
 
   @override
-  Widget build(BuildContext context) {
-    return const Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: PetProfileCard(
-            name: 'Oreo',
-            breed: 'Golden Retriever',
-            ageYears: 2,
-            isActive: true,
-          ),
-        ),
-        SizedBox(width: AppSpacing.md),
-        Expanded(
-          child: PetProfileCard(
-            name: 'Luna',
-            breed: 'Domestic Shorthair',
-            ageYears: 4,
-          ),
-        ),
-      ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final petsAsync = ref.watch(petListProvider);
+    final currentPetId = ref.watch(petsProvider).currentPetId;
+
+    return petsAsync.when(
+      skipLoadingOnRefresh: true,
+      loading: () => const _PetGridSkeleton(),
+      error: (e, _) => _PetGridError(
+        message: (e is Failure ? e : const UnknownFailure())
+            .localizedMessage(context.l10n),
+        onRetry: () => ref.invalidate(petListProvider),
+      ),
+      data: (pets) {
+        if (pets.isEmpty) return const SizedBox.shrink();
+        const preview = 2;
+        // Active pet always first in the preview.
+        final sorted = currentPetId == null
+            ? pets
+            : [
+                ...pets.where((p) => p.id == currentPetId),
+                ...pets.where((p) => p.id != currentPetId),
+              ];
+        final shown = sorted.length > preview ? sorted.sublist(0, preview) : sorted;
+        final hasMore = pets.length > preview;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            PetCardGrid(
+              pets: shown,
+              activePetId: currentPetId,
+            ),
+            if (hasMore) ...[
+              const SizedBox(height: AppSpacing.md),
+              OutlinedButton.icon(
+                onPressed: () => context.push(AppRoutes.petList),
+                icon: const Icon(FluentIcons.animal_paw_print_24_regular,
+                    size: 18),
+                label: Text(context.l10n.viewAllPets(pets.length)),
+              ),
+            ],
+          ],
+        );
+      },
     );
   }
 }
+
+/// Two side-by-side pet-card skeletons, matching the preview grid layout.
+class _PetGridSkeleton extends StatelessWidget {
+  const _PetGridSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Shimmer(
+      child: Row(
+        children: [
+          Expanded(child: _PetCardSkeleton()),
+          SizedBox(width: AppSpacing.md),
+          Expanded(child: _PetCardSkeleton()),
+        ],
+      ),
+    );
+  }
+}
+
+class _PetCardSkeleton extends StatelessWidget {
+  const _PetCardSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return const SkeletonCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SkeletonBox(
+            height: 110,
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(AppRadius.lg),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(AppSpacing.md),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SkeletonLine(width: 90, height: 14),
+                SizedBox(height: AppSpacing.sm),
+                SkeletonLine(width: 60, height: 11),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Destructive tile for the "Account Actions" section. Styled in red to
+/// communicate the severity of the action without using a normal SettingsTile.
+class _DeleteAccountTile extends StatelessWidget {
+  const _DeleteAccountTile({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      button: true,
+      label: context.l10n.deleteAccount,
+      child: Material(
+        color: AppColors.error.withValues(alpha: 0.08),
+        borderRadius: AppRadius.mdAll,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: AppRadius.mdAll,
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            child: Row(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppColors.error.withValues(alpha: 0.12),
+                    borderRadius: AppRadius.smAll,
+                  ),
+                  child: const Icon(
+                    FluentIcons.delete_24_regular,
+                    size: 20,
+                    color: AppColors.error,
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.md),
+                Expanded(
+                  child: Text(
+                    context.l10n.deleteAccount,
+                    style: AppTextStyles.titleSmall.copyWith(
+                      color: AppColors.error,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Icon(
+                  FluentIcons.chevron_right_24_regular,
+                  size: 18,
+                  color: AppColors.error.withValues(alpha: 0.5),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PetGridError extends StatelessWidget {
+  const _PetGridError({required this.message, required this.onRetry});
+
+  final String message;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: AppRadius.lgAll,
+      ),
+      child: Column(
+        children: [
+          Text(
+            message,
+            style: AppTextStyles.bodySmall,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          TextButton(onPressed: onRetry, child: Text(context.l10n.retry)),
+        ],
+      ),
+    );
+  }
+}
+

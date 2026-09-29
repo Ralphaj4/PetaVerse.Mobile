@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../errors/app_exception.dart';
+import 'sync_flag_store.dart';
 
 part 'hive_service.g.dart';
 
@@ -87,3 +88,6 @@ class HiveService {
 
 @Riverpod(keepAlive: true)
 HiveService hiveService(Ref ref) => const HiveService();
+
+@Riverpod(keepAlive: true)
+SyncFlagStore syncFlagStore(Ref ref) => SyncFlagStore();

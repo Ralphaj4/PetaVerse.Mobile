@@ -5,7 +5,10 @@ import '../constants/app_constants.dart';
 import '../errors/app_exception.dart';
 import '../storage/secure_storage_service.dart';
 import '../utils/logger_service.dart';
+import '../localization/culture_provider.dart';
+import 'auth_events.dart';
 import 'interceptors/auth_interceptor.dart';
+import 'interceptors/culture_interceptor.dart';
 import 'interceptors/logging_interceptor.dart';
 import 'interceptors/retry_interceptor.dart';
 
@@ -20,6 +23,8 @@ class ApiClient {
   ApiClient({
     required SecureStorageService secureStorage,
     required LoggerService logger,
+    required String Function() cultureCode,
+    required AuthEvents authEvents,
     Dio? dio,
   }) : _dio = dio ??
             Dio(
@@ -39,7 +44,13 @@ class ApiClient {
       ),
     );
     _dio.interceptors.addAll([
-      AuthInterceptor(secureStorage: secureStorage, refreshDio: refreshDio),
+      CultureInterceptor(cultureCode),
+      AuthInterceptor(
+        secureStorage: secureStorage,
+        refreshDio: refreshDio,
+        authEvents: authEvents,
+        logger: logger,
+      ),
       RetryInterceptor(_dio),
       LoggingInterceptor(logger),
     ]);
@@ -53,16 +64,59 @@ class ApiClient {
   }) =>
       _request(() => _dio.get<T>(path, queryParameters: queryParameters));
 
-  Future<T> post<T>(String path, {Object? data}) =>
-      _request(() => _dio.post<T>(path, data: data));
+  Future<T> post<T>(String path, {Object? data, Options? options}) =>
+      _request(() => _dio.post<T>(path, data: data, options: options));
 
-  Future<T> put<T>(String path, {Object? data}) =>
-      _request(() => _dio.put<T>(path, data: data));
+  Future<T> put<T>(String path, {Object? data, Options? options}) =>
+      _request(() => _dio.put<T>(path, data: data, options: options));
 
-  Future<T> patch<T>(String path, {Object? data}) =>
-      _request(() => _dio.patch<T>(path, data: data));
+  Future<T> patch<T>(String path, {Object? data, Options? options}) =>
+      _request(() => _dio.patch<T>(path, data: data, options: options));
 
-  Future<T> delete<T>(String path) => _request(() => _dio.delete<T>(path));
+  Future<T> delete<T>(String path, {Options? options}) =>
+      _request(() => _dio.delete<T>(path, options: options));
+
+  /// DELETE with a request body. Some endpoints (e.g. PawHub unlike / unsave /
+  /// unfollow / unblock) identify the acting pet in the body even on a DELETE.
+  Future<T> deleteWithBody<T>(String path, {Object? data, Options? options}) =>
+      _request(() => _dio.delete<T>(path, data: data, options: options));
+
+  /// POST to a Server-Sent Events endpoint and yield raw SSE frame strings.
+  ///
+  /// Uses [ResponseType.stream] so the auth/culture interceptors still apply.
+  /// Each yielded string is one complete SSE frame (event + data + blank line).
+  /// The caller (datasource) is responsible for parsing the frames.
+  Stream<String> postSse(String path, {Object? data}) async* {
+    final response = await _dio.post<ResponseBody>(
+      path,
+      data: data,
+      options: Options(
+        responseType: ResponseType.stream,
+        headers: {'Accept': 'text/event-stream'},
+      ),
+    );
+
+    final stream = response.data!.stream;
+    final buffer = StringBuffer();
+
+    await for (final chunk in stream) {
+      buffer.write(String.fromCharCodes(chunk));
+      final raw = buffer.toString();
+      // SSE frames are separated by blank lines (\n\n).
+      final frames = raw.split('\n\n');
+      // Keep the last (potentially incomplete) fragment in the buffer.
+      buffer
+        ..clear()
+        ..write(frames.removeLast());
+      for (final frame in frames) {
+        final trimmed = frame.trim();
+        if (trimmed.isNotEmpty) yield trimmed;
+      }
+    }
+    // Flush any remaining content (stream closed without trailing \n\n).
+    final remaining = buffer.toString().trim();
+    if (remaining.isNotEmpty) yield remaining;
+  }
 
   Future<T> _request<T>(Future<Response<T>> Function() send) async {
     try {
@@ -85,20 +139,21 @@ class ApiClient {
       case DioExceptionType.badResponse:
         final status = e.response?.statusCode ?? 0;
         final body = e.response?.data;
-        // The backend returns RFC 7807 ProblemDetails: the human-readable
-        // text is in `detail` (legacy `message` kept as a fallback).
-        final message = body is Map<String, dynamic>
-            ? (body['detail'] as String? ??
-                body['message'] as String? ??
-                body['title'] as String? ??
-                'Request failed')
-            : 'Request failed with status $status';
-        if (status == 401) return UnauthorizedException(message);
+        final message = _extractErrorMessage(body, status);
+        if (status == 401) return _map401(body, message);
         if (status == 403) return ForbiddenException(message);
+        if (status == 404) return NotFoundException(message);
         if (status == 400 || status == 422) {
           return ValidationException(
             message,
             fieldErrors: _extractFieldErrors(body),
+          );
+        }
+        if (status == 409) return ConflictException(message);
+        if (status == 429) {
+          return RateLimitException(
+            message,
+            retryAfter: _extractRetryAfter(e.response),
           );
         }
         if (status >= 500) return ServerException(message);
@@ -110,6 +165,48 @@ class ApiClient {
     }
   }
 
+  /// Distinguishes the three 401 subtypes:
+  ///   • suspended — body has `extensions.suspendedUntil`
+  ///   • banned    — body detail contains "banned"
+  ///   • generic   — session expired / bad credentials
+  AppException _map401(dynamic body, String message) {
+    if (body is Map<String, dynamic>) {
+      final extensions = body['extensions'];
+      if (extensions is Map<String, dynamic>) {
+        final rawDate = extensions['suspendedUntil'] as String?;
+        final until = rawDate != null ? DateTime.tryParse(rawDate) : null;
+        return SuspendedException(message, suspendedUntil: until);
+      }
+      if (message.toLowerCase().contains('banned')) {
+        return BannedException(message);
+      }
+    }
+    return UnauthorizedException(message);
+  }
+
+  /// Extracts the server's human-facing error message from the body, or `''`
+  /// when none is present. We intentionally do NOT synthesize a technical
+  /// fallback (e.g. "Server error") here: an empty message lets the
+  /// presentation layer ([FailureL10n.localizedMessage]) fall back to a proper
+  /// localized string instead of showing a raw status line to the user.
+  String _extractErrorMessage(dynamic body, int status) {
+    if (body is! Map<String, dynamic>) return '';
+    // RFC 7807 ProblemDetails: detail > message > title.
+    return body['detail'] as String? ??
+        body['message'] as String? ??
+        body['title'] as String? ??
+        '';
+  }
+
+  /// Parses the `Retry-After` header (delta-seconds form, per the API's 429
+  /// contract). Returns null when absent or unparseable.
+  Duration? _extractRetryAfter(Response<dynamic>? response) {
+    final raw = response?.headers.value('retry-after');
+    if (raw == null) return null;
+    final seconds = int.tryParse(raw.trim());
+    return seconds == null ? null : Duration(seconds: seconds);
+  }
+
   Map<String, String> _extractFieldErrors(dynamic body) {
     if (body is! Map<String, dynamic>) return const {};
     final errors = body['errors'];
@@ -118,10 +215,21 @@ class ApiClient {
   }
 }
 
+/// App-wide auth event bus. The [ApiClient]'s interceptor emits on it when a
+/// session dies; the session gate listens and redirects to login.
+@Riverpod(keepAlive: true)
+AuthEvents authEvents(Ref ref) {
+  final events = AuthEvents();
+  ref.onDispose(events.dispose);
+  return events;
+}
+
 @Riverpod(keepAlive: true)
 ApiClient apiClient(Ref ref) => ApiClient(
       secureStorage: ref.watch(secureStorageServiceProvider),
       logger: ref.watch(loggerServiceProvider),
+      cultureCode: () => ref.read(cultureProvider).code,
+      authEvents: ref.watch(authEventsProvider),
     );
 
 @Riverpod(keepAlive: true)

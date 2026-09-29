@@ -11,6 +11,7 @@ abstract class AuthTokensDto with _$AuthTokensDto {
     required String accessToken,
     required String refreshToken,
     @Default('') String userId,
+    String? userCode,
     @Default(<String>[]) List<String> roles,
   }) = _AuthTokensDto;
 

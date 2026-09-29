@@ -12,6 +12,7 @@ _LoginResponseDto _$LoginResponseDtoFromJson(Map<String, dynamic> json) =>
       accessToken: json['accessToken'] as String?,
       refreshToken: json['refreshToken'] as String?,
       userId: json['userId'] as String?,
+      userCode: json['userCode'] as String?,
       roles:
           (json['roles'] as List<dynamic>?)?.map((e) => e as String).toList() ??
           const <String>[],
@@ -25,6 +26,7 @@ Map<String, dynamic> _$LoginResponseDtoToJson(_LoginResponseDto instance) =>
       'accessToken': instance.accessToken,
       'refreshToken': instance.refreshToken,
       'userId': instance.userId,
+      'userCode': instance.userCode,
       'roles': instance.roles,
       'mobileNumber': instance.mobileNumber,
       'devOtp': instance.devOtp,

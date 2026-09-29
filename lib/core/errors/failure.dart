@@ -20,9 +20,27 @@ final class UnauthorizedFailure extends Failure {
   const UnauthorizedFailure({super.message});
 }
 
+/// 401 — account is temporarily suspended.
+final class SuspendedFailure extends Failure {
+  const SuspendedFailure({super.message, this.suspendedUntil});
+
+  /// UTC datetime after which the user may try again, or null if not provided.
+  final DateTime? suspendedUntil;
+}
+
+/// 401 — account is permanently banned.
+final class BannedFailure extends Failure {
+  const BannedFailure({super.message});
+}
+
 /// 403 responses — authenticated but not allowed.
 final class ForbiddenFailure extends Failure {
   const ForbiddenFailure({super.message});
+}
+
+/// 404 responses — the requested resource does not exist.
+final class NotFoundFailure extends Failure {
+  const NotFoundFailure({super.message});
 }
 
 /// 422/400 responses or client-side validation problems.
@@ -36,6 +54,20 @@ final class ValidationFailure extends Failure {
 /// 5xx responses.
 final class ServerFailure extends Failure {
   const ServerFailure({super.message});
+}
+
+/// 429 responses — the caller hit a rate limit. [retryAfter] carries the
+/// server's `Retry-After` hint (seconds) when present, so the UI can show a
+/// "try again in Ns" message and disable the action until then.
+final class RateLimitFailure extends Failure {
+  const RateLimitFailure({super.message, this.retryAfter});
+
+  final Duration? retryAfter;
+}
+
+/// 409 responses — the resource is in a state that conflicts with the request.
+final class ConflictFailure extends Failure {
+  const ConflictFailure({super.message});
 }
 
 /// Local cache read/write problems.

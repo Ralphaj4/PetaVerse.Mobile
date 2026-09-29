@@ -4,6 +4,10 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
+import '../../../home/presentation/providers/home_providers.dart';
+import '../../../pawcare/presentation/providers/pawcare_providers.dart';
+import '../../../profile/data/providers/user_repository_provider.dart';
+import '../../../profile/presentation/providers/user_usecases_provider.dart';
 import '../../domain/entities/auth_session.dart';
 import '../../domain/entities/login_outcome.dart';
 import 'auth_repository_provider.dart';
@@ -37,6 +41,9 @@ class AuthNotifier extends _$AuthNotifier {
     required String lastName,
     required String phone,
     required String password,
+    required double latitude,
+    required double longitude,
+    required String locationName,
     String? email,
   }) =>
       _runOtp(
@@ -45,6 +52,9 @@ class AuthNotifier extends _$AuthNotifier {
               lastName: lastName,
               mobileNumber: phone,
               password: password,
+              latitude: latitude,
+              longitude: longitude,
+              locationName: locationName,
               email: email,
             ),
       );
@@ -53,6 +63,42 @@ class AuthNotifier extends _$AuthNotifier {
   Future<({bool ok, String? devOtp})> resendOtp({required String phone}) =>
       _runOtp(
         () => ref.read(authRepositoryProvider).resendOtp(mobileNumber: phone),
+      );
+
+  /// Starts a password reset (sends OTP). Returns success + dev OTP.
+  Future<({bool ok, String? devOtp})> forgotPassword({
+    required String phone,
+  }) =>
+      _runOtp(
+        () => ref
+            .read(authRepositoryProvider)
+            .forgotPassword(mobileNumber: phone),
+      );
+
+  /// Completes a password reset with the OTP and a new password.
+  Future<bool> resetPassword({
+    required String phone,
+    required String code,
+    required String newPassword,
+  }) =>
+      _runVoid(
+        () => ref.read(authRepositoryProvider).resetPassword(
+              mobileNumber: phone,
+              otp: code,
+              newPassword: newPassword,
+            ),
+      );
+
+  /// Changes the authenticated user's password (JWT, no OTP).
+  Future<bool> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) =>
+      _runVoid(
+        () => ref.read(authRepositoryProvider).changePassword(
+              oldPassword: oldPassword,
+              newPassword: newPassword,
+            ),
       );
 
   Future<bool> verifyOtp({
@@ -79,28 +125,35 @@ class AuthNotifier extends _$AuthNotifier {
           mobileNumber: phone,
           password: password,
         );
-    return result.when(
-      success: (outcome) {
-        state = const AsyncData(null);
-        switch (outcome) {
-          case LoginAuthenticated():
-            ref.read(sessionProvider.notifier).setLoggedIn(true);
-            return (result: LoginResult.authenticated, devOtp: null);
-          case LoginNeedsVerification(:final devOtp):
-            return (result: LoginResult.needsVerification, devOtp: devOtp);
+    final outcome = result.valueOrNull;
+    if (outcome == null) {
+      state = AsyncError(result.failureOrNull!, StackTrace.current);
+      return (result: LoginResult.failed, devOtp: null);
+    }
+
+    switch (outcome) {
+      case LoginAuthenticated():
+        // Warm the profile cache before completing — login blocks until /me
+        // is fetched and cached, so the Personal Information page renders
+        // instantly afterwards.
+        final warmed = await _warmProfileCache();
+        if (!warmed.ok) {
+          state = AsyncError(warmed.failure!, StackTrace.current);
+          return (result: LoginResult.failed, devOtp: null);
         }
-      },
-      failure: (f) {
-        state = AsyncError(f, StackTrace.current);
-        return (result: LoginResult.failed, devOtp: null);
-      },
-    );
+        state = const AsyncData(null);
+        ref.read(sessionProvider.notifier).setLoggedIn(true);
+        return (result: LoginResult.authenticated, devOtp: null);
+      case LoginNeedsVerification(:final devOtp):
+        state = const AsyncData(null);
+        return (result: LoginResult.needsVerification, devOtp: devOtp);
+    }
   }
 
   // ── Helpers ──────────────────────────────────────────────────────────
 
-  /// Runs an OTP-dispatch call (register / resend), reflecting the outcome
-  /// in the AsyncValue and returning success + the dev OTP.
+  /// Runs an OTP-dispatch call (register / resend / forgot-password),
+  /// reflecting the outcome in the AsyncValue and returning success + OTP.
   Future<({bool ok, String? devOtp})> _runOtp(
     Future<Result<String?>> Function() action,
   ) async {
@@ -118,12 +171,77 @@ class AuthNotifier extends _$AuthNotifier {
     );
   }
 
-  /// Revokes + clears the stored session.
+  /// Runs a void call (reset / change password), returning success.
+  Future<bool> _runVoid(Future<Result<void>> Function() action) async {
+    state = const AsyncLoading();
+    final result = await action();
+    return result.when(
+      success: (_) {
+        state = const AsyncData(null);
+        return true;
+      },
+      failure: (f) {
+        state = AsyncError(f, StackTrace.current);
+        return false;
+      },
+    );
+  }
+
+  /// Sends a 6-digit verification code to the user's email address.
+  Future<bool> sendEmailVerification() =>
+      _runVoid(() => ref.read(authRepositoryProvider).sendEmailVerification());
+
+  /// Confirms the 6-digit email verification code entered by the user.
+  Future<bool> confirmEmailVerification(String code) =>
+      _runVoid(
+          () => ref.read(authRepositoryProvider).confirmEmailVerification(code));
+
+  /// Permanently deletes the account via DELETE /api/users/me, then clears all
+  /// local credentials and cached data.
+  ///
+  /// Mirrors [logout]: all providers are read up front, no [state] writes
+  /// happen after the awaits — the notifier is auto-disposed and its ref
+  /// becomes invalid as soon as the session gate is flipped by the caller.
+  /// Returns the [Result] directly so the caller can handle errors and drive
+  /// the gate flip from a stable ref.
+  Future<Result<void>> deleteAccount() async {
+    final authRepository = ref.read(authRepositoryProvider);
+    final userRepository = ref.read(userRepositoryProvider);
+    final reminderCache = ref.read(healthReminderCacheProvider);
+    final homeCache = ref.read(homeSummaryCacheProvider);
+    final result = await authRepository.deleteAccount();
+    if (result.isFailure) return result;
+    await Future.wait([
+      userRepository.clearCache(),
+      reminderCache.clear(),
+      homeCache.clear(),
+    ]);
+    return result;
+  }
+
+  /// Revokes + clears the stored session, and drops the cached profile so
+  /// the next user never sees the previous one's data.
   ///
   /// Note: this notifier is auto-disposed, so it must NOT touch [ref]
-  /// after the await (the ref may be gone). The session-gate flip and any
-  /// navigation are the caller's responsibility, driven from a stable ref.
-  Future<void> logout() => ref.read(authRepositoryProvider).logout();
+  /// after the await (the ref may be gone). Both repositories are read up
+  /// front. The session-gate flip and any navigation are the caller's
+  /// responsibility, driven from a stable ref.
+  Future<void> logout() async {
+    final authRepository = ref.read(authRepositoryProvider);
+    final userRepository = ref.read(userRepositoryProvider);
+    final reminderCache = ref.read(healthReminderCacheProvider);
+    final homeCache = ref.read(homeSummaryCacheProvider);
+    // Await the local clears so they're durably written before logout is
+    // considered done — otherwise a user who kills the app immediately after
+    // tapping "log out" can relaunch with tokens/cache still present (skipping
+    // login and showing the previous user's data).
+    await Future.wait([
+      authRepository.logout(),
+      userRepository.clearCache(),
+      reminderCache.clear(),
+      homeCache.clear(),
+    ]);
+  }
 
   /// Runs a session-returning call; tokens are already persisted by the
   /// repository, so here we flip the session gate to logged-in and
@@ -133,16 +251,35 @@ class AuthNotifier extends _$AuthNotifier {
   ) async {
     state = const AsyncLoading();
     final result = await action();
+    final session = result.valueOrNull;
+    if (session == null) {
+      state = AsyncError(result.failureOrNull!, StackTrace.current);
+      return false;
+    }
+    // Tokens are persisted by the repository; warm the profile cache before
+    // flipping the gate so navigation lands on a ready Personal Info page.
+    final warmed = await _warmProfileCache();
+    if (!warmed.ok) {
+      state = AsyncError(warmed.failure!, StackTrace.current);
+      return false;
+    }
+    ref.read(sessionProvider.notifier).setLoggedIn(true);
+    state = const AsyncData(null);
+    return true;
+  }
+
+  /// Fetches and caches the signed-in user's profile (`/me`). Login and OTP
+  /// verification block on this so the Personal Information page is warm.
+  Future<({bool ok, Failure? failure})> _warmProfileCache() async {
+    // ignore: avoid_print
+    print('[AUTH] _warmProfileCache: start');
+    final result = await ref.read(fetchUserProfileUsecaseProvider)();
+    // ignore: avoid_print
+    print('[AUTH] _warmProfileCache: done ok=${result.isSuccess} '
+        'failure=${result.failureOrNull}');
     return result.when(
-      success: (_) {
-        ref.read(sessionProvider.notifier).setLoggedIn(true);
-        state = const AsyncData(null);
-        return true;
-      },
-      failure: (f) {
-        state = AsyncError(f, StackTrace.current);
-        return false;
-      },
+      success: (_) => (ok: true, failure: null),
+      failure: (f) => (ok: false, failure: f),
     );
   }
 }

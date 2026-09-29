@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
+import 'shimmer.dart';
 
 /// Network image with caching, placeholder, and error widget.
 /// Also renders local file paths (e.g. freshly picked photos).
@@ -71,19 +72,13 @@ class _Placeholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width,
-      height: height,
-      color: AppColors.primarySoft,
-      child: const Center(
-        child: SizedBox(
-          width: 20,
-          height: 20,
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-            color: AppColors.primary,
-          ),
-        ),
+    // A shimmering grey block while the image loads — matches the app's
+    // skeleton language instead of a spinner-on-tint.
+    return Shimmer(
+      child: SkeletonBox(
+        width: width,
+        height: height,
+        borderRadius: BorderRadius.zero,
       ),
     );
   }

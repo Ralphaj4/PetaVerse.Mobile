@@ -22,6 +22,8 @@ class HomeHeroBanner extends StatelessWidget {
     this.avatarUrl,
     this.petImageUrl,
     this.onBellTap,
+    this.onPetImageTap,
+    this.onHealthScoreTap,
     super.key,
   });
 
@@ -33,6 +35,15 @@ class HomeHeroBanner extends StatelessWidget {
   final String? avatarUrl;
   final String? petImageUrl;
   final VoidCallback? onBellTap;
+
+  /// Opens the pet photo in a full-screen viewer.
+  final VoidCallback? onPetImageTap;
+
+  /// Opens the health-score breakdown page.
+  final VoidCallback? onHealthScoreTap;
+
+  /// Shared hero tag for the pet photo → viewer transition.
+  static const String petImageHeroTag = 'home-hero-pet-image';
 
   @override
   Widget build(BuildContext context) {
@@ -48,28 +59,47 @@ class HomeHeroBanner extends StatelessWidget {
         bottom: false,
         child: Stack(
           children: [
-            // Pet photo, anchored to the trailing-bottom of the hero.
-            if (petImageUrl != null)
+            // Decorative paw watermark, always behind, anchored to the
+            // trailing-bottom of the orange hero.
+            PositionedDirectional(
+              end: -30,
+              bottom: -20,
+              child: Icon(
+                FluentIcons.animal_paw_print_24_filled,
+                size: 220,
+                color: AppColors.onPrimary.withValues(alpha: 0.12),
+              ),
+            ),
+            // Pet photo — a round avatar over the paw, ringed in white so it
+            // reads against the gradient.
+            if (petImageUrl != null && petImageUrl!.isNotEmpty)
               PositionedDirectional(
-                end: 0,
-                bottom: 0,
-                child: AppCachedImage(
-                  imageUrl: petImageUrl,
-                  width: 220,
-                  height: 280,
-                  fit: BoxFit.contain,
-                  borderRadius: BorderRadius.zero,
-                  semanticLabel: petName,
-                ),
-              )
-            else
-              PositionedDirectional(
-                end: -30,
-                bottom: -20,
-                child: Icon(
-                  FluentIcons.animal_paw_print_24_filled,
-                  size: 220,
-                  color: AppColors.onPrimary.withValues(alpha: 0.12),
+                end: AppSpacing.lg,
+                bottom: AppSpacing.xxl + AppSpacing.xxl,
+                child: GestureDetector(
+                  onTap: onPetImageTap,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppColors.onPrimary.withValues(alpha: 0.6),
+                        width: 3,
+                      ),
+                    ),
+                    child: Hero(
+                      tag: petImageHeroTag,
+                      child: ClipOval(
+                        child: AppCachedImage(
+                          imageUrl: petImageUrl,
+                          width: 160,
+                          height: 160,
+                          fit: BoxFit.cover,
+                          borderRadius: BorderRadius.zero,
+                          semanticLabel: petName,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ),
             Padding(
@@ -98,9 +128,12 @@ class HomeHeroBanner extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xl),
-                  HealthScoreCard(
-                    score: healthScore,
-                    statusLabel: healthStatusLabel,
+                  GestureDetector(
+                    onTap: onHealthScoreTap,
+                    child: HealthScoreCard(
+                      score: healthScore,
+                      statusLabel: healthStatusLabel,
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.xl),
                   NextVisitChip(dateLabel: nextVisitLabel),

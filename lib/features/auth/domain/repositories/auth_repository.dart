@@ -14,6 +14,9 @@ abstract interface class AuthRepository {
     required String lastName,
     required String mobileNumber,
     required String password,
+    required double latitude,
+    required double longitude,
+    required String locationName,
     String? email,
   });
 
@@ -37,9 +40,43 @@ abstract interface class AuthRepository {
     required String password,
   });
 
+  /// Starts a password reset — backend sends an OTP to the mobile number.
+  /// Returns the dev OTP (null in production).
+  Future<Result<String?>> forgotPassword({required String mobileNumber});
+
+  /// Completes a password reset with the OTP and a new password.
+  Future<Result<void>> resetPassword({
+    required String mobileNumber,
+    required String otp,
+    required String newPassword,
+  });
+
+  /// Changes the authenticated user's password (JWT, no OTP).
+  Future<Result<void>> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  });
+
   /// Revokes the stored refresh token and clears local credentials.
   Future<Result<void>> logout();
 
   /// Whether a session token is currently stored locally.
   Future<bool> hasSession();
+
+  /// Sends a 6-digit email verification code to the current user's email.
+  Future<Result<void>> sendEmailVerification();
+
+  /// Confirms the 6-digit email verification code.
+  Future<Result<void>> confirmEmailVerification(String code);
+
+  /// Registers (or refreshes) a device FCM token with the backend.
+  Future<void> registerFcmToken(String token);
+
+  /// Removes this device's FCM token on logout. The token param is kept for
+  /// call-site symmetry but the impl resolves the device ID from secure storage.
+  Future<void> unregisterFcmToken([String? token]);
+
+  /// Permanently deletes the authenticated user's account and clears all local
+  /// credentials. Returns a failure if the server call fails.
+  Future<Result<void>> deleteAccount();
 }

@@ -1,7 +1,5 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -54,7 +52,7 @@ class AuthLayout extends StatelessWidget {
                         top: AppSpacing.sm,
                       ),
                       child: IconButton(
-                        onPressed: () => context.pop(),
+                        onPressed: () => context.popOrHome(),
                         tooltip: context.l10n.close,
                         icon: Icon(
                           isRtl
