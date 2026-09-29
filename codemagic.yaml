@@ -74,7 +74,7 @@ workflows:
     publishing:
       email:
         recipients:
-          - $ARTIFACT_EMAIL
+          - "ralphaj4@gmail.com"
         notify:
           success: true
           failure: true
