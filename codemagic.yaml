@@ -34,7 +34,7 @@ workflows:
     max_build_duration: 60
     environment:
       groups:
-        - petaverse_android
+        - petaverse_mobile
       flutter: stable
       java: 17
     scripts:
