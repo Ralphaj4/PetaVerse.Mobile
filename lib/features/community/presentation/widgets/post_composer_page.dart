@@ -17,6 +17,7 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_cached_image.dart';
+import '../../domain/entities/community_enums.dart' show PostFeeling;
 import '../models/pawhub_models.dart';
 import '../providers/create_post_provider.dart';
 import '../providers/post_upload_queue.dart';
@@ -24,6 +25,7 @@ import '../providers/community_providers.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
 import '../pages/tag_pets_page.dart';
 import 'pawhub_common.dart';
+import 'post_feeling_display.dart';
 
 /// Full-screen post composer. Users can pick photos/videos from device gallery
 /// or camera. Caption, hashtags, tagged pets, location, visibility,
@@ -62,6 +64,7 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
   final _location = TextEditingController();
   final List<PawMedia> _media = [];
   final List<PawPet> _tagged = [];
+  PostFeeling? _feeling;
   // Visibility is fixed to public for now (the picker row was removed); still
   // sent to the backend on publish.
   final PostVisibility _visibility = PostVisibility.public;
@@ -374,6 +377,7 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
             locationName:
                 _location.text.trim().isEmpty ? null : _location.text.trim(),
             visibility: _visibility.toDomain,
+            feeling: _feeling,
             media: draftMedia,
             hashtags: hashtags,
             taggedPetIds: _tagged
@@ -475,6 +479,8 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
                   ),
                   const _RowDivider(),
                   _locationRow(),
+                  const _RowDivider(),
+                  _feelingRow(),
                 ],
               ),
             ),
@@ -728,6 +734,84 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
         ],
       ),
     );
+  }
+
+  /// The feeling row: mirrors an option row, but renders the selected feeling's
+  /// icon in the value slot. Tapping opens the feeling picker sheet.
+  Widget _feelingRow() {
+    final feeling = _feeling;
+    return InkWell(
+      onTap: _pickFeeling,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+        child: Row(
+          children: [
+            const Icon(FluentIcons.emoji_24_regular,
+                size: 24, color: AppColors.secondary),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              flex: 3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(context.l10n.pawhubComposerFeeling,
+                      style: AppTextStyles.bodyMedium),
+                  const SizedBox(height: 2),
+                  Text(
+                    context.l10n.pawhubComposerFeelingSubtitle,
+                    style: AppTextStyles.bodySmall
+                        .copyWith(color: AppColors.textSecondary),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            if (feeling != null)
+              Expanded(
+                flex: 2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(feeling.emoji, style: const TextStyle(fontSize: 16)),
+                    const SizedBox(width: AppSpacing.xs),
+                    Flexible(
+                      child: Text(
+                        feeling.label(context.l10n),
+                        style: AppTextStyles.bodyMedium
+                            .copyWith(color: AppColors.secondaryDark),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.end,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            const SizedBox(width: AppSpacing.xs),
+            const Icon(FluentIcons.chevron_right_24_regular,
+                size: 18, color: AppColors.textTertiary),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Opens the feeling picker sheet and applies the chosen feeling (null clears
+  /// it). Returns without changing state if the sheet is dismissed.
+  Future<void> _pickFeeling() async {
+    final result = await showModalBottomSheet<_FeelingSelection>(
+      context: context,
+      useRootNavigator: true,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
+      ),
+      builder: (_) => _FeelingPickerSheet(selected: _feeling),
+    );
+    if (result != null && mounted) setState(() => _feeling = result.feeling);
   }
 }
 
@@ -1112,6 +1196,142 @@ class _MediaThumb extends StatelessWidget {
                 color: Colors.white, size: 18),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// The feeling picker's result. A non-null wrapper with a nullable [feeling] so
+/// the sheet can distinguish "cleared" (returns a selection with null) from
+/// "dismissed" (returns null and the composer leaves the feeling unchanged).
+class _FeelingSelection {
+  const _FeelingSelection(this.feeling);
+  final PostFeeling? feeling;
+}
+
+/// Bottom sheet grid of the ten feelings, plus a "clear" affordance. The
+/// currently [selected] feeling is highlighted. Pops a [_FeelingSelection].
+class _FeelingPickerSheet extends StatelessWidget {
+  const _FeelingPickerSheet({required this.selected});
+
+  final PostFeeling? selected;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(
+            AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.lg),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppColors.divider,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(context.l10n.pawhubFeelingSheetTitle,
+                      style: AppTextStyles.titleMedium),
+                ),
+                if (selected != null)
+                  TextButton.icon(
+                    onPressed: () =>
+                        Navigator.pop(context, const _FeelingSelection(null)),
+                    icon: const Icon(FluentIcons.dismiss_circle_24_regular,
+                        size: 18),
+                    label: Text(context.l10n.pawhubFeelingClear),
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppColors.textSecondary,
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.md),
+            GridView.count(
+              crossAxisCount: 5,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              mainAxisSpacing: AppSpacing.sm,
+              crossAxisSpacing: AppSpacing.sm,
+              childAspectRatio: 0.82,
+              children: [
+                for (final feeling in kPostFeelingsInOrder)
+                  _FeelingTile(
+                    feeling: feeling,
+                    selected: feeling == selected,
+                    onTap: () => Navigator.pop(
+                        context, _FeelingSelection(feeling)),
+                  ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.md),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// One selectable feeling in the picker grid: icon over label, highlighted when
+/// [selected].
+class _FeelingTile extends StatelessWidget {
+  const _FeelingTile({
+    required this.feeling,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final PostFeeling feeling;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = selected ? AppColors.primary : AppColors.textSecondary;
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: feeling.label(context.l10n),
+      child: Material(
+        color: selected ? AppColors.primarySoft : AppColors.background,
+        borderRadius: AppRadius.mdAll,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: AppRadius.mdAll,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: AppRadius.mdAll,
+              border: selected
+                  ? Border.all(color: AppColors.primary, width: 1.5)
+                  : null,
+            ),
+            padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(feeling.emoji, style: const TextStyle(fontSize: 26)),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  feeling.label(context.l10n),
+                  style: AppTextStyles.labelSmall.copyWith(color: color),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

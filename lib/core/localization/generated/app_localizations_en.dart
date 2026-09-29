@@ -4111,6 +4111,48 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get pawhubComposerFeeling => 'Feeling';
+
+  @override
+  String get pawhubComposerFeelingSubtitle => 'Tag how they\'re feeling';
+
+  @override
+  String get pawhubFeelingSheetTitle => 'How are they feeling?';
+
+  @override
+  String get pawhubFeelingClear => 'Clear feeling';
+
+  @override
+  String get pawhubFeelingHappy => 'Happy';
+
+  @override
+  String get pawhubFeelingRelaxed => 'Relaxed';
+
+  @override
+  String get pawhubFeelingNaughty => 'Naughty';
+
+  @override
+  String get pawhubFeelingExcited => 'Excited';
+
+  @override
+  String get pawhubFeelingAnxious => 'Anxious';
+
+  @override
+  String get pawhubFeelingPlayful => 'Playful';
+
+  @override
+  String get pawhubFeelingTired => 'Tired';
+
+  @override
+  String get pawhubFeelingSilly => 'Silly';
+
+  @override
+  String get pawhubFeelingLoved => 'Loved';
+
+  @override
+  String get pawhubFeelingGrumpy => 'Grumpy';
+
+  @override
   String get contactUsTitle => 'We\'re here to help';
 
   @override

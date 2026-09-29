@@ -1872,6 +1872,21 @@
     }
   },
 
+  "pawhubComposerFeeling": "Feeling",
+  "pawhubComposerFeelingSubtitle": "Tag how they're feeling",
+  "pawhubFeelingSheetTitle": "How are they feeling?",
+  "pawhubFeelingClear": "Clear feeling",
+  "pawhubFeelingHappy": "Happy",
+  "pawhubFeelingRelaxed": "Relaxed",
+  "pawhubFeelingNaughty": "Naughty",
+  "pawhubFeelingExcited": "Excited",
+  "pawhubFeelingAnxious": "Anxious",
+  "pawhubFeelingPlayful": "Playful",
+  "pawhubFeelingTired": "Tired",
+  "pawhubFeelingSilly": "Silly",
+  "pawhubFeelingLoved": "Loved",
+  "pawhubFeelingGrumpy": "Grumpy",
+
   "contactUsTitle": "We're here to help",
   "contactUsSubtitle": "Reach out anytime — we usually reply within 24 hours.",
   "contactUsEmailSubtitle": "General questions & support",

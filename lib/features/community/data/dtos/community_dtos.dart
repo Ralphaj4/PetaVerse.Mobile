@@ -74,6 +74,26 @@ abstract class PostMediaDto with _$PostMediaDto {
       );
 }
 
+/// `PostFeeling` as it appears nested in `PostResponse.feeling` — `{ value,
+/// name }`. Also the row shape of the feelings-list endpoint. `name` is the
+/// server's human label; the client keys its icon off [value] via
+/// [postFeelingFromWire].
+@freezed
+abstract class PostFeelingDto with _$PostFeelingDto {
+  const factory PostFeelingDto({
+    @Default(0) int value,
+    @Default('') String name,
+  }) = _PostFeelingDto;
+
+  const PostFeelingDto._();
+
+  factory PostFeelingDto.fromJson(Map<String, dynamic> json) =>
+      _$PostFeelingDtoFromJson(json);
+
+  /// The domain enum, or null if [value] isn't a known feeling.
+  PostFeeling? toEntity() => postFeelingFromWire(value);
+}
+
 /// `PostResponse`.
 @freezed
 abstract class PostDto with _$PostDto {
@@ -93,6 +113,7 @@ abstract class PostDto with _$PostDto {
     @Default(false) bool likedByMe,
     @Default(false) bool saved,
     @Default(false) bool isEdited,
+    PostFeelingDto? feeling,
     DateTime? createdAt,
     String? timeAgo,
     int? communityId,
@@ -121,6 +142,7 @@ abstract class PostDto with _$PostDto {
         caption: caption,
         locationName: locationName,
         visibility: postVisibilityFromWire(visibility),
+        feeling: feeling?.toEntity(),
         timeAgo: timeAgo,
         communityId: communityId,
         communityName: communityName,

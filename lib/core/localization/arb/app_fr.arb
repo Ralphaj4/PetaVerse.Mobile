@@ -1712,6 +1712,21 @@
     }
   },
 
+  "pawhubComposerFeeling": "Humeur",
+  "pawhubComposerFeelingSubtitle": "Indiquez son humeur",
+  "pawhubFeelingSheetTitle": "Comment se sent-il ?",
+  "pawhubFeelingClear": "Retirer l'humeur",
+  "pawhubFeelingHappy": "Heureux",
+  "pawhubFeelingRelaxed": "Détendu",
+  "pawhubFeelingNaughty": "Coquin",
+  "pawhubFeelingExcited": "Excité",
+  "pawhubFeelingAnxious": "Anxieux",
+  "pawhubFeelingPlayful": "Joueur",
+  "pawhubFeelingTired": "Fatigué",
+  "pawhubFeelingSilly": "Rigolo",
+  "pawhubFeelingLoved": "Aimé",
+  "pawhubFeelingGrumpy": "Grognon",
+
   "contactUsTitle": "Nous sommes là pour vous aider",
   "contactUsSubtitle": "Contactez-nous à tout moment — nous répondons généralement sous 24 heures.",
   "contactUsEmailSubtitle": "Questions générales et support",

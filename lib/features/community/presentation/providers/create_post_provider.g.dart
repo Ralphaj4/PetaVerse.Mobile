@@ -48,7 +48,7 @@ final class CreatePostProvider
   CreatePost create() => CreatePost();
 }
 
-String _$createPostHash() => r'4260ca62306c8be88cf835ec37ae180858017e13';
+String _$createPostHash() => r'4f620c09ab7f6a3f82786d683a4b505b77448070';
 
 /// Publishes a new post: uploads each media file through the presign/confirm
 /// flow, then creates the post with the confirmed asset ids.

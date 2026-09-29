@@ -7210,6 +7210,90 @@ abstract class AppLocalizations {
   /// **'{name} & {count, plural, =1{1 more} other{{count} more}}'**
   String pawhubComposerTaggedSummary(String name, int count);
 
+  /// No description provided for @pawhubComposerFeeling.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeling'**
+  String get pawhubComposerFeeling;
+
+  /// No description provided for @pawhubComposerFeelingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tag how they\'re feeling'**
+  String get pawhubComposerFeelingSubtitle;
+
+  /// No description provided for @pawhubFeelingSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How are they feeling?'**
+  String get pawhubFeelingSheetTitle;
+
+  /// No description provided for @pawhubFeelingClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear feeling'**
+  String get pawhubFeelingClear;
+
+  /// No description provided for @pawhubFeelingHappy.
+  ///
+  /// In en, this message translates to:
+  /// **'Happy'**
+  String get pawhubFeelingHappy;
+
+  /// No description provided for @pawhubFeelingRelaxed.
+  ///
+  /// In en, this message translates to:
+  /// **'Relaxed'**
+  String get pawhubFeelingRelaxed;
+
+  /// No description provided for @pawhubFeelingNaughty.
+  ///
+  /// In en, this message translates to:
+  /// **'Naughty'**
+  String get pawhubFeelingNaughty;
+
+  /// No description provided for @pawhubFeelingExcited.
+  ///
+  /// In en, this message translates to:
+  /// **'Excited'**
+  String get pawhubFeelingExcited;
+
+  /// No description provided for @pawhubFeelingAnxious.
+  ///
+  /// In en, this message translates to:
+  /// **'Anxious'**
+  String get pawhubFeelingAnxious;
+
+  /// No description provided for @pawhubFeelingPlayful.
+  ///
+  /// In en, this message translates to:
+  /// **'Playful'**
+  String get pawhubFeelingPlayful;
+
+  /// No description provided for @pawhubFeelingTired.
+  ///
+  /// In en, this message translates to:
+  /// **'Tired'**
+  String get pawhubFeelingTired;
+
+  /// No description provided for @pawhubFeelingSilly.
+  ///
+  /// In en, this message translates to:
+  /// **'Silly'**
+  String get pawhubFeelingSilly;
+
+  /// No description provided for @pawhubFeelingLoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Loved'**
+  String get pawhubFeelingLoved;
+
+  /// No description provided for @pawhubFeelingGrumpy.
+  ///
+  /// In en, this message translates to:
+  /// **'Grumpy'**
+  String get pawhubFeelingGrumpy;
+
   /// No description provided for @contactUsTitle.
   ///
   /// In en, this message translates to:

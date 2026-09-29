@@ -111,6 +111,7 @@ class Post {
     this.caption,
     this.locationName,
     this.visibility = PostVisibility.public,
+    this.feeling,
     this.timeAgo,
     this.communityId,
     this.communityName,
@@ -122,6 +123,9 @@ class Post {
   final String? caption;
   final String? locationName;
   final PostVisibility visibility;
+
+  /// How the pet is feeling in this post, or null for no feeling tag.
+  final PostFeeling? feeling;
   final List<String> hashtags;
 
   /// Pets tagged in this post (full objects: id/name/avatar/breed).
@@ -171,6 +175,7 @@ class Post {
         caption: caption ?? this.caption,
         locationName: locationName,
         visibility: visibility ?? this.visibility,
+        feeling: feeling,
         timeAgo: timeAgo,
         communityId: communityId,
         communityName: communityName,

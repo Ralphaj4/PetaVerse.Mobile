@@ -39,6 +39,55 @@ PostVisibility postVisibilityFromWire(int? value) => switch (value) {
       _ => PostVisibility.public,
     };
 
+/// How a pet is feeling in a post (`PostFeeling`, request & response). Integer
+/// wire values 1–10 — there is no 0, since a post with no feeling sends/receives
+/// null. Icon + display are mapped in the presentation layer (this layer is
+/// pure Dart, no Flutter), keyed off this enum.
+enum PostFeeling {
+  happy,
+  relaxed,
+  naughty,
+  excited,
+  anxious,
+  playful,
+  tired,
+  silly,
+  loved,
+  grumpy,
+}
+
+extension PostFeelingX on PostFeeling {
+  int get wire => switch (this) {
+        PostFeeling.happy => 1,
+        PostFeeling.relaxed => 2,
+        PostFeeling.naughty => 3,
+        PostFeeling.excited => 4,
+        PostFeeling.anxious => 5,
+        PostFeeling.playful => 6,
+        PostFeeling.tired => 7,
+        PostFeeling.silly => 8,
+        PostFeeling.loved => 9,
+        PostFeeling.grumpy => 10,
+      };
+}
+
+/// Maps a server feeling int → [PostFeeling], or null for absent/out-of-range
+/// (a post with no feeling). Never throws — an unknown value is treated as no
+/// feeling so a future server addition can't crash the client.
+PostFeeling? postFeelingFromWire(int? value) => switch (value) {
+      1 => PostFeeling.happy,
+      2 => PostFeeling.relaxed,
+      3 => PostFeeling.naughty,
+      4 => PostFeeling.excited,
+      5 => PostFeeling.anxious,
+      6 => PostFeeling.playful,
+      7 => PostFeeling.tired,
+      8 => PostFeeling.silly,
+      9 => PostFeeling.loved,
+      10 => PostFeeling.grumpy,
+      _ => null,
+    };
+
 /// Search scope (`SearchType` query param). Integer wire values.
 enum SearchType { all, posts, hashtags, pets }
 

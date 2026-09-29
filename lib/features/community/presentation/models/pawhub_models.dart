@@ -176,6 +176,7 @@ class PawPost {
     required this.taggedPets,
     this.locationName,
     this.visibility = PostVisibility.public,
+    this.feeling,
     this.likes = 0,
     this.likedByMe = false,
     this.saved = false,
@@ -200,6 +201,7 @@ class PawPost {
         taggedPets: e.taggedPets.map(PawPet.fromEntity).toList(),
         locationName: e.locationName,
         visibility: _domainVisibility(e.visibility),
+        feeling: e.feeling,
         likes: e.likes,
         likedByMe: e.likedByMe,
         saved: e.saved,
@@ -229,6 +231,9 @@ class PawPost {
   final List<PawPet> taggedPets;
   final String? locationName;
   PostVisibility visibility;
+
+  /// How the pet is feeling in this post, or null for no feeling tag.
+  final domain_enums.PostFeeling? feeling;
   int likes;
   bool likedByMe;
   bool saved;

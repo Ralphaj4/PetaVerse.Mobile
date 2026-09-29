@@ -52,6 +52,15 @@ Map<String, dynamic> _$PostMediaDtoToJson(_PostMediaDto instance) =>
       'thumbnailUrl': instance.thumbnailUrl,
     };
 
+_PostFeelingDto _$PostFeelingDtoFromJson(Map<String, dynamic> json) =>
+    _PostFeelingDto(
+      value: (json['value'] as num?)?.toInt() ?? 0,
+      name: json['name'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$PostFeelingDtoToJson(_PostFeelingDto instance) =>
+    <String, dynamic>{'value': instance.value, 'name': instance.name};
+
 _PostDto _$PostDtoFromJson(Map<String, dynamic> json) => _PostDto(
   id: (json['id'] as num).toInt(),
   author: PetSummaryDto.fromJson(json['author'] as Map<String, dynamic>),
@@ -76,6 +85,9 @@ _PostDto _$PostDtoFromJson(Map<String, dynamic> json) => _PostDto(
   likedByMe: json['likedByMe'] as bool? ?? false,
   saved: json['saved'] as bool? ?? false,
   isEdited: json['isEdited'] as bool? ?? false,
+  feeling: json['feeling'] == null
+      ? null
+      : PostFeelingDto.fromJson(json['feeling'] as Map<String, dynamic>),
   createdAt: json['createdAt'] == null
       ? null
       : DateTime.parse(json['createdAt'] as String),
@@ -98,6 +110,7 @@ Map<String, dynamic> _$PostDtoToJson(_PostDto instance) => <String, dynamic>{
   'likedByMe': instance.likedByMe,
   'saved': instance.saved,
   'isEdited': instance.isEdited,
+  'feeling': instance.feeling,
   'createdAt': instance.createdAt?.toIso8601String(),
   'timeAgo': instance.timeAgo,
   'communityId': instance.communityId,

@@ -1712,6 +1712,21 @@
     }
   },
 
+  "pawhubComposerFeeling": "الشعور",
+  "pawhubComposerFeelingSubtitle": "أضف شعوره الحالي",
+  "pawhubFeelingSheetTitle": "بماذا يشعر؟",
+  "pawhubFeelingClear": "إزالة الشعور",
+  "pawhubFeelingHappy": "سعيد",
+  "pawhubFeelingRelaxed": "مسترخٍ",
+  "pawhubFeelingNaughty": "مشاغب",
+  "pawhubFeelingExcited": "متحمّس",
+  "pawhubFeelingAnxious": "قلق",
+  "pawhubFeelingPlayful": "مرح",
+  "pawhubFeelingTired": "متعب",
+  "pawhubFeelingSilly": "أحمق ظريف",
+  "pawhubFeelingLoved": "محبوب",
+  "pawhubFeelingGrumpy": "غاضب",
+
   "contactUsTitle": "نحن هنا للمساعدة",
   "contactUsSubtitle": "تواصل معنا في أي وقت — عادةً ما نرد خلال 24 ساعة.",
   "contactUsEmailSubtitle": "أسئلة عامة ودعم",

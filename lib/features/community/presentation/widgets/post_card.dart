@@ -11,11 +11,13 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../domain/entities/community_entities.dart' as domain;
+import '../../domain/entities/community_enums.dart' show PostFeeling;
 import '../models/pawhub_models.dart';
 import '../providers/community_actions_providers.dart';
 import 'community_post_badge.dart';
 import 'pawhub_common.dart';
 import 'pawhub_media.dart';
+import 'post_feeling_display.dart';
 
 /// The main feed post card. Fully self-contained interactivity: like (tap +
 /// double-tap paw burst), save, comment, share, options, caption expand,
@@ -206,6 +208,10 @@ class _PostCardState extends ConsumerState<PostCard>
               onTap: () => widget.onOpenProfile(post.author),
             ),
           ),
+          if (post.feeling != null) ...[
+            _FeelingChip(feeling: post.feeling!),
+            const SizedBox(width: AppSpacing.xs),
+          ],
           if (widget.showCommunityBadge &&
               post.communityId != null &&
               post.communityName != null) ...[
@@ -419,6 +425,35 @@ class _ActionIcon extends StatelessWidget {
         onTap: onTap,
         customBorder: const CircleBorder(),
         child: Padding(padding: const EdgeInsets.all(AppSpacing.xs), child: child),
+      ),
+    );
+  }
+}
+
+/// Compact icon + label pill showing the post's feeling in the header.
+class _FeelingChip extends StatelessWidget {
+  const _FeelingChip({required this.feeling});
+
+  final PostFeeling feeling;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding:
+          const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 3),
+      decoration: BoxDecoration(
+        color: AppColors.primarySoft,
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(feeling.emoji, style: const TextStyle(fontSize: 12)),
+          const SizedBox(width: 4),
+          Text(feeling.label(context.l10n),
+              style: AppTextStyles.labelSmall
+                  .copyWith(color: AppColors.primaryDark)),
+        ],
       ),
     );
   }

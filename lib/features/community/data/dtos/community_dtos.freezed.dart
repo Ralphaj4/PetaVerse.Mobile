@@ -578,11 +578,277 @@ as String?,
 
 
 /// @nodoc
+mixin _$PostFeelingDto {
+
+ int get value; String get name;
+/// Create a copy of PostFeelingDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PostFeelingDtoCopyWith<PostFeelingDto> get copyWith => _$PostFeelingDtoCopyWithImpl<PostFeelingDto>(this as PostFeelingDto, _$identity);
+
+  /// Serializes this PostFeelingDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostFeelingDto&&(identical(other.value, value) || other.value == value)&&(identical(other.name, name) || other.name == name));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,value,name);
+
+@override
+String toString() {
+  return 'PostFeelingDto(value: $value, name: $name)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PostFeelingDtoCopyWith<$Res>  {
+  factory $PostFeelingDtoCopyWith(PostFeelingDto value, $Res Function(PostFeelingDto) _then) = _$PostFeelingDtoCopyWithImpl;
+@useResult
+$Res call({
+ int value, String name
+});
+
+
+
+
+}
+/// @nodoc
+class _$PostFeelingDtoCopyWithImpl<$Res>
+    implements $PostFeelingDtoCopyWith<$Res> {
+  _$PostFeelingDtoCopyWithImpl(this._self, this._then);
+
+  final PostFeelingDto _self;
+  final $Res Function(PostFeelingDto) _then;
+
+/// Create a copy of PostFeelingDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? value = null,Object? name = null,}) {
+  return _then(_self.copyWith(
+value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [PostFeelingDto].
+extension PostFeelingDtoPatterns on PostFeelingDto {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _PostFeelingDto value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _PostFeelingDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _PostFeelingDto value)  $default,){
+final _that = this;
+switch (_that) {
+case _PostFeelingDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _PostFeelingDto value)?  $default,){
+final _that = this;
+switch (_that) {
+case _PostFeelingDto() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int value,  String name)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _PostFeelingDto() when $default != null:
+return $default(_that.value,_that.name);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int value,  String name)  $default,) {final _that = this;
+switch (_that) {
+case _PostFeelingDto():
+return $default(_that.value,_that.name);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int value,  String name)?  $default,) {final _that = this;
+switch (_that) {
+case _PostFeelingDto() when $default != null:
+return $default(_that.value,_that.name);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _PostFeelingDto extends PostFeelingDto {
+  const _PostFeelingDto({this.value = 0, this.name = ''}): super._();
+  factory _PostFeelingDto.fromJson(Map<String, dynamic> json) => _$PostFeelingDtoFromJson(json);
+
+@override@JsonKey() final  int value;
+@override@JsonKey() final  String name;
+
+/// Create a copy of PostFeelingDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$PostFeelingDtoCopyWith<_PostFeelingDto> get copyWith => __$PostFeelingDtoCopyWithImpl<_PostFeelingDto>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$PostFeelingDtoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostFeelingDto&&(identical(other.value, value) || other.value == value)&&(identical(other.name, name) || other.name == name));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,value,name);
+
+@override
+String toString() {
+  return 'PostFeelingDto(value: $value, name: $name)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$PostFeelingDtoCopyWith<$Res> implements $PostFeelingDtoCopyWith<$Res> {
+  factory _$PostFeelingDtoCopyWith(_PostFeelingDto value, $Res Function(_PostFeelingDto) _then) = __$PostFeelingDtoCopyWithImpl;
+@override @useResult
+$Res call({
+ int value, String name
+});
+
+
+
+
+}
+/// @nodoc
+class __$PostFeelingDtoCopyWithImpl<$Res>
+    implements _$PostFeelingDtoCopyWith<$Res> {
+  __$PostFeelingDtoCopyWithImpl(this._self, this._then);
+
+  final _PostFeelingDto _self;
+  final $Res Function(_PostFeelingDto) _then;
+
+/// Create a copy of PostFeelingDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? value = null,Object? name = null,}) {
+  return _then(_PostFeelingDto(
+value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
+as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
 mixin _$PostDto {
 
  int get id; PetSummaryDto get author; List<PostMediaDto> get media; String? get caption; String? get locationName; int get visibility; List<String> get hashtags;// Tagged pets now arrive as full pet objects (id/name/avatarUrl/breed),
 // not bare ids.
- List<PetSummaryDto> get taggedPets; int get likes; int get comments; bool get likedByMe; bool get saved; bool get isEdited; DateTime? get createdAt; String? get timeAgo; int? get communityId; String? get communityName;
+ List<PetSummaryDto> get taggedPets; int get likes; int get comments; bool get likedByMe; bool get saved; bool get isEdited; PostFeelingDto? get feeling; DateTime? get createdAt; String? get timeAgo; int? get communityId; String? get communityName;
 /// Create a copy of PostDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -595,16 +861,16 @@ $PostDtoCopyWith<PostDto> get copyWith => _$PostDtoCopyWithImpl<PostDto>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostDto&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&const DeepCollectionEquality().equals(other.media, media)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.locationName, locationName) || other.locationName == locationName)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&const DeepCollectionEquality().equals(other.hashtags, hashtags)&&const DeepCollectionEquality().equals(other.taggedPets, taggedPets)&&(identical(other.likes, likes) || other.likes == likes)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.saved, saved) || other.saved == saved)&&(identical(other.isEdited, isEdited) || other.isEdited == isEdited)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.timeAgo, timeAgo) || other.timeAgo == timeAgo)&&(identical(other.communityId, communityId) || other.communityId == communityId)&&(identical(other.communityName, communityName) || other.communityName == communityName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostDto&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&const DeepCollectionEquality().equals(other.media, media)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.locationName, locationName) || other.locationName == locationName)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&const DeepCollectionEquality().equals(other.hashtags, hashtags)&&const DeepCollectionEquality().equals(other.taggedPets, taggedPets)&&(identical(other.likes, likes) || other.likes == likes)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.saved, saved) || other.saved == saved)&&(identical(other.isEdited, isEdited) || other.isEdited == isEdited)&&(identical(other.feeling, feeling) || other.feeling == feeling)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.timeAgo, timeAgo) || other.timeAgo == timeAgo)&&(identical(other.communityId, communityId) || other.communityId == communityId)&&(identical(other.communityName, communityName) || other.communityName == communityName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,author,const DeepCollectionEquality().hash(media),caption,locationName,visibility,const DeepCollectionEquality().hash(hashtags),const DeepCollectionEquality().hash(taggedPets),likes,comments,likedByMe,saved,isEdited,createdAt,timeAgo,communityId,communityName);
+int get hashCode => Object.hash(runtimeType,id,author,const DeepCollectionEquality().hash(media),caption,locationName,visibility,const DeepCollectionEquality().hash(hashtags),const DeepCollectionEquality().hash(taggedPets),likes,comments,likedByMe,saved,isEdited,feeling,createdAt,timeAgo,communityId,communityName);
 
 @override
 String toString() {
-  return 'PostDto(id: $id, author: $author, media: $media, caption: $caption, locationName: $locationName, visibility: $visibility, hashtags: $hashtags, taggedPets: $taggedPets, likes: $likes, comments: $comments, likedByMe: $likedByMe, saved: $saved, isEdited: $isEdited, createdAt: $createdAt, timeAgo: $timeAgo, communityId: $communityId, communityName: $communityName)';
+  return 'PostDto(id: $id, author: $author, media: $media, caption: $caption, locationName: $locationName, visibility: $visibility, hashtags: $hashtags, taggedPets: $taggedPets, likes: $likes, comments: $comments, likedByMe: $likedByMe, saved: $saved, isEdited: $isEdited, feeling: $feeling, createdAt: $createdAt, timeAgo: $timeAgo, communityId: $communityId, communityName: $communityName)';
 }
 
 
@@ -615,11 +881,11 @@ abstract mixin class $PostDtoCopyWith<$Res>  {
   factory $PostDtoCopyWith(PostDto value, $Res Function(PostDto) _then) = _$PostDtoCopyWithImpl;
 @useResult
 $Res call({
- int id, PetSummaryDto author, List<PostMediaDto> media, String? caption, String? locationName, int visibility, List<String> hashtags, List<PetSummaryDto> taggedPets, int likes, int comments, bool likedByMe, bool saved, bool isEdited, DateTime? createdAt, String? timeAgo, int? communityId, String? communityName
+ int id, PetSummaryDto author, List<PostMediaDto> media, String? caption, String? locationName, int visibility, List<String> hashtags, List<PetSummaryDto> taggedPets, int likes, int comments, bool likedByMe, bool saved, bool isEdited, PostFeelingDto? feeling, DateTime? createdAt, String? timeAgo, int? communityId, String? communityName
 });
 
 
-$PetSummaryDtoCopyWith<$Res> get author;
+$PetSummaryDtoCopyWith<$Res> get author;$PostFeelingDtoCopyWith<$Res>? get feeling;
 
 }
 /// @nodoc
@@ -632,7 +898,7 @@ class _$PostDtoCopyWithImpl<$Res>
 
 /// Create a copy of PostDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? author = null,Object? media = null,Object? caption = freezed,Object? locationName = freezed,Object? visibility = null,Object? hashtags = null,Object? taggedPets = null,Object? likes = null,Object? comments = null,Object? likedByMe = null,Object? saved = null,Object? isEdited = null,Object? createdAt = freezed,Object? timeAgo = freezed,Object? communityId = freezed,Object? communityName = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? author = null,Object? media = null,Object? caption = freezed,Object? locationName = freezed,Object? visibility = null,Object? hashtags = null,Object? taggedPets = null,Object? likes = null,Object? comments = null,Object? likedByMe = null,Object? saved = null,Object? isEdited = null,Object? feeling = freezed,Object? createdAt = freezed,Object? timeAgo = freezed,Object? communityId = freezed,Object? communityName = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
@@ -647,7 +913,8 @@ as int,comments: null == comments ? _self.comments : comments // ignore: cast_nu
 as int,likedByMe: null == likedByMe ? _self.likedByMe : likedByMe // ignore: cast_nullable_to_non_nullable
 as bool,saved: null == saved ? _self.saved : saved // ignore: cast_nullable_to_non_nullable
 as bool,isEdited: null == isEdited ? _self.isEdited : isEdited // ignore: cast_nullable_to_non_nullable
-as bool,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as bool,feeling: freezed == feeling ? _self.feeling : feeling // ignore: cast_nullable_to_non_nullable
+as PostFeelingDto?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,timeAgo: freezed == timeAgo ? _self.timeAgo : timeAgo // ignore: cast_nullable_to_non_nullable
 as String?,communityId: freezed == communityId ? _self.communityId : communityId // ignore: cast_nullable_to_non_nullable
 as int?,communityName: freezed == communityName ? _self.communityName : communityName // ignore: cast_nullable_to_non_nullable
@@ -662,6 +929,18 @@ $PetSummaryDtoCopyWith<$Res> get author {
   
   return $PetSummaryDtoCopyWith<$Res>(_self.author, (value) {
     return _then(_self.copyWith(author: value));
+  });
+}/// Create a copy of PostDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PostFeelingDtoCopyWith<$Res>? get feeling {
+    if (_self.feeling == null) {
+    return null;
+  }
+
+  return $PostFeelingDtoCopyWith<$Res>(_self.feeling!, (value) {
+    return _then(_self.copyWith(feeling: value));
   });
 }
 }
@@ -745,10 +1024,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  PetSummaryDto author,  List<PostMediaDto> media,  String? caption,  String? locationName,  int visibility,  List<String> hashtags,  List<PetSummaryDto> taggedPets,  int likes,  int comments,  bool likedByMe,  bool saved,  bool isEdited,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  PetSummaryDto author,  List<PostMediaDto> media,  String? caption,  String? locationName,  int visibility,  List<String> hashtags,  List<PetSummaryDto> taggedPets,  int likes,  int comments,  bool likedByMe,  bool saved,  bool isEdited,  PostFeelingDto? feeling,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PostDto() when $default != null:
-return $default(_that.id,_that.author,_that.media,_that.caption,_that.locationName,_that.visibility,_that.hashtags,_that.taggedPets,_that.likes,_that.comments,_that.likedByMe,_that.saved,_that.isEdited,_that.createdAt,_that.timeAgo,_that.communityId,_that.communityName);case _:
+return $default(_that.id,_that.author,_that.media,_that.caption,_that.locationName,_that.visibility,_that.hashtags,_that.taggedPets,_that.likes,_that.comments,_that.likedByMe,_that.saved,_that.isEdited,_that.feeling,_that.createdAt,_that.timeAgo,_that.communityId,_that.communityName);case _:
   return orElse();
 
 }
@@ -766,10 +1045,10 @@ return $default(_that.id,_that.author,_that.media,_that.caption,_that.locationNa
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  PetSummaryDto author,  List<PostMediaDto> media,  String? caption,  String? locationName,  int visibility,  List<String> hashtags,  List<PetSummaryDto> taggedPets,  int likes,  int comments,  bool likedByMe,  bool saved,  bool isEdited,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  PetSummaryDto author,  List<PostMediaDto> media,  String? caption,  String? locationName,  int visibility,  List<String> hashtags,  List<PetSummaryDto> taggedPets,  int likes,  int comments,  bool likedByMe,  bool saved,  bool isEdited,  PostFeelingDto? feeling,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName)  $default,) {final _that = this;
 switch (_that) {
 case _PostDto():
-return $default(_that.id,_that.author,_that.media,_that.caption,_that.locationName,_that.visibility,_that.hashtags,_that.taggedPets,_that.likes,_that.comments,_that.likedByMe,_that.saved,_that.isEdited,_that.createdAt,_that.timeAgo,_that.communityId,_that.communityName);case _:
+return $default(_that.id,_that.author,_that.media,_that.caption,_that.locationName,_that.visibility,_that.hashtags,_that.taggedPets,_that.likes,_that.comments,_that.likedByMe,_that.saved,_that.isEdited,_that.feeling,_that.createdAt,_that.timeAgo,_that.communityId,_that.communityName);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -786,10 +1065,10 @@ return $default(_that.id,_that.author,_that.media,_that.caption,_that.locationNa
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  PetSummaryDto author,  List<PostMediaDto> media,  String? caption,  String? locationName,  int visibility,  List<String> hashtags,  List<PetSummaryDto> taggedPets,  int likes,  int comments,  bool likedByMe,  bool saved,  bool isEdited,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  PetSummaryDto author,  List<PostMediaDto> media,  String? caption,  String? locationName,  int visibility,  List<String> hashtags,  List<PetSummaryDto> taggedPets,  int likes,  int comments,  bool likedByMe,  bool saved,  bool isEdited,  PostFeelingDto? feeling,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName)?  $default,) {final _that = this;
 switch (_that) {
 case _PostDto() when $default != null:
-return $default(_that.id,_that.author,_that.media,_that.caption,_that.locationName,_that.visibility,_that.hashtags,_that.taggedPets,_that.likes,_that.comments,_that.likedByMe,_that.saved,_that.isEdited,_that.createdAt,_that.timeAgo,_that.communityId,_that.communityName);case _:
+return $default(_that.id,_that.author,_that.media,_that.caption,_that.locationName,_that.visibility,_that.hashtags,_that.taggedPets,_that.likes,_that.comments,_that.likedByMe,_that.saved,_that.isEdited,_that.feeling,_that.createdAt,_that.timeAgo,_that.communityId,_that.communityName);case _:
   return null;
 
 }
@@ -801,7 +1080,7 @@ return $default(_that.id,_that.author,_that.media,_that.caption,_that.locationNa
 @JsonSerializable()
 
 class _PostDto extends PostDto {
-  const _PostDto({required this.id, required this.author, final  List<PostMediaDto> media = const <PostMediaDto>[], this.caption, this.locationName, this.visibility = 0, final  List<String> hashtags = const <String>[], final  List<PetSummaryDto> taggedPets = const <PetSummaryDto>[], this.likes = 0, this.comments = 0, this.likedByMe = false, this.saved = false, this.isEdited = false, this.createdAt, this.timeAgo, this.communityId, this.communityName}): _media = media,_hashtags = hashtags,_taggedPets = taggedPets,super._();
+  const _PostDto({required this.id, required this.author, final  List<PostMediaDto> media = const <PostMediaDto>[], this.caption, this.locationName, this.visibility = 0, final  List<String> hashtags = const <String>[], final  List<PetSummaryDto> taggedPets = const <PetSummaryDto>[], this.likes = 0, this.comments = 0, this.likedByMe = false, this.saved = false, this.isEdited = false, this.feeling, this.createdAt, this.timeAgo, this.communityId, this.communityName}): _media = media,_hashtags = hashtags,_taggedPets = taggedPets,super._();
   factory _PostDto.fromJson(Map<String, dynamic> json) => _$PostDtoFromJson(json);
 
 @override final  int id;
@@ -839,6 +1118,7 @@ class _PostDto extends PostDto {
 @override@JsonKey() final  bool likedByMe;
 @override@JsonKey() final  bool saved;
 @override@JsonKey() final  bool isEdited;
+@override final  PostFeelingDto? feeling;
 @override final  DateTime? createdAt;
 @override final  String? timeAgo;
 @override final  int? communityId;
@@ -857,16 +1137,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostDto&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&const DeepCollectionEquality().equals(other._media, _media)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.locationName, locationName) || other.locationName == locationName)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&const DeepCollectionEquality().equals(other._hashtags, _hashtags)&&const DeepCollectionEquality().equals(other._taggedPets, _taggedPets)&&(identical(other.likes, likes) || other.likes == likes)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.saved, saved) || other.saved == saved)&&(identical(other.isEdited, isEdited) || other.isEdited == isEdited)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.timeAgo, timeAgo) || other.timeAgo == timeAgo)&&(identical(other.communityId, communityId) || other.communityId == communityId)&&(identical(other.communityName, communityName) || other.communityName == communityName));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostDto&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&const DeepCollectionEquality().equals(other._media, _media)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.locationName, locationName) || other.locationName == locationName)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&const DeepCollectionEquality().equals(other._hashtags, _hashtags)&&const DeepCollectionEquality().equals(other._taggedPets, _taggedPets)&&(identical(other.likes, likes) || other.likes == likes)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.saved, saved) || other.saved == saved)&&(identical(other.isEdited, isEdited) || other.isEdited == isEdited)&&(identical(other.feeling, feeling) || other.feeling == feeling)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.timeAgo, timeAgo) || other.timeAgo == timeAgo)&&(identical(other.communityId, communityId) || other.communityId == communityId)&&(identical(other.communityName, communityName) || other.communityName == communityName));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,author,const DeepCollectionEquality().hash(_media),caption,locationName,visibility,const DeepCollectionEquality().hash(_hashtags),const DeepCollectionEquality().hash(_taggedPets),likes,comments,likedByMe,saved,isEdited,createdAt,timeAgo,communityId,communityName);
+int get hashCode => Object.hash(runtimeType,id,author,const DeepCollectionEquality().hash(_media),caption,locationName,visibility,const DeepCollectionEquality().hash(_hashtags),const DeepCollectionEquality().hash(_taggedPets),likes,comments,likedByMe,saved,isEdited,feeling,createdAt,timeAgo,communityId,communityName);
 
 @override
 String toString() {
-  return 'PostDto(id: $id, author: $author, media: $media, caption: $caption, locationName: $locationName, visibility: $visibility, hashtags: $hashtags, taggedPets: $taggedPets, likes: $likes, comments: $comments, likedByMe: $likedByMe, saved: $saved, isEdited: $isEdited, createdAt: $createdAt, timeAgo: $timeAgo, communityId: $communityId, communityName: $communityName)';
+  return 'PostDto(id: $id, author: $author, media: $media, caption: $caption, locationName: $locationName, visibility: $visibility, hashtags: $hashtags, taggedPets: $taggedPets, likes: $likes, comments: $comments, likedByMe: $likedByMe, saved: $saved, isEdited: $isEdited, feeling: $feeling, createdAt: $createdAt, timeAgo: $timeAgo, communityId: $communityId, communityName: $communityName)';
 }
 
 
@@ -877,11 +1157,11 @@ abstract mixin class _$PostDtoCopyWith<$Res> implements $PostDtoCopyWith<$Res> {
   factory _$PostDtoCopyWith(_PostDto value, $Res Function(_PostDto) _then) = __$PostDtoCopyWithImpl;
 @override @useResult
 $Res call({
- int id, PetSummaryDto author, List<PostMediaDto> media, String? caption, String? locationName, int visibility, List<String> hashtags, List<PetSummaryDto> taggedPets, int likes, int comments, bool likedByMe, bool saved, bool isEdited, DateTime? createdAt, String? timeAgo, int? communityId, String? communityName
+ int id, PetSummaryDto author, List<PostMediaDto> media, String? caption, String? locationName, int visibility, List<String> hashtags, List<PetSummaryDto> taggedPets, int likes, int comments, bool likedByMe, bool saved, bool isEdited, PostFeelingDto? feeling, DateTime? createdAt, String? timeAgo, int? communityId, String? communityName
 });
 
 
-@override $PetSummaryDtoCopyWith<$Res> get author;
+@override $PetSummaryDtoCopyWith<$Res> get author;@override $PostFeelingDtoCopyWith<$Res>? get feeling;
 
 }
 /// @nodoc
@@ -894,7 +1174,7 @@ class __$PostDtoCopyWithImpl<$Res>
 
 /// Create a copy of PostDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? author = null,Object? media = null,Object? caption = freezed,Object? locationName = freezed,Object? visibility = null,Object? hashtags = null,Object? taggedPets = null,Object? likes = null,Object? comments = null,Object? likedByMe = null,Object? saved = null,Object? isEdited = null,Object? createdAt = freezed,Object? timeAgo = freezed,Object? communityId = freezed,Object? communityName = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? author = null,Object? media = null,Object? caption = freezed,Object? locationName = freezed,Object? visibility = null,Object? hashtags = null,Object? taggedPets = null,Object? likes = null,Object? comments = null,Object? likedByMe = null,Object? saved = null,Object? isEdited = null,Object? feeling = freezed,Object? createdAt = freezed,Object? timeAgo = freezed,Object? communityId = freezed,Object? communityName = freezed,}) {
   return _then(_PostDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
@@ -909,7 +1189,8 @@ as int,comments: null == comments ? _self.comments : comments // ignore: cast_nu
 as int,likedByMe: null == likedByMe ? _self.likedByMe : likedByMe // ignore: cast_nullable_to_non_nullable
 as bool,saved: null == saved ? _self.saved : saved // ignore: cast_nullable_to_non_nullable
 as bool,isEdited: null == isEdited ? _self.isEdited : isEdited // ignore: cast_nullable_to_non_nullable
-as bool,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as bool,feeling: freezed == feeling ? _self.feeling : feeling // ignore: cast_nullable_to_non_nullable
+as PostFeelingDto?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,timeAgo: freezed == timeAgo ? _self.timeAgo : timeAgo // ignore: cast_nullable_to_non_nullable
 as String?,communityId: freezed == communityId ? _self.communityId : communityId // ignore: cast_nullable_to_non_nullable
 as int?,communityName: freezed == communityName ? _self.communityName : communityName // ignore: cast_nullable_to_non_nullable
@@ -925,6 +1206,18 @@ $PetSummaryDtoCopyWith<$Res> get author {
   
   return $PetSummaryDtoCopyWith<$Res>(_self.author, (value) {
     return _then(_self.copyWith(author: value));
+  });
+}/// Create a copy of PostDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PostFeelingDtoCopyWith<$Res>? get feeling {
+    if (_self.feeling == null) {
+    return null;
+  }
+
+  return $PostFeelingDtoCopyWith<$Res>(_self.feeling!, (value) {
+    return _then(_self.copyWith(feeling: value));
   });
 }
 }

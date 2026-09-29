@@ -52,6 +52,7 @@ abstract interface class CommunityRepository {
     String? caption,
     String? locationName,
     PostVisibility visibility = PostVisibility.public,
+    PostFeeling? feeling,
     List<PostMediaDraft> media = const [],
     List<int> taggedPetIds = const [],
     List<String> hashtags = const [],
@@ -63,6 +64,7 @@ abstract interface class CommunityRepository {
     String? caption,
     String? locationName,
     PostVisibility? visibility,
+    PostFeeling? feeling,
     List<int>? taggedPetIds,
     List<String>? hashtags,
   });

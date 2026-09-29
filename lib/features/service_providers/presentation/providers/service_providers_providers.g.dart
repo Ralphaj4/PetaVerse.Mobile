@@ -720,6 +720,10 @@ abstract class _$ServiceProvidersNotifier
 /// for the current viewport (bbox), panning can cause pins to appear/disappear.
 /// This notifier keeps a union of all pins ever fetched and reconciles with new
 /// API results (added/removed/updated). Prevents flickering when zooming in/out.
+///
+/// Reconciliation is driven by listening to [serviceProvidersProvider] rather
+/// than by a derived provider writing here during its build — Riverpod forbids
+/// one provider mutating another mid-build.
 
 @ProviderFor(ProviderPinCache)
 final providerPinCacheProvider = ProviderPinCacheProvider._();
@@ -728,12 +732,20 @@ final providerPinCacheProvider = ProviderPinCacheProvider._();
 /// for the current viewport (bbox), panning can cause pins to appear/disappear.
 /// This notifier keeps a union of all pins ever fetched and reconciles with new
 /// API results (added/removed/updated). Prevents flickering when zooming in/out.
+///
+/// Reconciliation is driven by listening to [serviceProvidersProvider] rather
+/// than by a derived provider writing here during its build — Riverpod forbids
+/// one provider mutating another mid-build.
 final class ProviderPinCacheProvider
     extends $NotifierProvider<ProviderPinCache, Map<int, ServiceProvider>> {
   /// Caches provider pins across viewport changes. Since the API returns results
   /// for the current viewport (bbox), panning can cause pins to appear/disappear.
   /// This notifier keeps a union of all pins ever fetched and reconciles with new
   /// API results (added/removed/updated). Prevents flickering when zooming in/out.
+  ///
+  /// Reconciliation is driven by listening to [serviceProvidersProvider] rather
+  /// than by a derived provider writing here during its build — Riverpod forbids
+  /// one provider mutating another mid-build.
   ProviderPinCacheProvider._()
     : super(
         from: null,
@@ -761,12 +773,16 @@ final class ProviderPinCacheProvider
   }
 }
 
-String _$providerPinCacheHash() => r'15ab47b460009af707129c53307d03b68b6d3c16';
+String _$providerPinCacheHash() => r'004fdb62f4b097bdd158b407175c9f7f25f04b76';
 
 /// Caches provider pins across viewport changes. Since the API returns results
 /// for the current viewport (bbox), panning can cause pins to appear/disappear.
 /// This notifier keeps a union of all pins ever fetched and reconciles with new
 /// API results (added/removed/updated). Prevents flickering when zooming in/out.
+///
+/// Reconciliation is driven by listening to [serviceProvidersProvider] rather
+/// than by a derived provider writing here during its build — Riverpod forbids
+/// one provider mutating another mid-build.
 
 abstract class _$ProviderPinCache extends $Notifier<Map<int, ServiceProvider>> {
   Map<int, ServiceProvider> build();
@@ -787,16 +803,14 @@ abstract class _$ProviderPinCache extends $Notifier<Map<int, ServiceProvider>> {
   }
 }
 
-/// The branch pins actually shown (map + list). Uses cached pins to persist
-/// selection across viewport changes, merged with API results.
-/// When a pin is selected, it appears at the top of the list.
+/// The branch pins actually shown (map + list). A pure derivation of the pin
+/// cache and the current selection — the selected pin floats to the top.
 
 @ProviderFor(visibleProviders)
 final visibleProvidersProvider = VisibleProvidersProvider._();
 
-/// The branch pins actually shown (map + list). Uses cached pins to persist
-/// selection across viewport changes, merged with API results.
-/// When a pin is selected, it appears at the top of the list.
+/// The branch pins actually shown (map + list). A pure derivation of the pin
+/// cache and the current selection — the selected pin floats to the top.
 
 final class VisibleProvidersProvider
     extends
@@ -806,9 +820,8 @@ final class VisibleProvidersProvider
           List<ServiceProvider>
         >
     with $Provider<List<ServiceProvider>> {
-  /// The branch pins actually shown (map + list). Uses cached pins to persist
-  /// selection across viewport changes, merged with API results.
-  /// When a pin is selected, it appears at the top of the list.
+  /// The branch pins actually shown (map + list). A pure derivation of the pin
+  /// cache and the current selection — the selected pin floats to the top.
   VisibleProvidersProvider._()
     : super(
         from: null,
@@ -843,4 +856,4 @@ final class VisibleProvidersProvider
   }
 }
 
-String _$visibleProvidersHash() => r'08fe3d10ae1eb4681510dc5b51e49f38093b941e';
+String _$visibleProvidersHash() => r'27334949c9ce57735d7d1381fc4ac4928d49c7cf';

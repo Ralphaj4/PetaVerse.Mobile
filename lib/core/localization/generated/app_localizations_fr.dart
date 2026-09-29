@@ -4156,6 +4156,48 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get pawhubComposerFeeling => 'Humeur';
+
+  @override
+  String get pawhubComposerFeelingSubtitle => 'Indiquez son humeur';
+
+  @override
+  String get pawhubFeelingSheetTitle => 'Comment se sent-il ?';
+
+  @override
+  String get pawhubFeelingClear => 'Retirer l\'humeur';
+
+  @override
+  String get pawhubFeelingHappy => 'Heureux';
+
+  @override
+  String get pawhubFeelingRelaxed => 'Détendu';
+
+  @override
+  String get pawhubFeelingNaughty => 'Coquin';
+
+  @override
+  String get pawhubFeelingExcited => 'Excité';
+
+  @override
+  String get pawhubFeelingAnxious => 'Anxieux';
+
+  @override
+  String get pawhubFeelingPlayful => 'Joueur';
+
+  @override
+  String get pawhubFeelingTired => 'Fatigué';
+
+  @override
+  String get pawhubFeelingSilly => 'Rigolo';
+
+  @override
+  String get pawhubFeelingLoved => 'Aimé';
+
+  @override
+  String get pawhubFeelingGrumpy => 'Grognon';
+
+  @override
   String get contactUsTitle => 'Nous sommes là pour vous aider';
 
   @override

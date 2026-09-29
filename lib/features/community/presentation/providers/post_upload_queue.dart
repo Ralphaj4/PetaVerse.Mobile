@@ -25,6 +25,7 @@ class PostDraft {
     this.caption,
     this.locationName,
     this.visibility = PostVisibility.public,
+    this.feeling,
     this.taggedPetIds = const [],
     this.hashtags = const [],
     this.communityId,
@@ -35,6 +36,9 @@ class PostDraft {
   final String? caption;
   final String? locationName;
   final PostVisibility visibility;
+
+  /// How the pet is feeling in this post, or null for no feeling tag.
+  final PostFeeling? feeling;
   final List<int> taggedPetIds;
   final List<String> hashtags;
   final int? communityId;
@@ -216,6 +220,7 @@ class PostUploadQueue extends Notifier<List<PostUploadJob>> {
           caption: draft.caption,
           locationName: draft.locationName,
           visibility: draft.visibility,
+          feeling: draft.feeling,
           media: drafts,
           taggedPetIds: draft.taggedPetIds,
           hashtags: draft.hashtags,

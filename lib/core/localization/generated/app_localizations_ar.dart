@@ -4129,6 +4129,48 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get pawhubComposerFeeling => 'الشعور';
+
+  @override
+  String get pawhubComposerFeelingSubtitle => 'أضف شعوره الحالي';
+
+  @override
+  String get pawhubFeelingSheetTitle => 'بماذا يشعر؟';
+
+  @override
+  String get pawhubFeelingClear => 'إزالة الشعور';
+
+  @override
+  String get pawhubFeelingHappy => 'سعيد';
+
+  @override
+  String get pawhubFeelingRelaxed => 'مسترخٍ';
+
+  @override
+  String get pawhubFeelingNaughty => 'مشاغب';
+
+  @override
+  String get pawhubFeelingExcited => 'متحمّس';
+
+  @override
+  String get pawhubFeelingAnxious => 'قلق';
+
+  @override
+  String get pawhubFeelingPlayful => 'مرح';
+
+  @override
+  String get pawhubFeelingTired => 'متعب';
+
+  @override
+  String get pawhubFeelingSilly => 'أحمق ظريف';
+
+  @override
+  String get pawhubFeelingLoved => 'محبوب';
+
+  @override
+  String get pawhubFeelingGrumpy => 'غاضب';
+
+  @override
   String get contactUsTitle => 'نحن هنا للمساعدة';
 
   @override

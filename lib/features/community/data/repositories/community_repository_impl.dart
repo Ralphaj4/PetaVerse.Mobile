@@ -131,6 +131,7 @@ class CommunityRepositoryImpl implements CommunityRepository {
     String? caption,
     String? locationName,
     PostVisibility visibility = PostVisibility.public,
+    PostFeeling? feeling,
     List<PostMediaDraft> media = const [],
     List<int> taggedPetIds = const [],
     List<String> hashtags = const [],
@@ -143,6 +144,8 @@ class CommunityRepositoryImpl implements CommunityRepository {
           'locationName': ?locationName,
           'communityId': ?communityId,
           'visibility': visibility.wire,
+          // Omitted entirely when null — a post with no feeling.
+          'feeling': ?feeling?.wire,
           'media': media
               .map((m) => {
                     'mediaAssetId': m.mediaAssetId,
@@ -163,6 +166,7 @@ class CommunityRepositoryImpl implements CommunityRepository {
     String? caption,
     String? locationName,
     PostVisibility? visibility,
+    PostFeeling? feeling,
     List<int>? taggedPetIds,
     List<String>? hashtags,
   }) =>
@@ -171,6 +175,10 @@ class CommunityRepositoryImpl implements CommunityRepository {
           'caption': ?caption,
           'locationName': ?locationName,
           'visibility': ?visibility?.wire,
+          // NOTE: omitted when null (leaves the feeling unchanged). No edit-post
+          // UI exists yet; when one is built and needs to *clear* a feeling, it
+          // must send an explicit `feeling: null` rather than omitting the key.
+          'feeling': ?feeling?.wire,
           'taggedPetIds': ?taggedPetIds,
           'hashtags': ?hashtags,
         });
