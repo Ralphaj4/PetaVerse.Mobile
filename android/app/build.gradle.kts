@@ -20,6 +20,16 @@ val secretsProperties = Properties().apply {
 val androidMapsApiKey: String =
     secretsProperties.getProperty("ANDROID_MAPS_API_KEY") ?: ""
 
+// Release signing config, kept out of version control. Read from a gitignored
+// `key.properties` at the android/ root. On CI (Codemagic) this file is written
+// from secure environment variables before the build. When it's absent (e.g. a
+// local `flutter run --release`), the release build falls back to debug keys.
+val keystoreProperties = Properties().apply {
+    val file = rootProject.file("key.properties")
+    if (file.exists()) file.inputStream().use { load(it) }
+}
+val hasReleaseSigning = keystoreProperties.getProperty("storeFile") != null
+
 android {
     namespace = "com.petaverse.app"
     compileSdk = flutter.compileSdkVersion
@@ -53,11 +63,27 @@ android {
         manifestPlaceholders["MAPS_API_KEY"] = androidMapsApiKey
     }
 
+    signingConfigs {
+        if (hasReleaseSigning) {
+            create("release") {
+                storeFile = rootProject.file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            // Use the real release keystore when `key.properties` is present
+            // (CI / signed builds); otherwise fall back to debug keys so a local
+            // `flutter run --release` still works without a keystore.
+            signingConfig = if (hasReleaseSigning) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug")
+            }
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
