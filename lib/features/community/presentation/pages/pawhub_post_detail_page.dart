@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/errors/failure.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -59,9 +60,11 @@ class _PawHubPostDetailPageState extends ConsumerState<PawHubPostDetailPage> {
       ),
       body: detailAsync.when(
         loading: () => _loadingState(),
-        error: (e, _) => _errorState(
-          () => ref.invalidate(postDetailProvider(widget.postId)),
-        ),
+        error: (e, _) => e is NotFoundFailure
+            ? _notFoundState()
+            : _errorState(
+                () => ref.invalidate(postDetailProvider(widget.postId)),
+              ),
         data: (detail) => _content(detail, actingPet),
       ),
     );
@@ -88,6 +91,33 @@ class _PawHubPostDetailPageState extends ConsumerState<PawHubPostDetailPage> {
             const SizedBox(height: AppSpacing.lg),
             FilledButton(
                 onPressed: onRetry, child: Text(context.l10n.retry)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Shown when the post no longer exists (404) — e.g. deleted after the
+  /// notification was sent. Retrying can't recover it, so no retry button.
+  Widget _notFoundState() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.xl),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(FluentIcons.document_dismiss_24_regular,
+                size: 40, color: AppColors.textTertiary),
+            const SizedBox(height: AppSpacing.md),
+            Text(context.l10n.pawhubPostNotFoundTitle,
+                style: AppTextStyles.titleSmall),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              context.l10n.pawhubPostNotFoundMessage,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.bodySmall
+                  .copyWith(color: AppColors.textSecondary),
+            ),
           ],
         ),
       ),

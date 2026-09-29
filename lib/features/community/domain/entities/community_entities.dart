@@ -112,6 +112,7 @@ class Post {
     this.locationName,
     this.visibility = PostVisibility.public,
     this.feeling,
+    this.followedByMyPetIds = const [],
     this.timeAgo,
     this.communityId,
     this.communityName,
@@ -126,6 +127,11 @@ class Post {
 
   /// How the pet is feeling in this post, or null for no feeling tag.
   final PostFeeling? feeling;
+
+  /// IDs of the signed-in user's own pets that follow the post's author.
+  /// Empty when none of the user's pets follow, or for non-followers-filtered feeds.
+  final List<int> followedByMyPetIds;
+
   final List<String> hashtags;
 
   /// Pets tagged in this post (full objects: id/name/avatar/breed).
@@ -176,6 +182,7 @@ class Post {
         locationName: locationName,
         visibility: visibility ?? this.visibility,
         feeling: feeling,
+        followedByMyPetIds: followedByMyPetIds,
         timeAgo: timeAgo,
         communityId: communityId,
         communityName: communityName,

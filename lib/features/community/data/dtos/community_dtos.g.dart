@@ -88,6 +88,11 @@ _PostDto _$PostDtoFromJson(Map<String, dynamic> json) => _PostDto(
   feeling: json['feeling'] == null
       ? null
       : PostFeelingDto.fromJson(json['feeling'] as Map<String, dynamic>),
+  followedByMyPetIds:
+      (json['followedByMyPetIds'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList() ??
+      const <int>[],
   createdAt: json['createdAt'] == null
       ? null
       : DateTime.parse(json['createdAt'] as String),
@@ -111,6 +116,7 @@ Map<String, dynamic> _$PostDtoToJson(_PostDto instance) => <String, dynamic>{
   'saved': instance.saved,
   'isEdited': instance.isEdited,
   'feeling': instance.feeling,
+  'followedByMyPetIds': instance.followedByMyPetIds,
   'createdAt': instance.createdAt?.toIso8601String(),
   'timeAgo': instance.timeAgo,
   'communityId': instance.communityId,

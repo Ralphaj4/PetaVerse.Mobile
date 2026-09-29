@@ -45,6 +45,10 @@ class _PawHubPageState extends ConsumerState<PawHubPage> {
   FeedTab _tab = FeedTab.following;
   bool _showNewPill = false;
 
+  /// Optimistic follow-state overrides for suggested pets. Keyed by backendId.
+  /// Cleared on feed refresh so stale overrides don't persist.
+  final Map<int, bool> _followingOverrides = {};
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -91,7 +95,10 @@ class _PawHubPageState extends ConsumerState<PawHubPage> {
 
   Future<void> _refresh() async {
     unawaited(HapticFeedback.selectionClick());
-    setState(() => _showNewPill = false);
+    setState(() {
+      _showNewPill = false;
+      _followingOverrides.clear();
+    });
     if (_tab == FeedTab.following) {
       await ref.read(followingFeedProvider.notifier).refresh();
     } else {
@@ -195,17 +202,23 @@ void _openProfile(PawPet pet) {
   }
 
   Future<void> _toggleFollow(PawPet pet) async {
+    final currentlyFollowing =
+        _followingOverrides[pet.backendId] ?? pet.isFollowing;
+    // Optimistic update first so the button flips instantly.
+    setState(() => _followingOverrides[pet.backendId] = !currentlyFollowing);
+
     final communityPet = domain.CommunityPet(
       id: pet.backendId,
       name: pet.name,
       avatarUrl: pet.avatarUrl,
       ownerName: pet.ownerName,
-      isFollowing: pet.isFollowing,
+      isFollowing: currentlyFollowing,
     );
     final nowFollowing =
         await ref.read(communityActionsProvider).toggleFollow(communityPet);
+    if (!mounted) return;
     setState(() {
-      pet.isFollowing = nowFollowing;
+      _followingOverrides[pet.backendId] = nowFollowing;
       _snack(nowFollowing
           ? context.l10n.pawHubFollowingPet(pet.name)
           : context.l10n.pawHubUnfollowedPet(pet.name));
@@ -476,8 +489,13 @@ void _openProfile(PawPet pet) {
       error: (e, _) => _errorView(),
       data: (discover) {
         final posts = discover.posts.map(PawPost.fromEntity).toList();
-        final suggestedPets =
-            discover.suggestedPets.map(PawPet.fromEntity).toList();
+        final suggestedPets = discover.suggestedPets.map((e) {
+          final pet = PawPet.fromEntity(e);
+          if (_followingOverrides.containsKey(pet.backendId)) {
+            pet.isFollowing = _followingOverrides[pet.backendId]!;
+          }
+          return pet;
+        }).toList();
         // Community suggestions now live in the dedicated Communities tab, so
         // Discover is pure post discovery — no communities rail here.
         if (posts.isEmpty) {

@@ -11,6 +11,7 @@ import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_cached_image.dart';
 import '../models/pawhub_models.dart';
 import '../providers/community_notifications_providers.dart';
+import '../pages/pawhub_pet_profile_page.dart';
 
 /// The notifications sheet: grouped rows, safety alerts styled distinctly,
 /// tap-to-mark-read. Prototype state lives locally.
@@ -78,9 +79,14 @@ class _NotificationsSheetState extends ConsumerState<NotificationsSheet> {
                 itemCount: widget.items.length,
                 itemBuilder: (_, i) => _NotifRow(
                   notif: widget.items[i],
-                  onTap: () {
-                    _markNotificationRead(widget.items[i]);
+                  onTap: () async {
+                    final notif = widget.items[i];
+                    await _markNotificationRead(notif);
+                    if (!context.mounted) return;
                     Navigator.of(context).pop();
+                    if (notif.type == PawNotifType.follow) {
+                      openPawHubPetProfile(context, notif.actor);
+                    }
                   },
                 ),
               ),

@@ -44,6 +44,7 @@ import '../../../features/community/presentation/pages/pawhub_followers_page.dar
 import '../../../features/community/presentation/pages/pawhub_following_page.dart';
 import '../../../features/community/presentation/pages/pawhub_blocked_page.dart';
 import '../../../features/community/presentation/pages/pawhub_trending_page.dart';
+import '../../../features/community/presentation/pages/pawhub_pet_profile_page.dart';
 import '../../../features/community/presentation/pages/tag_pets_page.dart';
 import '../../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../../features/pets/domain/entities/pet_ref.dart';
@@ -847,6 +848,18 @@ GoRouter appRouter(Ref ref) {
                     pageBuilder: (context, state) => AppTransitionPage(
                           key: state.pageKey,
                           child: const PawHubTrendingPage(),
+                        ),
+                  ),
+                  GoRoute(
+                    path: 'pet/:petId',
+                    name: 'community_pet_profile',
+                    pageBuilder: (context, state) => AppTransitionPage(
+                          key: state.pageKey,
+                          child: PawHubPetProfileByIdPage(
+                            petId: int.tryParse(
+                                    state.pathParameters['petId'] ?? '') ??
+                                0,
+                          ),
                         ),
                   ),
                   GoRoute(

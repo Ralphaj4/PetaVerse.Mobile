@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -24,6 +25,14 @@ abstract final class FcmPayloadKeys {
 
 const _tag = 'FCM';
 const _logger = LoggerService();
+
+/// Message ids already routed this session. Firebase can deliver the same tap
+/// through both [FirebaseMessaging.getInitialMessage] (cold start) and
+/// [FirebaseMessaging.onMessageOpenedApp] (stream) — handling it twice pushes
+/// two pages with the same GoRouter pageKey and trips the Navigator's
+/// `!keyReservation.contains(key)` assertion. Dedupe on messageId so each tap
+/// navigates exactly once.
+final Set<String> _handledTapIds = <String>{};
 
 /// Called from the top-level background handler in main.dart.
 /// Runs in a separate isolate — no UI, no providers, no router.
@@ -204,6 +213,27 @@ class FcmHandler {
   }
 
   static void _navigateDirect(GoRouter router, RemoteMessage message) {
+    // Dedupe: the same tap can arrive via both getInitialMessage (cold start)
+    // and onMessageOpenedApp (stream). Route it only once, or the second
+    // navigation reuses the same pageKey and trips the Navigator assertion.
+    final tapId = message.messageId;
+    if (tapId != null) {
+      if (_handledTapIds.contains(tapId)) {
+        _logger.info('Tap $tapId already handled — skipping', tag: _tag);
+        return;
+      }
+      _handledTapIds.add(tapId);
+    }
+
+    // Navigate after the current frame. init() runs from AppShell.initState
+    // while the Navigator is still building its first frame; routing
+    // synchronously into it re-enters before its key reservation settles.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _routeForMessage(router, message);
+    });
+  }
+
+  static void _routeForMessage(GoRouter router, RemoteMessage message) {
     // Respect the user's pref even on tap — don't navigate to a screen for a
     // category they've disabled (security alerts always navigate through).
     final prefKey = _prefKeyForMessage(message);
@@ -212,17 +242,24 @@ class FcmHandler {
     final data = message.data;
 
     // Explicit route takes priority over category-based routing.
-    // Shell tab routes (/home, /community, /care, /profile) must use go() so
-    // the bottom nav shell is preserved. All other deep-links use push().
+    // Any route into a shell branch — the tab root (/community) OR a route
+    // nested under it (/community/post/5) — must use go(). push()-ing a
+    // branch-nested location re-materialises the branch stack on top of the
+    // shell that already mounts the branch root, colliding pageKeys and
+    // tripping the Navigator's `!keyReservation.contains(key)` assertion.
+    // Only routes outside every shell branch use push().
     final explicitRoute = data[FcmPayloadKeys.route];
     if (explicitRoute != null && explicitRoute.isNotEmpty) {
-      const shellRoots = {
+      const shellBranchPrefixes = [
         AppRoutes.home,
         AppRoutes.community,
         AppRoutes.care,
         AppRoutes.profile,
-      };
-      if (shellRoots.contains(explicitRoute)) {
+      ];
+      final isShellRoute = shellBranchPrefixes.any(
+        (p) => explicitRoute == p || explicitRoute.startsWith('$p/'),
+      );
+      if (isShellRoute) {
         router.go(explicitRoute);
       } else {
         router.push(explicitRoute);

@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_spacing.dart';
+import '../../../../core/theme/app_text_styles.dart';
 import '../models/pawhub_models.dart';
 import '../providers/community_actions_providers.dart';
 import '../providers/community_feed_providers.dart';
@@ -81,6 +83,59 @@ class _PawHubPetProfilePageState extends ConsumerState<PawHubPetProfilePage> {
       body: PetProfileSheet(
         pet: widget.pet,
         siblings: widget.siblings,
+      ),
+    );
+  }
+}
+
+/// Router-addressable wrapper that loads a pet by [petId] before rendering the
+/// profile. Used by the `/community/pet/:petId` GoRoute so deep-links and FCM
+/// push payloads that carry only an id still land on the correct page.
+class PawHubPetProfileByIdPage extends ConsumerWidget {
+  const PawHubPetProfileByIdPage({required this.petId, super.key});
+
+  final int petId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profileAsync = ref.watch(petProfileProvider(petId));
+    return profileAsync.when(
+      loading: () => const Scaffold(
+        backgroundColor: AppColors.surface,
+        body: Center(child: CircularProgressIndicator(color: AppColors.primary)),
+      ),
+      error: (_, _) => Scaffold(
+        backgroundColor: AppColors.surface,
+        appBar: AppBar(
+          backgroundColor: AppColors.surface,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+        ),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.xl),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(FluentIcons.warning_24_regular,
+                    size: 40, color: AppColors.error),
+                const SizedBox(height: AppSpacing.md),
+                Text(context.l10n.pawhubProfileLoadFailed,
+                    style: AppTextStyles.titleSmall,
+                    textAlign: TextAlign.center),
+                const SizedBox(height: AppSpacing.lg),
+                FilledButton(
+                  onPressed: () => ref.invalidate(petProfileProvider(petId)),
+                  child: Text(context.l10n.retry),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      data: (pet) => PawHubPetProfilePage(
+        pet: PawPet.fromEntity(pet),
+        siblings: const [],
       ),
     );
   }

@@ -1671,7 +1671,10 @@
   },
   "pawhubPostTitle": "Publication",
   "pawhubPostFailed": "Échec du chargement de la publication",
+  "pawhubPostNotFoundTitle": "Publication introuvable",
+  "pawhubPostNotFoundMessage": "Cette publication a peut-être été supprimée.",
   "pawhubProfileFailedPosts": "Échec du chargement des publications",
+  "pawhubProfileLoadFailed": "Impossible de charger ce profil",
   "pawhubProfileNoPosts": "Aucune publication",
   "pawhubTagPetsTitle": "Identifier des animaux",
   "pawhubTagPetsSearchHint": "Rechercher des animaux par nom…",
@@ -1726,6 +1729,19 @@
   "pawhubFeelingSilly": "Rigolo",
   "pawhubFeelingLoved": "Aimé",
   "pawhubFeelingGrumpy": "Grognon",
+  "pawhubAnd": "et",
+  "pawhubFollowedBySingle": "Suivi par {petName}",
+  "@pawhubFollowedBySingle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "pawhubFollowedByFew": "Suivi par {names}",
+  "@pawhubFollowedByFew": {
+    "placeholders": { "names": { "type": "String" } }
+  },
+  "pawhubFollowedByCount": "Suivi par {count} de mes animaux",
+  "@pawhubFollowedByCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
 
   "contactUsTitle": "Nous sommes là pour vous aider",
   "contactUsSubtitle": "Contactez-nous à tout moment — nous répondons généralement sous 24 heures.",

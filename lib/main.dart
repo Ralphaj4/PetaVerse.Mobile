@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/app/app.dart';
 import 'core/app/fcm_handler.dart';
 import 'core/app/notification_service.dart';
+import 'core/errors/failure.dart';
 import 'core/localization/culture_provider.dart';
 import 'core/storage/hive_service.dart';
 import 'features/activity/data/local/walk_foreground_service.dart';
@@ -18,6 +19,27 @@ import 'firebase_options.dart';
 Future<void> _fcmBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FcmHandler.handleBackground(message);
+}
+
+/// Global provider retry policy (Riverpod contract: return the delay before the
+/// next attempt, or null to stop retrying).
+///
+/// Riverpod's [ProviderContainer.defaultRetry] retries ANY thrown error up to
+/// 10 times with exponential backoff. Our providers throw [Failure] objects, so
+/// a deterministic 404 gets retried 10 times over several seconds — an endless
+/// GET→404→GET loop that delays the error UI (e.g. opening a deleted post).
+///
+/// Only transient failures — no connectivity, server 5xx, rate limits — are
+/// worth retrying. Every 4xx (not found, unauthorized, forbidden, validation,
+/// conflict, banned/suspended) is a stable verdict retrying can't change, so we
+/// stop immediately and let the UI render the error at once.
+Duration? _providerRetry(int retryCount, Object error) {
+  final isTransient = error is NetworkFailure ||
+      error is ServerFailure ||
+      error is RateLimitFailure;
+  if (!isTransient) return null; // stop immediately on stable/unknown errors
+  if (retryCount >= 3) return null; // cap transient retries
+  return Duration(milliseconds: 300 * (retryCount + 1));
 }
 
 Future<void> main() async {
@@ -45,7 +67,7 @@ Future<void> main() async {
   await NotificationService.staticInit();
 
   // Hydrate the saved culture before the first frame.
-  final container = ProviderContainer();
+  final container = ProviderContainer(retry: _providerRetry);
   await container.read(cultureProvider.notifier).load();
 
   runApp(

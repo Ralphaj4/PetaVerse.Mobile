@@ -4024,7 +4024,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pawhubPostFailed => 'تعذّر تحميل المنشور';
 
   @override
+  String get pawhubPostNotFoundTitle => 'المنشور غير موجود';
+
+  @override
+  String get pawhubPostNotFoundMessage => 'ربما تم حذف هذا المنشور.';
+
+  @override
   String get pawhubProfileFailedPosts => 'تعذّر تحميل المنشورات';
+
+  @override
+  String get pawhubProfileLoadFailed => 'تعذّر تحميل هذا الملف الشخصي';
 
   @override
   String get pawhubProfileNoPosts => 'لا توجد منشورات بعد';
@@ -4169,6 +4178,24 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pawhubFeelingGrumpy => 'غاضب';
+
+  @override
+  String get pawhubAnd => 'و';
+
+  @override
+  String pawhubFollowedBySingle(String petName) {
+    return 'يتابعه $petName';
+  }
+
+  @override
+  String pawhubFollowedByFew(String names) {
+    return 'يتابعه $names';
+  }
+
+  @override
+  String pawhubFollowedByCount(int count) {
+    return 'يتابعه $count من حيواناتي';
+  }
 
   @override
   String get contactUsTitle => 'نحن هنا للمساعدة';

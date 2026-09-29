@@ -1831,7 +1831,10 @@
   },
   "pawhubPostTitle": "Post",
   "pawhubPostFailed": "Failed to load post",
+  "pawhubPostNotFoundTitle": "Post not found",
+  "pawhubPostNotFoundMessage": "This post may have been deleted.",
   "pawhubProfileFailedPosts": "Failed to load posts",
+  "pawhubProfileLoadFailed": "Could not load this profile",
   "pawhubProfileNoPosts": "No posts yet",
   "pawhubTagPetsTitle": "Tag pets",
   "pawhubTagPetsSearchHint": "Search pets by name…",
@@ -1886,6 +1889,19 @@
   "pawhubFeelingSilly": "Silly",
   "pawhubFeelingLoved": "Loved",
   "pawhubFeelingGrumpy": "Grumpy",
+  "pawhubAnd": "and",
+  "pawhubFollowedBySingle": "Followed by {petName}",
+  "@pawhubFollowedBySingle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "pawhubFollowedByFew": "Followed by {names}",
+  "@pawhubFollowedByFew": {
+    "placeholders": { "names": { "type": "String" } }
+  },
+  "pawhubFollowedByCount": "Followed by {count} of my pets",
+  "@pawhubFollowedByCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
 
   "contactUsTitle": "We're here to help",
   "contactUsSubtitle": "Reach out anytime — we usually reply within 24 hours.",

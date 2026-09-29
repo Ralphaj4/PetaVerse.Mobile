@@ -84,6 +84,9 @@ class NotificationList extends _$NotificationList {
     ]);
 
     await ref.read(notificationRepositoryProvider).markRead(id);
+    // Tapping a notification navigates away, which disposes this (non-keepAlive)
+    // notifier. Guard the post-await ref use or invalidate() throws on a dead ref.
+    if (!ref.mounted) return;
     ref.invalidate(notificationUnreadCountProvider);
   }
 
@@ -94,6 +97,7 @@ class NotificationList extends _$NotificationList {
     state = AsyncData([for (final n in current) n.copyWith(isRead: true)]);
 
     await ref.read(notificationRepositoryProvider).markAllRead();
+    if (!ref.mounted) return;
     ref.invalidate(notificationUnreadCountProvider);
   }
 

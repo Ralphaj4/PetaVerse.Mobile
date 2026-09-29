@@ -7024,11 +7024,29 @@ abstract class AppLocalizations {
   /// **'Failed to load post'**
   String get pawhubPostFailed;
 
+  /// No description provided for @pawhubPostNotFoundTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Post not found'**
+  String get pawhubPostNotFoundTitle;
+
+  /// No description provided for @pawhubPostNotFoundMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This post may have been deleted.'**
+  String get pawhubPostNotFoundMessage;
+
   /// No description provided for @pawhubProfileFailedPosts.
   ///
   /// In en, this message translates to:
   /// **'Failed to load posts'**
   String get pawhubProfileFailedPosts;
+
+  /// No description provided for @pawhubProfileLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load this profile'**
+  String get pawhubProfileLoadFailed;
 
   /// No description provided for @pawhubProfileNoPosts.
   ///
@@ -7293,6 +7311,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Grumpy'**
   String get pawhubFeelingGrumpy;
+
+  /// No description provided for @pawhubAnd.
+  ///
+  /// In en, this message translates to:
+  /// **'and'**
+  String get pawhubAnd;
+
+  /// No description provided for @pawhubFollowedBySingle.
+  ///
+  /// In en, this message translates to:
+  /// **'Followed by {petName}'**
+  String pawhubFollowedBySingle(String petName);
+
+  /// No description provided for @pawhubFollowedByFew.
+  ///
+  /// In en, this message translates to:
+  /// **'Followed by {names}'**
+  String pawhubFollowedByFew(String names);
+
+  /// No description provided for @pawhubFollowedByCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Followed by {count} of my pets'**
+  String pawhubFollowedByCount(int count);
 
   /// No description provided for @contactUsTitle.
   ///

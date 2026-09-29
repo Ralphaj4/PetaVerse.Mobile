@@ -4049,7 +4049,17 @@ class AppLocalizationsFr extends AppLocalizations {
   String get pawhubPostFailed => 'Échec du chargement de la publication';
 
   @override
+  String get pawhubPostNotFoundTitle => 'Publication introuvable';
+
+  @override
+  String get pawhubPostNotFoundMessage =>
+      'Cette publication a peut-être été supprimée.';
+
+  @override
   String get pawhubProfileFailedPosts => 'Échec du chargement des publications';
+
+  @override
+  String get pawhubProfileLoadFailed => 'Impossible de charger ce profil';
 
   @override
   String get pawhubProfileNoPosts => 'Aucune publication';
@@ -4196,6 +4206,24 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get pawhubFeelingGrumpy => 'Grognon';
+
+  @override
+  String get pawhubAnd => 'et';
+
+  @override
+  String pawhubFollowedBySingle(String petName) {
+    return 'Suivi par $petName';
+  }
+
+  @override
+  String pawhubFollowedByFew(String names) {
+    return 'Suivi par $names';
+  }
+
+  @override
+  String pawhubFollowedByCount(int count) {
+    return 'Suivi par $count de mes animaux';
+  }
 
   @override
   String get contactUsTitle => 'Nous sommes là pour vous aider';

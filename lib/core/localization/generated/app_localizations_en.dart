@@ -4005,7 +4005,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pawhubPostFailed => 'Failed to load post';
 
   @override
+  String get pawhubPostNotFoundTitle => 'Post not found';
+
+  @override
+  String get pawhubPostNotFoundMessage => 'This post may have been deleted.';
+
+  @override
   String get pawhubProfileFailedPosts => 'Failed to load posts';
+
+  @override
+  String get pawhubProfileLoadFailed => 'Could not load this profile';
 
   @override
   String get pawhubProfileNoPosts => 'No posts yet';
@@ -4151,6 +4160,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pawhubFeelingGrumpy => 'Grumpy';
+
+  @override
+  String get pawhubAnd => 'and';
+
+  @override
+  String pawhubFollowedBySingle(String petName) {
+    return 'Followed by $petName';
+  }
+
+  @override
+  String pawhubFollowedByFew(String names) {
+    return 'Followed by $names';
+  }
+
+  @override
+  String pawhubFollowedByCount(int count) {
+    return 'Followed by $count of my pets';
+  }
 
   @override
   String get contactUsTitle => 'We\'re here to help';

@@ -177,6 +177,7 @@ class PawPost {
     this.locationName,
     this.visibility = PostVisibility.public,
     this.feeling,
+    this.followedByMyPetIds = const [],
     this.likes = 0,
     this.likedByMe = false,
     this.saved = false,
@@ -202,6 +203,7 @@ class PawPost {
         locationName: e.locationName,
         visibility: _domainVisibility(e.visibility),
         feeling: e.feeling,
+        followedByMyPetIds: e.followedByMyPetIds,
         likes: e.likes,
         likedByMe: e.likedByMe,
         saved: e.saved,
@@ -234,6 +236,10 @@ class PawPost {
 
   /// How the pet is feeling in this post, or null for no feeling tag.
   final domain_enums.PostFeeling? feeling;
+
+  /// IDs of the signed-in user's own pets that follow the post's author.
+  final List<int> followedByMyPetIds;
+
   int likes;
   bool likedByMe;
   bool saved;

@@ -1671,7 +1671,10 @@
   },
   "pawhubPostTitle": "المنشور",
   "pawhubPostFailed": "تعذّر تحميل المنشور",
+  "pawhubPostNotFoundTitle": "المنشور غير موجود",
+  "pawhubPostNotFoundMessage": "ربما تم حذف هذا المنشور.",
   "pawhubProfileFailedPosts": "تعذّر تحميل المنشورات",
+  "pawhubProfileLoadFailed": "تعذّر تحميل هذا الملف الشخصي",
   "pawhubProfileNoPosts": "لا توجد منشورات بعد",
   "pawhubTagPetsTitle": "الإشارة إلى حيوانات",
   "pawhubTagPetsSearchHint": "ابحث عن الحيوانات بالاسم…",
@@ -1726,6 +1729,19 @@
   "pawhubFeelingSilly": "أحمق ظريف",
   "pawhubFeelingLoved": "محبوب",
   "pawhubFeelingGrumpy": "غاضب",
+  "pawhubAnd": "و",
+  "pawhubFollowedBySingle": "يتابعه {petName}",
+  "@pawhubFollowedBySingle": {
+    "placeholders": { "petName": { "type": "String" } }
+  },
+  "pawhubFollowedByFew": "يتابعه {names}",
+  "@pawhubFollowedByFew": {
+    "placeholders": { "names": { "type": "String" } }
+  },
+  "pawhubFollowedByCount": "يتابعه {count} من حيواناتي",
+  "@pawhubFollowedByCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
 
   "contactUsTitle": "نحن هنا للمساعدة",
   "contactUsSubtitle": "تواصل معنا في أي وقت — عادةً ما نرد خلال 24 ساعة.",

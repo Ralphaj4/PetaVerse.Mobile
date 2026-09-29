@@ -108,6 +108,10 @@ class _NotificationListState extends ConsumerState<_NotificationList> {
     }
   }
 
+  /// Shell-branch prefixes. A route under any of these is served by a nested
+  /// StatefulShellBranch navigator, not the root navigator.
+  static const _shellBranchPrefixes = ['/home', '/community', '/care', '/profile'];
+
   void _handleTap(AppNotification notification) {
     ref.read(notificationListProvider.notifier).markRead(notification.id);
 
@@ -119,7 +123,20 @@ class _NotificationListState extends ConsumerState<_NotificationList> {
     }
 
     final route = notification.route;
-    if (route != null && route.isNotEmpty) {
+    if (route == null || route.isEmpty) return;
+
+    // Deep routes into a shell branch (e.g. /community/post/5) must be entered
+    // with go(), not push(). This page lives on the ROOT navigator; push-ing a
+    // branch-nested location makes GoRouter re-materialise the branch stack
+    // (CommunityHubPage + the target) on top of a shell that already mounts the
+    // branch root, producing two pages with the same pageKey — which trips the
+    // Navigator's `!keyReservation.contains(key)` assertion. go() rebuilds the
+    // whole stack coherently instead.
+    final isShellRoute =
+        _shellBranchPrefixes.any((p) => route == p || route.startsWith('$p/'));
+    if (isShellRoute) {
+      context.go(route);
+    } else {
       context.push(route);
     }
   }

@@ -14,6 +14,7 @@ import '../../domain/entities/community_entities.dart' as domain;
 import '../../domain/entities/community_enums.dart' show PostFeeling;
 import '../models/pawhub_models.dart';
 import '../providers/community_actions_providers.dart';
+import '../providers/community_providers.dart';
 import 'community_post_badge.dart';
 import 'pawhub_common.dart';
 import 'pawhub_media.dart';
@@ -179,6 +180,7 @@ class _PostCardState extends ConsumerState<PostCard>
           ),
           _actionRow(),
           _likeCount(),
+          _followedBy(),
           _caption(),
           _commentPreview(),
           const SizedBox(height: AppSpacing.md),
@@ -294,6 +296,39 @@ class _PostCardState extends ConsumerState<PostCard>
       child: Text(
         '${post.likes} ${post.likes == 1 ? 'paw' : 'paws'}',
         style: AppTextStyles.labelLarge,
+      ),
+    );
+  }
+
+  Widget _followedBy() {
+    final ids = post.followedByMyPetIds;
+    if (ids.isEmpty) return const SizedBox.shrink();
+
+    // Resolve IDs → pet names from the user's own pets. IDs that no longer
+    // exist in the local list are silently skipped (safe non-match).
+    final myPets = ref.watch(switchablePetsProvider);
+    final nameMap = {for (final p in myPets) p.id: p.name};
+    final names = ids.map((id) => nameMap[id]).whereType<String>().toList();
+    if (names.isEmpty) return const SizedBox.shrink();
+
+    final l10n = context.l10n;
+    final String label;
+    if (names.length == 1) {
+      label = l10n.pawhubFollowedBySingle(names.first);
+    } else if (names.length <= 3) {
+      final joined =
+          '${names.sublist(0, names.length - 1).join(', ')} ${l10n.pawhubAnd} ${names.last}';
+      label = l10n.pawhubFollowedByFew(joined);
+    } else {
+      label = l10n.pawhubFollowedByCount(names.length);
+    }
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+          AppSpacing.md, AppSpacing.xs, AppSpacing.md, 0),
+      child: Text(
+        label,
+        style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary),
       ),
     );
   }
