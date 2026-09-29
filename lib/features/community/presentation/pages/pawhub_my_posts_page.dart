@@ -12,6 +12,7 @@ import '../models/pawhub_models.dart';
 import '../providers/community_actions_providers.dart';
 import '../providers/community_feed_providers.dart';
 import '../providers/community_providers.dart';
+import '../../../pets/presentation/providers/pets_provider.dart';
 import '../widgets/pawhub_comments.dart';
 import '../widgets/pawhub_sheets.dart';
 import '../widgets/post_card.dart';
@@ -166,8 +167,18 @@ class _PawHubMyPostsPageState extends ConsumerState<PawHubMyPostsPage> {
       builder: (_) => CommentsSheet(
         post: post,
         actingAs: actingPet,
-        myPets: const [],
-        onActingAsChanged: (_) {},
+        myPets: ref.read(switchablePetsProvider).map((r) => PawPet(
+              id: r.id.toString(),
+              backendId: r.id,
+              name: r.name,
+              breed: '',
+              species: '',
+              avatarUrl: r.imagePath,
+              ownerName: 'You',
+              isMine: true,
+            )).toList(),
+        onActingAsChanged: (p) =>
+            ref.read(petsProvider.notifier).selectPet(p.backendId),
       ),
     );
   }
