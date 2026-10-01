@@ -63,6 +63,7 @@ class _SplashPageState extends State<SplashPage>
               style: AppTextStyles.titleMedium.copyWith(
                 color: AppColors.secondary,
                 fontFamily: 'FreestyleScript',
+                fontSize: 32,
               ),
             ),
           ],
