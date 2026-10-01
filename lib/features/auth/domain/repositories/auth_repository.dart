@@ -40,9 +40,14 @@ abstract interface class AuthRepository {
     required String password,
   });
 
-  /// Starts a password reset — backend sends an OTP to the mobile number.
-  /// Returns the dev OTP (null in production).
-  Future<Result<String?>> forgotPassword({required String mobileNumber});
+  /// Starts a password reset. When [requestOtp] is true the backend forces
+  /// SMS OTP delivery; otherwise it picks email link vs. SMS automatically.
+  /// Returns isOtp (true = SMS sent, false = email link sent) and the dev OTP
+  /// echoed by the Development backend (null in production).
+  Future<Result<({bool isOtp, String? devOtp})>> forgotPassword({
+    required String mobileNumber,
+    bool requestOtp = false,
+  });
 
   /// Completes a password reset with the OTP and a new password.
   Future<Result<void>> resetPassword({

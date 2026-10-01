@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/errors/failure_l10n.dart';
+import 'set_new_password_page.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
@@ -29,11 +30,17 @@ class OtpArgs {
     required this.phone,
     this.devOtp,
     this.isRegister = false,
+    this.isForgotPassword = false,
   });
 
   final String phone;
   final String? devOtp;
   final bool isRegister;
+
+  /// True when navigating here from the forgot-password flow. In this mode
+  /// the page collects the code and routes to the set-new-password screen
+  /// instead of calling verifyOtp.
+  final bool isForgotPassword;
 }
 
 class OtpVerificationPage extends ConsumerStatefulWidget {
@@ -41,12 +48,14 @@ class OtpVerificationPage extends ConsumerStatefulWidget {
     required this.phone,
     this.devOtp,
     this.isRegister = false,
+    this.isForgotPassword = false,
     super.key,
   });
 
   final String phone;
   final String? devOtp;
   final bool isRegister;
+  final bool isForgotPassword;
 
   @override
   ConsumerState<OtpVerificationPage> createState() =>
@@ -87,6 +96,17 @@ class _OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
 
   Future<void> _verify() async {
     if (_code.length != _otpLength) return;
+
+    // Forgot-password: the code is verified together with the new password
+    // at the reset endpoint — navigate to the set-new-password screen.
+    if (widget.isForgotPassword) {
+      unawaited(context.push(
+        AppRoutes.setNewPassword,
+        extra: SetNewPasswordArgs(phone: widget.phone, code: _code),
+      ));
+      return;
+    }
+
     final notifier = ref.read(authProvider.notifier);
     final ok = await notifier.verifyOtp(phone: widget.phone, code: _code);
     if (!mounted) return;
@@ -151,18 +171,20 @@ class _OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
             onPressed: _code.length == _otpLength ? _verify : null,
           ),
           const SizedBox(height: AppSpacing.xl),
-          if (_secondsLeft > 0)
-            Text(
-              l10n.resendIn(_secondsLeft),
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textTertiary,
+          if (!widget.isForgotPassword) ...[
+            if (_secondsLeft > 0)
+              Text(
+                l10n.resendIn(_secondsLeft),
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.textTertiary,
+                ),
+              )
+            else
+              TextButton(
+                onPressed: isLoading ? null : _resend,
+                child: Text(l10n.resendCode),
               ),
-            )
-          else
-            TextButton(
-              onPressed: isLoading ? null : _resend,
-              child: Text(l10n.resendCode),
-            ),
+          ],
         ],
       ),
     );

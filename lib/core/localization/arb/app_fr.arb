@@ -41,6 +41,7 @@
   "otpTitle1": "Vérifiez votre",
   "otpTitle2": "Numéro",
   "otpSubtitle": "Saisissez le code à 4 chiffres envoyé au {phone}",
+  "otpInvalid": "Veuillez saisir le code de vérification à 4 chiffres.",
   "@otpSubtitle": {
     "placeholders": {
       "phone": {
@@ -270,6 +271,19 @@
   "forgotPasswordTitle2": "mot de passe",
   "forgotPasswordSubtitle": "Saisissez votre numéro de mobile et nous vous enverrons un code pour réinitialiser votre mot de passe.",
   "sendCode": "Envoyer le code",
+  "emailSentTitle1": "Vérifiez votre",
+  "emailSentTitle2": "E-mail",
+  "emailSentSubtitle": "Nous avons envoyé un lien de réinitialisation à votre adresse e-mail.",
+  "emailSentBody": "Ouvrez l'e-mail et appuyez sur le lien pour choisir un nouveau mot de passe. Le lien expire dans 60 minutes.",
+  "verifyWithSms": "Vérifier par SMS",
+  "verifySmsIn": "Vérifier par SMS ({timer})",
+  "@verifySmsIn": {
+    "placeholders": {
+      "timer": { "type": "String" }
+    }
+  },
+  "setNewPasswordTitle1": "Nouveau",
+  "setNewPasswordTitle2": "mot de passe",
   "resetPasswordTitle1": "Nouveau",
   "resetPasswordTitle2": "mot de passe",
   "resetPasswordSubtitle": "Saisissez le code envoyé au {phone} et choisissez un nouveau mot de passe.",
@@ -757,6 +771,27 @@
   "providerSubmitRating": "Envoyer la note",
   "providerRateThanks": "Merci pour votre note !",
   "providerNotFoundTitle": "Prestataire introuvable",
+  "providerAbout": "À propos",
+  "providerServices": "Services",
+  "providerSupportedSpecies": "Espèces prises en charge",
+  "providerLocationContact": "Lieu & Contact",
+  "providerLocationsContact": "{count} lieux & Contact",
+  "@providerLocationsContact": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "providerKmAway": "à {km} km",
+  "@providerKmAway": {
+    "placeholders": { "km": { "type": "String" } }
+  },
+  "providerClosedToday": "Fermé aujourd'hui",
+  "providerHoursLabel": "Horaires",
+  "providerDaySunday": "Dimanche",
+  "providerDayMonday": "Lundi",
+  "providerDayTuesday": "Mardi",
+  "providerDayWednesday": "Mercredi",
+  "providerDayThursday": "Jeudi",
+  "providerDayFriday": "Vendredi",
+  "providerDaySaturday": "Samedi",
   "distanceMeters": "{meters} m",
   "distanceKm": "{km} km",
   "ratingLabel": "Noté {rating}",

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
+import '../theme/app_text_styles.dart';
 
 /// Neutral launch screen shown while the app resolves which destination
 /// to open (onboarding vs. login vs. home). It never flashes a real
@@ -44,14 +45,27 @@ class _SplashPageState extends State<SplashPage>
     return Scaffold(
       backgroundColor: AppColors.primary,
       body: Center(
-        // The logo itself pulses (zooms in and out) to signal activity.
-        child: ScaleTransition(
-          scale: _scale,
-          child: Image.asset(
-            'assets/logo.png',
-            width: 200,
-            height: 200,
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // The logo pulses (zooms in and out) to signal activity.
+            ScaleTransition(
+              scale: _scale,
+              child: Image.asset(
+                'assets/logo.png',
+                width: 200,
+                height: 200,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Everything your pet needs!',
+              style: AppTextStyles.titleMedium.copyWith(
+                color: AppColors.secondary,
+                fontFamily: 'FreestyleScript',
+              ),
+            ),
+          ],
         ),
       ),
     );

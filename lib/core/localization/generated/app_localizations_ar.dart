@@ -138,6 +138,9 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String get otpInvalid => 'يرجى إدخال رمز التحقق المكوّن من 4 أرقام.';
+
+  @override
   String get verify => 'تحقق';
 
   @override
@@ -657,6 +660,34 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get sendCode => 'إرسال الرمز';
+
+  @override
+  String get emailSentTitle1 => 'تحقق من';
+
+  @override
+  String get emailSentTitle2 => 'بريدك الإلكتروني';
+
+  @override
+  String get emailSentSubtitle =>
+      'أرسلنا رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.';
+
+  @override
+  String get emailSentBody =>
+      'افتح البريد الإلكتروني واضغط على رابط إعادة التعيين لاختيار كلمة مرور جديدة. الرابط صالح لمدة 60 دقيقة.';
+
+  @override
+  String get verifyWithSms => 'التحقق عبر الرسائل';
+
+  @override
+  String verifySmsIn(String timer) {
+    return 'التحقق عبر الرسائل ($timer)';
+  }
+
+  @override
+  String get setNewPasswordTitle1 => 'كلمة مرور';
+
+  @override
+  String get setNewPasswordTitle2 => 'جديدة';
 
   @override
   String get resetPasswordTitle1 => 'كلمة مرور';
@@ -1899,6 +1930,55 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get providerNotFoundTitle => 'المزوّد غير موجود';
+
+  @override
+  String get providerAbout => 'عن المزوّد';
+
+  @override
+  String get providerServices => 'الخدمات';
+
+  @override
+  String get providerSupportedSpecies => 'الأنواع المدعومة';
+
+  @override
+  String get providerLocationContact => 'الموقع والتواصل';
+
+  @override
+  String providerLocationsContact(int count) {
+    return '$count مواقع وتواصل';
+  }
+
+  @override
+  String providerKmAway(String km) {
+    return 'على بُعد $km كم';
+  }
+
+  @override
+  String get providerClosedToday => 'مغلق اليوم';
+
+  @override
+  String get providerHoursLabel => 'أوقات العمل';
+
+  @override
+  String get providerDaySunday => 'الأحد';
+
+  @override
+  String get providerDayMonday => 'الاثنين';
+
+  @override
+  String get providerDayTuesday => 'الثلاثاء';
+
+  @override
+  String get providerDayWednesday => 'الأربعاء';
+
+  @override
+  String get providerDayThursday => 'الخميس';
+
+  @override
+  String get providerDayFriday => 'الجمعة';
+
+  @override
+  String get providerDaySaturday => 'السبت';
 
   @override
   String distanceMeters(int meters) {

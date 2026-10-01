@@ -10,6 +10,7 @@ _OtpDispatchDto _$OtpDispatchDtoFromJson(Map<String, dynamic> json) =>
     _OtpDispatchDto(
       message: json['message'] as String? ?? '',
       requiresVerification: json['requiresVerification'] as bool? ?? false,
+      isOtp: json['isOtp'] as bool? ?? false,
       userCode: json['userCode'] as String?,
       devOtp: json['devOtp'] as String?,
     );
@@ -18,6 +19,7 @@ Map<String, dynamic> _$OtpDispatchDtoToJson(_OtpDispatchDto instance) =>
     <String, dynamic>{
       'message': instance.message,
       'requiresVerification': instance.requiresVerification,
+      'isOtp': instance.isOtp,
       'userCode': instance.userCode,
       'devOtp': instance.devOtp,
     };

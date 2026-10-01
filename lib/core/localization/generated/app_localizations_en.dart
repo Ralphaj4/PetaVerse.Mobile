@@ -139,6 +139,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get otpInvalid => 'Please enter the 4-digit verification code.';
+
+  @override
   String get verify => 'Verify';
 
   @override
@@ -653,6 +656,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sendCode => 'Send Code';
+
+  @override
+  String get emailSentTitle1 => 'Check Your';
+
+  @override
+  String get emailSentTitle2 => 'Email';
+
+  @override
+  String get emailSentSubtitle =>
+      'We\'ve sent a password reset link to your email address.';
+
+  @override
+  String get emailSentBody =>
+      'Open the email and tap the reset link to choose a new password. The link expires in 60 minutes.';
+
+  @override
+  String get verifyWithSms => 'Verify with SMS';
+
+  @override
+  String verifySmsIn(String timer) {
+    return 'Verify with SMS ($timer)';
+  }
+
+  @override
+  String get setNewPasswordTitle1 => 'New';
+
+  @override
+  String get setNewPasswordTitle2 => 'Password';
 
   @override
   String get resetPasswordTitle1 => 'New';
@@ -1896,6 +1927,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get providerNotFoundTitle => 'Provider not found';
+
+  @override
+  String get providerAbout => 'About';
+
+  @override
+  String get providerServices => 'Services';
+
+  @override
+  String get providerSupportedSpecies => 'Supported Species';
+
+  @override
+  String get providerLocationContact => 'Location & Contact';
+
+  @override
+  String providerLocationsContact(int count) {
+    return '$count Locations & Contact';
+  }
+
+  @override
+  String providerKmAway(String km) {
+    return '$km km away';
+  }
+
+  @override
+  String get providerClosedToday => 'Closed today';
+
+  @override
+  String get providerHoursLabel => 'Hours';
+
+  @override
+  String get providerDaySunday => 'Sunday';
+
+  @override
+  String get providerDayMonday => 'Monday';
+
+  @override
+  String get providerDayTuesday => 'Tuesday';
+
+  @override
+  String get providerDayWednesday => 'Wednesday';
+
+  @override
+  String get providerDayThursday => 'Thursday';
+
+  @override
+  String get providerDayFriday => 'Friday';
+
+  @override
+  String get providerDaySaturday => 'Saturday';
 
   @override
   String distanceMeters(int meters) {

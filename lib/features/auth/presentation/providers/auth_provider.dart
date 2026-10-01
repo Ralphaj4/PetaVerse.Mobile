@@ -66,15 +66,27 @@ class AuthNotifier extends _$AuthNotifier {
         () => ref.read(authRepositoryProvider).resendOtp(mobileNumber: phone),
       );
 
-  /// Starts a password reset (sends OTP). Returns success + dev OTP.
-  Future<({bool ok, String? devOtp})> forgotPassword({
+  /// Starts a password reset. Returns success, whether an SMS OTP was sent
+  /// (vs. an email link), and the dev OTP echoed by the Development backend.
+  Future<({bool ok, bool isOtp, String? devOtp})> forgotPassword({
     required String phone,
-  }) =>
-      _runOtp(
-        () => ref
-            .read(authRepositoryProvider)
-            .forgotPassword(mobileNumber: phone),
-      );
+    bool requestOtp = false,
+  }) async {
+    state = const AsyncLoading();
+    final result = await ref
+        .read(authRepositoryProvider)
+        .forgotPassword(mobileNumber: phone, requestOtp: requestOtp);
+    return result.when(
+      success: (data) {
+        state = const AsyncData(null);
+        return (ok: true, isOtp: data.isOtp, devOtp: data.devOtp);
+      },
+      failure: (f) {
+        state = AsyncError(f, StackTrace.current);
+        return (ok: false, isOtp: false, devOtp: null);
+      },
+    );
+  }
 
   /// Completes a password reset with the OTP and a new password.
   Future<bool> resetPassword({

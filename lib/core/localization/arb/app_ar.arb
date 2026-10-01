@@ -41,6 +41,7 @@
   "otpTitle1": "تحقق من",
   "otpTitle2": "رقمك",
   "otpSubtitle": "أدخل الرمز المكوّن من 4 أرقام المرسل إلى {phone}",
+  "otpInvalid": "يرجى إدخال رمز التحقق المكوّن من 4 أرقام.",
   "@otpSubtitle": {
     "placeholders": {
       "phone": {
@@ -270,6 +271,19 @@
   "forgotPasswordTitle2": "كلمة المرور",
   "forgotPasswordSubtitle": "أدخل رقم هاتفك المحمول وسنرسل لك رمزاً لإعادة تعيين كلمة المرور.",
   "sendCode": "إرسال الرمز",
+  "emailSentTitle1": "تحقق من",
+  "emailSentTitle2": "بريدك الإلكتروني",
+  "emailSentSubtitle": "أرسلنا رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.",
+  "emailSentBody": "افتح البريد الإلكتروني واضغط على رابط إعادة التعيين لاختيار كلمة مرور جديدة. الرابط صالح لمدة 60 دقيقة.",
+  "verifyWithSms": "التحقق عبر الرسائل",
+  "verifySmsIn": "التحقق عبر الرسائل ({timer})",
+  "@verifySmsIn": {
+    "placeholders": {
+      "timer": { "type": "String" }
+    }
+  },
+  "setNewPasswordTitle1": "كلمة مرور",
+  "setNewPasswordTitle2": "جديدة",
   "resetPasswordTitle1": "كلمة مرور",
   "resetPasswordTitle2": "جديدة",
   "resetPasswordSubtitle": "أدخل الرمز المرسل إلى {phone} واختر كلمة مرور جديدة.",
@@ -757,6 +771,27 @@
   "providerSubmitRating": "إرسال التقييم",
   "providerRateThanks": "شكرًا على تقييمك!",
   "providerNotFoundTitle": "المزوّد غير موجود",
+  "providerAbout": "عن المزوّد",
+  "providerServices": "الخدمات",
+  "providerSupportedSpecies": "الأنواع المدعومة",
+  "providerLocationContact": "الموقع والتواصل",
+  "providerLocationsContact": "{count} مواقع وتواصل",
+  "@providerLocationsContact": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "providerKmAway": "على بُعد {km} كم",
+  "@providerKmAway": {
+    "placeholders": { "km": { "type": "String" } }
+  },
+  "providerClosedToday": "مغلق اليوم",
+  "providerHoursLabel": "أوقات العمل",
+  "providerDaySunday": "الأحد",
+  "providerDayMonday": "الاثنين",
+  "providerDayTuesday": "الثلاثاء",
+  "providerDayWednesday": "الأربعاء",
+  "providerDayThursday": "الخميس",
+  "providerDayFriday": "الجمعة",
+  "providerDaySaturday": "السبت",
   "distanceMeters": "{meters} م",
   "distanceKm": "{km} كم",
   "ratingLabel": "التقييم {rating}",

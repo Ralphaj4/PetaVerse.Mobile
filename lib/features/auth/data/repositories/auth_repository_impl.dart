@@ -115,8 +115,13 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Result<String?>> forgotPassword({required String mobileNumber}) =>
-      _guardOtp(() => _remote.forgotPassword(mobileNumber));
+  Future<Result<({bool isOtp, String? devOtp})>> forgotPassword({
+    required String mobileNumber,
+    bool requestOtp = false,
+  }) =>
+      _guardForgotPassword(
+        () => _remote.forgotPassword(mobileNumber, requestOtp: requestOtp),
+      );
 
   @override
   Future<Result<void>> resetPassword({
@@ -249,7 +254,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   // ── Helpers ──────────────────────────────────────────────────────────
 
-  /// Runs an OTP-dispatch action (register / resend / forgot-password),
+  /// Runs an OTP-dispatch action (register / resend),
   /// returning the dev OTP echoed by the Development backend (null in prod).
   Future<Result<String?>> _guardOtp(
     Future<OtpDispatchDto> Function() action,
@@ -257,6 +262,19 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final dto = await action();
       return Result.success(dto.devOtp);
+    } on AppException catch (e) {
+      return Result.failure(_mapFailure(e));
+    }
+  }
+
+  /// Runs the forgot-password action, returning both [isOtp] and [devOtp]
+  /// so the caller can branch between the email-sent screen and OTP entry.
+  Future<Result<({bool isOtp, String? devOtp})>> _guardForgotPassword(
+    Future<OtpDispatchDto> Function() action,
+  ) async {
+    try {
+      final dto = await action();
+      return Result.success((isOtp: dto.isOtp, devOtp: dto.devOtp));
     } on AppException catch (e) {
       return Result.failure(_mapFailure(e));
     }

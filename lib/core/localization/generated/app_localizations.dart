@@ -346,6 +346,12 @@ abstract class AppLocalizations {
   /// **'Enter the 4-digit code we sent to {phone}'**
   String otpSubtitle(String phone);
 
+  /// No description provided for @otpInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the 4-digit verification code.'**
+  String get otpInvalid;
+
   /// No description provided for @verify.
   ///
   /// In en, this message translates to:
@@ -1239,6 +1245,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Send Code'**
   String get sendCode;
+
+  /// No description provided for @emailSentTitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'Check Your'**
+  String get emailSentTitle1;
+
+  /// No description provided for @emailSentTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailSentTitle2;
+
+  /// No description provided for @emailSentSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ve sent a password reset link to your email address.'**
+  String get emailSentSubtitle;
+
+  /// No description provided for @emailSentBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the email and tap the reset link to choose a new password. The link expires in 60 minutes.'**
+  String get emailSentBody;
+
+  /// No description provided for @verifyWithSms.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify with SMS'**
+  String get verifyWithSms;
+
+  /// No description provided for @verifySmsIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify with SMS ({timer})'**
+  String verifySmsIn(String timer);
+
+  /// No description provided for @setNewPasswordTitle1.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get setNewPasswordTitle1;
+
+  /// No description provided for @setNewPasswordTitle2.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get setNewPasswordTitle2;
 
   /// No description provided for @resetPasswordTitle1.
   ///
@@ -3441,6 +3495,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Provider not found'**
   String get providerNotFoundTitle;
+
+  /// No description provided for @providerAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get providerAbout;
+
+  /// No description provided for @providerServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get providerServices;
+
+  /// No description provided for @providerSupportedSpecies.
+  ///
+  /// In en, this message translates to:
+  /// **'Supported Species'**
+  String get providerSupportedSpecies;
+
+  /// No description provided for @providerLocationContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Location & Contact'**
+  String get providerLocationContact;
+
+  /// No description provided for @providerLocationsContact.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Locations & Contact'**
+  String providerLocationsContact(int count);
+
+  /// No description provided for @providerKmAway.
+  ///
+  /// In en, this message translates to:
+  /// **'{km} km away'**
+  String providerKmAway(String km);
+
+  /// No description provided for @providerClosedToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed today'**
+  String get providerClosedToday;
+
+  /// No description provided for @providerHoursLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours'**
+  String get providerHoursLabel;
+
+  /// No description provided for @providerDaySunday.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunday'**
+  String get providerDaySunday;
+
+  /// No description provided for @providerDayMonday.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday'**
+  String get providerDayMonday;
+
+  /// No description provided for @providerDayTuesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuesday'**
+  String get providerDayTuesday;
+
+  /// No description provided for @providerDayWednesday.
+  ///
+  /// In en, this message translates to:
+  /// **'Wednesday'**
+  String get providerDayWednesday;
+
+  /// No description provided for @providerDayThursday.
+  ///
+  /// In en, this message translates to:
+  /// **'Thursday'**
+  String get providerDayThursday;
+
+  /// No description provided for @providerDayFriday.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday'**
+  String get providerDayFriday;
+
+  /// No description provided for @providerDaySaturday.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturday'**
+  String get providerDaySaturday;
 
   /// No description provided for @distanceMeters.
   ///

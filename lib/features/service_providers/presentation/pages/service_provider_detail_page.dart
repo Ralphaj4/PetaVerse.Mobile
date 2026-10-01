@@ -299,7 +299,7 @@ class _ProviderContent extends ConsumerWidget {
                     ),
                     const SizedBox(width: AppSpacing.xs),
                     Text(
-                      'Verified',
+                      context.l10n.badgeVerified,
                       style: AppTextStyles.labelMedium.copyWith(
                         color: AppColors.primary,
                         letterSpacing: 0,
@@ -359,7 +359,7 @@ class _ProviderContent extends ConsumerWidget {
                           ),
                           const SizedBox(width: AppSpacing.xs),
                           Text(
-                            'Rate',
+                            context.l10n.providerRate,
                             style: AppTextStyles.labelMedium.copyWith(
                               color: AppColors.onPrimary,
                               fontWeight: FontWeight.w600,
@@ -377,9 +377,9 @@ class _ProviderContent extends ConsumerWidget {
             if (detail.description != null &&
                 detail.description!.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.xl),
-              const _SectionHeader(
+              _SectionHeader(
                 icon: FluentIcons.info_24_regular,
-                title: 'About',
+                title: context.l10n.providerAbout,
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
@@ -391,9 +391,9 @@ class _ProviderContent extends ConsumerWidget {
             // Services section
             if (detail.services.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.xl),
-              const _SectionHeader(
+              _SectionHeader(
                 icon: FluentIcons.checkmark_circle_24_regular,
-                title: 'Services',
+                title: context.l10n.providerServices,
               ),
               const SizedBox(height: AppSpacing.sm),
               Wrap(
@@ -409,9 +409,9 @@ class _ProviderContent extends ConsumerWidget {
             // Supported species
             if (detail.supportedSpecies.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.xl),
-              const _SectionHeader(
+              _SectionHeader(
                 icon: FluentIcons.animal_dog_24_regular,
-                title: 'Supported Species',
+                title: context.l10n.providerSupportedSpecies,
               ),
               const SizedBox(height: AppSpacing.sm),
               Wrap(
@@ -430,8 +430,8 @@ class _ProviderContent extends ConsumerWidget {
               _SectionHeader(
                 icon: FluentIcons.location_24_regular,
                 title: branchId == null && detail.branches.length > 1
-                    ? '${detail.branches.length} Locations & Contact'
-                    : 'Location & Contact',
+                    ? context.l10n.providerLocationsContact(detail.branches.length)
+                    : context.l10n.providerLocationContact,
               ),
               const SizedBox(height: AppSpacing.sm),
               Builder(builder: (context) {
@@ -537,7 +537,7 @@ class _LocationCardState extends State<_LocationCard> {
                   if (widget.branch.distanceKm != null) ...[
                     const SizedBox(height: AppSpacing.xs),
                     Text(
-                      '${widget.branch.distanceKm!.toStringAsFixed(1)} km away',
+                      context.l10n.providerKmAway(widget.branch.distanceKm!.toStringAsFixed(1)),
                       style: AppTextStyles.bodySmall,
                     ),
                   ],
@@ -570,7 +570,7 @@ class _LocationCardState extends State<_LocationCard> {
                                   ),
                                   const SizedBox(width: AppSpacing.xs),
                                   Text(
-                                    'Call',
+                                    context.l10n.providerCall,
                                     style: AppTextStyles.labelMedium.copyWith(
                                       color: AppColors.onPrimary,
                                       fontWeight: FontWeight.w600,
@@ -616,7 +616,7 @@ class _LocationCardState extends State<_LocationCard> {
                                 ),
                                 const SizedBox(width: AppSpacing.xs),
                                 Text(
-                                  'Directions',
+                                  context.l10n.providerDirections,
                                   style: AppTextStyles.labelMedium.copyWith(
                                     color: AppColors.secondary,
                                     fontWeight: FontWeight.w600,
@@ -663,12 +663,12 @@ class _LocationCardState extends State<_LocationCard> {
                                     height: 20,
                                     child: SvgPicture.asset(
                                       'assets/icons/whatsapp.svg',
-                                      semanticsLabel: 'WhatsApp',
+                                      semanticsLabel: context.l10n.providerWhatsApp,
                                     ),
                                   ),
                                   const SizedBox(width: AppSpacing.xs),
                                   Text(
-                                    'WhatsApp',
+                                    context.l10n.providerWhatsApp,
                                     style: AppTextStyles.labelMedium.copyWith(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w600,
@@ -778,20 +778,20 @@ class _CollapsibleHoursState extends State<_CollapsibleHours>
     }
   }
 
-  String _getDayName(int weekday) {
-    const days = [
-      'Sunday',
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday'
-    ];
-    return days[weekday];
+  String _getDayName(BuildContext context, int weekday) {
+    final l10n = context.l10n;
+    return [
+      l10n.providerDaySunday,
+      l10n.providerDayMonday,
+      l10n.providerDayTuesday,
+      l10n.providerDayWednesday,
+      l10n.providerDayThursday,
+      l10n.providerDayFriday,
+      l10n.providerDaySaturday,
+    ][weekday];
   }
 
-  String _getTodayHoursText() {
+  String _getTodayHoursText(BuildContext context) {
     final now = DateTime.now();
     final todayOfWeek = (now.weekday % 7);
 
@@ -800,7 +800,7 @@ class _CollapsibleHoursState extends State<_CollapsibleHours>
         .toList();
 
     if (todayHours.isEmpty) {
-      return 'Closed today';
+      return context.l10n.providerClosedToday;
     }
 
     final hour = todayHours.first;
@@ -811,8 +811,8 @@ class _CollapsibleHoursState extends State<_CollapsibleHours>
   Widget build(BuildContext context) {
     final now = DateTime.now();
     final todayOfWeek = (now.weekday % 7);
-    final dayName = _getDayName(todayOfWeek);
-    final hoursText = _getTodayHoursText();
+    final dayName = _getDayName(context, todayOfWeek);
+    final hoursText = _getTodayHoursText(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -832,7 +832,7 @@ class _CollapsibleHoursState extends State<_CollapsibleHours>
                   ),
                   const SizedBox(width: AppSpacing.sm),
                   Text(
-                    'Hours',
+                    context.l10n.providerHoursLabel,
                     style: AppTextStyles.titleMedium,
                   ),
                   const Spacer(),

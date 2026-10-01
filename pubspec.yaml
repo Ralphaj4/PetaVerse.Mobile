@@ -79,3 +79,8 @@ flutter:
     - assets/icons/
     - assets/icons/flags/
     - assets/logo.png
+
+  fonts:
+    - family: FreestyleScript
+      fonts:
+        - asset: assets/fonts/FREESCPT.TTF

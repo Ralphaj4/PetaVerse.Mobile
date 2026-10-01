@@ -41,6 +41,7 @@
   "otpTitle1": "Verify Your",
   "otpTitle2": "Number",
   "otpSubtitle": "Enter the 4-digit code we sent to {phone}",
+  "otpInvalid": "Please enter the 4-digit verification code.",
   "@otpSubtitle": {
     "placeholders": {
       "phone": {
@@ -270,6 +271,19 @@
   "forgotPasswordTitle2": "Password",
   "forgotPasswordSubtitle": "Enter your mobile number and we'll send you a code to reset your password.",
   "sendCode": "Send Code",
+  "emailSentTitle1": "Check Your",
+  "emailSentTitle2": "Email",
+  "emailSentSubtitle": "We've sent a password reset link to your email address.",
+  "emailSentBody": "Open the email and tap the reset link to choose a new password. The link expires in 60 minutes.",
+  "verifyWithSms": "Verify with SMS",
+  "verifySmsIn": "Verify with SMS ({timer})",
+  "@verifySmsIn": {
+    "placeholders": {
+      "timer": { "type": "String" }
+    }
+  },
+  "setNewPasswordTitle1": "New",
+  "setNewPasswordTitle2": "Password",
   "resetPasswordTitle1": "New",
   "resetPasswordTitle2": "Password",
   "resetPasswordSubtitle": "Enter the code we sent to {phone} and choose a new password.",
@@ -772,6 +786,27 @@
   "providerSubmitRating": "Submit rating",
   "providerRateThanks": "Thanks for your rating!",
   "providerNotFoundTitle": "Provider not found",
+  "providerAbout": "About",
+  "providerServices": "Services",
+  "providerSupportedSpecies": "Supported Species",
+  "providerLocationContact": "Location & Contact",
+  "providerLocationsContact": "{count} Locations & Contact",
+  "@providerLocationsContact": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "providerKmAway": "{km} km away",
+  "@providerKmAway": {
+    "placeholders": { "km": { "type": "String" } }
+  },
+  "providerClosedToday": "Closed today",
+  "providerHoursLabel": "Hours",
+  "providerDaySunday": "Sunday",
+  "providerDayMonday": "Monday",
+  "providerDayTuesday": "Tuesday",
+  "providerDayWednesday": "Wednesday",
+  "providerDayThursday": "Thursday",
+  "providerDayFriday": "Friday",
+  "providerDaySaturday": "Saturday",
   "distanceMeters": "{meters} m",
   "@distanceMeters": {
     "placeholders": { "meters": { "type": "int" } }

@@ -89,11 +89,18 @@ class AuthRemoteDataSource {
     return AuthTokensDto.fromJson(json);
   }
 
-  /// Starts a password reset: backend sends an OTP to the mobile number.
-  Future<OtpDispatchDto> forgotPassword(String mobileNumber) async {
+  /// Starts a password reset. When [requestOtp] is true the backend forces
+  /// SMS OTP delivery; otherwise it chooses email link vs. SMS automatically.
+  Future<OtpDispatchDto> forgotPassword(
+    String mobileNumber, {
+    bool requestOtp = false,
+  }) async {
     final json = await _client.post<Map<String, dynamic>>(
       ApiEndpoints.forgotPassword,
-      data: {'mobileNumber': mobileNumber},
+      data: {
+        'mobileNumber': mobileNumber,
+        if (requestOtp) 'requestOtp': true,
+      },
     );
     return OtpDispatchDto.fromJson(json);
   }

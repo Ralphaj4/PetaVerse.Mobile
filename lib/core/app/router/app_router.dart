@@ -6,7 +6,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../features/auth/presentation/pages/avatar_setup_page.dart';
 import '../../../features/auth/presentation/pages/email_verification_page.dart';
 import '../../../features/auth/presentation/pages/change_password_page.dart';
+import '../../../features/auth/presentation/pages/email_sent_page.dart';
 import '../../../features/auth/presentation/pages/forgot_password_page.dart';
+import '../../../features/auth/presentation/pages/set_new_password_page.dart';
 import '../../../features/auth/presentation/pages/login_page.dart';
 import '../../../features/auth/presentation/pages/otp_verification_page.dart';
 import '../../../features/auth/presentation/pages/register_page.dart';
@@ -107,6 +109,8 @@ abstract final class AppRoutes {
   static const String otp = '/otp';
   static const String avatarSetup = '/avatar-setup';
   static const String forgotPassword = '/forgot-password';
+  static const String emailSent = '/email-sent';
+  static const String setNewPassword = '/set-new-password';
   static const String changePassword = '/change-password';
   static const String emailVerify = '/email-verify';
   static const String petOnboarding = '/pet-onboarding';
@@ -250,6 +254,8 @@ GoRouter appRouter(Ref ref) {
     AppRoutes.otp,
     AppRoutes.avatarSetup,
     AppRoutes.forgotPassword,
+    AppRoutes.emailSent,
+    AppRoutes.setNewPassword,
   };
 
   return GoRouter(
@@ -446,6 +452,7 @@ GoRouter appRouter(Ref ref) {
               phone: args.phone,
               devOtp: args.devOtp,
               isRegister: args.isRegister,
+              isForgotPassword: args.isForgotPassword,
             ),
           );
         },
@@ -467,6 +474,33 @@ GoRouter appRouter(Ref ref) {
               key: state.pageKey,
               child: const ForgotPasswordPage(),
             ),
+      ),
+      GoRoute(
+        path: AppRoutes.emailSent,
+        name: 'emailSent',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final args = state.extra as EmailSentArgs?;
+          return AppTransitionPage(
+            key: state.pageKey,
+            child: EmailSentPage(phone: args?.phone ?? ''),
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.setNewPassword,
+        name: 'setNewPassword',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) {
+          final args = state.extra as SetNewPasswordArgs?;
+          return AppTransitionPage(
+            key: state.pageKey,
+            child: SetNewPasswordPage(
+              phone: args?.phone ?? '',
+              code: args?.code,
+            ),
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.changePassword,
