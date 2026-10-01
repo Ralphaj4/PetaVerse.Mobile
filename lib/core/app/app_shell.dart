@@ -7,7 +7,9 @@ import '../../features/notifications/presentation/providers/notification_provide
 import '../../features/pets/presentation/providers/pet_list_provider.dart';
 import '../extensions/context_extensions.dart';
 import '../theme/app_colors.dart';
+import 'deep_link_handler.dart';
 import 'fcm_handler.dart';
+import 'router/app_router.dart';
 import 'tab_scroll_to_top_provider.dart';
 
 const double _navBarHeight = 64;
@@ -56,11 +58,13 @@ class _AppShellState extends ConsumerState<AppShell>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     FcmHandler.init(ref);
+    DeepLinkHandler.init(ref.read(appRouterProvider));
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    DeepLinkHandler.dispose();
     super.dispose();
   }
 

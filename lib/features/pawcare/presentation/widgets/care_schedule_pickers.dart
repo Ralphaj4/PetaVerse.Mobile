@@ -2,6 +2,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../../core/app/notification_service.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
@@ -352,4 +353,111 @@ Future<FeedUnit?> showFeedUnitSheet(BuildContext context, FeedUnit current) {
       ],
     ),
   );
+}
+
+/// Shows the battery-optimization exemption sheet after every feeding schedule
+/// save, as long as the app is not yet exempted. Once the user grants it the
+/// OS state flips and this becomes a no-op on all future saves — no separate
+/// "asked" flag needed. If they deny, they'll see it again next save, giving
+/// them a natural retry path without any extra nagging logic.
+Future<void> showBatteryOptimizationSheetIfNeeded(
+  BuildContext context,
+  NotificationService notifications,
+) async {
+  if (await notifications.hasBatteryOptimizationExemption()) return;
+
+  if (!context.mounted) return;
+  final l10n = context.l10n;
+
+  final allow = await showModalBottomSheet<bool>(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: AppColors.surface,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
+    ),
+    builder: (ctx) => SafeArea(
+      top: false,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.lg,
+          AppSpacing.md,
+          AppSpacing.lg,
+          AppSpacing.lg,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Center(
+              child: Container(
+                width: 36,
+                height: 4,
+                margin: const EdgeInsets.only(bottom: AppSpacing.lg),
+                decoration: BoxDecoration(
+                  color: AppColors.divider,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            Center(
+              child: Container(
+                padding: const EdgeInsets.all(AppSpacing.md),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.12),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  FluentIcons.alert_24_filled,
+                  size: 28,
+                  color: AppColors.primary,
+                ),
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            Text(
+              l10n.batteryOptSheetTitle,
+              style: AppTextStyles.titleMedium,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              l10n.batteryOptSheetBody,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textSecondary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.xl),
+            FilledButton(
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                minimumSize: const Size.fromHeight(48),
+                shape: RoundedRectangleBorder(borderRadius: AppRadius.mdAll),
+              ),
+              onPressed: () => Navigator.of(ctx).pop(true),
+              child: Text(l10n.batteryOptSheetAllow),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            TextButton(
+              style: TextButton.styleFrom(
+                minimumSize: const Size.fromHeight(44),
+              ),
+              onPressed: () => Navigator.of(ctx).pop(false),
+              child: Text(
+                l10n.batteryOptSheetNotNow,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+
+  if (allow == true && context.mounted) {
+    await notifications.requestBatteryOptimizationExemption();
+  }
 }

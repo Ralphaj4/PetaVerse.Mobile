@@ -101,7 +101,7 @@ class _ServiceProvidersPageState extends ConsumerState<ServiceProvidersPage> {
   void _deselect() => ref.read(selectedProviderProvider.notifier).select(null);
 
   void _openProvider(ServiceProvider provider) {
-    context.push(AppRoutes.serviceProviderDetail(provider.id));
+    context.push(AppRoutes.serviceProviderDetail(provider.id, branchId: provider.branchId));
   }
 
   void _animateSheetTo(double size) {

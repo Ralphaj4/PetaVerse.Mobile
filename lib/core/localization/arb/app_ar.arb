@@ -1025,8 +1025,6 @@
   "@pawHubPostRemovedFromSaved": {},
   "pawHubLinkCopied": "تم نسخ الرابط",
   "@pawHubLinkCopied": {},
-  "pawHubPostHidden": "تم إخفاء المنشور",
-  "@pawHubPostHidden": {},
   "pawHubPostReported": "تم الإبلاغ. شكراً لك.",
   "@pawHubPostReported": {},
   "pawHubBlockedUser": "تم حظر {name}",
@@ -1057,8 +1055,6 @@
   "@pawHubPostOptionEditPost": {},
   "pawHubPostOptionDeletePost": "حذف المنشور",
   "@pawHubPostOptionDeletePost": {},
-  "pawHubPostOptionHidePost": "إخفاء هذا المنشور",
-  "@pawHubPostOptionHidePost": {},
   "pawHubPostOptionReport": "الإبلاغ",
   "@pawHubPostOptionReport": {},
   "pawHubPostOptionBlock": "حظر {name}",
@@ -1815,5 +1811,10 @@
   "deleteAccountTypePromptTitle": "تأكيد الحذف",
   "deleteAccountTypePromptMessage": "اكتب DELETE لحذف حسابك بشكل دائم.",
   "deleteAccountTypePlaceholder": "اكتب DELETE هنا",
-  "deleteAccountSuccess": "تم حذف حسابك."
+  "deleteAccountSuccess": "تم حذف حسابك.",
+
+  "batteryOptSheetTitle": "احصل على تذكيرات موثوقة",
+  "batteryOptSheetBody": "لضمان وصول تذكيرات التغذية والدواء إليك حتى عند إغلاق التطبيق، اسمح لـ PetaVerse بالعمل في الخلفية.",
+  "batteryOptSheetAllow": "السماح",
+  "batteryOptSheetNotNow": "ليس الآن"
 }

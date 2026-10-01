@@ -374,7 +374,7 @@ as int?,
 /// @nodoc
 mixin _$ProviderBranchDto {
 
- int get id; String get address; double get latitude; double get longitude; String? get phone; String? get whatsApp; String? get emergency; String? get website; String? get instagram; String? get email; double? get distanceKm;
+ int get id; String get address; double get latitude; double get longitude; String? get phone; String? get whatsApp; String? get emergency; String? get website; String? get instagram; String? get email; String? get storefrontImageUrl; double? get distanceKm;
 /// Create a copy of ProviderBranchDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -387,16 +387,16 @@ $ProviderBranchDtoCopyWith<ProviderBranchDto> get copyWith => _$ProviderBranchDt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProviderBranchDto&&(identical(other.id, id) || other.id == id)&&(identical(other.address, address) || other.address == address)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.whatsApp, whatsApp) || other.whatsApp == whatsApp)&&(identical(other.emergency, emergency) || other.emergency == emergency)&&(identical(other.website, website) || other.website == website)&&(identical(other.instagram, instagram) || other.instagram == instagram)&&(identical(other.email, email) || other.email == email)&&(identical(other.distanceKm, distanceKm) || other.distanceKm == distanceKm));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProviderBranchDto&&(identical(other.id, id) || other.id == id)&&(identical(other.address, address) || other.address == address)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.whatsApp, whatsApp) || other.whatsApp == whatsApp)&&(identical(other.emergency, emergency) || other.emergency == emergency)&&(identical(other.website, website) || other.website == website)&&(identical(other.instagram, instagram) || other.instagram == instagram)&&(identical(other.email, email) || other.email == email)&&(identical(other.storefrontImageUrl, storefrontImageUrl) || other.storefrontImageUrl == storefrontImageUrl)&&(identical(other.distanceKm, distanceKm) || other.distanceKm == distanceKm));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,address,latitude,longitude,phone,whatsApp,emergency,website,instagram,email,distanceKm);
+int get hashCode => Object.hash(runtimeType,id,address,latitude,longitude,phone,whatsApp,emergency,website,instagram,email,storefrontImageUrl,distanceKm);
 
 @override
 String toString() {
-  return 'ProviderBranchDto(id: $id, address: $address, latitude: $latitude, longitude: $longitude, phone: $phone, whatsApp: $whatsApp, emergency: $emergency, website: $website, instagram: $instagram, email: $email, distanceKm: $distanceKm)';
+  return 'ProviderBranchDto(id: $id, address: $address, latitude: $latitude, longitude: $longitude, phone: $phone, whatsApp: $whatsApp, emergency: $emergency, website: $website, instagram: $instagram, email: $email, storefrontImageUrl: $storefrontImageUrl, distanceKm: $distanceKm)';
 }
 
 
@@ -407,7 +407,7 @@ abstract mixin class $ProviderBranchDtoCopyWith<$Res>  {
   factory $ProviderBranchDtoCopyWith(ProviderBranchDto value, $Res Function(ProviderBranchDto) _then) = _$ProviderBranchDtoCopyWithImpl;
 @useResult
 $Res call({
- int id, String address, double latitude, double longitude, String? phone, String? whatsApp, String? emergency, String? website, String? instagram, String? email, double? distanceKm
+ int id, String address, double latitude, double longitude, String? phone, String? whatsApp, String? emergency, String? website, String? instagram, String? email, String? storefrontImageUrl, double? distanceKm
 });
 
 
@@ -424,7 +424,7 @@ class _$ProviderBranchDtoCopyWithImpl<$Res>
 
 /// Create a copy of ProviderBranchDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? address = null,Object? latitude = null,Object? longitude = null,Object? phone = freezed,Object? whatsApp = freezed,Object? emergency = freezed,Object? website = freezed,Object? instagram = freezed,Object? email = freezed,Object? distanceKm = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? address = null,Object? latitude = null,Object? longitude = null,Object? phone = freezed,Object? whatsApp = freezed,Object? emergency = freezed,Object? website = freezed,Object? instagram = freezed,Object? email = freezed,Object? storefrontImageUrl = freezed,Object? distanceKm = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
@@ -436,6 +436,7 @@ as String?,emergency: freezed == emergency ? _self.emergency : emergency // igno
 as String?,website: freezed == website ? _self.website : website // ignore: cast_nullable_to_non_nullable
 as String?,instagram: freezed == instagram ? _self.instagram : instagram // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,storefrontImageUrl: freezed == storefrontImageUrl ? _self.storefrontImageUrl : storefrontImageUrl // ignore: cast_nullable_to_non_nullable
 as String?,distanceKm: freezed == distanceKm ? _self.distanceKm : distanceKm // ignore: cast_nullable_to_non_nullable
 as double?,
   ));
@@ -522,10 +523,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String address,  double latitude,  double longitude,  String? phone,  String? whatsApp,  String? emergency,  String? website,  String? instagram,  String? email,  double? distanceKm)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String address,  double latitude,  double longitude,  String? phone,  String? whatsApp,  String? emergency,  String? website,  String? instagram,  String? email,  String? storefrontImageUrl,  double? distanceKm)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProviderBranchDto() when $default != null:
-return $default(_that.id,_that.address,_that.latitude,_that.longitude,_that.phone,_that.whatsApp,_that.emergency,_that.website,_that.instagram,_that.email,_that.distanceKm);case _:
+return $default(_that.id,_that.address,_that.latitude,_that.longitude,_that.phone,_that.whatsApp,_that.emergency,_that.website,_that.instagram,_that.email,_that.storefrontImageUrl,_that.distanceKm);case _:
   return orElse();
 
 }
@@ -543,10 +544,10 @@ return $default(_that.id,_that.address,_that.latitude,_that.longitude,_that.phon
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String address,  double latitude,  double longitude,  String? phone,  String? whatsApp,  String? emergency,  String? website,  String? instagram,  String? email,  double? distanceKm)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String address,  double latitude,  double longitude,  String? phone,  String? whatsApp,  String? emergency,  String? website,  String? instagram,  String? email,  String? storefrontImageUrl,  double? distanceKm)  $default,) {final _that = this;
 switch (_that) {
 case _ProviderBranchDto():
-return $default(_that.id,_that.address,_that.latitude,_that.longitude,_that.phone,_that.whatsApp,_that.emergency,_that.website,_that.instagram,_that.email,_that.distanceKm);case _:
+return $default(_that.id,_that.address,_that.latitude,_that.longitude,_that.phone,_that.whatsApp,_that.emergency,_that.website,_that.instagram,_that.email,_that.storefrontImageUrl,_that.distanceKm);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -563,10 +564,10 @@ return $default(_that.id,_that.address,_that.latitude,_that.longitude,_that.phon
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String address,  double latitude,  double longitude,  String? phone,  String? whatsApp,  String? emergency,  String? website,  String? instagram,  String? email,  double? distanceKm)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String address,  double latitude,  double longitude,  String? phone,  String? whatsApp,  String? emergency,  String? website,  String? instagram,  String? email,  String? storefrontImageUrl,  double? distanceKm)?  $default,) {final _that = this;
 switch (_that) {
 case _ProviderBranchDto() when $default != null:
-return $default(_that.id,_that.address,_that.latitude,_that.longitude,_that.phone,_that.whatsApp,_that.emergency,_that.website,_that.instagram,_that.email,_that.distanceKm);case _:
+return $default(_that.id,_that.address,_that.latitude,_that.longitude,_that.phone,_that.whatsApp,_that.emergency,_that.website,_that.instagram,_that.email,_that.storefrontImageUrl,_that.distanceKm);case _:
   return null;
 
 }
@@ -578,7 +579,7 @@ return $default(_that.id,_that.address,_that.latitude,_that.longitude,_that.phon
 @JsonSerializable()
 
 class _ProviderBranchDto extends ProviderBranchDto {
-  const _ProviderBranchDto({required this.id, this.address = '', this.latitude = 0, this.longitude = 0, this.phone, this.whatsApp, this.emergency, this.website, this.instagram, this.email, this.distanceKm}): super._();
+  const _ProviderBranchDto({required this.id, this.address = '', this.latitude = 0, this.longitude = 0, this.phone, this.whatsApp, this.emergency, this.website, this.instagram, this.email, this.storefrontImageUrl, this.distanceKm}): super._();
   factory _ProviderBranchDto.fromJson(Map<String, dynamic> json) => _$ProviderBranchDtoFromJson(json);
 
 @override final  int id;
@@ -591,6 +592,7 @@ class _ProviderBranchDto extends ProviderBranchDto {
 @override final  String? website;
 @override final  String? instagram;
 @override final  String? email;
+@override final  String? storefrontImageUrl;
 @override final  double? distanceKm;
 
 /// Create a copy of ProviderBranchDto
@@ -606,16 +608,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProviderBranchDto&&(identical(other.id, id) || other.id == id)&&(identical(other.address, address) || other.address == address)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.whatsApp, whatsApp) || other.whatsApp == whatsApp)&&(identical(other.emergency, emergency) || other.emergency == emergency)&&(identical(other.website, website) || other.website == website)&&(identical(other.instagram, instagram) || other.instagram == instagram)&&(identical(other.email, email) || other.email == email)&&(identical(other.distanceKm, distanceKm) || other.distanceKm == distanceKm));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProviderBranchDto&&(identical(other.id, id) || other.id == id)&&(identical(other.address, address) || other.address == address)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.whatsApp, whatsApp) || other.whatsApp == whatsApp)&&(identical(other.emergency, emergency) || other.emergency == emergency)&&(identical(other.website, website) || other.website == website)&&(identical(other.instagram, instagram) || other.instagram == instagram)&&(identical(other.email, email) || other.email == email)&&(identical(other.storefrontImageUrl, storefrontImageUrl) || other.storefrontImageUrl == storefrontImageUrl)&&(identical(other.distanceKm, distanceKm) || other.distanceKm == distanceKm));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,address,latitude,longitude,phone,whatsApp,emergency,website,instagram,email,distanceKm);
+int get hashCode => Object.hash(runtimeType,id,address,latitude,longitude,phone,whatsApp,emergency,website,instagram,email,storefrontImageUrl,distanceKm);
 
 @override
 String toString() {
-  return 'ProviderBranchDto(id: $id, address: $address, latitude: $latitude, longitude: $longitude, phone: $phone, whatsApp: $whatsApp, emergency: $emergency, website: $website, instagram: $instagram, email: $email, distanceKm: $distanceKm)';
+  return 'ProviderBranchDto(id: $id, address: $address, latitude: $latitude, longitude: $longitude, phone: $phone, whatsApp: $whatsApp, emergency: $emergency, website: $website, instagram: $instagram, email: $email, storefrontImageUrl: $storefrontImageUrl, distanceKm: $distanceKm)';
 }
 
 
@@ -626,7 +628,7 @@ abstract mixin class _$ProviderBranchDtoCopyWith<$Res> implements $ProviderBranc
   factory _$ProviderBranchDtoCopyWith(_ProviderBranchDto value, $Res Function(_ProviderBranchDto) _then) = __$ProviderBranchDtoCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String address, double latitude, double longitude, String? phone, String? whatsApp, String? emergency, String? website, String? instagram, String? email, double? distanceKm
+ int id, String address, double latitude, double longitude, String? phone, String? whatsApp, String? emergency, String? website, String? instagram, String? email, String? storefrontImageUrl, double? distanceKm
 });
 
 
@@ -643,7 +645,7 @@ class __$ProviderBranchDtoCopyWithImpl<$Res>
 
 /// Create a copy of ProviderBranchDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? address = null,Object? latitude = null,Object? longitude = null,Object? phone = freezed,Object? whatsApp = freezed,Object? emergency = freezed,Object? website = freezed,Object? instagram = freezed,Object? email = freezed,Object? distanceKm = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? address = null,Object? latitude = null,Object? longitude = null,Object? phone = freezed,Object? whatsApp = freezed,Object? emergency = freezed,Object? website = freezed,Object? instagram = freezed,Object? email = freezed,Object? storefrontImageUrl = freezed,Object? distanceKm = freezed,}) {
   return _then(_ProviderBranchDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,address: null == address ? _self.address : address // ignore: cast_nullable_to_non_nullable
@@ -655,6 +657,7 @@ as String?,emergency: freezed == emergency ? _self.emergency : emergency // igno
 as String?,website: freezed == website ? _self.website : website // ignore: cast_nullable_to_non_nullable
 as String?,instagram: freezed == instagram ? _self.instagram : instagram // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,storefrontImageUrl: freezed == storefrontImageUrl ? _self.storefrontImageUrl : storefrontImageUrl // ignore: cast_nullable_to_non_nullable
 as String?,distanceKm: freezed == distanceKm ? _self.distanceKm : distanceKm // ignore: cast_nullable_to_non_nullable
 as double?,
   ));

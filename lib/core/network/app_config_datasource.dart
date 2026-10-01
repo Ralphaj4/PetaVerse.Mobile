@@ -124,6 +124,7 @@ class AppConfig {
     required this.supportEmail,
     required this.supportPhone,
     required this.adoptionContactEmail,
+    required this.baseUrl,
     required this.minAppVersion,
     required this.latestAppVersion,
     required this.links,
@@ -136,6 +137,7 @@ class AppConfig {
   final String supportEmail;
   final String supportPhone;
   final String adoptionContactEmail;
+  final String baseUrl;
   final String minAppVersion;
   final String latestAppVersion;
   final AppConfigLinks links;
@@ -151,6 +153,7 @@ class AppConfig {
         supportEmail: j['supportEmail'] as String? ?? '',
         supportPhone: j['supportPhone'] as String? ?? '',
         adoptionContactEmail: j['adoptionContactEmail'] as String? ?? '',
+        baseUrl: j['baseUrl'] as String? ?? '',
         minAppVersion: j['minAppVersion'] as String? ?? '1.0.0',
         latestAppVersion: j['latestAppVersion'] as String? ?? '1.0.0',
         links: AppConfigLinks.fromJson(
@@ -168,6 +171,7 @@ class AppConfig {
         'supportEmail': supportEmail,
         'supportPhone': supportPhone,
         'adoptionContactEmail': adoptionContactEmail,
+        'baseUrl': baseUrl,
         'minAppVersion': minAppVersion,
         'latestAppVersion': latestAppVersion,
         'links': links.toJson(),

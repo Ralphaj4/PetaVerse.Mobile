@@ -1,6 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/analytics/analytics_service.dart';
+import '../../../../core/network/app_config_datasource.dart';
 import '../../domain/entities/community_entities.dart';
 import '../../domain/entities/community_enums.dart';
 import '../../domain/repositories/community_repository.dart';
@@ -75,10 +76,27 @@ class CommunityActions {
 
   // ── Share ────────────────────────────────────────────────────────────────
 
-  /// Records a share and returns the deep link to copy, or null on failure.
-  Future<String?> share(Post post, {String? shareMethod}) async {
+  /// The public web URL for a post, built from the server-provided [baseUrl]
+  /// (falls back to the production host if config hasn't loaded). This host is
+  /// Universal-Link / App-Link verified, so tapping the link opens an installed
+  /// app directly; otherwise it resolves on the auth-gated web portal, which
+  /// shows store links to visitors without the app. Used as the fallback when
+  /// the backend doesn't return a [ShareResult.shareUrl].
+  String postWebUrl(int postId) {
+    final base = _ref.read(appConfigProvider).value?.valueOrNull?.baseUrl;
+    final host = (base != null && base.isNotEmpty)
+        ? base.replaceFirst(RegExp(r'/+$'), '') // trim any trailing slash
+        : 'https://petaverseapp.com';
+    return '$host/p/$postId';
+  }
+
+  /// Records a share server-side and returns the link to hand to the OS share
+  /// sheet / clipboard. Falls back to [postWebUrl] if the record call fails or
+  /// the backend returns an empty URL, so sharing always yields a usable link.
+  Future<String> share(Post post, {String? shareMethod}) async {
+    final fallback = postWebUrl(post.id);
     final petId = _actingPetId;
-    if (petId == null) return null;
+    if (petId == null) return fallback;
     final result = await _repo.sharePost(
       postId: post.id,
       actingPetId: petId,
@@ -90,9 +108,9 @@ class CommunityActions {
           'PostShared',
           parameters: {'postId': post.id, 'method': shareMethod ?? 'unknown'},
         );
-        return r.shareUrl;
+        return r.shareUrl.isNotEmpty ? r.shareUrl : fallback;
       },
-      failure: (_) => null,
+      failure: (_) => fallback,
     );
   }
 

@@ -2672,9 +2672,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get pawHubLinkCopied => 'Lien copié';
 
   @override
-  String get pawHubPostHidden => 'Publication masquée';
-
-  @override
   String get pawHubPostReported => 'Signalé. Merci.';
 
   @override
@@ -2727,9 +2724,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get pawHubPostOptionDeletePost => 'Supprimer la publication';
-
-  @override
-  String get pawHubPostOptionHidePost => 'Masquer cette publication';
 
   @override
   String get pawHubPostOptionReport => 'Signaler';
@@ -4386,4 +4380,17 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get deleteAccountSuccess => 'Votre compte a été supprimé.';
+
+  @override
+  String get batteryOptSheetTitle => 'Des rappels fiables';
+
+  @override
+  String get batteryOptSheetBody =>
+      'Pour que les rappels de repas et de médicaments vous parviennent même lorsque l\'application est fermée, autorisez PetaVerse à s\'exécuter en arrière-plan.';
+
+  @override
+  String get batteryOptSheetAllow => 'Autoriser';
+
+  @override
+  String get batteryOptSheetNotNow => 'Pas maintenant';
 }

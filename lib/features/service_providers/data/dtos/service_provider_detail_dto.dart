@@ -89,6 +89,7 @@ abstract class ProviderBranchDto with _$ProviderBranchDto {
     String? website,
     String? instagram,
     String? email,
+    String? storefrontImageUrl,
     double? distanceKm,
   }) = _ProviderBranchDto;
 
@@ -107,6 +108,7 @@ abstract class ProviderBranchDto with _$ProviderBranchDto {
         website: website,
         instagram: instagram,
         email: email,
+        storefrontImageUrl: storefrontImageUrl,
         distanceKm: distanceKm,
       );
 }

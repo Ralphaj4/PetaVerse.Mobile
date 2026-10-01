@@ -2667,9 +2667,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pawHubLinkCopied => 'تم نسخ الرابط';
 
   @override
-  String get pawHubPostHidden => 'تم إخفاء المنشور';
-
-  @override
   String get pawHubPostReported => 'تم الإبلاغ. شكراً لك.';
 
   @override
@@ -2721,9 +2718,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pawHubPostOptionDeletePost => 'حذف المنشور';
-
-  @override
-  String get pawHubPostOptionHidePost => 'إخفاء هذا المنشور';
 
   @override
   String get pawHubPostOptionReport => 'الإبلاغ';
@@ -4355,4 +4349,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get deleteAccountSuccess => 'تم حذف حسابك.';
+
+  @override
+  String get batteryOptSheetTitle => 'احصل على تذكيرات موثوقة';
+
+  @override
+  String get batteryOptSheetBody =>
+      'لضمان وصول تذكيرات التغذية والدواء إليك حتى عند إغلاق التطبيق، اسمح لـ PetaVerse بالعمل في الخلفية.';
+
+  @override
+  String get batteryOptSheetAllow => 'السماح';
+
+  @override
+  String get batteryOptSheetNotNow => 'ليس الآن';
 }

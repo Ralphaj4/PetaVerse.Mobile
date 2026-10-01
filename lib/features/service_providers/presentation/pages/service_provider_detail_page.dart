@@ -23,9 +23,14 @@ import '../widgets/provider_meta_pills.dart';
 import '../widgets/provider_rate_sheet.dart';
 
 class ServiceProviderDetailPage extends ConsumerWidget {
-  const ServiceProviderDetailPage({required this.providerId, super.key});
+  const ServiceProviderDetailPage({
+    required this.providerId,
+    this.branchId,
+    super.key,
+  });
 
   final int providerId;
+  final int? branchId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,17 +45,40 @@ class ServiceProviderDetailPage extends ConsumerWidget {
           onRetry: () => ref.invalidate(providerDetailProvider(providerId)),
           onBack: () => context.pop(),
         ),
-        data: (detail) => _DetailView(detail: detail, providerId: providerId),
+        data: (detail) {
+          // Find the tapped branch (or fall back to the first one).
+          final branch = branchId != null
+              ? detail.branches.firstWhere(
+                  (b) => b.id == branchId,
+                  orElse: () => detail.branches.first,
+                )
+              : detail.branches.isNotEmpty
+                  ? detail.branches.first
+                  : null;
+          return _DetailView(
+            detail: detail,
+            providerId: providerId,
+            branchId: branchId,
+            heroImageUrl: branch?.storefrontImageUrl,
+          );
+        },
       ),
     );
   }
 }
 
 class _DetailView extends ConsumerWidget {
-  const _DetailView({required this.detail, required this.providerId});
+  const _DetailView({
+    required this.detail,
+    required this.providerId,
+    this.branchId,
+    this.heroImageUrl,
+  });
 
   final ServiceProviderDetail detail;
   final int providerId;
+  final int? branchId;
+  final String? heroImageUrl;
 
   Future<void> _rate(BuildContext context, WidgetRef ref) async {
     final stars = await ProviderRateSheet.show(context, current: detail.myStars);
@@ -69,19 +97,63 @@ class _DetailView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          _ProviderHeroHeader(detail: detail),
-          Transform.translate(
-            offset: const Offset(0, -AppRadius.lg),
-            child: _ProviderContent(
-              detail: detail,
-              onRate: () => _rate(context, ref),
+    final topPadding = MediaQuery.paddingOf(context).top;
+    // Hero height matches _ProviderHeroHeader (without the old avatar overhang).
+    final heroHeight = 280.0 + topPadding;
+    // Avatar center sits exactly on the hero/content boundary.
+    final avatarTop = heroHeight - _ProviderHeroHeader._avatarRadius - AppRadius.lg;
+
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        // Scrollable content behind the avatar
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              _ProviderHeroHeader(
+                detail: detail,
+                heroImageUrl: heroImageUrl,
+              ),
+              Transform.translate(
+                offset: const Offset(0, -AppRadius.lg),
+                child: _ProviderContent(
+                  detail: detail,
+                  branchId: branchId,
+                  onRate: () => _rate(context, ref),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        // Avatar floats above everything — highest z-order in the Stack.
+        PositionedDirectional(
+          start: AppSpacing.xl,
+          top: avatarTop,
+          child: Container(
+            width: _ProviderHeroHeader._avatarRadius * 2,
+            height: _ProviderHeroHeader._avatarRadius * 2,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.black26,
+                width: _ProviderHeroHeader._avatarBorder,
+              ),
+              color: AppColors.surface,
+            ),
+            child: ClipOval(
+              child: AppCachedImage(
+                imageUrl: detail.photoUrl,
+                width: _ProviderHeroHeader._avatarRadius * 2,
+                height: _ProviderHeroHeader._avatarRadius * 2,
+                borderRadius: BorderRadius.zero,
+                semanticLabel: detail.name,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -89,9 +161,16 @@ class _DetailView extends ConsumerWidget {
 // ── Full-width Hero Header ───────────────────────────────────────────────────
 
 class _ProviderHeroHeader extends StatelessWidget {
-  const _ProviderHeroHeader({required this.detail});
+  const _ProviderHeroHeader({
+    required this.detail,
+    required this.heroImageUrl,
+  });
 
   final ServiceProviderDetail detail;
+  final String? heroImageUrl;
+
+  static const double _avatarRadius = 60;
+  static const double _avatarBorder = 4;
 
   @override
   Widget build(BuildContext context) {
@@ -102,9 +181,9 @@ class _ProviderHeroHeader extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          // Full-width image
+          // Full-width storefront image
           AppCachedImage(
-            imageUrl: detail.photoUrl,
+            imageUrl: heroImageUrl,
             width: double.infinity,
             height: double.infinity,
             borderRadius: BorderRadius.zero,
@@ -174,10 +253,12 @@ class _ProviderContent extends ConsumerWidget {
   const _ProviderContent({
     required this.detail,
     required this.onRate,
+    this.branchId,
   });
 
   final ServiceProviderDetail detail;
   final VoidCallback onRate;
+  final int? branchId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -190,8 +271,10 @@ class _ProviderContent extends ConsumerWidget {
         ),
       ),
       child: Padding(
+        // Top padding: corner radius overlap + avatar overhang (60px radius)
+        // + gap so the name clears the avatar bottom edge.
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg)
-            .copyWith(top: AppSpacing.lg + AppRadius.lg),
+            .copyWith(top: AppRadius.lg + 60 + AppSpacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -346,19 +429,28 @@ class _ProviderContent extends ConsumerWidget {
               const SizedBox(height: AppSpacing.xl),
               _SectionHeader(
                 icon: FluentIcons.location_24_regular,
-                title: detail.branches.length > 1
+                title: branchId == null && detail.branches.length > 1
                     ? '${detail.branches.length} Locations & Contact'
                     : 'Location & Contact',
               ),
               const SizedBox(height: AppSpacing.sm),
-              for (int i = 0; i < detail.branches.length; i++) ...[
-                _LocationCard(
-                  branch: detail.branches[i],
-                  providerName: detail.name,
-                ),
-                if (i < detail.branches.length - 1)
-                  const SizedBox(height: AppSpacing.sm),
-              ],
+              Builder(builder: (context) {
+                final branches = branchId == null
+                    ? detail.branches
+                    : detail.branches.where((b) => b.id == branchId).toList();
+                return Column(
+                  children: [
+                    for (int i = 0; i < branches.length; i++) ...[
+                      _LocationCard(
+                        branch: branches[i],
+                        providerName: detail.name,
+                      ),
+                      if (i < branches.length - 1)
+                        const SizedBox(height: AppSpacing.sm),
+                    ],
+                  ],
+                );
+              }),
             ],
 
             // Hours (collapsible)

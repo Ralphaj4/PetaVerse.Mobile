@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
@@ -41,6 +40,7 @@ import '../widgets/pawhub_sheets.dart';
 import '../widgets/poll_card.dart';
 import '../widgets/post_card.dart';
 import '../widgets/post_composer_page.dart';
+import '../widgets/post_share.dart';
 import 'create_event_page.dart';
 import 'create_poll_page.dart';
 import 'event_detail_page.dart';
@@ -370,11 +370,9 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
         final saved = await actions.toggleSave(_toDomainPost(post));
         if (mounted) _snack(saved ? 'Saved' : 'Removed from saved');
       case PostAction.copyLink:
+        await copyPostLink(ref, context, _toDomainPost(post));
       case PostAction.share:
         await _sharePost(post);
-      case PostAction.hide:
-        ref.read(communityFeedProvider(_id).notifier).removePost(post.backendId);
-        _snack('Post hidden');
       case PostAction.report:
         final reason = await showReportSheet(context);
         if (reason != null && mounted) {
@@ -396,13 +394,7 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
   }
 
   Future<void> _sharePost(PawPost post) async {
-    final url = await ref
-        .read(communityActionsProvider)
-        .share(_toDomainPost(post), shareMethod: 'copy_link');
-    if (url != null && mounted) {
-      await Clipboard.setData(ClipboardData(text: url));
-      _snack('Link copied');
-    }
+    await sharePostToSheet(ref, _toDomainPost(post), context: context);
   }
 
   /// Minimal domain Post for the cross-cutting actions that need it.

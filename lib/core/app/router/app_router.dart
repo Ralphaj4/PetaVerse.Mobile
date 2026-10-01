@@ -126,7 +126,8 @@ abstract final class AppRoutes {
   static const String community = '/community';
   static const String care = '/care';
   static const String careMap = '/care/map';
-  static String serviceProviderDetail(int id) => '/care/map/provider/$id';
+  static String serviceProviderDetail(int id, {int? branchId}) =>
+      branchId != null ? '/care/map/provider/$id?branchId=$branchId' : '/care/map/provider/$id';
   static const String profile = '/profile';
   static const String personalInformation = '/personal-information';
   static const String changeLanguage = '/change-language';
@@ -976,6 +977,8 @@ GoRouter appRouter(Ref ref) {
                               child: ServiceProviderDetailPage(
                                 providerId:
                                     int.parse(state.pathParameters['id']!),
+                                branchId: int.tryParse(
+                                    state.uri.queryParameters['branchId'] ?? ''),
                               ),
                             ),
                       ),

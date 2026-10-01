@@ -2645,9 +2645,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pawHubLinkCopied => 'Link copied';
 
   @override
-  String get pawHubPostHidden => 'Post hidden';
-
-  @override
   String get pawHubPostReported => 'Reported. Thank you.';
 
   @override
@@ -2699,9 +2696,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pawHubPostOptionDeletePost => 'Delete post';
-
-  @override
-  String get pawHubPostOptionHidePost => 'Hide this post';
 
   @override
   String get pawHubPostOptionReport => 'Report';
@@ -4338,4 +4332,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteAccountSuccess => 'Your account has been deleted.';
+
+  @override
+  String get batteryOptSheetTitle => 'Get reliable reminders';
+
+  @override
+  String get batteryOptSheetBody =>
+      'To make sure feeding and medication reminders reach you even when the app is closed, allow PetaVerse to run in the background.';
+
+  @override
+  String get batteryOptSheetAllow => 'Allow';
+
+  @override
+  String get batteryOptSheetNotNow => 'Not now';
 }

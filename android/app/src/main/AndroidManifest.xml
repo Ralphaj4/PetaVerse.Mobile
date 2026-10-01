@@ -13,6 +13,10 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <!-- Battery-optimization exemption: lets the user whitelist the app so
+         exact-alarm reminders (feeding, medication) survive swipe-away on OEMs
+         with aggressive battery managers (Samsung / MIUI / ColorOS). -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
     <uses-feature android:name="android.hardware.camera" android:required="false"/>
     <application
         android:label="PetaVerse"
@@ -43,6 +47,21 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <!-- App Links: verified https deep links for shared posts.
+                 Opens the app directly on /p/<id> when the domain association is
+                 verified via https://petaverseapp.com/.well-known/assetlinks.json
+                 (must list this package + the release signing SHA-256). The host
+                 must match the web portal host returned in app config `baseUrl`.
+                 autoVerify lets Android confirm ownership so links skip the
+                 chooser and open the app straight away. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="https"
+                      android:host="petaverseapp.com"
+                      android:pathPrefix="/p/"/>
             </intent-filter>
         </activity>
         <!-- Walk activity foreground service.

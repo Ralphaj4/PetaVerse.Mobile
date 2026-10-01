@@ -95,6 +95,7 @@ _ProviderBranchDto _$ProviderBranchDtoFromJson(Map<String, dynamic> json) =>
       website: json['website'] as String?,
       instagram: json['instagram'] as String?,
       email: json['email'] as String?,
+      storefrontImageUrl: json['storefrontImageUrl'] as String?,
       distanceKm: (json['distanceKm'] as num?)?.toDouble(),
     );
 
@@ -110,6 +111,7 @@ Map<String, dynamic> _$ProviderBranchDtoToJson(_ProviderBranchDto instance) =>
       'website': instance.website,
       'instagram': instance.instagram,
       'email': instance.email,
+      'storefrontImageUrl': instance.storefrontImageUrl,
       'distanceKm': instance.distanceKm,
     };
 

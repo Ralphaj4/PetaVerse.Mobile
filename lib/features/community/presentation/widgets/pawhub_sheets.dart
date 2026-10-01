@@ -11,7 +11,7 @@ import '../../domain/entities/community_enums.dart' hide PostVisibility;
 import '../models/pawhub_models.dart';
 
 /// Result of the post options sheet.
-enum PostAction { save, copyLink, share, hide, report, block, delete }
+enum PostAction { save, copyLink, share, report, block, delete }
 
 /// Result of the comment options sheet.
 enum CommentAction { edit, delete, report }
@@ -66,11 +66,6 @@ Future<PostAction?> showPostOptionsSheet(
               onTap: () => Navigator.pop(context, PostAction.delete),
             ),
           ] else ...[
-            _OptionTile(
-              icon: FluentIcons.eye_off_24_regular,
-              label: context.l10n.pawHubPostOptionHidePost,
-              onTap: () => Navigator.pop(context, PostAction.hide),
-            ),
             _OptionTile(
               icon: FluentIcons.flag_24_regular,
               label: context.l10n.pawHubPostOptionReport,

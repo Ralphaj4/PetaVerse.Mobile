@@ -130,7 +130,7 @@ final class NotificationListProvider
   NotificationList create() => NotificationList();
 }
 
-String _$notificationListHash() => r'c01d5868c23565d6806effe0d80bd638a59977ce';
+String _$notificationListHash() => r'27be0395444daf632eed817131c572c46d3f437f';
 
 /// Paginated notification list. Managed by [NotificationListNotifier] so
 /// the page can append items and optimistically flip isRead flags.

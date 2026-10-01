@@ -23,6 +23,7 @@ import '../widgets/pawhub_feed_widgets.dart';
 import '../widgets/pawhub_sheets.dart';
 import '../widgets/post_card.dart';
 import '../widgets/post_composer_page.dart';
+import '../widgets/post_share.dart';
 import '../widgets/upload_progress_banner.dart';
 import 'pawhub_search_page.dart';
 import 'pawhub_pet_profile_page.dart';
@@ -155,23 +156,9 @@ class _PawHubPageState extends ConsumerState<PawHubPage> {
               : context.l10n.pawHubPostRemovedFromSaved);
         }
       case PostAction.copyLink:
-        unawaited(Clipboard.setData(
-            ClipboardData(text: 'https://petaverse.app/p/${post.backendId}')));
-        _snack(context.l10n.pawHubLinkCopied);
+        await copyPostLink(ref, context, domainPost);
       case PostAction.share:
-        final url = await actions.share(domainPost, shareMethod: 'copy_link');
-        if (url != null && mounted) {
-          unawaited(Clipboard.setData(ClipboardData(text: url)));
-          _snack(context.l10n.pawHubLinkCopied);
-        }
-      case PostAction.hide:
-        // Only following feed supports removePost; discover just refreshes.
-        if (_tab == FeedTab.following) {
-          ref.read(followingFeedProvider.notifier).removePost(post.backendId);
-        } else {
-          unawaited(ref.read(discoverFeedProvider.notifier).refresh());
-        }
-        _snack(context.l10n.pawHubPostHidden);
+        await sharePostToSheet(ref, domainPost, context: context);
       case PostAction.report:
         final reason = await showReportSheet(context);
         if (reason != null && mounted) {
@@ -599,7 +586,7 @@ void _openProfile(PawPet pet) {
             onOpenComments: () => _openComments(post),
             onOpenOptions: () => _openOptions(post),
             onOpenProfile: _openProfile,
-            onShare: () => _openOptions(post),
+            onShare: () => sharePostToSheet(ref, _toDomainPost(post), context: context),
           );
         },
       ),

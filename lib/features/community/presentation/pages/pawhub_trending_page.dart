@@ -18,6 +18,7 @@ import '../../../pets/presentation/providers/pets_provider.dart';
 import '../widgets/pawhub_comments.dart';
 import '../widgets/pawhub_sheets.dart';
 import '../widgets/post_card.dart';
+import '../widgets/post_share.dart';
 import 'pawhub_pet_profile_page.dart';
 
 class PawHubTrendingPage extends ConsumerStatefulWidget {
@@ -221,11 +222,9 @@ class _PawHubTrendingPageState extends ConsumerState<PawHubTrendingPage> {
       case PostAction.save:
         await actions.toggleSave(domainPost);
       case PostAction.copyLink:
-        break;
+        await copyPostLink(ref, context, domainPost);
       case PostAction.share:
-        await actions.share(domainPost);
-      case PostAction.hide:
-        ref.invalidate(trendingProvider);
+        await sharePostToSheet(ref, domainPost, context: context);
       case PostAction.report:
         final reason = await showReportSheet(context);
         if (reason != null) {
@@ -239,8 +238,7 @@ class _PawHubTrendingPageState extends ConsumerState<PawHubTrendingPage> {
   }
 
   Future<void> _share(domain.Post post) async {
-    final actions = ref.read(communityActionsProvider);
-    await actions.share(post);
+    await sharePostToSheet(ref, post, context: context);
   }
 }
 

@@ -4636,12 +4636,6 @@ abstract class AppLocalizations {
   /// **'Link copied'**
   String get pawHubLinkCopied;
 
-  /// No description provided for @pawHubPostHidden.
-  ///
-  /// In en, this message translates to:
-  /// **'Post hidden'**
-  String get pawHubPostHidden;
-
   /// No description provided for @pawHubPostReported.
   ///
   /// In en, this message translates to:
@@ -4731,12 +4725,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete post'**
   String get pawHubPostOptionDeletePost;
-
-  /// No description provided for @pawHubPostOptionHidePost.
-  ///
-  /// In en, this message translates to:
-  /// **'Hide this post'**
-  String get pawHubPostOptionHidePost;
 
   /// No description provided for @pawHubPostOptionReport.
   ///
@@ -7617,6 +7605,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your account has been deleted.'**
   String get deleteAccountSuccess;
+
+  /// No description provided for @batteryOptSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get reliable reminders'**
+  String get batteryOptSheetTitle;
+
+  /// No description provided for @batteryOptSheetBody.
+  ///
+  /// In en, this message translates to:
+  /// **'To make sure feeding and medication reminders reach you even when the app is closed, allow PetaVerse to run in the background.'**
+  String get batteryOptSheetBody;
+
+  /// No description provided for @batteryOptSheetAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get batteryOptSheetAllow;
+
+  /// No description provided for @batteryOptSheetNotNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get batteryOptSheetNotNow;
 }
 
 class _AppLocalizationsDelegate

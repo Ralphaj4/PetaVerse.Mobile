@@ -1137,8 +1137,6 @@
   "@pawHubPostRemovedFromSaved": {},
   "pawHubLinkCopied": "Link copied",
   "@pawHubLinkCopied": {},
-  "pawHubPostHidden": "Post hidden",
-  "@pawHubPostHidden": {},
   "pawHubPostReported": "Reported. Thank you.",
   "@pawHubPostReported": {},
   "pawHubBlockedUser": "Blocked {name}",
@@ -1178,8 +1176,6 @@
   "@pawHubPostOptionEditPost": {},
   "pawHubPostOptionDeletePost": "Delete post",
   "@pawHubPostOptionDeletePost": {},
-  "pawHubPostOptionHidePost": "Hide this post",
-  "@pawHubPostOptionHidePost": {},
   "pawHubPostOptionReport": "Report",
   "@pawHubPostOptionReport": {},
   "pawHubPostOptionBlock": "Block {name}",
@@ -1975,5 +1971,10 @@
   "deleteAccountTypePromptTitle": "Confirm Deletion",
   "deleteAccountTypePromptMessage": "Type DELETE to permanently delete your account.",
   "deleteAccountTypePlaceholder": "Type DELETE here",
-  "deleteAccountSuccess": "Your account has been deleted."
+  "deleteAccountSuccess": "Your account has been deleted.",
+
+  "batteryOptSheetTitle": "Get reliable reminders",
+  "batteryOptSheetBody": "To make sure feeding and medication reminders reach you even when the app is closed, allow PetaVerse to run in the background.",
+  "batteryOptSheetAllow": "Allow",
+  "batteryOptSheetNotNow": "Not now"
 }

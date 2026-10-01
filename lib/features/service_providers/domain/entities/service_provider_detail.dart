@@ -75,6 +75,7 @@ class ProviderBranch {
     this.website,
     this.instagram,
     this.email,
+    this.storefrontImageUrl,
     this.distanceKm,
   });
 
@@ -87,6 +88,7 @@ class ProviderBranch {
   final String? website;
   final String? instagram;
   final String? email;
+  final String? storefrontImageUrl;
 
   /// Distance from the user in km (1 decimal), or null when no origin was sent.
   final double? distanceKm;

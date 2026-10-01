@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/app/notification_service.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
@@ -166,8 +167,14 @@ class _FeedingFormState extends ConsumerState<_FeedingForm> {
     setState(() => _saving = false);
 
     result.when(
-      success: (_) {
+      success: (_) async {
         ref.invalidate(petFeedingScheduleProvider(widget.petId));
+        if (!mounted) return;
+        await showBatteryOptimizationSheetIfNeeded(
+          context,
+          ref.read(notificationServiceProvider),
+        );
+        if (!mounted) return;
         context.showSuccessSnackBar(l10n.feedingSaved);
         context.pop();
       },

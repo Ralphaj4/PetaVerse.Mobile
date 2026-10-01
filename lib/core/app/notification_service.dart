@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:timezone/data/latest_all.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
@@ -183,6 +186,39 @@ class NotificationService {
   }
 
   Future<void> cancel(int id) => _plugin.cancel(id: id);
+
+  /// Cancels every pending local notification — call on logout/account-delete
+  /// so alarms the user set up do not fire for a logged-out session.
+  Future<void> cancelAll() async {
+    if (!_initialized) return;
+    try {
+      await _plugin.cancelAll();
+    } catch (e, st) {
+      _logger.error('Failed to cancel all notifications', error: e, stackTrace: st);
+    }
+  }
+
+  /// Returns true when the app is already exempted from battery optimization
+  /// (Android only — always returns true on other platforms so callers don't
+  /// need to branch).
+  Future<bool> hasBatteryOptimizationExemption() async {
+    if (!Platform.isAndroid) return true;
+    return Permission.ignoreBatteryOptimizations.isGranted;
+  }
+
+  /// Opens the system "Disable battery optimization" dialog for this app.
+  /// Returns true when the user granted it, false if they declined or it
+  /// wasn't needed. No-ops on non-Android platforms.
+  Future<bool> requestBatteryOptimizationExemption() async {
+    if (!Platform.isAndroid) return true;
+    try {
+      final status = await Permission.ignoreBatteryOptimizations.request();
+      return status.isGranted;
+    } catch (e, st) {
+      _logger.error('Battery optimization request failed', error: e, stackTrace: st);
+      return false;
+    }
+  }
 
   /// Cancels every pending notification whose id falls in [start, endExclusive).
   /// Used to reconcile schedules whose slot ids are server-assigned and change
