@@ -40,7 +40,7 @@ class PostCard extends ConsumerStatefulWidget {
   final VoidCallback onOpenComments;
   final VoidCallback onOpenOptions;
   final void Function(PawPet pet) onOpenProfile;
-  final VoidCallback onShare;
+  final Future<void> Function() onShare;
 
   /// Whether to show the "posted in `<community>`" badge. Suppressed inside a
   /// community's own feed, where the tag would be redundant.
@@ -51,8 +51,9 @@ class PostCard extends ConsumerStatefulWidget {
 }
 
 class _PostCardState extends ConsumerState<PostCard>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   bool _captionExpanded = false;
+  bool _sharing = false;
 
   late final AnimationController _likePop = AnimationController(
     vsync: this,
@@ -62,10 +63,31 @@ class _PostCardState extends ConsumerState<PostCard>
     value: 1,
   );
 
+  late final AnimationController _sharePop = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 180),
+    lowerBound: 0.8,
+    upperBound: 1.0,
+    value: 1,
+  );
+
   @override
   void dispose() {
     _likePop.dispose();
+    _sharePop.dispose();
     super.dispose();
+  }
+
+  Future<void> _onShare() async {
+    if (_sharing) return;
+    // Burst animation: shrink then spring back.
+    await _sharePop.reverse().then((_) => _sharePop.forward());
+    setState(() => _sharing = true);
+    try {
+      await widget.onShare();
+    } finally {
+      if (mounted) setState(() => _sharing = false);
+    }
   }
 
   PawPost get post => widget.post;
@@ -266,11 +288,23 @@ class _PostCardState extends ConsumerState<PostCard>
                 color: AppColors.textSecondary),
           ),
           const SizedBox(width: AppSpacing.xs),
-          _ActionIcon(
-            onTap: widget.onShare,
-            tooltip: context.l10n.pawHubShare,
-            child: const Icon(FluentIcons.share_24_regular,
-                color: AppColors.textSecondary),
+          ScaleTransition(
+            scale: _sharePop,
+            child: _ActionIcon(
+              onTap: _sharing ? null : _onShare,
+              tooltip: context.l10n.pawHubShare,
+              child: _sharing
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation(AppColors.textSecondary),
+                      ),
+                    )
+                  : const Icon(FluentIcons.share_24_regular,
+                      color: AppColors.textSecondary),
+            ),
           ),
           const Spacer(),
           _ActionIcon(
@@ -447,7 +481,7 @@ class _ActionIcon extends StatelessWidget {
     required this.child,
   });
 
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final String tooltip;
   final Widget child;
 

@@ -1151,6 +1151,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get petDetailActionBook => 'Book';
 
   @override
+  String get petDetailActionCoOwners => 'Co-Owners';
+
+  @override
   String get petDetailActionShare => 'Pet Vision';
 
   @override
@@ -1573,7 +1576,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get inviteCoOwnerTitle => 'Invite Co-Owner';
+  String get inviteCoOwnerTitle => 'Manage Co-Owners';
 
   @override
   String inviteCoOwnerSubtitle(String petName) {
@@ -4117,6 +4120,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pawhubTagPetsEmpty => 'You have no pets to tag yet.';
 
   @override
+  String get pawhubTagPetsSearchAll => 'Search all pets';
+
+  @override
   String get pawhubDiscoverEmptyTitle => 'Nothing to discover yet';
 
   @override
@@ -4412,6 +4418,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteAccountSuccess => 'Your account has been deleted.';
+
+  @override
+  String get pawHubPreparingShare => 'Preparing share…';
+
+  @override
+  String pawHubBlockConfirmTitle(String name) {
+    return 'Block $name?';
+  }
+
+  @override
+  String pawHubBlockConfirmMessage(String name) {
+    return 'You won\'t see $name\'s posts in your feed, and this pet won\'t be able to interact with you.';
+  }
+
+  @override
+  String get pawHubBlockConfirmButton => 'Block';
+
+  @override
+  String get openByDefaultSheetTitle => 'Open links in PetaVerse';
+
+  @override
+  String get openByDefaultSheetBody =>
+      'Tap a shared PetaVerse link and it will open straight in the app — no browser, no extra steps. Enable it in two taps.';
+
+  @override
+  String get openByDefaultSheetEnable => 'Enable now';
+
+  @override
+  String get openByDefaultSheetNotNow => 'Not now';
 
   @override
   String get batteryOptSheetTitle => 'Get reliable reminders';

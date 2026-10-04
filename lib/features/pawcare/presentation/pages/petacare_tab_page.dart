@@ -291,7 +291,6 @@ class _HeroPetSwitcher extends ConsumerWidget {
           pets: pets,
           current: current,
           title: context.l10n.switchPetTitle,
-          showMyPostsLink: false,
         );
         if (chosen == null || chosen.backendId == pet.id) return;
         ref.read(petsProvider.notifier).selectPet(chosen.backendId);

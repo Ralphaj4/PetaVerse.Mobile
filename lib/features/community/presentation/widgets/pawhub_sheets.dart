@@ -74,7 +74,7 @@ Future<PostAction?> showPostOptionsSheet(
             ),
             _OptionTile(
               icon: FluentIcons.person_prohibited_24_regular,
-              label: context.l10n.pawHubPostOptionBlock(post.author.ownerName),
+              label: context.l10n.pawHubPostOptionBlock(post.author.name),
               destructive: true,
               onTap: () => Navigator.pop(context, PostAction.block),
             ),
@@ -84,6 +84,25 @@ Future<PostAction?> showPostOptionsSheet(
         ),
       ),
     ),
+  );
+}
+
+/// Shows the block-confirmation dialog for [authorName].
+///
+/// Returns true if the user confirmed, false if they cancelled. The sheet
+/// calling this has already closed — this dialog appears on the page behind it.
+Future<bool> showBlockConfirmDialog(
+  BuildContext context, {
+  required String authorName,
+}) {
+  return AppConfirmDialog.show(
+    context,
+    icon: FluentIcons.person_prohibited_24_filled,
+    title: context.l10n.pawHubBlockConfirmTitle(authorName),
+    message: context.l10n.pawHubBlockConfirmMessage(authorName),
+    confirmLabel: context.l10n.pawHubBlockConfirmButton,
+    cancelLabel: context.l10n.cancel,
+    isDestructive: true,
   );
 }
 

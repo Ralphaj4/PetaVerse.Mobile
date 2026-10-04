@@ -2122,6 +2122,12 @@ abstract class AppLocalizations {
   /// **'Book'**
   String get petDetailActionBook;
 
+  /// No description provided for @petDetailActionCoOwners.
+  ///
+  /// In en, this message translates to:
+  /// **'Co-Owners'**
+  String get petDetailActionCoOwners;
+
   /// No description provided for @petDetailActionShare.
   ///
   /// In en, this message translates to:
@@ -2869,7 +2875,7 @@ abstract class AppLocalizations {
   /// No description provided for @inviteCoOwnerTitle.
   ///
   /// In en, this message translates to:
-  /// **'Invite Co-Owner'**
+  /// **'Manage Co-Owners'**
   String get inviteCoOwnerTitle;
 
   /// No description provided for @inviteCoOwnerSubtitle.
@@ -7228,6 +7234,12 @@ abstract class AppLocalizations {
   /// **'You have no pets to tag yet.'**
   String get pawhubTagPetsEmpty;
 
+  /// No description provided for @pawhubTagPetsSearchAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Search all pets'**
+  String get pawhubTagPetsSearchAll;
+
   /// No description provided for @pawhubDiscoverEmptyTitle.
   ///
   /// In en, this message translates to:
@@ -7749,6 +7761,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your account has been deleted.'**
   String get deleteAccountSuccess;
+
+  /// No description provided for @pawHubPreparingShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing share…'**
+  String get pawHubPreparingShare;
+
+  /// No description provided for @pawHubBlockConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Block {name}?'**
+  String pawHubBlockConfirmTitle(String name);
+
+  /// No description provided for @pawHubBlockConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You won\'t see {name}\'s posts in your feed, and this pet won\'t be able to interact with you.'**
+  String pawHubBlockConfirmMessage(String name);
+
+  /// No description provided for @pawHubBlockConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Block'**
+  String get pawHubBlockConfirmButton;
+
+  /// No description provided for @openByDefaultSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Open links in PetaVerse'**
+  String get openByDefaultSheetTitle;
+
+  /// No description provided for @openByDefaultSheetBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a shared PetaVerse link and it will open straight in the app — no browser, no extra steps. Enable it in two taps.'**
+  String get openByDefaultSheetBody;
+
+  /// No description provided for @openByDefaultSheetEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable now'**
+  String get openByDefaultSheetEnable;
+
+  /// No description provided for @openByDefaultSheetNotNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get openByDefaultSheetNotNow;
 
   /// No description provided for @batteryOptSheetTitle.
   ///

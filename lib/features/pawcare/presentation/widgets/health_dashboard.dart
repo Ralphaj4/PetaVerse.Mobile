@@ -8,6 +8,7 @@ import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/error_state_widget.dart';
+import '../../../home/presentation/providers/home_providers.dart';
 import '../../domain/entities/medication.dart';
 import '../providers/pawcare_providers.dart';
 import 'appointments_card.dart';
@@ -46,6 +47,7 @@ class HealthDashboard extends ConsumerWidget {
         ref.invalidate(petMedicationsProvider(petId));
         // The score is live — marking a dose given can move it.
         ref.invalidate(petHealthScoreProvider(petId));
+        ref.invalidate(homeSummaryProvider);
         context.showSuccessSnackBar(
           l10n.healthMedicationsGivenConfirmed(med.name),
         );
@@ -65,6 +67,7 @@ class HealthDashboard extends ConsumerWidget {
       success: (_) {
         ref.invalidate(petHealthSnapshotProvider(petId));
         ref.invalidate(petGroomingScheduleProvider(petId));
+        ref.invalidate(homeSummaryProvider);
         context.showSuccessSnackBar(l10n.groomingMarkedGroomed);
       },
       failure: (f) => context.showErrorSnackBar(f.localizedMessage(l10n)),

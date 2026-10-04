@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,9 +34,10 @@ class TagPetsArgs {
 
 /// Full-screen "Tag pets" picker.
 ///
-/// Empty query → shows the user's own pets. Typing searches ALL pets via the
-/// community pet-search endpoint (debounced), so any pet can be tagged. Tap a
-/// row to toggle; selected pets appear as removable chips above the list.
+/// Empty query → shows candidates (pets the acting pet follows).
+/// Typing → filters candidates client-side by name/breed.
+/// An explicit "Search all pets" row lets the user fall back to the global
+/// pet-search API when the name isn't in their following list.
 ///
 /// Returns the selected `List<PawPet>` via [context.pop]; returns null if the
 /// user backs out without confirming.
@@ -53,7 +52,6 @@ class TagPetsPage extends ConsumerStatefulWidget {
 
 class _TagPetsPageState extends ConsumerState<TagPetsPage> {
   final _searchController = TextEditingController();
-  Timer? _debounce;
 
   /// Backend-id set of the currently-selected pets. Using [PawPet.id] (stable
   /// string id) keeps parity with how the composer tracked selection.
@@ -67,12 +65,20 @@ class _TagPetsPageState extends ConsumerState<TagPetsPage> {
     for (final p in widget.args.selected) p.id: p,
   };
 
-  /// The active (debounced) search query.
+  /// The active search query.
   String _query = '';
 
-  /// Remote pet-search state for the current [_query].
+  /// True while a global (API) search is in flight.
   bool _searching = false;
-  List<PawPet> _results = const [];
+
+  /// Results from a global API search (only populated when the user taps
+  /// "Search all pets" — not triggered automatically on every keystroke).
+  List<PawPet> _globalResults = const [];
+
+  /// Whether we are showing global results (as opposed to the filtered
+  /// candidates list).
+  bool _showingGlobal = false;
+
   // Guards against a stale in-flight search overwriting a newer one.
   int _searchSeq = 0;
 
@@ -84,7 +90,6 @@ class _TagPetsPageState extends ConsumerState<TagPetsPage> {
 
   @override
   void dispose() {
-    _debounce?.cancel();
     _searchController.removeListener(_onQueryChanged);
     _searchController.dispose();
     super.dispose();
@@ -92,32 +97,47 @@ class _TagPetsPageState extends ConsumerState<TagPetsPage> {
 
   void _onQueryChanged() {
     final q = _searchController.text.trim();
-    _debounce?.cancel();
     if (q == _query) return;
-    setState(() => _query = q);
-    if (q.isEmpty) {
-      setState(() {
-        _searching = false;
-        _results = const [];
-      });
-      return;
-    }
-    _debounce = Timer(const Duration(milliseconds: 300), () => _search(q));
+    setState(() {
+      _query = q;
+      // Switching back to local filtering — discard any global results.
+      _showingGlobal = false;
+      _globalResults = const [];
+    });
   }
 
-  Future<void> _search(String query) async {
+  /// Client-side filter of [widget.args.candidates] by [_query].
+  List<PawPet> _filteredCandidates() {
+    final exclude = widget.args.excludePetId;
+    final all = widget.args.candidates
+        .where((p) => p.backendId != exclude)
+        .toList();
+    if (_query.isEmpty) return all;
+    final q = _query.toLowerCase();
+    return all
+        .where((p) =>
+            p.name.toLowerCase().contains(q) ||
+            p.breedOrSpecies.toLowerCase().contains(q))
+        .toList();
+  }
+
+  Future<void> _searchGlobal() async {
+    if (_query.isEmpty) return;
     final seq = ++_searchSeq;
-    setState(() => _searching = true);
+    setState(() {
+      _searching = true;
+      _showingGlobal = true;
+    });
     final result = await ref.read(communityRepositoryProvider).search(
-          query: query,
+          query: _query,
           type: SearchType.pets,
           actingPetId: ref.read(actingPetIdProvider),
         );
-    if (!mounted || seq != _searchSeq) return; // superseded
+    if (!mounted || seq != _searchSeq) return;
     result.when(
       success: (page) => setState(() {
         _searching = false;
-        _results = page.results
+        _globalResults = page.results
             .where((r) => r.pet != null)
             .map((r) => PawPet.fromEntity(r.pet!))
             .where((p) => p.backendId != widget.args.excludePetId)
@@ -125,7 +145,7 @@ class _TagPetsPageState extends ConsumerState<TagPetsPage> {
       }),
       failure: (_) => setState(() {
         _searching = false;
-        _results = const [];
+        _globalResults = const [];
       }),
     );
   }
@@ -154,15 +174,14 @@ class _TagPetsPageState extends ConsumerState<TagPetsPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Empty query → own pets; otherwise the remote search results.
-    // Empty query → own pets; otherwise the (already-filtered) search results.
-    // Either way, never offer the author pet (can't tag itself).
-    final candidates = _query.isEmpty
-        ? widget.args.candidates
-            .where((p) => p.backendId != widget.args.excludePetId)
-            .toList()
-        : _results;
+    final l10n = context.l10n;
+    final candidates =
+        _showingGlobal ? _globalResults : _filteredCandidates();
     final selected = _selectedById.values.toList();
+
+    // Show "Search all pets" row when the user typed something and we're
+    // still showing the local list (not yet in global mode).
+    final showGlobalTrigger = _query.isNotEmpty && !_showingGlobal;
 
     return Scaffold(
       backgroundColor: AppColors.backgroundWarm,
@@ -173,17 +192,17 @@ class _TagPetsPageState extends ConsumerState<TagPetsPage> {
         centerTitle: true,
         leading: IconButton(
           onPressed: () => context.popOrHome(),
-          tooltip: context.l10n.pawhubBack,
+          tooltip: l10n.pawhubBack,
           icon: const Icon(FluentIcons.arrow_left_24_regular,
               color: AppColors.textPrimary),
         ),
-        title: Text(context.l10n.pawhubTagPetsTitle,
-            style: AppTextStyles.titleLarge),
+        title:
+            Text(l10n.pawhubTagPetsTitle, style: AppTextStyles.titleLarge),
         actions: [
           TextButton(
             onPressed: _done,
             child: Text(
-              context.l10n.pawHubDone,
+              l10n.pawHubDone,
               style: AppTextStyles.titleSmall
                   .copyWith(color: AppColors.primaryDark),
             ),
@@ -193,13 +212,13 @@ class _TagPetsPageState extends ConsumerState<TagPetsPage> {
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         children: [
-          // Name search field.
+          // Search field.
           _searchField(),
           const SizedBox(height: AppSpacing.md),
 
           // Currently-tagged chips.
           if (selected.isNotEmpty) ...[
-            Text(context.l10n.pawhubTagPetsTaggedCount(selected.length),
+            Text(l10n.pawhubTagPetsTaggedCount(selected.length),
                 style: AppTextStyles.labelMedium
                     .copyWith(color: AppColors.textSecondary)),
             const SizedBox(height: AppSpacing.sm),
@@ -214,14 +233,17 @@ class _TagPetsPageState extends ConsumerState<TagPetsPage> {
             const SizedBox(height: AppSpacing.lg),
           ],
 
-          // Section header: "My pets" by default, "Results" while searching.
+          // Section header.
           Text(
-            _query.isEmpty
-                ? context.l10n.pawhubTagPetsMyPets
-                : context.l10n.pawhubTagPetsResults,
+            _showingGlobal
+                ? l10n.pawhubTagPetsResults
+                : _query.isEmpty
+                    ? l10n.pawhubTagPetsMyPets
+                    : l10n.pawhubTagPetsResults,
             style: AppTextStyles.titleSmall,
           ),
           const SizedBox(height: AppSpacing.sm),
+
           if (_searching)
             const Padding(
               padding: EdgeInsets.all(AppSpacing.xl),
@@ -233,38 +255,48 @@ class _TagPetsPageState extends ConsumerState<TagPetsPage> {
                 ),
               ),
             )
-          else if (candidates.isEmpty)
-            _emptyMyPets(noMatch: _query.isNotEmpty)
-          else
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: AppRadius.mdAll,
-                border: Border.all(color: AppColors.divider),
-              ),
-              child: ClipRRect(
-                borderRadius: AppRadius.mdAll,
-                child: Column(
-                  children: [
-                    for (var i = 0; i < candidates.length; i++) ...[
-                      if (i > 0)
-                        const Divider(
-                          height: 1,
-                          thickness: 1,
-                          indent: AppSpacing.lg,
-                          endIndent: AppSpacing.lg,
-                          color: AppColors.divider,
-                        ),
-                      _PetRow(
-                        pet: candidates[i],
-                        selected: _selectedIds.contains(candidates[i].id),
-                        onTap: () => _toggle(candidates[i]),
-                      ),
-                    ],
-                  ],
+          else ...[
+            if (candidates.isNotEmpty)
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: AppRadius.mdAll,
+                  border: Border.all(color: AppColors.divider),
                 ),
-              ),
-            ),
+                child: ClipRRect(
+                  borderRadius: AppRadius.mdAll,
+                  child: Column(
+                    children: [
+                      for (var i = 0; i < candidates.length; i++) ...[
+                        if (i > 0)
+                          const Divider(
+                            height: 1,
+                            thickness: 1,
+                            indent: AppSpacing.lg,
+                            endIndent: AppSpacing.lg,
+                            color: AppColors.divider,
+                          ),
+                        _PetRow(
+                          pet: candidates[i],
+                          selected: _selectedIds.contains(candidates[i].id),
+                          onTap: () => _toggle(candidates[i]),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              )
+            else if (!showGlobalTrigger)
+              _emptyMyPets(noMatch: _query.isNotEmpty),
+
+            // "Search all pets" fallback — shown below local results (or
+            // instead of the empty state) when a query is active.
+            if (showGlobalTrigger) ...[
+              if (candidates.isEmpty) _emptyMyPets(noMatch: true),
+              const SizedBox(height: AppSpacing.md),
+              _SearchAllRow(query: _query, onTap: _searchGlobal),
+            ],
+          ],
         ],
       ),
     );
@@ -339,6 +371,59 @@ class _TagPetsPageState extends ConsumerState<TagPetsPage> {
   }
 }
 
+/// A tappable row that triggers a global pet-search for [query].
+class _SearchAllRow extends StatelessWidget {
+  const _SearchAllRow({required this.query, required this.onTap});
+
+  final String query;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: AppRadius.mdAll,
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: AppRadius.mdAll,
+          border: Border.all(color: AppColors.primary.withValues(alpha: 0.4)),
+        ),
+        child: Row(
+          children: [
+            const Icon(FluentIcons.search_24_regular,
+                size: 20, color: AppColors.primary),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    context.l10n.pawhubTagPetsSearchAll,
+                    style: AppTextStyles.labelLarge
+                        .copyWith(color: AppColors.primaryDark),
+                  ),
+                  Text(
+                    '"$query"',
+                    style: AppTextStyles.bodySmall
+                        .copyWith(color: AppColors.textSecondary),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+            const Icon(FluentIcons.arrow_right_24_regular,
+                size: 18, color: AppColors.primary),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 /// A single selectable pet row (avatar + name/breed + check).
 class _PetRow extends StatelessWidget {
   const _PetRow({
@@ -353,6 +438,13 @@ class _PetRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final owner = pet.isMine || pet.ownerName.isEmpty ? '' : pet.ownerName;
+    final parts = [
+      if (pet.breedOrSpecies.isNotEmpty) pet.breedOrSpecies,
+      if (owner.isNotEmpty) owner,
+    ];
+    final subtitle = parts.join(' · ');
+
     return InkWell(
       onTap: onTap,
       child: Padding(
@@ -367,10 +459,10 @@ class _PetRow extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(pet.name, style: AppTextStyles.bodyMedium),
-                  if (pet.breedOrSpecies.isNotEmpty) ...[
+                  if (subtitle.isNotEmpty) ...[
                     const SizedBox(height: 2),
                     Text(
-                      pet.breedOrSpecies,
+                      subtitle,
                       style: AppTextStyles.bodySmall
                           .copyWith(color: AppColors.textSecondary),
                       maxLines: 1,

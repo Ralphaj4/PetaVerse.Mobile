@@ -4,6 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl_phone_field/countries.dart' as phone_countries;
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -119,6 +120,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               initialCountryCode: 'LB',
               languageCode: Localizations.localeOf(context).languageCode,
               invalidNumberMessage: l10n.invalidPhone,
+              countries: phone_countries.countries.where((c) => c.code == 'LB').toList(),
               dropdownIcon: const Icon(
                 FluentIcons.chevron_down_24_regular,
                 size: 18,

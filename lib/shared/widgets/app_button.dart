@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_spacing.dart';
 
-enum AppButtonVariant { primary, secondary, outlined, text }
+enum AppButtonVariant { primary, secondary, outlined, text, success }
 
 /// Standard app button with built-in loading state and semantics.
 class AppButton extends StatelessWidget {
@@ -59,6 +60,18 @@ class AppButton extends StatelessWidget {
         ),
       AppButtonVariant.text => TextButton(
           onPressed: effectiveOnPressed,
+          child: child,
+        ),
+      // Positive completion actions: mark as groomed, mark as fed, etc.
+      // Pill shape + green so it reads as "done" without competing with
+      // the primary (orange) action or the destructive (red) action.
+      AppButtonVariant.success => ElevatedButton(
+          onPressed: effectiveOnPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.success,
+            foregroundColor: Colors.white,
+            shape: const StadiumBorder(),
+          ),
           child: child,
         ),
     };

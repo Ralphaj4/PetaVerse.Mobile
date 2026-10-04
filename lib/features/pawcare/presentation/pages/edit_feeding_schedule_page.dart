@@ -12,8 +12,10 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_button.dart';
+import '../../../../shared/widgets/app_confirm_dialog.dart';
 import '../../../../shared/widgets/error_state_widget.dart';
 import '../../domain/entities/feeding_schedule.dart';
+import '../../../home/presentation/providers/home_providers.dart';
 import '../providers/pawcare_providers.dart';
 import '../widgets/care_schedule_pickers.dart';
 import '../widgets/feeding_grooming_l10n.dart';
@@ -169,6 +171,8 @@ class _FeedingFormState extends ConsumerState<_FeedingForm> {
     result.when(
       success: (_) async {
         ref.invalidate(petFeedingScheduleProvider(widget.petId));
+        ref.invalidate(petHealthSnapshotProvider(widget.petId));
+        ref.invalidate(homeSummaryProvider);
         if (!mounted) return;
         await showBatteryOptimizationSheetIfNeeded(
           context,
@@ -184,23 +188,14 @@ class _FeedingFormState extends ConsumerState<_FeedingForm> {
 
   Future<void> _delete() async {
     final l10n = context.l10n;
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(l10n.feedingDeleteTitle),
-        content: Text(l10n.feedingDeleteMessage),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text(l10n.cancel),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(l10n.delete,
-                style: const TextStyle(color: AppColors.error)),
-          ),
-        ],
-      ),
+    final confirmed = await AppConfirmDialog.show(
+      context,
+      icon: FluentIcons.delete_24_regular,
+      title: l10n.feedingDeleteTitle,
+      message: l10n.feedingDeleteMessage,
+      confirmLabel: l10n.delete,
+      cancelLabel: l10n.cancel,
+      isDestructive: true,
     );
     if (confirmed != true || !mounted) return;
 
@@ -213,6 +208,8 @@ class _FeedingFormState extends ConsumerState<_FeedingForm> {
     result.when(
       success: (_) {
         ref.invalidate(petFeedingScheduleProvider(widget.petId));
+        ref.invalidate(petHealthSnapshotProvider(widget.petId));
+        ref.invalidate(homeSummaryProvider);
         context.showSuccessSnackBar(l10n.feedingDeleted);
         context.pop();
       },
@@ -225,70 +222,87 @@ class _FeedingFormState extends ConsumerState<_FeedingForm> {
     final l10n = context.l10n;
     final hasExisting = widget.initial != null;
 
-    return ListView(
-      padding: const EdgeInsets.all(AppSpacing.lg),
+    return Column(
       children: [
-        // ── Days ────────────────────────────────────────────────────────────
-        HealthFieldLabel(l10n.feedingDaysLabel),
-        const SizedBox(height: AppSpacing.sm),
-        HealthPickerField(
-          icon: FluentIcons.calendar_week_start_24_regular,
-          label: feedingDaysLabel(l10n, _daysOfWeek),
-          onTap: _pickDays,
-        ),
-        const SizedBox(height: AppSpacing.lg),
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            children: [
+              // ── Days ──────────────────────────────────────────────────────
+              HealthFieldLabel(l10n.feedingDaysLabel),
+              const SizedBox(height: AppSpacing.sm),
+              HealthPickerField(
+                icon: FluentIcons.calendar_week_start_24_regular,
+                label: feedingDaysLabel(l10n, _daysOfWeek),
+                onTap: _pickDays,
+              ),
+              const SizedBox(height: AppSpacing.lg),
 
-        // ── Meals ───────────────────────────────────────────────────────────
-        Row(
-          children: [
-            Expanded(child: HealthFieldLabel(l10n.feedingMealsLabel)),
-            TextButton.icon(
-              onPressed: _addMeal,
-              icon: const Icon(FluentIcons.add_24_regular, size: 18),
-              label: Text(l10n.feedingAddMeal),
+              // ── Meals ─────────────────────────────────────────────────────
+              Row(
+                children: [
+                  Expanded(child: HealthFieldLabel(l10n.feedingMealsLabel)),
+                  TextButton.icon(
+                    onPressed: _addMeal,
+                    icon: const Icon(FluentIcons.add_24_regular, size: 18),
+                    label: Text(l10n.feedingAddMeal),
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              for (var i = 0; i < _meals.length; i++) ...[
+                _MealEditor(
+                  key: ObjectKey(_meals[i]),
+                  meal: _meals[i],
+                  index: i,
+                  onPickTime: () => _pickTime(_meals[i]),
+                  onQuantityChanged: (q) => _meals[i].quantity = q,
+                  onUnitChanged: (u) => setState(() => _meals[i].unit = u),
+                  onRemove: _meals.length > 1 ? () => _removeMeal(i) : null,
+                ),
+                const SizedBox(height: AppSpacing.md),
+              ],
+            ],
+          ),
+        ),
+
+        // ── Pinned bottom actions ────────────────────────────────────────────
+        SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.lg, AppSpacing.sm, AppSpacing.lg, AppSpacing.lg,
             ),
-          ],
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (_error != null) ...[
+                  Text(
+                    _error!,
+                    style: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                ],
+                AppButton(
+                  label: l10n.save,
+                  icon: FluentIcons.checkmark_24_regular,
+                  variant: AppButtonVariant.primary,
+                  isLoading: _saving,
+                  onPressed: _save,
+                ),
+                if (hasExisting) ...[
+                  const SizedBox(height: AppSpacing.sm),
+                  AppButton(
+                    label: l10n.feedingDelete,
+                    icon: FluentIcons.delete_24_regular,
+                    variant: AppButtonVariant.text,
+                    onPressed: _saving ? null : _delete,
+                  ),
+                ],
+              ],
+            ),
+          ),
         ),
-        const SizedBox(height: AppSpacing.sm),
-        for (var i = 0; i < _meals.length; i++) ...[
-          _MealEditor(
-            key: ObjectKey(_meals[i]),
-            meal: _meals[i],
-            index: i,
-            onPickTime: () => _pickTime(_meals[i]),
-            onQuantityChanged: (q) => _meals[i].quantity = q,
-            onUnitChanged: (u) => setState(() => _meals[i].unit = u),
-            onRemove: _meals.length > 1 ? () => _removeMeal(i) : null,
-          ),
-          const SizedBox(height: AppSpacing.md),
-        ],
-
-        if (_error != null) ...[
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            _error!,
-            style: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
-          ),
-        ],
-        const SizedBox(height: AppSpacing.xl),
-
-        AppButton(
-          label: l10n.save,
-          icon: FluentIcons.checkmark_24_regular,
-          variant: AppButtonVariant.primary,
-          isLoading: _saving,
-          onPressed: _save,
-        ),
-
-        if (hasExisting) ...[
-          const SizedBox(height: AppSpacing.sm),
-          AppButton(
-            label: l10n.feedingDelete,
-            icon: FluentIcons.delete_24_regular,
-            variant: AppButtonVariant.text,
-            onPressed: _saving ? null : _delete,
-          ),
-        ],
       ],
     );
   }

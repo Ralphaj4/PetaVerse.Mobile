@@ -173,7 +173,6 @@ class _CommentsSheetState extends ConsumerState<CommentsSheet> {
       pets: widget.myPets,
       current: _actingAs,
       title: context.l10n.pawHubCommentAs,
-      showMyPostsLink: false,
     );
     if (chosen != null) {
       setState(() => _actingAs = chosen);

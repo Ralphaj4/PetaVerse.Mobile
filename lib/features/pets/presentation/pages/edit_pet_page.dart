@@ -29,6 +29,7 @@ import '../../domain/entities/pet.dart';
 import '../../domain/entities/species.dart';
 import '../providers/pet_detail_provider.dart';
 import '../providers/pet_list_provider.dart';
+import '../providers/pets_provider.dart';
 import '../providers/species_provider.dart';
 import '../providers/update_pet_provider.dart';
 
@@ -76,6 +77,10 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
       // Refresh so the new avatar URL is reflected on this page and elsewhere.
       ref.invalidate(petDetailProvider(widget.petId));
       ref.invalidate(petListProvider);
+      // petsProvider holds the lightweight PetRef list (including imagePath)
+      // used by the home screen hero — must be invalidated so the new photo
+      // appears without a restart.
+      ref.invalidate(petsProvider);
       context.showSuccessSnackBar(context.l10n.photoUpdated);
     } else {
       context.showErrorSnackBar(failure.localizedMessage(context.l10n));

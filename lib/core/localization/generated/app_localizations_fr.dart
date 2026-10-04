@@ -1163,6 +1163,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get petDetailActionBook => 'Réserver';
 
   @override
+  String get petDetailActionCoOwners => 'Co-propriétaires';
+
+  @override
   String get petDetailActionShare => 'Pet Vision';
 
   @override
@@ -1587,7 +1590,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get inviteCoOwnerTitle => 'Inviter un co-propriétaire';
+  String get inviteCoOwnerTitle => 'Gérer les co-propriétaires';
 
   @override
   String inviteCoOwnerSubtitle(String petName) {
@@ -4164,6 +4167,9 @@ class AppLocalizationsFr extends AppLocalizations {
       'Vous n\'avez pas encore d\'animaux à identifier.';
 
   @override
+  String get pawhubTagPetsSearchAll => 'Rechercher tous les animaux';
+
+  @override
   String get pawhubDiscoverEmptyTitle => 'Rien à découvrir pour l\'instant';
 
   @override
@@ -4461,6 +4467,35 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get deleteAccountSuccess => 'Votre compte a été supprimé.';
+
+  @override
+  String get pawHubPreparingShare => 'Préparation du partage…';
+
+  @override
+  String pawHubBlockConfirmTitle(String name) {
+    return 'Bloquer $name ?';
+  }
+
+  @override
+  String pawHubBlockConfirmMessage(String name) {
+    return 'Vous ne verrez plus les publications de $name dans votre fil, et cet animal ne pourra plus interagir avec vous.';
+  }
+
+  @override
+  String get pawHubBlockConfirmButton => 'Bloquer';
+
+  @override
+  String get openByDefaultSheetTitle => 'Ouvrir les liens dans PetaVerse';
+
+  @override
+  String get openByDefaultSheetBody =>
+      'Appuyez sur un lien PetaVerse partagé et il s\'ouvrira directement dans l\'application — sans navigateur, sans étapes supplémentaires. Activez-le en deux taps.';
+
+  @override
+  String get openByDefaultSheetEnable => 'Activer maintenant';
+
+  @override
+  String get openByDefaultSheetNotNow => 'Pas maintenant';
 
   @override
   String get batteryOptSheetTitle => 'Des rappels fiables';

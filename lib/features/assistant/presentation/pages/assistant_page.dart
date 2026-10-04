@@ -182,7 +182,6 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
       pets: pets,
       current: current,
       title: context.l10n.aiSwitchPetTitle,
-      showMyPostsLink: false,
     );
 
     if (chosen == null || chosen.backendId == _petId || !mounted) return;

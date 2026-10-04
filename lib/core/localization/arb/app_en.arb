@@ -470,6 +470,7 @@
   "petDetailTabTimeline": "Timeline",
   "petDetailActionEdit": "Edit",
   "petDetailActionBook": "Book",
+  "petDetailActionCoOwners": "Co-Owners",
   "petDetailActionShare": "Pet Vision",
   "petDetailActionMore": "More",
   "petDetailDateAdded": "Date Added",
@@ -650,7 +651,7 @@
   "@onboardingViewInvitesCount": {
     "placeholders": { "count": { "type": "int" } }
   },
-  "inviteCoOwnerTitle": "Invite Co-Owner",
+  "inviteCoOwnerTitle": "Manage Co-Owners",
   "inviteCoOwnerSubtitle": "Search by profile tag to invite someone to co-own {petName}.",
   "@inviteCoOwnerSubtitle": {
     "placeholders": { "petName": { "type": "String" } }
@@ -1877,6 +1878,7 @@
   },
   "pawhubTagPetsMyPets": "My pets",
   "pawhubTagPetsEmpty": "You have no pets to tag yet.",
+  "pawhubTagPetsSearchAll": "Search all pets",
   "pawhubDiscoverEmptyTitle": "Nothing to discover yet",
   "pawhubDiscoverEmptyMessage": "New posts from the community will show up here soon 🐾",
   "pawhubSavedPostsTooltip": "Saved posts",
@@ -2007,6 +2009,22 @@
   "deleteAccountTypePromptMessage": "Type DELETE to permanently delete your account.",
   "deleteAccountTypePlaceholder": "Type DELETE here",
   "deleteAccountSuccess": "Your account has been deleted.",
+
+  "pawHubPreparingShare": "Preparing share…",
+  "pawHubBlockConfirmTitle": "Block {name}?",
+  "@pawHubBlockConfirmTitle": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "pawHubBlockConfirmMessage": "You won't see {name}'s posts in your feed, and this pet won't be able to interact with you.",
+  "@pawHubBlockConfirmMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "pawHubBlockConfirmButton": "Block",
+
+  "openByDefaultSheetTitle": "Open links in PetaVerse",
+  "openByDefaultSheetBody": "Tap a shared PetaVerse link and it will open straight in the app — no browser, no extra steps. Enable it in two taps.",
+  "openByDefaultSheetEnable": "Enable now",
+  "openByDefaultSheetNotNow": "Not now",
 
   "batteryOptSheetTitle": "Get reliable reminders",
   "batteryOptSheetBody": "To make sure feeding and medication reminders reach you even when the app is closed, allow PetaVerse to run in the background.",

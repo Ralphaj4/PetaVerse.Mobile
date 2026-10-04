@@ -39,7 +39,6 @@ import '../../../features/community/presentation/pages/event_attendees_page.dart
 import '../../../features/community/presentation/pages/event_detail_page.dart';
 import '../../../features/community/presentation/pages/pawhub_search_page.dart';
 import '../../../features/community/presentation/pages/pawhub_saved_page.dart';
-import '../../../features/community/presentation/pages/pawhub_my_posts_page.dart';
 import '../../../features/community/presentation/pages/pawhub_hashtag_page.dart';
 import '../../../features/community/presentation/pages/pawhub_post_detail_page.dart';
 import '../../../features/community/presentation/pages/pawhub_followers_page.dart';
@@ -813,14 +812,6 @@ GoRouter appRouter(Ref ref) {
                     pageBuilder: (context, state) => AppTransitionPage(
                           key: state.pageKey,
                           child: const PawHubSavedPage(),
-                        ),
-                  ),
-                  GoRoute(
-                    path: 'my-posts',
-                    name: 'community_my_posts',
-                    pageBuilder: (context, state) => AppTransitionPage(
-                          key: state.pageKey,
-                          child: const PawHubMyPostsPage(),
                         ),
                   ),
                   GoRoute(

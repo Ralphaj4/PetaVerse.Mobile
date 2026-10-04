@@ -161,6 +161,7 @@ class PawCareRepositoryImpl implements PawCareRepository {
     int medicationId, {
     required String medicationName,
     required int frequencyDays,
+    required DateTime nextDueDate,
     DateTime? endDate,
     String? notes,
   }) =>
@@ -170,6 +171,7 @@ class PawCareRepositoryImpl implements PawCareRepository {
           medicationId,
           medicationName: medicationName,
           frequencyDays: frequencyDays,
+          nextDueDate: nextDueDate,
           endDate: endDate,
           notes: notes,
         );

@@ -470,6 +470,7 @@
   "petDetailTabTimeline": "الجدول الزمني",
   "petDetailActionEdit": "تعديل",
   "petDetailActionBook": "حجز",
+  "petDetailActionCoOwners": "المالكون المشتركون",
   "petDetailActionShare": "Pet Vision",
   "petDetailActionMore": "المزيد",
   "petDetailDateAdded": "تاريخ الإضافة",
@@ -650,7 +651,7 @@
   "@onboardingViewInvitesCount": {
     "placeholders": { "count": { "type": "int" } }
   },
-  "inviteCoOwnerTitle": "دعوة مالك مشارك",
+  "inviteCoOwnerTitle": "إدارة المالكين المشتركين",
   "inviteCoOwnerSubtitle": "ابحث بوسم الملف الشخصي لدعوة شخص للمشاركة في ملكية {petName}.",
   "@inviteCoOwnerSubtitle": {
     "placeholders": { "petName": { "type": "String" } }
@@ -1717,6 +1718,7 @@
   },
   "pawhubTagPetsMyPets": "حيواناتي",
   "pawhubTagPetsEmpty": "ليس لديك حيوانات للإشارة إليها بعد.",
+  "pawhubTagPetsSearchAll": "البحث في جميع الحيوانات",
   "pawhubDiscoverEmptyTitle": "لا شيء لاكتشافه بعد",
   "pawhubDiscoverEmptyMessage": "ستظهر منشورات جديدة من المجتمع هنا قريباً 🐾",
   "pawhubSavedPostsTooltip": "المنشورات المحفوظة",
@@ -1847,6 +1849,22 @@
   "deleteAccountTypePromptMessage": "اكتب DELETE لحذف حسابك بشكل دائم.",
   "deleteAccountTypePlaceholder": "اكتب DELETE هنا",
   "deleteAccountSuccess": "تم حذف حسابك.",
+
+  "pawHubPreparingShare": "جارٍ التحضير…",
+  "pawHubBlockConfirmTitle": "حظر {name}؟",
+  "@pawHubBlockConfirmTitle": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "pawHubBlockConfirmMessage": "لن ترى منشورات {name} في موجزك، ولن يتمكن هذا الحيوان الأليف من التفاعل معك.",
+  "@pawHubBlockConfirmMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "pawHubBlockConfirmButton": "حظر",
+
+  "openByDefaultSheetTitle": "افتح الروابط في PetaVerse",
+  "openByDefaultSheetBody": "اضغط على رابط PetaVerse المشارك وسيُفتح مباشرةً في التطبيق — بدون متصفح وبدون خطوات إضافية. فعّله بنقرتين.",
+  "openByDefaultSheetEnable": "تفعيل الآن",
+  "openByDefaultSheetNotNow": "ليس الآن",
 
   "batteryOptSheetTitle": "احصل على تذكيرات موثوقة",
   "batteryOptSheetBody": "لضمان وصول تذكيرات التغذية والدواء إليك حتى عند إغلاق التطبيق، اسمح لـ PetaVerse بالعمل في الخلفية.",

@@ -66,9 +66,9 @@ class _PawHubPetProfilePageState extends ConsumerState<PawHubPetProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.surface,
+      backgroundColor: AppColors.primarySoft,
       appBar: AppBar(
-        backgroundColor: AppColors.surface,
+        backgroundColor: AppColors.primarySoft,
         elevation: 0,
         scrolledUnderElevation: 0,
         actions: [

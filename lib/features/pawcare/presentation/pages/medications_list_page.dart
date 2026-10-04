@@ -16,6 +16,7 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_confirm_dialog.dart';
 import '../../../../shared/widgets/error_state_widget.dart';
 import '../../domain/entities/medication.dart';
+import '../../../home/presentation/providers/home_providers.dart';
 import '../providers/pawcare_providers.dart';
 import '../widgets/medication_frequency.dart';
 
@@ -40,6 +41,7 @@ class _MedicationsListPageState extends ConsumerState<MedicationsListPage> {
     ref.invalidate(petMedicationsProvider(widget.petId));
     ref.invalidate(petHealthSnapshotProvider(widget.petId));
     ref.invalidate(petHealthScoreProvider(widget.petId));
+    ref.invalidate(homeSummaryProvider);
   }
 
   Future<void> _markGiven(Medication med) async {
@@ -98,12 +100,23 @@ class _MedicationsListPageState extends ConsumerState<MedicationsListPage> {
         await showMedicationFrequencySheet(context, med.frequencyDays);
     if (picked == null || picked == med.frequencyDays || !mounted) return;
 
+    // The backend does not recompute nextDueDate on a frequency-only change —
+    // it only shifts it on mark-given. Derive the new due date client-side:
+    // (lastGivenDate ?? startDate ?? today) + newFrequency.
+    final base = med.lastGivenDate ?? med.startDate ?? DateTime.now();
+    final newNextDueDate = DateTime(
+      base.year,
+      base.month,
+      base.day + picked,
+    );
+
     setState(() => _busyId = med.id);
     final result = await ref.read(pawCareRepositoryProvider).updateMedication(
           widget.petId,
           med.id,
           medicationName: med.name,
           frequencyDays: picked,
+          nextDueDate: newNextDueDate,
         );
     if (!mounted) return;
     setState(() => _busyId = null);

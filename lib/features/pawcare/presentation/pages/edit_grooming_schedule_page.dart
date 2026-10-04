@@ -11,8 +11,10 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_button.dart';
+import '../../../../shared/widgets/app_confirm_dialog.dart';
 import '../../../../shared/widgets/error_state_widget.dart';
 import '../../domain/entities/grooming_schedule.dart';
+import '../../../home/presentation/providers/home_providers.dart';
 import '../providers/pawcare_providers.dart';
 import '../widgets/care_schedule_pickers.dart';
 import '../widgets/health_form_fields.dart';
@@ -118,6 +120,8 @@ class _GroomingFormState extends ConsumerState<_GroomingForm> {
     result.when(
       success: (_) {
         ref.invalidate(petGroomingScheduleProvider(widget.petId));
+        ref.invalidate(petHealthSnapshotProvider(widget.petId));
+        ref.invalidate(homeSummaryProvider);
         context.showSuccessSnackBar(l10n.groomingSaved);
         context.pop();
       },
@@ -135,6 +139,8 @@ class _GroomingFormState extends ConsumerState<_GroomingForm> {
     result.when(
       success: (updated) {
         ref.invalidate(petGroomingScheduleProvider(widget.petId));
+        ref.invalidate(petHealthSnapshotProvider(widget.petId));
+        ref.invalidate(homeSummaryProvider);
         setState(() {
           _nextDueDate = updated.nextDueDate;
           _intervalDays = updated.intervalDays;
@@ -147,23 +153,14 @@ class _GroomingFormState extends ConsumerState<_GroomingForm> {
 
   Future<void> _delete() async {
     final l10n = context.l10n;
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(l10n.groomingDeleteTitle),
-        content: Text(l10n.groomingDeleteMessage),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text(l10n.cancel),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(l10n.delete,
-                style: const TextStyle(color: AppColors.error)),
-          ),
-        ],
-      ),
+    final confirmed = await AppConfirmDialog.show(
+      context,
+      icon: FluentIcons.delete_24_regular,
+      title: l10n.groomingDeleteTitle,
+      message: l10n.groomingDeleteMessage,
+      confirmLabel: l10n.delete,
+      cancelLabel: l10n.cancel,
+      isDestructive: true,
     );
     if (confirmed != true || !mounted) return;
 
@@ -176,6 +173,8 @@ class _GroomingFormState extends ConsumerState<_GroomingForm> {
     result.when(
       success: (_) {
         ref.invalidate(petGroomingScheduleProvider(widget.petId));
+        ref.invalidate(petHealthSnapshotProvider(widget.petId));
+        ref.invalidate(homeSummaryProvider);
         context.showSuccessSnackBar(l10n.groomingDeleted);
         context.pop();
       },
@@ -189,63 +188,80 @@ class _GroomingFormState extends ConsumerState<_GroomingForm> {
     final locale = Localizations.localeOf(context).toString();
     final hasExisting = widget.initial != null;
 
-    return ListView(
-      padding: const EdgeInsets.all(AppSpacing.lg),
+    return Column(
       children: [
-        // ── Interval ──────────────────────────────────────────────────────────
-        HealthFieldLabel(l10n.groomingIntervalLabel),
-        const SizedBox(height: AppSpacing.sm),
-        HealthPickerField(
-          icon: FluentIcons.arrow_repeat_all_24_regular,
-          label: l10n.groomingEveryDays(_intervalDays),
-          onTap: _pickInterval,
-        ),
-        const SizedBox(height: AppSpacing.lg),
+        Expanded(
+          child: ListView(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            children: [
+              // ── Interval ────────────────────────────────────────────────────
+              HealthFieldLabel(l10n.groomingIntervalLabel),
+              const SizedBox(height: AppSpacing.sm),
+              HealthPickerField(
+                icon: FluentIcons.arrow_repeat_all_24_regular,
+                label: l10n.groomingEveryDays(_intervalDays),
+                onTap: _pickInterval,
+              ),
+              const SizedBox(height: AppSpacing.lg),
 
-        // ── Next due ──────────────────────────────────────────────────────────
-        HealthFieldLabel(l10n.groomingNextDueLabel),
-        const SizedBox(height: AppSpacing.sm),
-        HealthDateField(
-          label: DateFormat.yMMMMd(locale).format(_nextDueDate),
-          onTap: _pickNextDue,
-        ),
+              // ── Next due ────────────────────────────────────────────────────
+              HealthFieldLabel(l10n.groomingNextDueLabel),
+              const SizedBox(height: AppSpacing.sm),
+              HealthDateField(
+                label: DateFormat.yMMMMd(locale).format(_nextDueDate),
+                onTap: _pickNextDue,
+              ),
 
-        if (hasExisting) ...[
-          const SizedBox(height: AppSpacing.lg),
-          AppButton(
-            label: l10n.groomingMarkGroomed,
-            icon: FluentIcons.checkmark_circle_24_regular,
-            variant: AppButtonVariant.outlined,
-            onPressed: _saving ? null : _markGroomed,
+              if (hasExisting) ...[
+                const SizedBox(height: AppSpacing.lg),
+                AppButton(
+                  label: l10n.groomingMarkGroomed,
+                  icon: FluentIcons.checkmark_circle_24_filled,
+                  variant: AppButtonVariant.success,
+                  onPressed: _saving ? null : _markGroomed,
+                ),
+              ],
+            ],
           ),
-        ],
-
-        if (_error != null) ...[
-          const SizedBox(height: AppSpacing.md),
-          Text(
-            _error!,
-            style: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
-          ),
-        ],
-        const SizedBox(height: AppSpacing.xl),
-
-        AppButton(
-          label: l10n.save,
-          icon: FluentIcons.checkmark_24_regular,
-          variant: AppButtonVariant.primary,
-          isLoading: _saving,
-          onPressed: _save,
         ),
 
-        if (hasExisting) ...[
-          const SizedBox(height: AppSpacing.sm),
-          AppButton(
-            label: l10n.groomingDelete,
-            icon: FluentIcons.delete_24_regular,
-            variant: AppButtonVariant.text,
-            onPressed: _saving ? null : _delete,
+        // ── Pinned bottom actions ────────────────────────────────────────────
+        SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.lg, AppSpacing.sm, AppSpacing.lg, AppSpacing.lg,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (_error != null) ...[
+                  Text(
+                    _error!,
+                    style: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                ],
+                AppButton(
+                  label: l10n.save,
+                  icon: FluentIcons.checkmark_24_regular,
+                  variant: AppButtonVariant.primary,
+                  isLoading: _saving,
+                  onPressed: _save,
+                ),
+                if (hasExisting) ...[
+                  const SizedBox(height: AppSpacing.sm),
+                  AppButton(
+                    label: l10n.groomingDelete,
+                    icon: FluentIcons.delete_24_regular,
+                    variant: AppButtonVariant.text,
+                    onPressed: _saving ? null : _delete,
+                  ),
+                ],
+              ],
+            ),
           ),
-        ],
+        ),
       ],
     );
   }

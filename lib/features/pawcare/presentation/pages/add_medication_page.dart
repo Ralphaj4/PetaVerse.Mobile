@@ -13,6 +13,7 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/app_dropdown_field.dart';
 import '../../domain/entities/health_lookup.dart';
+import '../../../home/presentation/providers/home_providers.dart';
 import '../providers/pawcare_providers.dart';
 import '../widgets/health_form_fields.dart';
 import '../widgets/medication_frequency.dart';
@@ -91,6 +92,7 @@ class _AddMedicationPageState extends ConsumerState<AddMedicationPage> {
         ref.invalidate(petHealthSnapshotProvider(widget.petId));
         ref.invalidate(petHealthScoreProvider(widget.petId));
         ref.invalidate(petMedicationsProvider(widget.petId));
+        ref.invalidate(homeSummaryProvider);
         context.showSuccessSnackBar(l10n.healthMedicationsAddedSuccess);
         context.pop();
       },

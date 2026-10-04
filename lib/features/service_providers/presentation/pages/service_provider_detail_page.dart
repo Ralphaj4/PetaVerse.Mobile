@@ -98,17 +98,21 @@ class _DetailView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final topPadding = MediaQuery.paddingOf(context).top;
-    // Hero height matches _ProviderHeroHeader (without the old avatar overhang).
+    const avatarRadius = _ProviderHeroHeader._avatarRadius;
+    const avatarBorder = _ProviderHeroHeader._avatarBorder;
+    const avatarDiameter = avatarRadius * 2;
+    // Hero height must match _ProviderHeroHeader so the avatar top is exact.
     final heroHeight = 280.0 + topPadding;
-    // Avatar center sits exactly on the hero/content boundary.
-    final avatarTop = heroHeight - _ProviderHeroHeader._avatarRadius - AppRadius.lg;
+    // Avatar top: hero bottom minus avatar radius, pulled up by the corner
+    // radius so it sits centred on the hero/content seam.
+    final avatarTop = heroHeight - avatarRadius - AppRadius.lg;
 
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        // Scrollable content behind the avatar
-        SingleChildScrollView(
-          child: Column(
+    return SingleChildScrollView(
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          // Column carries the hero + content sheet — lays out height.
+          Column(
             children: [
               _ProviderHeroHeader(
                 detail: detail,
@@ -124,36 +128,35 @@ class _DetailView extends ConsumerWidget {
               ),
             ],
           ),
-        ),
-
-        // Avatar floats above everything — highest z-order in the Stack.
-        PositionedDirectional(
-          start: AppSpacing.xl,
-          top: avatarTop,
-          child: Container(
-            width: _ProviderHeroHeader._avatarRadius * 2,
-            height: _ProviderHeroHeader._avatarRadius * 2,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: Colors.black26,
-                width: _ProviderHeroHeader._avatarBorder,
+          // Avatar painted last → always on top of the content sheet.
+          PositionedDirectional(
+            start: AppSpacing.xl,
+            top: avatarTop,
+            child: Container(
+              width: avatarDiameter,
+              height: avatarDiameter,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.black26,
+                  width: avatarBorder,
+                ),
+                color: AppColors.surface,
               ),
-              color: AppColors.surface,
-            ),
-            child: ClipOval(
-              child: AppCachedImage(
-                imageUrl: detail.photoUrl,
-                width: _ProviderHeroHeader._avatarRadius * 2,
-                height: _ProviderHeroHeader._avatarRadius * 2,
-                borderRadius: BorderRadius.zero,
-                semanticLabel: detail.name,
-                fit: BoxFit.cover,
+              child: ClipOval(
+                child: AppCachedImage(
+                  imageUrl: detail.photoUrl,
+                  width: avatarDiameter,
+                  height: avatarDiameter,
+                  borderRadius: BorderRadius.zero,
+                  semanticLabel: detail.name,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

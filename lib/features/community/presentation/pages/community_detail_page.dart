@@ -30,6 +30,7 @@ import '../providers/community_actions_providers.dart';
 import '../providers/community_group_actions_providers.dart';
 import '../providers/community_group_feed_providers.dart';
 import '../providers/community_providers.dart';
+import '../providers/community_social_providers.dart';
 import '../providers/poll_event_providers.dart';
 import '../widgets/community_card.dart';
 import '../widgets/community_common.dart';
@@ -206,13 +207,27 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
       orElse: () => pawPets.first,
     );
 
+    // Merge followers + following + user's own other pets as tagging candidates.
+    final actingId = actingPaw.backendId;
+    final followingPets = ref.read(followingProvider(actingId)).value?.pets ?? [];
+    final followerPets = ref.read(followersProvider(actingId)).value?.pets ?? [];
+    final seen = <int>{actingId};
+    final taggable = <PawPet>[
+      for (final p in pawPets)
+        if (p.backendId != actingId && seen.add(p.backendId)) p,
+      for (final e in followingPets)
+        if (seen.add(e.id)) PawPet.fromEntity(e),
+      for (final e in followerPets)
+        if (seen.add(e.id)) PawPet.fromEntity(e),
+    ];
+
     final post = await Navigator.of(context).push<PawPost>(
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (_) => PostComposerPage(
           myPets: pawPets,
           actingAs: actingPaw,
-          taggablePets: const [],
+          taggablePets: taggable,
           communityId: _id,
           communityName: community.name,
         ),
@@ -372,7 +387,7 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
       case PostAction.copyLink:
         await copyPostLink(ref, context, _toDomainPost(post));
       case PostAction.share:
-        await _sharePost(post);
+        await sharePostToSheet(ref, _toDomainPost(post), context: context, showLoadingSnackbar: true);
       case PostAction.report:
         final reason = await showReportSheet(context);
         if (reason != null && mounted) {
@@ -380,6 +395,11 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
           _snack('Reported. Thank you.');
         }
       case PostAction.block:
+        final confirmed = await showBlockConfirmDialog(
+          context,
+          authorName: post.author.name,
+        );
+        if (!confirmed || !mounted) break;
         final authorId = post.author.backendId;
         if (authorId > 0) await actions.block(authorId);
         // Blocking hides the author's posts — refresh this feed.

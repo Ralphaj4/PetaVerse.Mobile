@@ -9,6 +9,7 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_cached_image.dart';
 import '../../domain/entities/provider_category.dart';
 import '../../domain/entities/service_provider.dart';
+import 'provider_actions.dart';
 import 'provider_badges.dart';
 import 'provider_format.dart';
 import 'provider_meta_pills.dart';
@@ -85,6 +86,44 @@ class ProviderCard extends StatelessWidget {
                     ProviderBadges(badges: provider.badges),
                   ],
                   const SizedBox(height: AppSpacing.md),
+                  // Call + Directions row.
+                  Row(
+                    children: [
+                      if (provider.phone != null && provider.phone!.isNotEmpty) ...[
+                        Expanded(
+                          child: _OutlineActionButton(
+                            icon: FluentIcons.call_24_regular,
+                            label: l10n.providerCall,
+                            onTap: () async {
+                              final ok = await ProviderActions.call(provider);
+                              if (!ok && context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(l10n.providerCallFailed)),
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: AppSpacing.sm),
+                      ],
+                      Expanded(
+                        child: _OutlineActionButton(
+                          icon: FluentIcons.location_arrow_24_regular,
+                          label: l10n.providerDirections,
+                          onTap: () async {
+                            final ok = await ProviderActions.directions(provider);
+                            if (!ok && context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(l10n.providerDirectionsFailed)),
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  // View Details — full-width primary button.
                   SizedBox(
                     width: double.infinity,
                     child: Material(
@@ -254,4 +293,54 @@ class _Info extends StatelessWidget {
           ),
         ),
       );
+}
+
+/// Outlined secondary button used for Call and Directions in the card.
+class _OutlineActionButton extends StatelessWidget {
+  const _OutlineActionButton({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      borderRadius: AppRadius.smAll,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: AppRadius.smAll,
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            vertical: AppSpacing.sm,
+            horizontal: AppSpacing.md,
+          ),
+          decoration: BoxDecoration(
+            color: AppColors.secondary.withValues(alpha: 0.08),
+            border: Border.all(color: AppColors.secondary),
+            borderRadius: AppRadius.smAll,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 16, color: AppColors.secondary),
+              const SizedBox(width: AppSpacing.xs),
+              Text(
+                label,
+                style: AppTextStyles.labelMedium.copyWith(
+                  color: AppColors.secondary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

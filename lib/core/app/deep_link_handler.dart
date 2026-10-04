@@ -72,14 +72,25 @@ class DeepLinkHandler {
     });
   }
 
-  /// Maps a verified inbound URI to an in-app route, or null if unrecognized.
-  /// Currently: `/p/<id>` (post share links) → the community post detail route.
+  /// Maps an inbound URI to an in-app route, or null if unrecognized.
+  ///
+  /// Handles two shapes:
+  ///   • https://petaverseapp.com/p/{id}  — verified App Link
+  ///   • petaverse://p/{id}               — custom-scheme fallback (website button)
   static String? _routeFor(Uri uri) {
+    // Custom scheme: petaverse://p/<id>  →  host="p", path="/<id>"
+    if (uri.scheme == 'petaverse' && uri.host == 'p') {
+      final id = int.tryParse(uri.pathSegments.firstOrNull ?? '');
+      if (id != null && id > 0) return '${AppRoutes.community}/post/$id';
+    }
+
+    // HTTPS App Link: https://petaverseapp.com/p/<id>
     final segments = uri.pathSegments;
     if (segments.length == 2 && segments[0] == 'p') {
       final id = int.tryParse(segments[1]);
       if (id != null && id > 0) return '${AppRoutes.community}/post/$id';
     }
+
     return null;
   }
 }

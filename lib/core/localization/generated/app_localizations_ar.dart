@@ -1154,6 +1154,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get petDetailActionBook => 'حجز';
 
   @override
+  String get petDetailActionCoOwners => 'المالكون المشتركون';
+
+  @override
   String get petDetailActionShare => 'Pet Vision';
 
   @override
@@ -1576,7 +1579,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get inviteCoOwnerTitle => 'دعوة مالك مشارك';
+  String get inviteCoOwnerTitle => 'إدارة المالكين المشتركين';
 
   @override
   String inviteCoOwnerSubtitle(String petName) {
@@ -4136,6 +4139,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pawhubTagPetsEmpty => 'ليس لديك حيوانات للإشارة إليها بعد.';
 
   @override
+  String get pawhubTagPetsSearchAll => 'البحث في جميع الحيوانات';
+
+  @override
   String get pawhubDiscoverEmptyTitle => 'لا شيء لاكتشافه بعد';
 
   @override
@@ -4429,6 +4435,35 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get deleteAccountSuccess => 'تم حذف حسابك.';
+
+  @override
+  String get pawHubPreparingShare => 'جارٍ التحضير…';
+
+  @override
+  String pawHubBlockConfirmTitle(String name) {
+    return 'حظر $name؟';
+  }
+
+  @override
+  String pawHubBlockConfirmMessage(String name) {
+    return 'لن ترى منشورات $name في موجزك، ولن يتمكن هذا الحيوان الأليف من التفاعل معك.';
+  }
+
+  @override
+  String get pawHubBlockConfirmButton => 'حظر';
+
+  @override
+  String get openByDefaultSheetTitle => 'افتح الروابط في PetaVerse';
+
+  @override
+  String get openByDefaultSheetBody =>
+      'اضغط على رابط PetaVerse المشارك وسيُفتح مباشرةً في التطبيق — بدون متصفح وبدون خطوات إضافية. فعّله بنقرتين.';
+
+  @override
+  String get openByDefaultSheetEnable => 'تفعيل الآن';
+
+  @override
+  String get openByDefaultSheetNotNow => 'ليس الآن';
 
   @override
   String get batteryOptSheetTitle => 'احصل على تذكيرات موثوقة';

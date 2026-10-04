@@ -13,22 +13,59 @@ import '../providers/community_actions_providers.dart';
 ///
 /// [context] anchors the share-sheet popover on iPad / macOS (ignored on
 /// phones). Safe to omit.
+///
+/// Set [showLoadingSnackbar] to true when called from the ellipsis sheet —
+/// the sheet dismisses before this runs, leaving a blank page with no feedback.
+/// Leave it false when called from the card's share button, which has its own
+/// inline spinner.
 Future<void> sharePostToSheet(
   WidgetRef ref,
   Post post, {
   BuildContext? context,
+  bool showLoadingSnackbar = false,
 }) async {
-  final url = await ref
-      .read(communityActionsProvider)
-      .share(post, shareMethod: 'system');
+  ScaffoldMessengerState? messenger;
+  if (showLoadingSnackbar && context != null && context.mounted) {
+    messenger = ScaffoldMessenger.of(context);
+    messenger.showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const SizedBox(
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation(Colors.white),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Text(context.l10n.pawHubPreparingShare),
+          ],
+        ),
+        duration: const Duration(seconds: 10),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
 
-  final text = _shareText(post, url);
-  await SharePlus.instance.share(
-    ShareParams(
-      text: text,
-      sharePositionOrigin: _originRect(context?.findRenderObject()),
-    ),
-  );
+  try {
+    final url = await ref
+        .read(communityActionsProvider)
+        .share(post, shareMethod: 'system');
+    messenger?.hideCurrentSnackBar();
+
+    final text = _shareText(post, url);
+    await SharePlus.instance.share(
+      ShareParams(
+        text: text,
+        sharePositionOrigin: _originRect(context?.findRenderObject()),
+      ),
+    );
+  } catch (_) {
+    messenger?.hideCurrentSnackBar();
+    rethrow;
+  }
 }
 
 /// Records a share (method `copy_link`) and copies the link to the clipboard,

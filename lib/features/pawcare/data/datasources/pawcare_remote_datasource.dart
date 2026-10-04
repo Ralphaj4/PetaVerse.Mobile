@@ -124,19 +124,23 @@ class PawCareRemoteDataSource {
     return MedicationDto.fromJson(json);
   }
 
-  /// PUT /pets/{petId}/medications/{id} → updated medication (recomputed next
-  /// due date from the new frequency).
+  /// PUT /pets/{petId}/medications/{id} → updated medication.
   ///
   /// The API's update contract requires the medication identity too (a
   /// name-required validation). The GET response only carries the resolved
   /// [medicationName], not the original lookup id, so we round-trip the current
   /// name as [customMedicationName] — it keeps the name unchanged and satisfies
   /// the validation.
+  ///
+  /// [nextDueDate] is sent explicitly because the backend does not recompute it
+  /// on a frequency-only change; the caller is responsible for deriving the
+  /// correct value (lastGivenDate + newFrequency, or startDate + newFrequency).
   Future<MedicationDto> updateMedication(
     int petId,
     int medicationId, {
     required String medicationName,
     required int frequencyDays,
+    required DateTime nextDueDate,
     DateTime? endDate,
     String? notes,
   }) async {
@@ -146,6 +150,7 @@ class PawCareRemoteDataSource {
         'medicationId': null,
         'customMedicationName': medicationName,
         'frequencyDays': frequencyDays,
+        'nextDueDate': nextDueDate.toUtc().toIso8601String(),
         'endDate': endDate?.toUtc().toIso8601String(),
         'notes': ?notes,
       },

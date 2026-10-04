@@ -67,17 +67,17 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
                         size: 28, color: AppColors.primaryDark),
                   ),
                 ),
-                const SizedBox(height: AppSpacing.md),
+                const SizedBox(height: AppSpacing.sm),
                 Text(context.l10n.pawhubUnfollowConfirmTitle(widget.pet.name),
                     style: AppTextStyles.titleMedium),
-                const SizedBox(height: AppSpacing.md),
+                const SizedBox(height: AppSpacing.sm),
                 Text(
                   context.l10n.pawhubUnfollowConfirmMessage(widget.pet.name),
                   style: AppTextStyles.bodySmall
                       .copyWith(color: AppColors.textSecondary),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: AppSpacing.xl),
+                const SizedBox(height: AppSpacing.md),
                 SizedBox(
                   width: double.infinity,
                   child: FilledButton(
@@ -206,48 +206,104 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
       );
 
   Widget _header(PawPet pet) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      child: Column(
-        children: [
-          AppAvatar(
-            name: pet.name,
-            imageUrl: pet.avatarUrl,
-            radius: 44,
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        // Branded gradient background with decorative paw prints.
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.fromLTRB(
+              AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.md),
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [AppColors.primarySoft, AppColors.surface],
+            ),
           ),
-          const SizedBox(height: AppSpacing.md),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Stack(
+            clipBehavior: Clip.none,
             children: [
-              Text(pet.name, style: AppTextStyles.headlineMedium),
-              if (pet.isVerified) ...[
-                const SizedBox(width: AppSpacing.xs),
-                const VerifiedBadge(size: 18),
-              ],
+              // Decorative paw prints — fixed positions, very faint.
+              Positioned(
+                top: -8,
+                right: 24,
+                child: Icon(FluentIcons.animal_paw_print_24_filled,
+                    size: 72,
+                    color: AppColors.primary.withValues(alpha: 0.07)),
+              ),
+              Positioned(
+                top: 32,
+                left: 8,
+                child: Icon(FluentIcons.animal_paw_print_24_filled,
+                    size: 44,
+                    color: AppColors.primary.withValues(alpha: 0.06)),
+              ),
+              Positioned(
+                bottom: 12,
+                right: 56,
+                child: Icon(FluentIcons.animal_paw_print_24_filled,
+                    size: 32,
+                    color: AppColors.primary.withValues(alpha: 0.05)),
+              ),
+              // Content
+              Column(
+                children: [
+                  // Avatar with a soft branded ring.
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppColors.primary.withValues(alpha: 0.25),
+                        width: 4,
+                      ),
+                    ),
+                    child: AppAvatar(
+                      name: pet.name,
+                      imageUrl: pet.avatarUrl,
+                      radius: 64,
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(pet.name, style: AppTextStyles.headlineLarge),
+                      if (pet.isVerified) ...[
+                        const SizedBox(width: AppSpacing.xs),
+                        const VerifiedBadge(size: 18),
+                      ],
+                    ],
+                  ),
+                  Text(pet.breedOrSpecies,
+                      style: AppTextStyles.bodyMedium
+                          .copyWith(color: AppColors.textSecondary)),
+                  if (pet.bio.isNotEmpty) ...[
+                    const SizedBox(height: AppSpacing.sm),
+                    Text(pet.bio,
+                        style: AppTextStyles.bodyMedium,
+                        textAlign: TextAlign.center),
+                  ],
+                  const SizedBox(height: AppSpacing.xs),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(FluentIcons.person_24_regular,
+                          size: 14, color: AppColors.textTertiary),
+                      const SizedBox(width: 4),
+                      Text(
+                          context.l10n
+                              .pawHubProfileCaredForBy(pet.ownerName),
+                          style: AppTextStyles.bodySmall
+                              .copyWith(color: AppColors.textTertiary)),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
-          Text(pet.breedOrSpecies,
-              style: AppTextStyles.bodyMedium
-                  .copyWith(color: AppColors.textSecondary)),
-          if (pet.bio.isNotEmpty) ...[
-            const SizedBox(height: AppSpacing.sm),
-            Text(pet.bio,
-                style: AppTextStyles.bodyMedium, textAlign: TextAlign.center),
-          ],
-          const SizedBox(height: AppSpacing.sm),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(FluentIcons.person_24_regular,
-                  size: 14, color: AppColors.textTertiary),
-              const SizedBox(width: 4),
-              Text(context.l10n.pawHubProfileCaredForBy(pet.ownerName),
-                  style: AppTextStyles.bodySmall
-                      .copyWith(color: AppColors.textTertiary)),
-            ],
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -261,16 +317,27 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
           data: (feed) => _compact(feed.postCount ?? feed.posts.length),
         );
         return Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.lg, vertical: AppSpacing.lg),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _stat(postCount, context.l10n.pawHubProfilePosts),
-              _stat(_compact(_followers), context.l10n.pawHubProfileFollowers),
-              _stat(_compact((_followers * 0.4).round()),
-                  context.l10n.pawHubProfileFollowing),
-            ],
+          padding: const EdgeInsets.fromLTRB(
+              AppSpacing.lg, AppSpacing.sm, AppSpacing.lg, 0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: AppRadius.mdAll,
+              border: Border.all(color: AppColors.divider),
+            ),
+            padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _stat(postCount, context.l10n.pawHubProfilePosts),
+                Container(width: 1, height: 32, color: AppColors.divider),
+                _stat(
+                    _compact(_followers), context.l10n.pawHubProfileFollowers),
+                Container(width: 1, height: 32, color: AppColors.divider),
+                _stat(_compact((_followers * 0.4).round()),
+                    context.l10n.pawHubProfileFollowing),
+              ],
+            ),
           ),
         );
       },
@@ -289,18 +356,22 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
   /// Closes the profile sheet and opens the pet's management screen.
   void _managePet(PawPet pet) {
     if (pet.backendId <= 0) return;
-    Navigator.of(context).pop();
     context.push(AppRoutes.petDetailPath(pet.backendId));
   }
 
   Widget _action(PawPet pet) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      padding: const EdgeInsets.fromLTRB(
+          AppSpacing.lg, AppSpacing.md, AppSpacing.lg, 0),
       child: pet.isMine
           ? SizedBox(
               width: double.infinity,
-              child: OutlinedButton.icon(
+              child: FilledButton.icon(
                 onPressed: () => _managePet(pet),
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: AppColors.onPrimary,
+                ),
                 icon: const Icon(FluentIcons.settings_24_regular, size: 18),
                 label: Text(context.l10n.pawhubManagePet),
               ),

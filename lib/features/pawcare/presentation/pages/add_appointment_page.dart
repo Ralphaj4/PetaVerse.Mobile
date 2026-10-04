@@ -11,6 +11,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_button.dart';
+import '../../../home/presentation/providers/home_providers.dart';
 import '../providers/pawcare_providers.dart';
 import '../widgets/health_form_fields.dart';
 
@@ -98,6 +99,9 @@ class _AddAppointmentPageState extends ConsumerState<AddAppointmentPage> {
     result.when(
       success: (_) {
         ref.invalidate(petAppointmentsProvider(widget.petId));
+        ref.invalidate(petHealthSnapshotProvider(widget.petId));
+        ref.invalidate(petHealthScoreProvider(widget.petId));
+        ref.invalidate(homeSummaryProvider);
         context.showSuccessSnackBar(l10n.appointmentsAddedSuccess);
         context.pop();
       },

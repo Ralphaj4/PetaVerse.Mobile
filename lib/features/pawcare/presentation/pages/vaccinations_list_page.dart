@@ -19,6 +19,7 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_confirm_dialog.dart';
 import '../../../../shared/widgets/error_state_widget.dart';
 import '../../domain/entities/vaccination.dart';
+import '../../../home/presentation/providers/home_providers.dart';
 import '../providers/pawcare_providers.dart';
 
 /// Full list of a pet's vaccination records, most recent first, each showing
@@ -43,6 +44,7 @@ class _VaccinationsListPageState extends ConsumerState<VaccinationsListPage> {
     ref.invalidate(petVaccinationsProvider(widget.petId));
     ref.invalidate(petHealthSnapshotProvider(widget.petId));
     ref.invalidate(petHealthScoreProvider(widget.petId));
+    ref.invalidate(homeSummaryProvider);
   }
 
   Future<void> _markAdministered(Vaccination vax) async {

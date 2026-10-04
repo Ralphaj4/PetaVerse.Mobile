@@ -16,6 +16,7 @@ import '../models/pawhub_models.dart';
 import '../providers/community_actions_providers.dart';
 import '../providers/community_feed_providers.dart';
 import '../providers/community_providers.dart';
+import '../providers/community_social_providers.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
 import '../widgets/pawhub_comments.dart';
 import '../widgets/pawhub_common.dart';
@@ -30,7 +31,9 @@ import 'pawhub_pet_profile_page.dart';
 
 /// PawHub — the pet social feed, wired to real backend providers.
 class PawHubPage extends ConsumerStatefulWidget {
-  const PawHubPage({super.key});
+  const PawHubPage({this.barsVisible = true, super.key});
+
+  final bool barsVisible;
 
   @override
   ConsumerState<PawHubPage> createState() => _PawHubPageState();
@@ -158,7 +161,7 @@ class _PawHubPageState extends ConsumerState<PawHubPage> {
       case PostAction.copyLink:
         await copyPostLink(ref, context, domainPost);
       case PostAction.share:
-        await sharePostToSheet(ref, domainPost, context: context);
+        await sharePostToSheet(ref, domainPost, context: context, showLoadingSnackbar: true);
       case PostAction.report:
         final reason = await showReportSheet(context);
         if (reason != null && mounted) {
@@ -166,9 +169,14 @@ class _PawHubPageState extends ConsumerState<PawHubPage> {
           if (mounted) _snack(context.l10n.pawHubPostReported);
         }
       case PostAction.block:
+        final confirmed = await showBlockConfirmDialog(
+          context,
+          authorName: post.author.name,
+        );
+        if (!confirmed || !mounted) break;
         final authorId = post.author.backendId;
         if (authorId > 0) await actions.block(authorId);
-        if (mounted) _snack(context.l10n.pawHubBlockedUser(post.author.ownerName));
+        if (mounted) _snack(context.l10n.pawHubBlockedUser(post.author.name));
       case PostAction.delete:
         await actions.deletePost(post.backendId);
         if (mounted) _snack(context.l10n.pawHubPostDeleted);
@@ -219,13 +227,30 @@ void _openProfile(PawPet pet) {
       _snack(context.l10n.pawHubAddPetFirstToPost);
       return;
     }
+    // Merge followers + following + user's own other pets as tagging candidates.
+    // Deduped by backendId so mutual-follows don't appear twice.
+    final actingId = actingPet.backendId;
+    final followingPets = ref.read(followingProvider(actingId)).value?.pets ?? [];
+    final followerPets = ref.read(followersProvider(actingId)).value?.pets ?? [];
+    final seen = <int>{actingId};
+    final taggable = <PawPet>[
+      // Own pets first (most obvious candidates).
+      for (final p in myPets)
+        if (p.backendId != actingId && seen.add(p.backendId)) p,
+      // Then following.
+      for (final e in followingPets)
+        if (seen.add(e.id)) PawPet.fromEntity(e),
+      // Then followers (mutual or one-way).
+      for (final e in followerPets)
+        if (seen.add(e.id)) PawPet.fromEntity(e),
+    ];
     final post = await Navigator.of(context).push<PawPost>(
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (_) => PostComposerPage(
           myPets: myPets,
           actingAs: actingPet,
-          taggablePets: const [],
+          taggablePets: taggable,
         ),
       ),
     );
@@ -328,7 +353,14 @@ void _openProfile(PawPet pet) {
         child: Column(
           children: [
             _searchBar(),
-            _topBar(actingPawPet),
+            AnimatedSize(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeInOut,
+              alignment: Alignment.topCenter,
+              child: widget.barsVisible
+                  ? _topBar(actingPawPet)
+                  : const SizedBox.shrink(),
+            ),
             // Background post-upload progress — shown here (below the
             // Following/Discover bar, above the feed) rather than app-wide.
             const UploadProgressBanner(),
@@ -409,6 +441,12 @@ void _openProfile(PawPet pet) {
             ),
           ),
           IconButton(
+            onPressed: () => _openProfile(_currentActingPawPet()),
+            icon: const Icon(FluentIcons.animal_paw_print_24_regular,
+                color: AppColors.textPrimary),
+            tooltip: context.l10n.petProfiles,
+          ),
+          IconButton(
             onPressed: () => context.push('/community/saved'),
             icon: const Icon(FluentIcons.bookmark_24_regular,
                 color: AppColors.textPrimary),
@@ -486,15 +524,9 @@ void _openProfile(PawPet pet) {
         // Community suggestions now live in the dedicated Communities tab, so
         // Discover is pure post discovery — no communities rail here.
         if (posts.isEmpty) {
-          return ListView(
-            children: [
-              // No CTA here — already on the Discover tab — and Discover-specific
-              // copy (not the "follow some pets" Following wording).
-              FeedEmptyState(
-                title: context.l10n.pawhubDiscoverEmptyTitle,
-                message: context.l10n.pawhubDiscoverEmptyMessage,
-              ),
-            ],
+          return FeedEmptyState(
+            title: context.l10n.pawhubDiscoverEmptyTitle,
+            message: context.l10n.pawhubDiscoverEmptyMessage,
           );
         }
         return _postList(

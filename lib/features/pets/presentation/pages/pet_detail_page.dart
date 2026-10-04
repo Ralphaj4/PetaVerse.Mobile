@@ -391,9 +391,9 @@ class _PetHeroHeader extends StatelessWidget {
                 ),
                 const SizedBox(width: AppSpacing.lg),
                 _ActionButton(
-                  icon: FluentIcons.eye_24_regular,
-                  label: l10n.petDetailActionShare,
-                  onTap: () => context.push(AppRoutes.petVision),
+                  icon: FluentIcons.people_24_regular,
+                  label: l10n.petDetailActionCoOwners,
+                  onTap: onAddCoOwner,
                 ),
                 const SizedBox(width: AppSpacing.lg),
                 _ActionButton(
@@ -459,20 +459,18 @@ class _PetHeroHeader extends StatelessWidget {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              // Inviting co-owners is a primary-owner-only action.
-              if (pet?.isPrimaryOwner ?? false)
-                ListTile(
-                  leading: const Icon(FluentIcons.person_add_24_regular,
-                      color: AppColors.textPrimary),
-                  title: Text(
-                    l10n.inviteCoOwnerTitle,
-                    style: AppTextStyles.bodyMedium,
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    onAddCoOwner();
-                  },
+              ListTile(
+                leading: const Icon(FluentIcons.eye_24_regular,
+                    color: AppColors.textPrimary),
+                title: Text(
+                  l10n.petDetailActionShare,
+                  style: AppTextStyles.bodyMedium,
                 ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  context.push(AppRoutes.petVision);
+                },
+              ),
               // A co-owner (non-primary) can leave the co-ownership.
               if (pet != null && !pet!.isPrimaryOwner)
                 ListTile(

@@ -36,13 +36,42 @@ class _CommunityHubPageState extends ConsumerState<CommunityHubPage>
     length: 2,
     vsync: this,
     initialIndex: widget.initialTab.clamp(0, 1),
-  );
+  )..addListener(_onTabChanged);
+
+  void _onTabChanged() {
+    // Always show the tab bar when switching tabs.
+    if (!_tabBarVisible) setState(() => _tabBarVisible = true);
+  }
 
   /// One scroll controller per inner tab (Feed · Communities), handed down via
   /// [PrimaryScrollController] so re-tapping the PetaHub bottom-nav tab can
   /// scroll whichever inner tab is showing back to the top.
   final _innerScrollControllers =
       List.generate(2, (_) => ScrollController());
+
+  bool _tabBarVisible = true;
+  double _lastScrollOffset = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _innerScrollControllers[0].addListener(_onFeedScroll);
+  }
+
+  void _onFeedScroll() {
+    final offset = _innerScrollControllers[0].offset;
+    final delta = offset - _lastScrollOffset;
+    _lastScrollOffset = offset;
+    if (offset <= 0) {
+      if (!_tabBarVisible) setState(() => _tabBarVisible = true);
+      return;
+    }
+    if (delta > 4 && _tabBarVisible) {
+      setState(() => _tabBarVisible = false);
+    } else if (delta < -4 && !_tabBarVisible) {
+      setState(() => _tabBarVisible = true);
+    }
+  }
 
   /// Scroll the currently-visible inner tab to the top.
   void _scrollActiveTabToTop() {
@@ -57,7 +86,9 @@ class _CommunityHubPageState extends ConsumerState<CommunityHubPage>
 
   @override
   void dispose() {
+    _controller.removeListener(_onTabChanged);
     _controller.dispose();
+    _innerScrollControllers[0].removeListener(_onFeedScroll);
     for (final c in _innerScrollControllers) {
       c.dispose();
     }
@@ -84,22 +115,29 @@ class _CommunityHubPageState extends ConsumerState<CommunityHubPage>
           child: Column(
             children: [
               // ── Shared tab bar (icon over label, card + underline) ──────
-              Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.lg,
-                  AppSpacing.md,
-                  AppSpacing.lg,
-                  AppSpacing.sm,
-                ),
-                child: _HubTabBar(
-                  controller: _controller,
-                  tabs: [
-                    (icon: FluentIcons.animal_paw_print_24_filled,
-                        label: l10n.communityTabFeed),
-                    (icon: FluentIcons.people_community_24_filled,
-                        label: l10n.communitiesTitle),
-                  ],
-                ),
+              AnimatedSize(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+                alignment: Alignment.topCenter,
+                child: _tabBarVisible
+                    ? Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          AppSpacing.lg,
+                          AppSpacing.md,
+                          AppSpacing.lg,
+                          AppSpacing.sm,
+                        ),
+                        child: _HubTabBar(
+                          controller: _controller,
+                          tabs: [
+                            (icon: FluentIcons.animal_paw_print_24_filled,
+                                label: l10n.communityTabFeed),
+                            (icon: FluentIcons.people_community_24_filled,
+                                label: l10n.communitiesTitle),
+                          ],
+                        ),
+                      )
+                    : const SizedBox.shrink(),
               ),
               Expanded(
                 child: TabBarView(
@@ -109,7 +147,7 @@ class _CommunityHubPageState extends ConsumerState<CommunityHubPage>
                   children: [
                     PrimaryScrollController(
                       controller: _innerScrollControllers[0],
-                      child: const PawHubPage(),
+                      child: PawHubPage(barsVisible: _tabBarVisible),
                     ),
                     PrimaryScrollController(
                       controller: _innerScrollControllers[1],

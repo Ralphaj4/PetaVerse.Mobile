@@ -19,6 +19,7 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_confirm_dialog.dart';
 import '../../../../shared/widgets/error_state_widget.dart';
 import '../../domain/entities/appointment.dart';
+import '../../../home/presentation/providers/home_providers.dart';
 import '../providers/pawcare_providers.dart';
 
 /// Full list of a pet's appointments, upcoming first. A "+" opens the add
@@ -40,6 +41,8 @@ class _AppointmentsListPageState extends ConsumerState<AppointmentsListPage> {
   void _refresh() {
     ref.invalidate(petAppointmentsProvider(widget.petId));
     ref.invalidate(petHealthSnapshotProvider(widget.petId));
+    ref.invalidate(petHealthScoreProvider(widget.petId));
+    ref.invalidate(homeSummaryProvider);
   }
 
   Future<void> _complete(Appointment appt) async {

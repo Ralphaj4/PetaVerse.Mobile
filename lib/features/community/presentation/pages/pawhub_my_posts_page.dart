@@ -196,13 +196,18 @@ class _PawHubMyPostsPageState extends ConsumerState<PawHubMyPostsPage> {
       case PostAction.copyLink:
         await copyPostLink(ref, context, domainPost);
       case PostAction.share:
-        await sharePostToSheet(ref, domainPost, context: context);
+        await sharePostToSheet(ref, domainPost, context: context, showLoadingSnackbar: true);
       case PostAction.report:
         final reason = await showReportSheet(context);
         if (reason != null) {
           await actions.reportPost(post.backendId, reason);
         }
       case PostAction.block:
+        final confirmed = await showBlockConfirmDialog(
+          context,
+          authorName: post.author.name,
+        );
+        if (!confirmed || !mounted) break;
         await actions.block(post.author.backendId);
       case PostAction.delete:
         final confirmed = await showDialog<bool>(

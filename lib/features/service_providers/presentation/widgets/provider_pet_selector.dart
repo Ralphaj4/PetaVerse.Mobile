@@ -65,7 +65,6 @@ class ProviderPetSelector extends ConsumerWidget {
           pets: pets,
           current: displayPet,
           title: 'Filter by pet',
-          showMyPostsLink: false,
         );
         if (chosen == null) return;
 

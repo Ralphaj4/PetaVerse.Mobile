@@ -54,15 +54,16 @@ abstract interface class PawCareRepository {
     DateTime? givenDate,
   });
 
-  /// Changes a medication's frequency (and optionally end date / notes); the
-  /// backend recomputes the next due date and returns the updated medication.
+  /// Changes a medication's frequency (and optionally end date / notes).
   /// [medicationName] is the med's current name, re-sent to satisfy the API's
-  /// name-required update validation.
+  /// name-required update validation. [nextDueDate] must be passed explicitly —
+  /// the backend does not recompute it on a frequency-only change.
   Future<Result<Medication>> updateMedication(
     int petId,
     int medicationId, {
     required String medicationName,
     required int frequencyDays,
+    required DateTime nextDueDate,
     DateTime? endDate,
     String? notes,
   });

@@ -9,6 +9,7 @@ import '../extensions/context_extensions.dart';
 import '../theme/app_colors.dart';
 import 'deep_link_handler.dart';
 import 'fcm_handler.dart';
+import 'open_by_default_sheet.dart';
 import 'router/app_router.dart';
 import 'tab_scroll_to_top_provider.dart';
 
@@ -59,6 +60,9 @@ class _AppShellState extends ConsumerState<AppShell>
     WidgetsBinding.instance.addObserver(this);
     FcmHandler.init(ref);
     DeepLinkHandler.init(ref.read(appRouterProvider));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) OpenByDefaultSheet.maybeShow(context);
+    });
   }
 
   @override

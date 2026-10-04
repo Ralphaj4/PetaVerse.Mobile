@@ -63,6 +63,18 @@
                       android:host="petaverseapp.com"
                       android:pathPrefix="/p/"/>
             </intent-filter>
+            <!-- Custom URI scheme fallback: petaverse://p/<id>
+                 Used by the website's "Open in PetaVerse App" button so links
+                 open the app directly when Android App Links are disabled by
+                 the user. Custom schemes bypass the App Links selection state
+                 entirely — Android routes them straight to this app. -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="petaverse"
+                      android:host="p"/>
+            </intent-filter>
         </activity>
         <!-- Walk activity foreground service.
              Location-typed: Android 14+ only allows starting it AFTER runtime
