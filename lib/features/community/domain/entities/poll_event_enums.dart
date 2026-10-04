@@ -1,4 +1,4 @@
-/// Enums for community polls & events. Pure Dart — wire values are ints, mapped
+﻿/// Enums for community polls & events. Pure Dart - wire values are ints, mapped
 /// through `fromWire` helpers so declaration order never has to match the API.
 library;
 

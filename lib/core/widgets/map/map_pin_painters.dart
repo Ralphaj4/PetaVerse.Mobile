@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../theme/app_colors.dart';
 
-/// Paints a solid colored circle pin with a white ring and an optional glyph —
+/// Paints a solid colored circle pin with a white ring and an optional glyph -
 /// the [BitmapDescriptor] equivalent of the old inline `_MapPin` widget used by
 /// the shared [MapView]. Rendered to an image by [MarkerBitmap].
 class CircledPinPainter extends CustomPainter {

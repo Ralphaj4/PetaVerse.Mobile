@@ -14,7 +14,7 @@ enum _RefreshOutcome {
   success,
 
   /// Backend rejected the refresh token (401/400) or returned an unusable body.
-  /// The session is unrecoverable — clear tokens and redirect to login.
+  /// The session is unrecoverable - clear tokens and redirect to login.
   rejected,
 
   /// The refresh call could not reach a verdict (timeout, connection refused,
@@ -88,13 +88,13 @@ class AuthInterceptor extends Interceptor {
     final outcome = await _refreshOnce();
     switch (outcome) {
       case _RefreshOutcome.rejected:
-        // Backend positively rejected the refresh token — session is dead.
+        // Backend positively rejected the refresh token - session is dead.
         await _endSession('token refresh rejected');
         handler.next(err);
         return;
       case _RefreshOutcome.inconclusive:
         // We never got a verdict (timeout / unreachable / 5xx). Do NOT clear
-        // tokens — the session may still be valid. Fail this one request with
+        // tokens - the session may still be valid. Fail this one request with
         // its original error; the next request will refresh again.
         _logger.warning(
           'Token refresh inconclusive (server unreachable); keeping tokens.',
@@ -119,7 +119,7 @@ class AuthInterceptor extends Interceptor {
       // Only a real 401 here means the freshly-issued access token is already
       // dead → session gone. If the replay merely timed out or couldn't reach
       // the server, keep the tokens (consistent with the inconclusive path) and
-      // just surface the error — the refresh itself had just succeeded.
+      // just surface the error - the refresh itself had just succeeded.
       if (retryError.response?.statusCode == 401) {
         await _endSession('retry after refresh still unauthorized');
       }
@@ -175,7 +175,7 @@ class AuthInterceptor extends Interceptor {
           );
           return _RefreshOutcome.rejected;
         }
-        // Persist the rotated pair — the backend rotates the refresh token on
+        // Persist the rotated pair - the backend rotates the refresh token on
         // every refresh, so saving the new one is what keeps the 7-day window
         // sliding forward instead of expiring on the original token.
         await _secureStorage.saveTokens(
@@ -187,7 +187,7 @@ class AuthInterceptor extends Interceptor {
         // A 401/400 is the backend positively rejecting the refresh token: the
         // session is dead and no retry will help. Anything else (timeout,
         // connection error, 5xx, a debugger breakpoint held past the receive
-        // timeout) means we simply never got a verdict — retry, and if we run
+        // timeout) means we simply never got a verdict - retry, and if we run
         // out of attempts report inconclusive so the caller KEEPS the tokens.
         if (_isRejection(e)) {
           _logger.warning(
@@ -233,7 +233,7 @@ class AuthInterceptor extends Interceptor {
     _authEvents.notifySessionExpired();
   }
 
-  /// Whether the backend positively rejected the refresh token — the only
+  /// Whether the backend positively rejected the refresh token - the only
   /// condition under which the session should be ended. A 401 means the token
   /// is invalid/expired/revoked; a 400 means it was malformed. Every other
   /// failure (timeout, connection error, 5xx) is inconclusive, not a rejection,

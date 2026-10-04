@@ -1,4 +1,4 @@
-/// All backend endpoint paths, centralized.
+﻿/// All backend endpoint paths, centralized.
 abstract final class ApiEndpoints {
   // Auth
   static const String register = '/auth/register';
@@ -76,13 +76,13 @@ abstract final class ApiEndpoints {
   static String reminder(String id) => '/reminders/$id';
   static const String healthLogs = '/health-logs';
 
-  // PawCare — weight (under a pet)
+  // PawCare - weight (under a pet)
   static String petWeight(int petId) => '/pets/$petId/weight';
   static String petWeightLatest(int petId) => '/pets/$petId/weight/latest';
   static String petWeightRecord(int petId, int weightId) =>
       '/pets/$petId/weight/$weightId';
 
-  // PawCare — medications (under a pet)
+  // PawCare - medications (under a pet)
   static String petMedications(int petId) => '/pets/$petId/medications';
   static String markMedicationGiven(int petId, int medId) =>
       '/pets/$petId/medications/$medId/mark-given';
@@ -90,11 +90,11 @@ abstract final class ApiEndpoints {
       '/pets/$petId/medications/$medId';
   static const String upcomingMedications = '/medications/upcoming';
 
-  // PawCare — lookups
+  // PawCare - lookups
   static const String medicationLookups = '/lookups/medications';
   static const String vaccineLookups = '/lookups/vaccines';
 
-  // PawCare — health score (server-computed, read-only)
+  // PawCare - health score (server-computed, read-only)
   static String petHealthScore(int petId) => '/pets/$petId/health-score';
 
   // Lost & Found
@@ -105,11 +105,11 @@ abstract final class ApiEndpoints {
       '/lost-found/listings/$id/resolve';
   static const String lostFoundVolunteer = '/lost-found/volunteer';
 
-  // Adoption — board / discovery
+  // Adoption - board / discovery
   static const String adoptionListings = '/adoption/listings';
   static String adoptionListing(int id) => '/adoption/listings/$id';
 
-  // Adoption — lister side (under a listing)
+  // Adoption - lister side (under a listing)
   static String adoptionListingRequests(int listingId) =>
       '/adoption/listings/$listingId/requests';
   static String approveAdoptionRequest(int listingId, int reqId) =>
@@ -123,12 +123,12 @@ abstract final class ApiEndpoints {
   static String withdrawAdoptionListing(int id) =>
       '/adoption/listings/$id/withdraw';
 
-  // Adoption — "my stuff" under /users/me
+  // Adoption - "my stuff" under /users/me
   static const String myAdoptionListings = '/users/me/adoption-listings';
   static const String myAdoptionRequests = '/users/me/adoption-requests';
   static String cancelMyAdoptionRequest(int reqId) =>
       '/users/me/adoption-requests/$reqId/cancel';
-  // Adopter opts in to an approved request ("I'll take it") — records consent,
+  // Adopter opts in to an approved request ("I'll take it") - records consent,
   // does NOT transfer → 200 updated MyAdoptionRequest.
   static String acceptMyAdoptionRequest(int reqId) =>
       '/users/me/adoption-requests/$reqId/accept';
@@ -143,13 +143,13 @@ abstract final class ApiEndpoints {
   // Services directory
   static const String services = '/services';
 
-  // Service providers (PawCare map — bbox search, categories, detail, rating)
+  // Service providers (PawCare map - bbox search, categories, detail, rating)
   static const String serviceProviderSearch = '/service-providers/search';
   static const String serviceProviderCategories = '/service-providers/categories';
   static String serviceProvider(int id) => '/service-providers/$id';
   static String serviceProviderRating(int id) => '/service-providers/$id/rate';
 
-  // Community (PawHub) — per-pet social graph. All under /community.
+  // Community (PawHub) - per-pet social graph. All under /community.
   // Feeds & post CRUD
   static const String communityFeed = '/community/feed';
   static const String communityDiscover = '/community/discover';
@@ -192,13 +192,13 @@ abstract final class ApiEndpoints {
   static const String communityNotificationsMarkAll =
       '/community/notifications/mark-all-read';
 
-  // Notification center — /api/notifications
+  // Notification center - /api/notifications
   static const String notifications = '/notifications';
   static const String notificationsUnreadCount = '/notifications/unread-count';
   static const String notificationsReadAll = '/notifications/read-all';
   static String notificationRead(int id) => '/notifications/$id/read';
 
-  // Moderation — reporting & blocking
+  // Moderation - reporting & blocking
   static String communityReportPost(int postId) =>
       '/community/posts/$postId/report';
   static String communityReportComment(int commentId) =>
@@ -254,18 +254,18 @@ abstract final class ApiEndpoints {
   static String mediaConfirm(String assetId) => '/media/$assetId/confirm';
   static String media(String assetId) => '/media/$assetId';
 
-  // PawCare — appointments (under a pet)
+  // PawCare - appointments (under a pet)
   static String petAppointments(int petId) => '/pets/$petId/appointments';
   static String petAppointment(int petId, int appointmentId) =>
       '/pets/$petId/appointments/$appointmentId';
   static String completePetAppointment(int petId, int appointmentId) =>
       '/pets/$petId/appointments/$appointmentId/complete';
 
-  // PawCare — feeding schedule (under a pet; device-local reminders)
+  // PawCare - feeding schedule (under a pet; device-local reminders)
   static String petFeedingSchedule(int petId) =>
       '/pets/$petId/feeding-schedule';
 
-  // PawCare — grooming schedule (under a pet; FCM server-push reminders)
+  // PawCare - grooming schedule (under a pet; FCM server-push reminders)
   static String petGroomingSchedule(int petId) =>
       '/pets/$petId/grooming-schedule';
   static String markGroomed(int petId) =>

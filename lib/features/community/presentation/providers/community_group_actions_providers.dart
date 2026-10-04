@@ -1,4 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+﻿import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/analytics/analytics_events.dart';
 import '../../../../core/analytics/analytics_service.dart';
@@ -61,7 +61,7 @@ class CommunityGroupActions {
   }
 
   /// Leaves [community] as the acting pet. The lead cannot leave (they must
-  /// delete instead) — the server enforces this; we surface it as a no-op.
+  /// delete instead) - the server enforces this; we surface it as a no-op.
   Future<bool> leave(CommunityGroup community) async {
     final petId = _actingPetId;
     if (petId == null || community.isLead) return community.isMember;
@@ -210,7 +210,7 @@ class CommunityGroupActions {
     try {
       _ref.read(communityDirectoryProvider.notifier).replace(updated);
     } catch (_) {
-      // Directory not loaded — nothing to reconcile there.
+      // Directory not loaded - nothing to reconcile there.
     }
   }
 

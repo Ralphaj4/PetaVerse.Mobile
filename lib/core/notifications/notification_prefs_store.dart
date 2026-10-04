@@ -26,7 +26,7 @@ abstract final class NotifPrefKeys {
   // Nearby lost pet geo-push
   static const String lostPetNearby = 'pref_lost_pet_nearby';
 
-  // Security alerts are intentionally omitted — they are always enabled.
+  // Security alerts are intentionally omitted - they are always enabled.
 
   static const List<String> all = [
     medication,

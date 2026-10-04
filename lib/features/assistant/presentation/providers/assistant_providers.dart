@@ -1,4 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+﻿import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/errors/result.dart';
 import '../../../../core/network/api_client.dart';
@@ -107,7 +107,7 @@ class ChatSession extends _$ChatSession {
         case DoneEvent(:final messageId):
           // If the model streamed the quick-replies / footer as tokens too,
           // strip those lines from the body now that the meta event has landed
-          // — they render as chips + a footer, never inline.
+          // - they render as chips + a footer, never inline.
           final cleanText = stripChatMetaLines(botMsg.text);
           final msgs = state.value ?? [];
           state = AsyncData([
@@ -115,7 +115,7 @@ class ChatSession extends _$ChatSession {
               if (m.id == botMsg.id)
                 botMsg
                     .copyWith(text: cleanText, status: ChatMessageStatus.done)
-                    // Real id — reconstruct since copyWith doesn't cover id.
+                    // Real id - reconstruct since copyWith doesn't cover id.
                     ._withId(messageId)
               else
                 m,
@@ -155,7 +155,7 @@ class ActiveChatSessionId extends _$ActiveChatSessionId {
   void set(int id) => state = id;
 }
 
-/// The user's chat sessions for the history screen — newest-updated first,
+/// The user's chat sessions for the history screen - newest-updated first,
 /// archived sessions filtered out (the backend soft-deletes, we hide them).
 ///
 /// Backed by `GET /ai/chat/sessions` (endpoint 2). [archive] calls

@@ -252,7 +252,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get weightTrendDropping => 'Dropping';
 
   @override
-  String get statNoData => '—';
+  String get statNoData => '-';
 
   @override
   String get nextVisitNone => 'No visit scheduled';
@@ -1077,7 +1077,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get createPetAdditionalInfoSubtitle =>
-      'Optional — you can fill these in later';
+      'Optional - you can fill these in later';
 
   @override
   String get createPetSize => 'Size';
@@ -1464,7 +1464,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String healthScoreRedistributedWith(String reason) {
-    return '$reason — weight redistributed to the other signals';
+    return '$reason - weight redistributed to the other signals';
   }
 
   @override
@@ -1745,7 +1745,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get petAvatarSetupSubtitle => 'Give your pet a face on their profile.';
 
   @override
-  String get petAvatarSetupOptional => 'Optional — you can change it anytime.';
+  String get petAvatarSetupOptional => 'Optional - you can change it anytime.';
 
   @override
   String get petAvatarUploadHint => 'Upload a photo';
@@ -1864,7 +1864,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String providerShowingOf(int shown, int total) {
-    return 'Showing $shown of $total — zoom in to see more';
+    return 'Showing $shown of $total - zoom in to see more';
   }
 
   @override
@@ -2381,7 +2381,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adoptionTransferNote =>
-      'You\'ll both confirm before ownership transfers — nothing moves without your approval.';
+      'You\'ll both confirm before ownership transfers - nothing moves without your approval.';
 
   @override
   String get adoptionListTitle => 'List a Pet';
@@ -2413,7 +2413,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adoptionListTransferNote =>
-      'When someone applies, you review and approve them. Ownership transfers only after you both confirm — records travel with your pet.';
+      'When someone applies, you review and approve them. Ownership transfers only after you both confirm - records travel with your pet.';
 
   @override
   String get adoptionListSubmit => 'Post listing';
@@ -2555,7 +2555,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get walkStatSpeed => 'Avg Speed';
 
   @override
-  String get walkNoLocation => 'Location unavailable — showing timer only';
+  String get walkNoLocation => 'Location unavailable - showing timer only';
 
   @override
   String get walkHistoryTitle => 'Walk History';
@@ -3169,7 +3169,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notifSecurityAlertsDesc =>
-      'Password changes and new device sign-ins — always enabled';
+      'Password changes and new device sign-ins - always enabled';
 
   @override
   String get pawHubPostLike => 'Like';
@@ -3465,7 +3465,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get communityDetailViewMembers => 'View all members';
 
   @override
-  String get communityDetailFeedEmpty => 'No posts yet — be the first to share';
+  String get communityDetailFeedEmpty => 'No posts yet - be the first to share';
 
   @override
   String get communityDetailJoinToPost => 'Join to post here';
@@ -4264,7 +4264,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get contactUsSubtitle =>
-      'Reach out anytime — we usually reply within 24 hours.';
+      'Reach out anytime - we usually reply within 24 hours.';
 
   @override
   String get contactUsEmailSubtitle => 'General questions & support';
@@ -4276,7 +4276,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportProblemSubtitle => 'Found a bug or something broken?';
 
   @override
-  String get reportProblemEmailSubject => 'PetaVerse — Bug Report';
+  String get reportProblemEmailSubject => 'PetaVerse - Bug Report';
 
   @override
   String get contactUsResponseTime => 'We typically respond within 24 hours.';
@@ -4440,7 +4440,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openByDefaultSheetBody =>
-      'Tap a shared PetaVerse link and it will open straight in the app — no browser, no extra steps. Enable it in two taps.';
+      'Tap a shared PetaVerse link and it will open straight in the app - no browser, no extra steps. Enable it in two taps.';
 
   @override
   String get openByDefaultSheetEnable => 'Enable now';

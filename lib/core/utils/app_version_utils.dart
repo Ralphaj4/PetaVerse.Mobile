@@ -1,7 +1,7 @@
 /// Compares two semver strings (e.g. "1.2.3").
 ///
 /// Returns negative if [a] < [b], zero if equal, positive if [a] > [b].
-/// Ignores pre-release suffixes — only major.minor.patch matter.
+/// Ignores pre-release suffixes - only major.minor.patch matter.
 abstract final class AppVersionUtils {
   static int compare(String a, String b) {
     final aParts = _parts(a);

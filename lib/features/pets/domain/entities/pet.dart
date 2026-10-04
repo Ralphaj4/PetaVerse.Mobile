@@ -1,6 +1,6 @@
-/// A pet owned by the current user.
+﻿/// A pet owned by the current user.
 ///
-/// Domain layer — no Flutter or JSON imports. Mirrors the API's
+/// Domain layer - no Flutter or JSON imports. Mirrors the API's
 /// PetResponse contract; the data layer maps the DTO onto this.
 class Pet {
   const Pet({

@@ -1,4 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+﻿import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/network/api_client.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
@@ -12,7 +12,7 @@ part 'community_group_providers.g.dart';
 ///
 /// `myPetIds` is a callback reading [PetsNotifier] so the `isMine` flag on
 /// lead/member pets always reflects the current pet set without holding a
-/// stale snapshot — same pattern as `communityRepository`.
+/// stale snapshot - same pattern as `communityRepository`.
 @Riverpod(keepAlive: true)
 CommunityGroupRepository communityGroupRepository(Ref ref) {
   return CommunityGroupRepositoryImpl(

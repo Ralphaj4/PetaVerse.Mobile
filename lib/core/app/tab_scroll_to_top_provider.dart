@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// its primary scroll view back to the top.
 ///
 /// A monotonically increasing counter (rather than a bool/void) is used so
-/// every tap is a distinct value that Riverpod's `listen` fires on — even two
+/// every tap is a distinct value that Riverpod's `listen` fires on - even two
 /// taps in a row.
 final tabScrollToTopProvider =
     NotifierProvider<TabScrollToTopNotifier, Map<int, int>>(

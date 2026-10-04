@@ -31,7 +31,7 @@ const int kLocationNameMaxLength = 200;
 /// * The map defaults to the device's current position (with permission),
 ///   falling back to [kDefaultMapCenter] when denied/unavailable.
 /// * Dropping/dragging the pin (or "use my location") reverse-geocodes the
-///   coordinate into the address field — but only when the field is empty or
+///   coordinate into the address field - but only when the field is empty or
 ///   still holds a value we auto-filled. Text the user typed is never
 ///   overwritten.
 class LocationField extends ConsumerStatefulWidget {
@@ -411,7 +411,7 @@ class _FullScreenLocationPickerState extends State<_FullScreenLocationPicker> {
   }
 }
 
-/// The "use my location" button below the map — fills the pin+address from
+/// The "use my location" button below the map - fills the pin+address from
 /// the device's current location.
 class _UseMyLocationButton extends StatelessWidget {
   const _UseMyLocationButton({

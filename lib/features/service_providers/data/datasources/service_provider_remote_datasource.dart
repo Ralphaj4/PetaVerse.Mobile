@@ -12,7 +12,7 @@ class ServiceProviderRemoteDataSource {
 
   final ApiClient _client;
 
-  /// GET /service-providers/search — branch pins within the bbox.
+  /// GET /service-providers/search - branch pins within the bbox.
   ///
   /// [categoryId] is the resolved server category id (the repository maps the
   /// client [ProviderCategory] → id via the categories lookup), or null for no
@@ -48,7 +48,7 @@ class ServiceProviderRemoteDataSource {
     return ServiceProviderSearchDto.fromJson(json);
   }
 
-  /// GET /service-providers/categories — the filter/legend list.
+  /// GET /service-providers/categories - the filter/legend list.
   Future<List<ProviderCategoryDto>> getCategories() async {
     final json = await _client.get<List<dynamic>>(
       ApiEndpoints.serviceProviderCategories,
@@ -59,7 +59,7 @@ class ServiceProviderRemoteDataSource {
         .toList();
   }
 
-  /// GET /service-providers/{id} — full provider detail.
+  /// GET /service-providers/{id} - full provider detail.
   Future<ServiceProviderDetailDto> getDetail(
     int id, {
     double? userLat,
@@ -74,7 +74,7 @@ class ServiceProviderRemoteDataSource {
     return ServiceProviderDetailDto.fromJson(json);
   }
 
-  /// POST /service-providers/{id}/rate — submit the user's stars.
+  /// POST /service-providers/{id}/rate - submit the user's stars.
   Future<ProviderRatingDto> rate(int id, int stars) async {
     final json = await _client.post<Map<String, dynamic>>(
       ApiEndpoints.serviceProviderRating(id),

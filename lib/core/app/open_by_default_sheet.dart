@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -13,12 +13,12 @@ import 'open_by_default_service.dart';
 /// Shows the "Open links in PetaVerse" prompt bottom sheet on Android.
 ///
 /// Call [maybeShow] from [AppShell.initState] (post-frame). The sheet is shown
-/// at most once per install — [OpenByDefaultService] tracks the flag in Hive.
+/// at most once per install - [OpenByDefaultService] tracks the flag in Hive.
 /// On iOS this is a no-op (Universal Links are auto-verified without user
 /// action).
 abstract final class OpenByDefaultSheet {
   /// Shows the sheet if [OpenByDefaultService.shouldPrompt] returns true.
-  /// Safe to call on every cold start — it self-gates.
+  /// Safe to call on every cold start - it self-gates.
   static Future<void> maybeShow(BuildContext context) async {
     if (!Platform.isAndroid) return;
     final should = await OpenByDefaultService.shouldPrompt();

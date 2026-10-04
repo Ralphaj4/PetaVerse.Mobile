@@ -6,7 +6,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 
 /// Circular 0–100 gauge: a track ring with a colored arc filled to
-/// `value / 100`, the number centered inside. No chart dependency — a plain
+/// `value / 100`, the number centered inside. No chart dependency - a plain
 /// [CustomPaint], matching the `WeightSparkline` approach. Starts at the top
 /// (12 o'clock) and sweeps clockwise, like the visualizer prototype.
 class HealthScoreGauge extends StatelessWidget {

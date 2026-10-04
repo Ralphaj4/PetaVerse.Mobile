@@ -1,12 +1,12 @@
-import 'community_entities.dart';
+﻿import 'community_entities.dart';
 import 'community_group_enums.dart';
 
-/// Domain entities for pet-led **communities** (groups). Pure Dart — no
+/// Domain entities for pet-led **communities** (groups). Pure Dart - no
 /// Flutter, no JSON. Kept separate from `community_entities.dart` so the mature
 /// social types (Post/Comment/CommunityPet) stay untouched.
 ///
 /// Ids are ints (the API uses int ids throughout). The social actor is always
-/// a [CommunityPet] — communities are led and joined by pets, never accounts.
+/// a [CommunityPet] - communities are led and joined by pets, never accounts.
 
 /// A community: a themed group led by one pet. Any other pet may join freely.
 class CommunityGroup {
@@ -37,7 +37,7 @@ class CommunityGroup {
   final CommunityCategory category;
 
   /// The lead pet (creator). Its `isMine` flag says whether the acting user
-  /// controls it — but leadership is per-pet, so [isLead] below is the gate.
+  /// controls it - but leadership is per-pet, so [isLead] below is the gate.
   final CommunityPet lead;
   final int memberCount;
   final int postCount;

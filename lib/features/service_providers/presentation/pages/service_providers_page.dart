@@ -29,7 +29,7 @@ import '../widgets/service_provider_map.dart';
 
 /// Service Providers discovery screen (PawCare tab): a full-bleed map of nearby
 /// pet businesses with a draggable results sheet, category filters, search, and
-/// sort — Google-Maps / Uber-Eats style browsing.
+/// sort - Google-Maps / Uber-Eats style browsing.
 ///
 /// The map queries the backend for the branches inside the current viewport
 /// (bbox), refetching when the camera settles. All data flows through Riverpod
@@ -58,7 +58,7 @@ class _ServiceProvidersPageState extends ConsumerState<ServiceProvidersPage> {
   static const double _expanded = 0.92;
 
   /// Translates a vertical drag on the (non-scrolling) sheet header into a sheet
-  /// resize, so the sheet can be dragged by its handle/header — not only by the
+  /// resize, so the sheet can be dragged by its handle/header - not only by the
   /// scrollable card list.
   void _dragSheet(double dyDelta) {
     if (!_sheetController.isAttached) return;
@@ -127,7 +127,7 @@ class _ServiceProvidersPageState extends ConsumerState<ServiceProvidersPage> {
     if (here != null && _mapController != null) {
       _mapController!.animateTo(dest: here, zoom: 15);
     } else {
-      // No fix yet — retry resolving location for the dot + next recenter.
+      // No fix yet - retry resolving location for the dot + next recenter.
       ref.read(providerUserLocationProvider.notifier).refresh();
     }
     _deselect();
@@ -421,7 +421,7 @@ class _ResultsSheet extends StatefulWidget {
   final ScrollController scrollController;
 
   /// Called with the vertical drag delta while dragging the header, and with
-  /// the fling velocity when the drag ends — so the header can resize the sheet.
+  /// the fling velocity when the drag ends - so the header can resize the sheet.
   final ValueChanged<double> onHeaderDrag;
   final ValueChanged<double> onHeaderDragEnd;
 
@@ -528,7 +528,7 @@ class _ResultsSheetState extends State<_ResultsSheet> {
         );
       },
       data: (_) {
-        // Bbox too large to search — prompt to zoom in.
+        // Bbox too large to search - prompt to zoom in.
         if (widget.tooZoomedOut) {
           return SingleChildScrollView(
             controller: widget.scrollController,
@@ -555,7 +555,7 @@ class _ResultsSheetState extends State<_ResultsSheet> {
           );
         }
 
-        // A "showing N of M — zoom in for the rest" footer when capped.
+        // A "showing N of M - zoom in for the rest" footer when capped.
         final showHasMore = widget.hasMore &&
             widget.totalInViewport > visible.length;
 

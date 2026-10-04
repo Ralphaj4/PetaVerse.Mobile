@@ -1,9 +1,9 @@
-import '../../../../core/errors/result.dart';
+﻿import '../../../../core/errors/result.dart';
 import '../entities/user.dart';
 
 abstract interface class IUserRepository {
   /// Reads the locally cached profile. Returns null (success) when nothing
-  /// is cached — never hits the network.
+  /// is cached - never hits the network.
   Future<Result<User?>> cachedProfile();
 
   /// Fetches the authoritative profile from `/users/me` and reconciles the

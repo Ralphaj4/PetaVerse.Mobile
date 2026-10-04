@@ -147,7 +147,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Result<void>> logout() async {
-    // Best-effort server revoke — fire-and-forget so a slow/failing network
+    // Best-effort server revoke - fire-and-forget so a slow/failing network
     // call never delays (or blocks) the local token clear, which is what
     // actually logs the user out on-device.
     final refresh = await _secureStorage.readRefreshToken();
@@ -159,7 +159,7 @@ class AuthRepositoryImpl implements AuthRepository {
             .catchError((_) {}),
       );
     }
-    // Local token clear is awaited and durable — this is the source of truth
+    // Local token clear is awaited and durable - this is the source of truth
     // for [hasSession] on the next launch.
     await _secureStorage.clearTokens();
     return const Result.success(null);
@@ -184,7 +184,7 @@ class AuthRepositoryImpl implements AuthRepository {
         timeZone: await _localTimeZone(),
       );
     } catch (_) {
-      // Best-effort — a token registration failure must never break login.
+      // Best-effort - a token registration failure must never break login.
     }
   }
 
@@ -194,7 +194,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final deviceId = await _secureStorage.getOrCreateDeviceId();
       await _remote.unregisterFcmToken(deviceId: deviceId);
     } catch (_) {
-      // Best-effort — logout proceeds regardless.
+      // Best-effort - logout proceeds regardless.
     }
   }
 
@@ -217,7 +217,7 @@ class AuthRepositoryImpl implements AuthRepository {
     // A stored access token isn't proof of a live session: on a cold launch the
     // day after login it is typically expired. Returning true here would let
     // the app enter Home, then every startup request would 401 at once and race
-    // the (rotating) refresh token — logging the user out. So when the access
+    // the (rotating) refresh token - logging the user out. So when the access
     // token is expired, refresh it up front and let THAT decide the verdict.
     if (!JwtUtils.isExpired(token)) return true;
 
@@ -238,7 +238,7 @@ class AuthRepositoryImpl implements AuthRepository {
       await _secureStorage.clearTokens();
       return false;
     } on ValidationException {
-      // 400 — malformed refresh token; same verdict as a 401.
+      // 400 - malformed refresh token; same verdict as a 401.
       await _secureStorage.clearTokens();
       return false;
     } on AppException {

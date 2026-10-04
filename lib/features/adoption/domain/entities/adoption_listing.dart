@@ -1,4 +1,4 @@
-import 'package:latlong2/latlong.dart';
+﻿import 'package:latlong2/latlong.dart';
 
 /// Lifecycle of a listing (backend Status ids 16–19). Only [available]
 /// listings appear on the board.
@@ -40,7 +40,7 @@ AdoptionRequestStatus adoptionRequestStatusFromId(int? id) => switch (id) {
 ///
 /// For a rehome listing this mirrors a real Pet record. For a shelter/stray
 /// listing there's no pet yet, so [id] is null and the details come straight
-/// from the listing — [gender] and [dateOfBirth] may also be null.
+/// from the listing - [gender] and [dateOfBirth] may also be null.
 class AdoptionPet {
   const AdoptionPet({
     this.id,
@@ -122,7 +122,7 @@ class AdoptionListing {
   /// created for the adopter on completion). False for a rehome of an owned pet.
   final bool isShelter;
 
-  /// True when the current user is the lister — the UI shows "Manage"
+  /// True when the current user is the lister - the UI shows "Manage"
   /// instead of "Apply".
   final bool isOwnListing;
 
@@ -218,11 +218,11 @@ class MyAdoptionRequest {
   final DateTime? listerConfirmedAt;
   final DateTime? adopterConfirmedAt;
 
-  /// The adopter has opted in ("I'll take it") — step 3 of the flow. The owner
+  /// The adopter has opted in ("I'll take it") - step 3 of the flow. The owner
   /// can only complete the transfer once this is true.
   bool get accepted => adopterConfirmedAt != null;
 
-  /// Approved by the owner but the adopter hasn't accepted yet — the adopter's
+  /// Approved by the owner but the adopter hasn't accepted yet - the adopter's
   /// turn to opt in.
   bool get awaitingMyAcceptance =>
       status == AdoptionRequestStatus.approved && !accepted;

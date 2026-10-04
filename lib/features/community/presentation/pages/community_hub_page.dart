@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,7 +16,7 @@ import 'pawhub_page.dart';
 /// "other people's pets" surfaces behind a segmented control:
 /// Feed (PawHub) · Communities.
 ///
-/// Communities renders in [embedded] mode (no own AppBar) — the hub supplies
+/// Communities renders in [embedded] mode (no own AppBar) - the hub supplies
 /// the shared header. PawHub keeps its own functional toolbar (pet switcher /
 /// search) below the segmented control. Lost & Found and Adoption now live on
 /// Home, not here.
@@ -100,7 +100,7 @@ class _CommunityHubPageState extends ConsumerState<CommunityHubPage>
     final l10n = context.l10n;
 
     // Bottom nav bumps this when the Community tab (branch 1) is re-tapped at
-    // root — scroll whichever inner tab is showing back to the top.
+    // root - scroll whichever inner tab is showing back to the top.
     ref.listen(
       tabScrollToTopProvider.select((m) => m[1]),
       (_, _) => _scrollActiveTabToTop(),

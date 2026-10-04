@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
@@ -15,7 +15,7 @@ import 'adoption_status_badge.dart';
 /// image animates between the board and the details screen.
 String adoptionHeroTag(int listingId) => 'adoption-photo-$listingId';
 
-/// Board card for a single adoption listing — photo, status badge, name/breed,
+/// Board card for a single adoption listing - photo, status badge, name/breed,
 /// a meta line (species · sex · age), trait chips, location, and a
 /// state-adaptive action (Apply / Applied / Manage / Closed).
 class AdoptionCard extends StatelessWidget {

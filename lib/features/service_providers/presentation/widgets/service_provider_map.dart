@@ -197,7 +197,7 @@ class _ServiceProviderMapState extends State<ServiceProviderMap> {
 
   /// Reports the current visible bounds to [callback] as [GeoBounds]. Google's
   /// [getVisibleRegion] returns the true on-screen rectangle (accounts for the
-  /// bottom sheet overlaying part of the map too — it's the full view rect).
+  /// bottom sheet overlaying part of the map too - it's the full view rect).
   Future<void> _reportViewport(ViewportChanged? callback) async {
     if (callback == null) return;
     final controller = _controller;
@@ -215,7 +215,7 @@ class _ServiceProviderMapState extends State<ServiceProviderMap> {
   }
 
   /// Native camera-idle: fires once the camera settles after any gesture. This
-  /// replaces the old flutter_map end-event detection + debounce — Google only
+  /// replaces the old flutter_map end-event detection + debounce - Google only
   /// fires idle when movement actually stops, so there's no continuous-fire
   /// problem to debounce against.
   void _onCameraIdle() {

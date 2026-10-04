@@ -144,7 +144,7 @@ class CommunityRepositoryImpl implements CommunityRepository {
           'locationName': ?locationName,
           'communityId': ?communityId,
           'visibility': visibility.wire,
-          // Omitted entirely when null — a post with no feeling.
+          // Omitted entirely when null - a post with no feeling.
           'feeling': ?feeling?.wire,
           'media': media
               .map((m) => {

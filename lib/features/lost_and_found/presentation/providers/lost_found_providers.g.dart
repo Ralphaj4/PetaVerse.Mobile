@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+﻿// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'lost_found_providers.dart';
 
@@ -271,7 +271,7 @@ abstract class _$LostFoundDashboardNotifier
 /// `keepAlive` is REQUIRED: these methods set `state = AsyncLoading()` then
 /// await the network. As an auto-dispose notifier with no listeners (the page
 /// only `ref.read`s it), it would be disposed mid-await and the returned Future
-/// would never complete — hanging the caller. Keeping it alive avoids that.
+/// would never complete - hanging the caller. Keeping it alive avoids that.
 
 @ProviderFor(VolunteerActions)
 final volunteerActionsProvider = VolunteerActionsProvider._();
@@ -281,7 +281,7 @@ final volunteerActionsProvider = VolunteerActionsProvider._();
 /// `keepAlive` is REQUIRED: these methods set `state = AsyncLoading()` then
 /// await the network. As an auto-dispose notifier with no listeners (the page
 /// only `ref.read`s it), it would be disposed mid-await and the returned Future
-/// would never complete — hanging the caller. Keeping it alive avoids that.
+/// would never complete - hanging the caller. Keeping it alive avoids that.
 final class VolunteerActionsProvider
     extends $AsyncNotifierProvider<VolunteerActions, void> {
   /// Volunteer join/leave actions. The AsyncValue carries the in-flight state.
@@ -289,7 +289,7 @@ final class VolunteerActionsProvider
   /// `keepAlive` is REQUIRED: these methods set `state = AsyncLoading()` then
   /// await the network. As an auto-dispose notifier with no listeners (the page
   /// only `ref.read`s it), it would be disposed mid-await and the returned Future
-  /// would never complete — hanging the caller. Keeping it alive avoids that.
+  /// would never complete - hanging the caller. Keeping it alive avoids that.
   VolunteerActionsProvider._()
     : super(
         from: null,
@@ -316,7 +316,7 @@ String _$volunteerActionsHash() => r'055350333fbd02981e756d4678d16c2c56816ddb';
 /// `keepAlive` is REQUIRED: these methods set `state = AsyncLoading()` then
 /// await the network. As an auto-dispose notifier with no listeners (the page
 /// only `ref.read`s it), it would be disposed mid-await and the returned Future
-/// would never complete — hanging the caller. Keeping it alive avoids that.
+/// would never complete - hanging the caller. Keeping it alive avoids that.
 
 abstract class _$VolunteerActions extends $AsyncNotifier<void> {
   FutureOr<void> build();
@@ -342,7 +342,7 @@ abstract class _$VolunteerActions extends $AsyncNotifier<void> {
 /// new alert appears.
 ///
 /// `keepAlive` so the notifier isn't auto-disposed mid-await (which would hang
-/// the returned Future) — see [VolunteerActions].
+/// the returned Future) - see [VolunteerActions].
 
 @ProviderFor(CreateReport)
 final createReportProvider = CreateReportProvider._();
@@ -353,7 +353,7 @@ final createReportProvider = CreateReportProvider._();
 /// new alert appears.
 ///
 /// `keepAlive` so the notifier isn't auto-disposed mid-await (which would hang
-/// the returned Future) — see [VolunteerActions].
+/// the returned Future) - see [VolunteerActions].
 final class CreateReportProvider
     extends $AsyncNotifierProvider<CreateReport, void> {
   /// Creates a lost report. The AsyncValue carries loading + the last [Failure]
@@ -362,7 +362,7 @@ final class CreateReportProvider
   /// new alert appears.
   ///
   /// `keepAlive` so the notifier isn't auto-disposed mid-await (which would hang
-  /// the returned Future) — see [VolunteerActions].
+  /// the returned Future) - see [VolunteerActions].
   CreateReportProvider._()
     : super(
         from: null,
@@ -390,7 +390,7 @@ String _$createReportHash() => r'384acd5615893d6fbffb4bb2e34a9bfac204d945';
 /// new alert appears.
 ///
 /// `keepAlive` so the notifier isn't auto-disposed mid-await (which would hang
-/// the returned Future) — see [VolunteerActions].
+/// the returned Future) - see [VolunteerActions].
 
 abstract class _$CreateReport extends $AsyncNotifier<void> {
   FutureOr<void> build();
@@ -413,7 +413,7 @@ abstract class _$CreateReport extends $AsyncNotifier<void> {
 /// Deletes the user's own report. Returns true on success; on success the
 /// dashboard is invalidated so the deleted alert disappears.
 ///
-/// `keepAlive` so the notifier isn't auto-disposed mid-await — see
+/// `keepAlive` so the notifier isn't auto-disposed mid-await - see
 /// [VolunteerActions].
 
 @ProviderFor(DeleteReport)
@@ -422,14 +422,14 @@ final deleteReportProvider = DeleteReportProvider._();
 /// Deletes the user's own report. Returns true on success; on success the
 /// dashboard is invalidated so the deleted alert disappears.
 ///
-/// `keepAlive` so the notifier isn't auto-disposed mid-await — see
+/// `keepAlive` so the notifier isn't auto-disposed mid-await - see
 /// [VolunteerActions].
 final class DeleteReportProvider
     extends $AsyncNotifierProvider<DeleteReport, void> {
   /// Deletes the user's own report. Returns true on success; on success the
   /// dashboard is invalidated so the deleted alert disappears.
   ///
-  /// `keepAlive` so the notifier isn't auto-disposed mid-await — see
+  /// `keepAlive` so the notifier isn't auto-disposed mid-await - see
   /// [VolunteerActions].
   DeleteReportProvider._()
     : super(
@@ -455,7 +455,7 @@ String _$deleteReportHash() => r'52586fa054f28144cc10d0b2fabf4bdcb6747ef0';
 /// Deletes the user's own report. Returns true on success; on success the
 /// dashboard is invalidated so the deleted alert disappears.
 ///
-/// `keepAlive` so the notifier isn't auto-disposed mid-await — see
+/// `keepAlive` so the notifier isn't auto-disposed mid-await - see
 /// [VolunteerActions].
 
 abstract class _$DeleteReport extends $AsyncNotifier<void> {

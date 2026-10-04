@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -15,7 +15,7 @@ import '../../../../shared/widgets/app_cached_image.dart';
 import '../../../pawcare/domain/entities/health_reminder.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
 
-/// "Upcoming" card for a health reminder — a medication dose, vaccination
+/// "Upcoming" card for a health reminder - a medication dose, vaccination
 /// booster, or appointment. Leads with the pet's photo (badged with a small
 /// kind icon) and trails with the due date, so the row reads "which pet, what,
 /// when" at a glance.
@@ -60,7 +60,7 @@ class HealthReminderCard extends ConsumerWidget {
     // Alternate orange/blue by position so no two adjacent cards share a color.
     final accent = index.isEven ? AppColors.primary : AppColors.secondary;
 
-    // Only disambiguate whose reminder it is when the user has 2+ pets — a
+    // Only disambiguate whose reminder it is when the user has 2+ pets - a
     // single-pet owner doesn't need a face on every row. `(count, image)` is
     // read together so the widget rebuilds if either changes.
     final (petCount, petImage) = ref.watch(

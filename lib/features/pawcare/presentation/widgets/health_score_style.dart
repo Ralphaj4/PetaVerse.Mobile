@@ -13,7 +13,7 @@ abstract final class HealthScoreStyle {
   static const Color _needsAttention = Color(0xFFE5544B);
   static const Color _noData = Color(0xFF9AA4B1);
 
-  /// The band's accent color — used for the gauge arc, number, and chip.
+  /// The band's accent color - used for the gauge arc, number, and chip.
   static Color bandColor(HealthBand band) => switch (band) {
         HealthBand.excellent => _excellent,
         HealthBand.good => _good,
@@ -22,7 +22,7 @@ abstract final class HealthScoreStyle {
         HealthBand.noData => _noData,
       };
 
-  /// A reason row's color — good/warn/bad.
+  /// A reason row's color - good/warn/bad.
   static Color severityColor(HealthReasonSeverity severity) =>
       switch (severity) {
         HealthReasonSeverity.good => _excellent,

@@ -129,7 +129,7 @@ class _NotificationListState extends ConsumerState<_NotificationList> {
     // with go(), not push(). This page lives on the ROOT navigator; push-ing a
     // branch-nested location makes GoRouter re-materialise the branch stack
     // (CommunityHubPage + the target) on top of a shell that already mounts the
-    // branch root, producing two pages with the same pageKey — which trips the
+    // branch root, producing two pages with the same pageKey - which trips the
     // Navigator's `!keyReservation.contains(key)` assertion. go() rebuilds the
     // whole stack coherently instead.
     final isShellRoute =

@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -208,7 +208,7 @@ class _AddVaccinationPageState extends ConsumerState<AddVaccinationPage> {
   }
 }
 
-/// The vaccine lookup dropdown — the same [AppDropdownField] used for species /
+/// The vaccine lookup dropdown - the same [AppDropdownField] used for species /
 /// breed / coat color, with loading / error fallbacks.
 class _VaccineDropdown extends StatelessWidget {
   const _VaccineDropdown({

@@ -4,12 +4,12 @@ import 'dart:convert';
 ///
 /// We only ever need to read the standard `exp` claim to decide whether a
 /// stored access token is still usable, so a full JWT library would be
-/// overkill. This does NOT verify the signature — verification is the
+/// overkill. This does NOT verify the signature - verification is the
 /// backend's job; the client only reads the expiry to avoid firing a request
 /// it already knows will 401.
 abstract final class JwtUtils {
   /// Returns the token's expiry, or null if the token is malformed or has no
-  /// `exp` claim. A null result means "we can't tell" — callers should treat
+  /// `exp` claim. A null result means "we can't tell" - callers should treat
   /// that conservatively (assume it may still be valid) rather than force a
   /// logout on an unparseable-but-possibly-fine token.
   static DateTime? expiryOf(String token) {
@@ -22,7 +22,7 @@ abstract final class JwtUtils {
 
   /// Whether [token] is expired at [now] (defaults to current UTC time),
   /// applying [leeway] so a token that expires in the next few seconds is
-  /// treated as already expired — this pre-empts the race where a request
+  /// treated as already expired - this pre-empts the race where a request
   /// leaves with a token that dies in transit. Returns false when the expiry
   /// can't be determined (see [expiryOf]).
   static bool isExpired(

@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
-/// Renders the lightweight inline markdown the AI assistant emits — **bold**
-/// and *italic* (or _italic_) — as styled spans, so raw `**` never reaches the
+/// Renders the lightweight inline markdown the AI assistant emits - **bold**
+/// and *italic* (or _italic_) - as styled spans, so raw `**` never reaches the
 /// user. Everything else (including `\n`) is passed through as plain text.
 ///
 /// Deliberately tiny: the assistant only produces inline emphasis, so we avoid

@@ -1,10 +1,10 @@
-import '../../../../core/errors/result.dart';
+﻿import '../../../../core/errors/result.dart';
 import '../entities/lost_found_dashboard.dart';
 import '../entities/lost_found_report.dart';
 
 /// Contract for Lost & Found data against the API.
 ///
-/// All methods return [Result] — exceptions never cross this boundary.
+/// All methods return [Result] - exceptions never cross this boundary.
 abstract interface class LostFoundRepository {
   /// The dashboard for a location: map pins, filtered recent alerts, and the
   /// viewer's volunteer status. [filter] is "lost" | "found" (null for all).

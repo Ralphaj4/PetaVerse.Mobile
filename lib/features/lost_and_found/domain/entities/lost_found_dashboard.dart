@@ -1,10 +1,10 @@
-import 'lost_found_report.dart';
+﻿import 'lost_found_report.dart';
 
-/// A lightweight map pin from the dashboard — only what's needed to drop a
+/// A lightweight map pin from the dashboard - only what's needed to drop a
 /// marker (full details live in [LostFoundReport]). All in-radius active
 /// reports appear as pins, regardless of the recent-alerts filter.
 ///
-/// Domain layer — no Flutter or JSON imports.
+/// Domain layer - no Flutter or JSON imports.
 class LostFoundMapPin {
   const LostFoundMapPin({
     required this.id,
@@ -49,7 +49,7 @@ class LostFoundDashboard {
   final List<LostFoundReport> recentAlerts;
   final VolunteerInfo volunteerInfo;
 
-  /// Returns a copy with [volunteerInfo] replaced — used to patch the
+  /// Returns a copy with [volunteerInfo] replaced - used to patch the
   /// volunteer status in place after join/leave without refetching.
   LostFoundDashboard copyWith({VolunteerInfo? volunteerInfo}) =>
       LostFoundDashboard(

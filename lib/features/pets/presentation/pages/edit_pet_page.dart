@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +78,7 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
       ref.invalidate(petDetailProvider(widget.petId));
       ref.invalidate(petListProvider);
       // petsProvider holds the lightweight PetRef list (including imagePath)
-      // used by the home screen hero — must be invalidated so the new photo
+      // used by the home screen hero - must be invalidated so the new photo
       // appears without a restart.
       ref.invalidate(petsProvider);
       context.showSuccessSnackBar(context.l10n.photoUpdated);
@@ -370,7 +370,7 @@ class _FormState extends State<_Form> {
             ),
             const SizedBox(height: AppSpacing.md),
 
-            // Animal type (species) — locked after creation; changing species
+            // Animal type (species) - locked after creation; changing species
             // would invalidate breed, health records, and activity data.
             _FieldCard(
               icon: FluentIcons.animal_paw_print_24_regular,

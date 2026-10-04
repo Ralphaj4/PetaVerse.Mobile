@@ -1,10 +1,10 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+﻿import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'media_dtos.freezed.dart';
 part 'media_dtos.g.dart';
 
 /// Media categories. The ordinals MUST match the backend `MediaCategory`
-/// enum exactly — the API serializes/deserializes this as an integer
+/// enum exactly - the API serializes/deserializes this as an integer
 /// (default System.Text.Json, no string converter), so we send/read the
 /// ordinal via `.index`.
 enum MediaCategory {

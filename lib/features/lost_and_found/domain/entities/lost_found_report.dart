@@ -1,4 +1,4 @@
-/// Whether a listing is for a lost pet or a found one.
+﻿/// Whether a listing is for a lost pet or a found one.
 ///
 /// The API sends an integer on create (1 = lost, 2 = found) and a string on
 /// read ("Lost" | "Found"). Only Lost is used by the mobile app today, but the
@@ -8,10 +8,10 @@ enum ReportType { lost, found }
 /// Listing lifecycle status, returned as a string ("Active" | "Resolved").
 enum ReportStatus { active, resolved }
 
-/// A Lost & Found listing — the core domain object, used both in the
+/// A Lost & Found listing - the core domain object, used both in the
 /// dashboard's recent-alerts list and on the details screen.
 ///
-/// Domain layer — no Flutter or JSON imports.
+/// Domain layer - no Flutter or JSON imports.
 class LostFoundReport {
   const LostFoundReport({
     required this.id,

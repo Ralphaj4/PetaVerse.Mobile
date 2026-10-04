@@ -10,7 +10,7 @@ part 'location_service.g.dart';
 const LatLng kDefaultMapCenter = LatLng(33.8938, 35.5018);
 
 /// Thin wrapper over geolocator for one-shot position reads, with permission
-/// handling. Returns null when location is unavailable or denied — callers
+/// handling. Returns null when location is unavailable or denied - callers
 /// decide how to degrade (e.g. fall back to a default city center).
 class LocationService {
   const LocationService();
@@ -30,7 +30,7 @@ class LocationService {
     }
 
     try {
-      // Bound the wait — on an emulator (or a device with no fix) this can
+      // Bound the wait - on an emulator (or a device with no fix) this can
       // otherwise hang forever, which would leave callers stuck loading.
       final pos = await Geolocator.getCurrentPosition(
         locationSettings: const LocationSettings(
@@ -40,7 +40,7 @@ class LocationService {
       );
       return LatLng(pos.latitude, pos.longitude);
     } catch (_) {
-      // Timeout / unavailable — caller falls back to a default center.
+      // Timeout / unavailable - caller falls back to a default center.
       return null;
     }
   }

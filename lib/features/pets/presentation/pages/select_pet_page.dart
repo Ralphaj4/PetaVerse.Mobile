@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,9 +16,9 @@ import '../providers/pet_list_provider.dart';
 import '../providers/pets_provider.dart';
 import '../providers/species_provider.dart';
 
-/// Post-login pet picker — shown when the user has 2+ pets and none is chosen.
+/// Post-login pet picker - shown when the user has 2+ pets and none is chosen.
 /// Tapping a card selects that pet and advances directly to home (no detail
-/// page — this is a one-time decision flow, not a browser).
+/// page - this is a one-time decision flow, not a browser).
 class SelectPetPage extends ConsumerWidget {
   const SelectPetPage({super.key});
 

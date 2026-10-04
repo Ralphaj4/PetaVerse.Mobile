@@ -1,4 +1,4 @@
-import 'package:latlong2/latlong.dart';
+﻿import 'package:latlong2/latlong.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/errors/failure.dart';
@@ -82,16 +82,16 @@ class LostFoundDashboardNotifier extends _$LostFoundDashboardNotifier {
 /// `keepAlive` is REQUIRED: these methods set `state = AsyncLoading()` then
 /// await the network. As an auto-dispose notifier with no listeners (the page
 /// only `ref.read`s it), it would be disposed mid-await and the returned Future
-/// would never complete — hanging the caller. Keeping it alive avoids that.
+/// would never complete - hanging the caller. Keeping it alive avoids that.
 @Riverpod(keepAlive: true)
 class VolunteerActions extends _$VolunteerActions {
   @override
   FutureOr<void> build() {}
 
   /// Joins the volunteers. Returns the updated [VolunteerInfo] on success
-  /// (null on failure — read [state] for the error). Refreshes the dashboard
+  /// (null on failure - read [state] for the error). Refreshes the dashboard
   /// so the CTA reflects the new status.
-  /// Returns the updated [VolunteerInfo] on success (null on failure — read
+  /// Returns the updated [VolunteerInfo] on success (null on failure - read
   /// [state] for the error). The CALLER patches the dashboard (the page holds
   /// the live, watched dashboard instance), so the banner updates instantly.
   Future<VolunteerInfo?> join() async {
@@ -129,7 +129,7 @@ class VolunteerActions extends _$VolunteerActions {
 /// new alert appears.
 ///
 /// `keepAlive` so the notifier isn't auto-disposed mid-await (which would hang
-/// the returned Future) — see [VolunteerActions].
+/// the returned Future) - see [VolunteerActions].
 @Riverpod(keepAlive: true)
 class CreateReport extends _$CreateReport {
   @override
@@ -189,7 +189,7 @@ class CreateReport extends _$CreateReport {
 /// Deletes the user's own report. Returns true on success; on success the
 /// dashboard is invalidated so the deleted alert disappears.
 ///
-/// `keepAlive` so the notifier isn't auto-disposed mid-await — see
+/// `keepAlive` so the notifier isn't auto-disposed mid-await - see
 /// [VolunteerActions].
 @Riverpod(keepAlive: true)
 class DeleteReport extends _$DeleteReport {

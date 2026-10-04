@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -28,7 +28,7 @@ class CreatePetNotifier extends _$CreatePetNotifier {
 
   /// Creates the pet. On success returns the slim [PetRef] from the API
   /// response. The caller is responsible for navigating first, then calling
-  /// [commitCreated] — this avoids a race where the gate update fires the
+  /// [commitCreated] - this avoids a race where the gate update fires the
   /// router redirect before the page has had a chance to pop/go.
   Future<PetRef?> create(NewPet pet) async {
     state = const AsyncLoading();

@@ -49,7 +49,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingDesc1 =>
-      'رفيقك الشامل لكل ما يحتاجه حيوانك الأليف — صحة ورعاية والمزيد.';
+      'رفيقك الشامل لكل ما يحتاجه حيوانك الأليف - صحة ورعاية والمزيد.';
 
   @override
   String get onboardingTitle2a => 'تتبع الصحة و';
@@ -257,7 +257,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get weightTrendDropping => 'منخفض';
 
   @override
-  String get statNoData => '—';
+  String get statNoData => '-';
 
   @override
   String get nextVisitNone => 'لا زيارة مجدولة';
@@ -1080,7 +1080,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get createPetAdditionalInfoSubtitle =>
-      'اختياري — يمكنك إضافتها لاحقاً';
+      'اختياري - يمكنك إضافتها لاحقاً';
 
   @override
   String get createPetSize => 'الحجم';
@@ -1467,7 +1467,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String healthScoreRedistributedWith(String reason) {
-    return '$reason — أُعيد توزيع الوزن على المؤشرات الأخرى';
+    return '$reason - أُعيد توزيع الوزن على المؤشرات الأخرى';
   }
 
   @override
@@ -1748,7 +1748,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'امنح حيوانك الأليف صورة في ملفه الشخصي.';
 
   @override
-  String get petAvatarSetupOptional => 'اختياري — يمكنك تغييره في أي وقت.';
+  String get petAvatarSetupOptional => 'اختياري - يمكنك تغييره في أي وقت.';
 
   @override
   String get petAvatarUploadHint => 'تحميل صورة';
@@ -1867,7 +1867,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String providerShowingOf(int shown, int total) {
-    return 'عرض $shown من $total — قرّب لرؤية المزيد';
+    return 'عرض $shown من $total - قرّب لرؤية المزيد';
   }
 
   @override
@@ -2407,7 +2407,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get adoptionTransferNote =>
-      'ستؤكّدان كلاكما قبل نقل الملكية — لا شيء يتغيّر دون موافقتك.';
+      'ستؤكّدان كلاكما قبل نقل الملكية - لا شيء يتغيّر دون موافقتك.';
 
   @override
   String get adoptionListTitle => 'أضف إعلان تبنّي';
@@ -2439,7 +2439,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get adoptionListTransferNote =>
-      'عندما يتقدّم شخص ما، تراجعه وتوافق عليه. لا تُنقل الملكية إلا بعد تأكيدكما معًا — وتنتقل السجلّات مع حيوانك.';
+      'عندما يتقدّم شخص ما، تراجعه وتوافق عليه. لا تُنقل الملكية إلا بعد تأكيدكما معًا - وتنتقل السجلّات مع حيوانك.';
 
   @override
   String get adoptionListSubmit => 'نشر الإعلان';
@@ -2579,7 +2579,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get walkStatSpeed => 'متوسط السرعة';
 
   @override
-  String get walkNoLocation => 'الموقع غير متاح — مؤقت فقط';
+  String get walkNoLocation => 'الموقع غير متاح - مؤقت فقط';
 
   @override
   String get walkHistoryTitle => 'سجل النزهات';
@@ -3188,7 +3188,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get notifSecurityAlertsDesc =>
-      'تغييرات كلمة المرور وتسجيل الدخول من أجهزة جديدة — دائماً مفعّلة';
+      'تغييرات كلمة المرور وتسجيل الدخول من أجهزة جديدة - دائماً مفعّلة';
 
   @override
   String get pawHubPostLike => 'إعجاب';
@@ -3487,7 +3487,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get communityDetailViewMembers => 'عرض جميع الأعضاء';
 
   @override
-  String get communityDetailFeedEmpty => 'لا منشورات بعد — كن أول من يشارك';
+  String get communityDetailFeedEmpty => 'لا منشورات بعد - كن أول من يشارك';
 
   @override
   String get communityDetailJoinToPost => 'انضم لتنشر هنا';
@@ -4282,7 +4282,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get contactUsSubtitle =>
-      'تواصل معنا في أي وقت — عادةً ما نرد خلال 24 ساعة.';
+      'تواصل معنا في أي وقت - عادةً ما نرد خلال 24 ساعة.';
 
   @override
   String get contactUsEmailSubtitle => 'أسئلة عامة ودعم';
@@ -4294,7 +4294,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reportProblemSubtitle => 'وجدت خللاً أو مشكلة؟';
 
   @override
-  String get reportProblemEmailSubject => 'PetaVerse — تقرير خلل';
+  String get reportProblemEmailSubject => 'PetaVerse - تقرير خلل';
 
   @override
   String get contactUsResponseTime => 'نرد عادةً خلال 24 ساعة.';
@@ -4457,7 +4457,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get openByDefaultSheetBody =>
-      'اضغط على رابط PetaVerse المشارك وسيُفتح مباشرةً في التطبيق — بدون متصفح وبدون خطوات إضافية. فعّله بنقرتين.';
+      'اضغط على رابط PetaVerse المشارك وسيُفتح مباشرةً في التطبيق - بدون متصفح وبدون خطوات إضافية. فعّله بنقرتين.';
 
   @override
   String get openByDefaultSheetEnable => 'تفعيل الآن';

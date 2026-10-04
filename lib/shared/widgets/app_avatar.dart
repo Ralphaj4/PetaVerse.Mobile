@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import 'app_cached_image.dart';
 
-/// Circular avatar for users and pets — image if available, otherwise
+/// Circular avatar for users and pets - image if available, otherwise
 /// initials on a brand tint.
 class AppAvatar extends StatelessWidget {
   const AppAvatar({

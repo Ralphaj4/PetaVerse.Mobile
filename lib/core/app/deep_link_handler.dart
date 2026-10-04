@@ -7,12 +7,12 @@ import 'package:go_router/go_router.dart';
 import '../utils/logger_service.dart';
 import 'router/app_router.dart';
 
-/// Handles inbound Universal Links (iOS) / App Links (Android) — the https
+/// Handles inbound Universal Links (iOS) / App Links (Android) - the https
 /// links produced by the PawHub "Share" action. When the OS hands the app a
 /// verified `https://<host>/p/<id>` link (installed-app path), this maps it to
 /// the in-app post route so the app opens directly on the post.
 ///
-/// Links that don't match a known pattern are ignored — the OS only routes a
+/// Links that don't match a known pattern are ignored - the OS only routes a
 /// link here when the domain association verifies, so a stray link is a no-op
 /// rather than an error.
 ///
@@ -57,7 +57,7 @@ class DeepLinkHandler {
     _logger.info('Inbound link: $uri', tag: _tag);
     final route = _routeFor(uri);
     if (route == null) {
-      _logger.info('No route matched for $uri — ignoring', tag: _tag);
+      _logger.info('No route matched for $uri - ignoring', tag: _tag);
       return;
     }
     // Route after the current frame: init() runs from AppShell.initState while
@@ -65,7 +65,7 @@ class DeepLinkHandler {
     // re-enters before its key reservation settles (same guard as FCM taps).
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // The post route lives inside the community shell branch, so go() (not
-      // push()) — push()-ing a branch-nested location re-materialises the
+      // push()) - push()-ing a branch-nested location re-materialises the
       // branch stack and collides pageKeys with the already-mounted branch
       // root. go() lands on the post with the community feed beneath it.
       router.go(route);
@@ -75,8 +75,8 @@ class DeepLinkHandler {
   /// Maps an inbound URI to an in-app route, or null if unrecognized.
   ///
   /// Handles two shapes:
-  ///   • https://petaverseapp.com/p/{id}  — verified App Link
-  ///   • petaverse://p/{id}               — custom-scheme fallback (website button)
+  ///   • https://petaverseapp.com/p/{id}  - verified App Link
+  ///   • petaverse://p/{id}               - custom-scheme fallback (website button)
   static String? _routeFor(Uri uri) {
     // Custom scheme: petaverse://p/<id>  →  host="p", path="/<id>"
     if (uri.scheme == 'petaverse' && uri.host == 'p') {

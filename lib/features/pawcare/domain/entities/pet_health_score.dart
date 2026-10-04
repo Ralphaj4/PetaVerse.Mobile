@@ -1,7 +1,7 @@
-/// A pet's server-computed health score — a 0–100 summary of preventive-care
+﻿/// A pet's server-computed health score - a 0–100 summary of preventive-care
 /// compliance and vitals tracking (NOT a clinical diagnosis).
 ///
-/// Domain layer — no Flutter or JSON imports. Mirrors
+/// Domain layer - no Flutter or JSON imports. Mirrors
 /// `GET /api/pets/{petId}/health-score`. The app renders this; it never
 /// computes it. See `docs/Pet-Health-Score-Mobile-Guide.md`.
 class PetHealthScore {
@@ -38,19 +38,19 @@ class PetHealthScore {
   /// "Why this score", pre-sorted worst-first by the server.
   final List<HealthReason> reasons;
 
-  /// Chronic conditions on file — context only, never lowers [value].
+  /// Chronic conditions on file - context only, never lowers [value].
   final ConditionsContext conditions;
 
   final DateTime computedAt;
 
   /// `true` unless this is the cold-start empty state. Branch on this (or
-  /// [HealthBand.noData]) rather than on `value == 0` — a real 0 is possible
+  /// [HealthBand.noData]) rather than on `value == 0` - a real 0 is possible
   /// but "No data" is an onboarding prompt, not a failing grade.
   bool get hasData => band != HealthBand.noData;
 }
 
 /// The five possible score bands. The wire value is [wire]; switch on the enum
-/// for color and copy — never parse the string in the UI.
+/// for color and copy - never parse the string in the UI.
 enum HealthBand {
   excellent('Excellent'),
   good('Good'),
@@ -64,7 +64,7 @@ enum HealthBand {
   final String wire;
 
   /// Parses a wire band token, defaulting to [HealthBand.noData] for anything
-  /// unrecognized (safest fallback — treats unknowns as an empty state).
+  /// unrecognized (safest fallback - treats unknowns as an empty state).
   static HealthBand fromWire(String? raw) {
     for (final b in HealthBand.values) {
       if (b.wire == raw) return b;
@@ -98,14 +98,14 @@ class HealthComponent {
   /// Whether this signal had usable data for this pet.
   final bool applicable;
 
-  /// Quality of this signal, 0–1 — the per-component bar fill. `0` when N/A.
+  /// Quality of this signal, 0–1 - the per-component bar fill. `0` when N/A.
   final double ratio;
 
-  /// `ratio * weight` — raw points before redistribution. `0` when N/A.
+  /// `ratio * weight` - raw points before redistribution. `0` when N/A.
   final double earned;
 
   /// Why it's N/A (e.g. "This species doesn't track activity"); `null` when
-  /// applicable. Not a penalty — the weight is redistributed to other signals.
+  /// applicable. Not a penalty - the weight is redistributed to other signals.
   final String? naReason;
 }
 
@@ -117,7 +117,7 @@ class HealthReason {
     required this.deltaPoints,
   });
 
-  /// `good` | `warn` | `bad` — drives icon & color. See [ReasonSeverity].
+  /// `good` | `warn` | `bad` - drives icon & color. See [ReasonSeverity].
   final HealthReasonSeverity severity;
 
   /// Display-ready, server-localized text (e.g. "2 of 3 medications overdue").
@@ -150,7 +150,7 @@ enum HealthReasonSeverity {
   }
 }
 
-/// Chronic conditions on file — informational context, never affects the score.
+/// Chronic conditions on file - informational context, never affects the score.
 class ConditionsContext {
   const ConditionsContext({required this.count, required this.labels});
 

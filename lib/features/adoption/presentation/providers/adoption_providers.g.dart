@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+﻿// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'adoption_providers.dart';
 
@@ -59,19 +59,19 @@ String _$adoptionRepositoryHash() =>
 
 /// The map center used to scope the board query. Starts at the app default
 /// center immediately (so the list never waits on location) and refines in the
-/// background when a fix arrives — same pattern as the providers board.
+/// background when a fix arrives - same pattern as the providers board.
 
 @ProviderFor(AdoptionQueryCenter)
 final adoptionQueryCenterProvider = AdoptionQueryCenterProvider._();
 
 /// The map center used to scope the board query. Starts at the app default
 /// center immediately (so the list never waits on location) and refines in the
-/// background when a fix arrives — same pattern as the providers board.
+/// background when a fix arrives - same pattern as the providers board.
 final class AdoptionQueryCenterProvider
     extends $NotifierProvider<AdoptionQueryCenter, LatLng> {
   /// The map center used to scope the board query. Starts at the app default
   /// center immediately (so the list never waits on location) and refines in the
-  /// background when a fix arrives — same pattern as the providers board.
+  /// background when a fix arrives - same pattern as the providers board.
   AdoptionQueryCenterProvider._()
     : super(
         from: null,
@@ -104,7 +104,7 @@ String _$adoptionQueryCenterHash() =>
 
 /// The map center used to scope the board query. Starts at the app default
 /// center immediately (so the list never waits on location) and refines in the
-/// background when a fix arrives — same pattern as the providers board.
+/// background when a fix arrives - same pattern as the providers board.
 
 abstract class _$AdoptionQueryCenter extends $Notifier<LatLng> {
   LatLng build();
@@ -326,7 +326,7 @@ abstract class _$AdoptionListingsNotifier
 /// A single listing by id, for the detail screen. Always fetches fresh from the
 /// server so the detail reflects the latest applicant count and status. The
 /// [initialListing] passed via GoRouter extra seeds the Hero/header immediately
-/// while the fetch completes — no blank frame, no stale data.
+/// while the fetch completes - no blank frame, no stale data.
 
 @ProviderFor(adoptionListing)
 final adoptionListingProvider = AdoptionListingFamily._();
@@ -334,7 +334,7 @@ final adoptionListingProvider = AdoptionListingFamily._();
 /// A single listing by id, for the detail screen. Always fetches fresh from the
 /// server so the detail reflects the latest applicant count and status. The
 /// [initialListing] passed via GoRouter extra seeds the Hero/header immediately
-/// while the fetch completes — no blank frame, no stale data.
+/// while the fetch completes - no blank frame, no stale data.
 
 final class AdoptionListingProvider
     extends
@@ -347,7 +347,7 @@ final class AdoptionListingProvider
   /// A single listing by id, for the detail screen. Always fetches fresh from the
   /// server so the detail reflects the latest applicant count and status. The
   /// [initialListing] passed via GoRouter extra seeds the Hero/header immediately
-  /// while the fetch completes — no blank frame, no stale data.
+  /// while the fetch completes - no blank frame, no stale data.
   AdoptionListingProvider._({
     required AdoptionListingFamily super.from,
     required int super.argument,
@@ -397,7 +397,7 @@ String _$adoptionListingHash() => r'028e09c11f39889d8c580862344427f9dd40ab5a';
 /// A single listing by id, for the detail screen. Always fetches fresh from the
 /// server so the detail reflects the latest applicant count and status. The
 /// [initialListing] passed via GoRouter extra seeds the Hero/header immediately
-/// while the fetch completes — no blank frame, no stale data.
+/// while the fetch completes - no blank frame, no stale data.
 
 final class AdoptionListingFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<AdoptionListing>, int> {
@@ -413,7 +413,7 @@ final class AdoptionListingFamily extends $Family
   /// A single listing by id, for the detail screen. Always fetches fresh from the
   /// server so the detail reflects the latest applicant count and status. The
   /// [initialListing] passed via GoRouter extra seeds the Hero/header immediately
-  /// while the fetch completes — no blank frame, no stale data.
+  /// while the fetch completes - no blank frame, no stale data.
 
   AdoptionListingProvider call(int id) =>
       AdoptionListingProvider._(argument: id, from: this);
@@ -486,14 +486,14 @@ abstract class _$MyAdoptionRequestsNotifier
   }
 }
 
-/// The current user's own listings (lister side), all statuses — so a listing
+/// The current user's own listings (lister side), all statuses - so a listing
 /// stays findable after it leaves the public board (PendingTransfer/Adopted/
 /// Withdrawn).
 
 @ProviderFor(MyAdoptionListingsNotifier)
 final myAdoptionListingsProvider = MyAdoptionListingsNotifierProvider._();
 
-/// The current user's own listings (lister side), all statuses — so a listing
+/// The current user's own listings (lister side), all statuses - so a listing
 /// stays findable after it leaves the public board (PendingTransfer/Adopted/
 /// Withdrawn).
 final class MyAdoptionListingsNotifierProvider
@@ -502,7 +502,7 @@ final class MyAdoptionListingsNotifierProvider
           MyAdoptionListingsNotifier,
           List<AdoptionListing>
         > {
-  /// The current user's own listings (lister side), all statuses — so a listing
+  /// The current user's own listings (lister side), all statuses - so a listing
   /// stays findable after it leaves the public board (PendingTransfer/Adopted/
   /// Withdrawn).
   MyAdoptionListingsNotifierProvider._()
@@ -527,7 +527,7 @@ final class MyAdoptionListingsNotifierProvider
 String _$myAdoptionListingsNotifierHash() =>
     r'aaa5cd58b4f36dbfd44f477c5e665a7684a31e11';
 
-/// The current user's own listings (lister side), all statuses — so a listing
+/// The current user's own listings (lister side), all statuses - so a listing
 /// stays findable after it leaves the public board (PendingTransfer/Adopted/
 /// Withdrawn).
 

@@ -61,7 +61,7 @@ class ServiceProvider {
     this.servesAllSpecies = false,
   });
 
-  /// The provider id — stable across the provider's branches. Used to open the
+  /// The provider id - stable across the provider's branches. Used to open the
   /// detail screen. Repeats across list items for a multi-branch provider.
   final int id;
 
@@ -75,7 +75,7 @@ class ServiceProvider {
   /// matching (a Vet+Pharmacy matches both chips).
   final List<int> categoryIds;
 
-  /// The resolved primary category — drives pin color, card glyph, and the
+  /// The resolved primary category - drives pin color, card glyph, and the
   /// "kind" label. Resolved from `primaryCategoryId` via the categories lookup;
   /// falls back to [ProviderCategory.all] when the id is unknown.
   final ProviderCategory primaryCategory;
@@ -113,7 +113,7 @@ class ServiceProvider {
   /// 6:00 PM". Rendered as-is.
   final String? hoursLabel;
 
-  /// Species ids this provider serves — drives the "treats X" affordance.
+  /// Species ids this provider serves - drives the "treats X" affordance.
   final List<int> supportedSpecies;
 
   /// True when the provider serves every species (species filter is a no-op).

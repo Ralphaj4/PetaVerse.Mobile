@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ import '../../domain/entities/pet_ref.dart';
 import '../providers/create_pet_provider.dart';
 
 /// Post-creation step that lets the owner add a photo for the pet they just
-/// created — the pet equivalent of [AvatarSetupPage].
+/// created - the pet equivalent of [AvatarSetupPage].
 ///
 /// Reached after create-pet (when the new pet has an id but isn't committed to
 /// the routing gate yet). Whether the user uploads or skips, the page commits
@@ -63,7 +63,7 @@ class _PetAvatarSetupPageState extends ConsumerState<PetAvatarSetupPage> {
   }
 
   /// Uploads the picked photo (if any), then commits the pet and goes home.
-  /// On upload failure the user is told but still proceeds — a missing photo
+  /// On upload failure the user is told but still proceeds - a missing photo
   /// must not trap them on this screen.
   Future<void> _continue() async {
     String? uploadedUrl;

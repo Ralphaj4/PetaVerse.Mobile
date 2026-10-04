@@ -1,4 +1,4 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+﻿import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../../pawcare/domain/entities/health_reminder.dart';
 import '../../../pawcare/domain/entities/pet_health_score.dart';
@@ -43,7 +43,7 @@ abstract class HomeSummaryDto with _$HomeSummaryDto {
 }
 
 /// Optional Home "Explore" counts (Lost & Found / Adoption). Absent until the
-/// backend ships it — the tiles fall back to static subtitles.
+/// backend ships it - the tiles fall back to static subtitles.
 @freezed
 abstract class HomeExploreDto with _$HomeExploreDto {
   const factory HomeExploreDto({

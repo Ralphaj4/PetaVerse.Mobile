@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_endpoints.dart';
@@ -6,7 +6,7 @@ import '../../domain/repositories/assistant_repository.dart';
 import '../dtos/chat_dtos.dart';
 
 /// Remote data source for the AI assistant feature.
-/// Talks exclusively through [ApiClient] — never touches Dio directly.
+/// Talks exclusively through [ApiClient] - never touches Dio directly.
 /// Throws AppExceptions (mapped by ApiClient); the repository turns them
 /// into Failures.
 class AssistantRemoteDataSource {

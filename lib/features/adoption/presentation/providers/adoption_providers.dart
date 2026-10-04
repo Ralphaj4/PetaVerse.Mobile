@@ -1,4 +1,4 @@
-import 'package:latlong2/latlong.dart';
+﻿import 'package:latlong2/latlong.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/errors/failure.dart';
@@ -21,7 +21,7 @@ AdoptionRepository adoptionRepository(Ref ref) => AdoptionRepositoryImpl(
 
 /// The map center used to scope the board query. Starts at the app default
 /// center immediately (so the list never waits on location) and refines in the
-/// background when a fix arrives — same pattern as the providers board.
+/// background when a fix arrives - same pattern as the providers board.
 @Riverpod(keepAlive: true)
 class AdoptionQueryCenter extends _$AdoptionQueryCenter {
   @override
@@ -38,7 +38,7 @@ class AdoptionQueryCenter extends _$AdoptionQueryCenter {
           .timeout(const Duration(seconds: 8));
       if (here != null) state = here;
     } catch (_) {
-      // Keep the default center — the list already loaded against it.
+      // Keep the default center - the list already loaded against it.
     }
   }
 }
@@ -113,7 +113,7 @@ class AdoptionListingsNotifier extends _$AdoptionListingsNotifier {
 /// A single listing by id, for the detail screen. Always fetches fresh from the
 /// server so the detail reflects the latest applicant count and status. The
 /// [initialListing] passed via GoRouter extra seeds the Hero/header immediately
-/// while the fetch completes — no blank frame, no stale data.
+/// while the fetch completes - no blank frame, no stale data.
 @riverpod
 Future<AdoptionListing> adoptionListing(Ref ref, int id) async {
   final result = await ref.read(adoptionRepositoryProvider).getListing(id);
@@ -141,7 +141,7 @@ class MyAdoptionRequestsNotifier extends _$MyAdoptionRequestsNotifier {
   }
 }
 
-/// The current user's own listings (lister side), all statuses — so a listing
+/// The current user's own listings (lister side), all statuses - so a listing
 /// stays findable after it leaves the public board (PendingTransfer/Adopted/
 /// Withdrawn).
 @riverpod

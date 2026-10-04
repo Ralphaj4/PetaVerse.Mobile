@@ -1,10 +1,10 @@
-import '../../../../core/network/api_client.dart';
+﻿import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_endpoints.dart';
 import '../dtos/community_dtos.dart';
 
 /// Remote data source for PawHub (Community). Talks to the API exclusively
 /// through [ApiClient]; never touches Dio directly. Throws AppExceptions
-/// (mapped by ApiClient) — the repository turns those into Failures.
+/// (mapped by ApiClient) - the repository turns those into Failures.
 ///
 /// The acting pet is passed here as a plain int where the API takes it (query
 /// param or body field); the repository decides whether it may be null.

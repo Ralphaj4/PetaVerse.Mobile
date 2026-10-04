@@ -103,7 +103,7 @@ class ProviderEmptyState extends StatelessWidget {
         onAction: onAction,
       );
 
-  /// Location permission denied — offer to open settings / retry.
+  /// Location permission denied - offer to open settings / retry.
   factory ProviderEmptyState.locationDenied({
     required String title,
     required String message,
@@ -119,7 +119,7 @@ class ProviderEmptyState extends StatelessWidget {
         tint: AppColors.secondary,
       );
 
-  /// Offline / network error — offer retry.
+  /// Offline / network error - offer retry.
   factory ProviderEmptyState.offline({
     required String title,
     required String message,

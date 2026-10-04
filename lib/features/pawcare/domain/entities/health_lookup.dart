@@ -1,6 +1,6 @@
-/// A single option from a PawCare lookup list (medications or vaccines).
+﻿/// A single option from a PawCare lookup list (medications or vaccines).
 ///
-/// Domain layer — no Flutter or JSON imports. Medications also carry a
+/// Domain layer - no Flutter or JSON imports. Medications also carry a
 /// suggested [dosage] / [frequency]; vaccines carry a [syndicateCode].
 class HealthLookup {
   const HealthLookup({

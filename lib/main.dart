@@ -14,7 +14,7 @@ import 'core/storage/hive_service.dart';
 import 'features/activity/data/local/walk_foreground_service.dart';
 import 'firebase_options.dart';
 
-/// Top-level FCM background handler — must live outside any class.
+/// Top-level FCM background handler - must live outside any class.
 @pragma('vm:entry-point')
 Future<void> _fcmBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -26,10 +26,10 @@ Future<void> _fcmBackgroundHandler(RemoteMessage message) async {
 ///
 /// Riverpod's [ProviderContainer.defaultRetry] retries ANY thrown error up to
 /// 10 times with exponential backoff. Our providers throw [Failure] objects, so
-/// a deterministic 404 gets retried 10 times over several seconds — an endless
+/// a deterministic 404 gets retried 10 times over several seconds - an endless
 /// GET→404→GET loop that delays the error UI (e.g. opening a deleted post).
 ///
-/// Only transient failures — no connectivity, server 5xx, rate limits — are
+/// Only transient failures - no connectivity, server 5xx, rate limits - are
 /// worth retrying. Every 4xx (not found, unauthorized, forbidden, validation,
 /// conflict, banned/suspended) is a stable verdict retrying can't change, so we
 /// stop immediately and let the UI render the error at once.

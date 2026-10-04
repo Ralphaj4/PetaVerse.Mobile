@@ -1,6 +1,6 @@
-/// An active medication schedule for a pet.
+﻿/// An active medication schedule for a pet.
 ///
-/// Domain layer — no Flutter or JSON imports. Mirrors
+/// Domain layer - no Flutter or JSON imports. Mirrors
 /// `GET /api/pets/{petId}/medications`.
 class Medication {
   const Medication({
@@ -39,7 +39,7 @@ class Medication {
 
   final bool isActive;
 
-  /// Server-computed flags — prefer these over recomputing on the client.
+  /// Server-computed flags - prefer these over recomputing on the client.
   final bool isDueSoon;
   final bool isOverdue;
 

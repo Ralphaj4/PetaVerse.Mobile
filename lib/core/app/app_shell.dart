@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -26,7 +26,7 @@ const double _fabOverlap = 55;
 ///
 /// The keyboard inset ([ScaffoldPrelayoutGeometry.minInsets] bottom) is added
 /// back so the button stays pinned to the bottom bar instead of riding up when
-/// the keyboard opens — the center AI button must always stay put.
+/// the keyboard opens - the center AI button must always stay put.
 class _OverlappingCenterFabLocation extends FloatingActionButtonLocation {
   const _OverlappingCenterFabLocation();
 
@@ -87,7 +87,7 @@ class _AppShellState extends ConsumerState<AppShell>
       final isReselect = index == widget.navigationShell.currentIndex;
       // Re-tapping the already-selected tab, while its branch is at its root
       // (no page pushed on top), scrolls that tab's root page to the top.
-      // If the branch navigator can pop, a sub-page is showing — leave it be.
+      // If the branch navigator can pop, a sub-page is showing - leave it be.
       if (isReselect) {
         final branchCanPop = widget.navigationShell.route.branches[index]
                 .navigatorKey.currentState

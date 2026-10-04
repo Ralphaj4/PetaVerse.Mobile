@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +27,7 @@ import '../widgets/adoption_card.dart';
 import '../widgets/adoption_format.dart';
 import 'adoption_welcome_page.dart';
 
-/// The user's "My adoptions" hub: two segments — listings they created (owner)
+/// The user's "My adoptions" hub: two segments - listings they created (owner)
 /// and applications they submitted (adopter). Closes the loop so a listing
 /// stays reachable after it leaves the public board, and gives the adopter a
 /// place to accept ("I'll take them") and land the completed pet.
@@ -777,7 +777,7 @@ class _StatusStrip extends StatelessWidget {
   Widget build(BuildContext context) {
     // A plain icon + muted text line (no tinted pill) so it doesn't compete
     // with the withdraw button below or duplicate the status chip in the
-    // header — the color lives in the icon, the message stays quiet.
+    // header - the color lives in the icon, the message stays quiet.
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -821,7 +821,7 @@ class _StatusChip extends StatelessWidget {
 }
 
 /// Card footer for the withdraw action: a divider separating it from the card
-/// body, then a full-width soft-red pill button — tinted like the status strip
+/// body, then a full-width soft-red pill button - tinted like the status strip
 /// so it reads as an intentional destructive action, not leftover text.
 class _WithdrawFooter extends StatelessWidget {
   const _WithdrawFooter({required this.label, required this.onPressed});

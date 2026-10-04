@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
@@ -11,7 +11,7 @@ import '../utils/logger_service.dart';
 
 part 'notification_service.g.dart';
 
-/// Notification categories — each gets its own Android channel so users
+/// Notification categories - each gets its own Android channel so users
 /// can control them independently in system settings.
 enum NotificationCategory {
   medication('medication', 'Medication'),
@@ -64,7 +64,7 @@ class NotificationService {
   /// use an exact alarm when allowed and fall back to inexact otherwise.
   bool _canScheduleExact = true;
 
-  /// Called once from main() before runApp — initializes channels and
+  /// Called once from main() before runApp - initializes channels and
   /// requests Android 13+ permission.
   static Future<void> staticInit() => _instance._init();
 
@@ -107,7 +107,7 @@ class NotificationService {
     }
   }
 
-  /// Shows an immediate notification — used for FCM foreground messages.
+  /// Shows an immediate notification - used for FCM foreground messages.
   Future<void> show({
     required int id,
     required String title,
@@ -140,7 +140,7 @@ class NotificationService {
   }
 
   /// Schedules a future local notification. No-ops silently if [when] is
-  /// already in the past — safe to call without a date guard at the call site.
+  /// already in the past - safe to call without a date guard at the call site.
   ///
   /// Pass [matchDateTimeComponents] to make the notification recur: e.g.
   /// [DateTimeComponents.time] for a daily reminder or
@@ -187,7 +187,7 @@ class NotificationService {
 
   Future<void> cancel(int id) => _plugin.cancel(id: id);
 
-  /// Cancels every pending local notification — call on logout/account-delete
+  /// Cancels every pending local notification - call on logout/account-delete
   /// so alarms the user set up do not fire for a logged-out session.
   Future<void> cancelAll() async {
     if (!_initialized) return;
@@ -199,7 +199,7 @@ class NotificationService {
   }
 
   /// Returns true when the app is already exempted from battery optimization
-  /// (Android only — always returns true on other platforms so callers don't
+  /// (Android only - always returns true on other platforms so callers don't
   /// need to branch).
   Future<bool> hasBatteryOptimizationExemption() async {
     if (!Platform.isAndroid) return true;
@@ -222,7 +222,7 @@ class NotificationService {
 
   /// Cancels every pending notification whose id falls in [start, endExclusive).
   /// Used to reconcile schedules whose slot ids are server-assigned and change
-  /// on each full-replace (e.g. feeding times) — we can't cancel by known id, so
+  /// on each full-replace (e.g. feeding times) - we can't cancel by known id, so
   /// we sweep the reserved id band before rescheduling the fresh set.
   Future<void> cancelInRange(int start, int endExclusive) async {
     if (!_initialized) return;

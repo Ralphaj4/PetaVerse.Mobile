@@ -1,4 +1,4 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+﻿import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/entities/community_entities.dart';
 import '../../domain/entities/community_enums.dart';
@@ -74,7 +74,7 @@ abstract class PostMediaDto with _$PostMediaDto {
       );
 }
 
-/// `PostFeeling` as it appears nested in `PostResponse.feeling` — `{ value,
+/// `PostFeeling` as it appears nested in `PostResponse.feeling` - `{ value,
 /// name }`. Also the row shape of the feelings-list endpoint. `name` is the
 /// server's human label; the client keys its icon off [value] via
 /// [postFeelingFromWire].
@@ -274,7 +274,7 @@ abstract class NotificationDto with _$NotificationDto {
       );
 }
 
-/// `SearchResultResponse` — one row of a mixed search page.
+/// `SearchResultResponse` - one row of a mixed search page.
 @freezed
 abstract class SearchResultDto with _$SearchResultDto {
   const factory SearchResultDto({
@@ -401,7 +401,7 @@ abstract class CommentsResponseDto with _$CommentsResponseDto {
       );
 }
 
-/// `FollowersResponse` / `FollowingResponse` / `BlockedPetsResponse` — the same
+/// `FollowersResponse` / `FollowingResponse` / `BlockedPetsResponse` - the same
 /// paged-pets-with-count shape, with the list under different keys. We read all
 /// three possible keys so one DTO serves every case.
 @freezed
@@ -639,7 +639,7 @@ abstract class BlockResponseDto with _$BlockResponseDto {
   BlockResult toEntity() => BlockResult(petId: petId, blocked: blocked);
 }
 
-/// `ReportResponse` — `status` is a camelCase string.
+/// `ReportResponse` - `status` is a camelCase string.
 @freezed
 abstract class ReportResponseDto with _$ReportResponseDto {
   const factory ReportResponseDto({

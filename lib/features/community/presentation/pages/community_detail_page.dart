@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'dart:io';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
@@ -402,7 +402,7 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
         if (!confirmed || !mounted) break;
         final authorId = post.author.backendId;
         if (authorId > 0) await actions.block(authorId);
-        // Blocking hides the author's posts — refresh this feed.
+        // Blocking hides the author's posts - refresh this feed.
         await ref.read(communityFeedProvider(_id).notifier).refresh();
       case PostAction.delete:
         final ok = await actions.deletePost(post.backendId);
@@ -651,7 +651,7 @@ class _Header extends StatelessWidget {
     final topInset = MediaQuery.of(context).padding.top;
 
     return Column(
-      // Stretch so every child gets the full bounded width — otherwise the
+      // Stretch so every child gets the full bounded width - otherwise the
       // Column measures intrinsic width and the name-row's Expanded/button
       // receive infinite width (white-screen layout crash).
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -660,7 +660,7 @@ class _Header extends StatelessWidget {
           clipBehavior: Clip.none,
           children: [
             // Banner with a bottom gradient scrim so overlaid controls read.
-            // No explicit width — the stretched parent Column supplies a finite
+            // No explicit width - the stretched parent Column supplies a finite
             // full width; `double.infinity` here would feed infinity into the
             // Column's intrinsic-width pass and crash the layout.
             SizedBox(

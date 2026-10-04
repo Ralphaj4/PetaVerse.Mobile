@@ -1,4 +1,4 @@
-/// Vision profile for a species — drives the color filter on the camera.
+﻿/// Vision profile for a species - drives the color filter on the camera.
 /// All matrix/parameter values are scientific approximations.
 class VisionProfile {
   const VisionProfile({

@@ -1,8 +1,8 @@
-class User {
+﻿class User {
   final String id;
 
   /// Short, public, shareable account identifier (e.g. "a1b2c3d4"), issued by
-  /// the backend. Distinct from [id] — safe to show to the user and share.
+  /// the backend. Distinct from [id] - safe to show to the user and share.
   final String userCode;
   final String firstName;
   final String lastName;

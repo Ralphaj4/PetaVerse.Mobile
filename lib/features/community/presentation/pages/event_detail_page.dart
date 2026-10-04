@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -402,8 +402,7 @@ class _LocationMap extends StatelessWidget {
             height: 160,
             child: Stack(
               children: [
-                // A fixed preview: no gestures, no my-location dot/recenter —
-                // just the pin. Tap the overlay to open the full-screen map.
+                // A fixed preview: no gestures, no my-location dot/recenter - // just the pin. Tap the overlay to open the full-screen map.
                 Positioned.fill(
                   child: MapView(
                     center: point,

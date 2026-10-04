@@ -1,4 +1,4 @@
-/// Wire enums for pet-led **communities** (groups), separate from the PawHub
+﻿/// Wire enums for pet-led **communities** (groups), separate from the PawHub
 /// social enums in `community_enums.dart`.
 ///
 /// Like the rest of the Community API, these serialize as **integers**. Each
@@ -7,7 +7,7 @@
 library;
 
 /// The theme of a community (`CommunityCategory`, request & response). Wire
-/// values are fixed by the backend contract — do not renumber.
+/// values are fixed by the backend contract - do not renumber.
 enum CommunityCategory {
   breedClub,
   shelterAndRescues,
@@ -55,7 +55,7 @@ extension CommunityRoleX on CommunityRole {
 }
 
 /// Maps a server role int → [CommunityRole]. Unknown values fall back to
-/// [CommunityRole.member] (the least-privileged role — never over-grants).
+/// [CommunityRole.member] (the least-privileged role - never over-grants).
 CommunityRole communityRoleFromWire(int? value) => switch (value) {
       0 => CommunityRole.lead,
       1 => CommunityRole.member,

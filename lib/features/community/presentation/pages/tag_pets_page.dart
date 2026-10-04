@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -27,7 +27,7 @@ class TagPetsArgs {
   /// Pets already tagged (pre-checked on entry).
   final List<PawPet> selected;
 
-  /// A pet id to exclude from results (the post's author — you can't tag the
+  /// A pet id to exclude from results (the post's author - you can't tag the
   /// pet that's creating the post). Null when there's nothing to exclude.
   final int? excludePetId;
 }
@@ -72,7 +72,7 @@ class _TagPetsPageState extends ConsumerState<TagPetsPage> {
   bool _searching = false;
 
   /// Results from a global API search (only populated when the user taps
-  /// "Search all pets" — not triggered automatically on every keystroke).
+  /// "Search all pets" - not triggered automatically on every keystroke).
   List<PawPet> _globalResults = const [];
 
   /// Whether we are showing global results (as opposed to the filtered
@@ -100,7 +100,7 @@ class _TagPetsPageState extends ConsumerState<TagPetsPage> {
     if (q == _query) return;
     setState(() {
       _query = q;
-      // Switching back to local filtering — discard any global results.
+      // Switching back to local filtering - discard any global results.
       _showingGlobal = false;
       _globalResults = const [];
     });
@@ -289,7 +289,7 @@ class _TagPetsPageState extends ConsumerState<TagPetsPage> {
             else if (!showGlobalTrigger)
               _emptyMyPets(noMatch: _query.isNotEmpty),
 
-            // "Search all pets" fallback — shown below local results (or
+            // "Search all pets" fallback - shown below local results (or
             // instead of the empty state) when a query is active.
             if (showGlobalTrigger) ...[
               if (candidates.isEmpty) _emptyMyPets(noMatch: true),
@@ -481,7 +481,7 @@ class _PetRow extends StatelessWidget {
   }
 }
 
-/// A circular check indicator — filled teal when selected, hollow otherwise.
+/// A circular check indicator - filled teal when selected, hollow otherwise.
 class _CheckDot extends StatelessWidget {
   const _CheckDot({required this.selected});
 

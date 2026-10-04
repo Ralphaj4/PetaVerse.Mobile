@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +30,7 @@ import '../../../../core/app/router/app_router.dart';
 import '../../domain/entities/user.dart';
 import '../providers/user_provider.dart';
 
-/// Personal information — view and edit the signed-in user's profile.
+/// Personal information - view and edit the signed-in user's profile.
 ///
 /// Offline-first: data is read from [userProvider] (warmed at login), so the
 /// page renders instantly. Editable fields live in themed section cards; the
@@ -597,7 +597,7 @@ class _EditableAvatar extends StatelessWidget {
   }
 }
 
-/// A small circular "verified" badge shown trailing the user's name — a green
+/// A small circular "verified" badge shown trailing the user's name - a green
 /// disc with a white check, ringed in white so it reads on the gradient header.
 class _VerifiedBadge extends StatelessWidget {
   const _VerifiedBadge();
@@ -665,7 +665,7 @@ class _HeaderChip extends StatelessWidget {
 }
 
 /// A tappable pill showing the user's public [code] (e.g. "#a1b2c3d4").
-/// Tapping copies it to the clipboard and confirms with a snackbar — handy
+/// Tapping copies it to the clipboard and confirms with a snackbar - handy
 /// for sharing an account reference with support or other users.
 class _UserCodeChip extends StatelessWidget {
   const _UserCodeChip({required this.code});
@@ -870,12 +870,11 @@ class _ReadOnlyTapField extends StatelessWidget {
   }
 }
 
-/// Email row — mirrors [_MobileNumberField].
+/// Email row - mirrors [_MobileNumberField].
 ///
 /// - If the user has no email yet: shows an editable [FormBuilderTextField].
 /// - If the email is set (confirmed or pending): shows a read-only container
-///   with the address, a verified/unverified badge, and — when unverified —
-///   a "Verify email" button. Editing is blocked once an address is on file
+///   with the address, a verified/unverified badge, and - when unverified - ///   a "Verify email" button. Editing is blocked once an address is on file
 ///   (same UX as mobile number).
 class _EmailField extends StatelessWidget {
   const _EmailField({

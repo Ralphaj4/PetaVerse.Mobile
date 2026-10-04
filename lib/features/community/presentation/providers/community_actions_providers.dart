@@ -1,4 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+﻿import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/analytics/analytics_service.dart';
 import '../../../../core/network/app_config_datasource.dart';
@@ -131,7 +131,7 @@ class CommunityActions {
             parameters: {'petId': pet.id},
           );
         }
-        // A follow change alters both feeds' membership — refresh them.
+        // A follow change alters both feeds' membership - refresh them.
         _ref.read(followingFeedProvider.notifier).refresh();
         _ref.invalidate(suggestedPetsProvider);
         return r.isFollowing;
@@ -148,7 +148,7 @@ class CommunityActions {
     final result = await _repo.block(petId: petId, blockerPetId: actingPetId);
     return result.when(
       success: (r) {
-        // Blocking tears down follows and hides content both ways — refresh.
+        // Blocking tears down follows and hides content both ways - refresh.
         _ref.read(followingFeedProvider.notifier).refresh();
         _ref.read(discoverFeedProvider.notifier).refresh();
         return r.blocked;
@@ -223,7 +223,7 @@ class CommunityActions {
       // ignore: avoid_dynamic_calls
       readNotifier().removePost(postId);
     } catch (_) {
-      // Feed not loaded / disposed — nothing to drop there.
+      // Feed not loaded / disposed - nothing to drop there.
     }
   }
 

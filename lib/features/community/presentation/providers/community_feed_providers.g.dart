@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+﻿// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'community_feed_providers.dart';
 
@@ -8,19 +8,19 @@ part of 'community_feed_providers.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// The following feed — posts from pets the acting profile follows. Loads page
+/// The following feed - posts from pets the acting profile follows. Loads page
 /// 0 on build, appends further pages via [loadMore]. Rebuilds when the acting
 /// pet changes.
 
 @ProviderFor(FollowingFeed)
 final followingFeedProvider = FollowingFeedProvider._();
 
-/// The following feed — posts from pets the acting profile follows. Loads page
+/// The following feed - posts from pets the acting profile follows. Loads page
 /// 0 on build, appends further pages via [loadMore]. Rebuilds when the acting
 /// pet changes.
 final class FollowingFeedProvider
     extends $AsyncNotifierProvider<FollowingFeed, PagedFeed> {
-  /// The following feed — posts from pets the acting profile follows. Loads page
+  /// The following feed - posts from pets the acting profile follows. Loads page
   /// 0 on build, appends further pages via [loadMore]. Rebuilds when the acting
   /// pet changes.
   FollowingFeedProvider._()
@@ -44,7 +44,7 @@ final class FollowingFeedProvider
 
 String _$followingFeedHash() => r'3fc560a47cdd438cbf3c1b1c41182b39faf3c5e4';
 
-/// The following feed — posts from pets the acting profile follows. Loads page
+/// The following feed - posts from pets the acting profile follows. Loads page
 /// 0 on build, appends further pages via [loadMore]. Rebuilds when the acting
 /// pet changes.
 
@@ -66,19 +66,19 @@ abstract class _$FollowingFeed extends $AsyncNotifier<PagedFeed> {
   }
 }
 
-/// The discover feed — public posts from pets the profile doesn't follow, plus
+/// The discover feed - public posts from pets the profile doesn't follow, plus
 /// the suggested-pets rail and lost & found alerts. Accumulates posts across
 /// pages; the rail and alerts come from page 0.
 
 @ProviderFor(DiscoverFeed)
 final discoverFeedProvider = DiscoverFeedProvider._();
 
-/// The discover feed — public posts from pets the profile doesn't follow, plus
+/// The discover feed - public posts from pets the profile doesn't follow, plus
 /// the suggested-pets rail and lost & found alerts. Accumulates posts across
 /// pages; the rail and alerts come from page 0.
 final class DiscoverFeedProvider
     extends $AsyncNotifierProvider<DiscoverFeed, DiscoverState> {
-  /// The discover feed — public posts from pets the profile doesn't follow, plus
+  /// The discover feed - public posts from pets the profile doesn't follow, plus
   /// the suggested-pets rail and lost & found alerts. Accumulates posts across
   /// pages; the rail and alerts come from page 0.
   DiscoverFeedProvider._()
@@ -102,7 +102,7 @@ final class DiscoverFeedProvider
 
 String _$discoverFeedHash() => r'814b89d8b06e0d63cd0c439489271cd4fc16336d';
 
-/// The discover feed — public posts from pets the profile doesn't follow, plus
+/// The discover feed - public posts from pets the profile doesn't follow, plus
 /// the suggested-pets rail and lost & found alerts. Accumulates posts across
 /// pages; the rail and alerts come from page 0.
 

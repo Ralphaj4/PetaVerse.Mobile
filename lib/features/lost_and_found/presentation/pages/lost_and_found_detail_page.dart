@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,7 +27,7 @@ import '../widgets/contact_owner_sheet.dart';
 ///
 /// Opened from a [PetAlertCard]'s "View Details" action. The tapped [alert]
 /// (when present) seeds the header + Hero image immediately, while the full
-/// report loads by id in the background — so the screen is never blank and the
+/// report loads by id in the background - so the screen is never blank and the
 /// photo animates in via [Hero].
 class LostFoundDetailPage extends ConsumerWidget {
   const LostFoundDetailPage({
@@ -268,7 +268,7 @@ class _Body extends StatelessWidget {
   final _DetailView view;
   final bool isError;
 
-  /// True when the report is still loading and there's no seed to show — the
+  /// True when the report is still loading and there's no seed to show - the
   /// info card + map render as skeletons instead of empty rows.
   final bool isLoading;
   final VoidCallback onRetry;
@@ -352,12 +352,12 @@ class _Body extends StatelessWidget {
                 _InfoRow(
                   icon: FluentIcons.note_24_regular,
                   title: l10n.reportDescription,
-                  value: view.description.isEmpty ? '—' : view.description,
+                  value: view.description.isEmpty ? ' - ' : view.description,
                 ),
                 _InfoRow(
                   icon: FluentIcons.location_24_regular,
                   title: l10n.reportLastSeenAddress,
-                  value: view.locationLabel.isEmpty ? '—' : view.locationLabel,
+                  value: view.locationLabel.isEmpty ? ' - ' : view.locationLabel,
                 ),
                 if (view.reporterName != null &&
                     view.reporterName!.trim().isNotEmpty)

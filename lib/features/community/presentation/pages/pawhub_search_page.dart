@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -132,7 +132,7 @@ class _PawHubSearchPageState extends ConsumerState<PawHubSearchPage> {
                             hintText: context.l10n.pawHubSearchHint,
                             hintStyle: AppTextStyles.bodyMedium
                                 .copyWith(color: AppColors.textTertiary),
-                            // No inner border in any state — the pill shell
+                            // No inner border in any state - the pill shell
                             // already provides the outline (avoids the theme's
                             // orange focus border showing through).
                             border: InputBorder.none,

@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -427,7 +427,7 @@ class _FormState extends State<_Form> {
               ),
             ),
 
-            // Sterilization date — only visible when status is not Intact.
+            // Sterilization date - only visible when status is not Intact.
             if (showSterilizationDate) ...[
               const SizedBox(height: AppSpacing.md),
               _FieldCard(
@@ -567,7 +567,7 @@ class _HeroAvatar extends StatelessWidget {
 // ── Card scaffolding ──────────────────────────────────────────────────────
 
 /// A white rounded card with a soft-orange rounded icon tile on the start and
-/// the field [child] filling the rest — the shared row shape from the design.
+/// the field [child] filling the rest - the shared row shape from the design.
 class _FieldCard extends StatelessWidget {
   const _FieldCard({required this.icon, required this.child});
 

@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'dart:io';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
@@ -85,7 +85,7 @@ class _CreateCommunityPageState extends ConsumerState<CreateCommunityPage> {
       result.when(
         success: (available) => setState(() => _handleStatus =
             available ? _HandleStatus.available : _HandleStatus.taken),
-        // On a network error, don't block the user — server still validates.
+        // On a network error, don't block the user - server still validates.
         failure: (_) => setState(() => _handleStatus = _HandleStatus.idle),
       );
     });

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
@@ -70,7 +70,7 @@ class HomeHeroBanner extends StatelessWidget {
                 color: AppColors.onPrimary.withValues(alpha: 0.12),
               ),
             ),
-            // Pet photo — a round avatar over the paw, ringed in white so it
+            // Pet photo - a round avatar over the paw, ringed in white so it
             // reads against the gradient.
             if (petImageUrl != null && petImageUrl!.isNotEmpty)
               PositionedDirectional(

@@ -1,10 +1,10 @@
-/// A coat / fur color (Black, White, …) used to populate the color picker.
+﻿/// A coat / fur color (Black, White, …) used to populate the color picker.
 ///
 /// Backed by the API's CoatColors lookup, where id equals the CoatColor enum
 /// value and is fixed forever (1-based, no zero row). "Not specified" is the
-/// pet's coat-color FK being null — never a color row.
+/// pet's coat-color FK being null - never a color row.
 ///
-/// Domain layer — no Flutter or JSON imports.
+/// Domain layer - no Flutter or JSON imports.
 class CoatColor {
   const CoatColor({required this.id, required this.name, required this.displayName});
 

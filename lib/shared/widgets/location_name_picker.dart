@@ -19,7 +19,7 @@ import 'app_button.dart';
 /// Tap the map to drop/move a pin; "use my location" centers on the device.
 /// The confirmed pin is reverse-geocoded server-side into an address line via
 /// [GeocodingService]. For flows that need coordinates too, use [LocationField]
-/// instead — this returns only the display name (matching the post composer's
+/// instead - this returns only the display name (matching the post composer's
 /// string `locationName` field).
 Future<String?> pickLocationName(BuildContext context, {String? initial}) {
   return Navigator.of(context).push<String>(

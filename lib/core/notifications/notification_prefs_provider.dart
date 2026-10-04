@@ -48,7 +48,7 @@ class NotificationPrefsNotifier extends _$NotificationPrefsNotifier {
       await store.setAll(fresh);
       state = AsyncData(fresh);
     } catch (_) {
-      // Network unavailable — Hive values are good enough.
+      // Network unavailable - Hive values are good enough.
     }
   }
 

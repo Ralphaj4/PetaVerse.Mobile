@@ -31,7 +31,7 @@ class AssistantRepositoryImpl implements AssistantRepository {
   Future<Result<void>> deleteSession(int sessionId) =>
       _guard(() => _remote.deleteSession(sessionId));
 
-  /// The stream itself is not wrapped in Result — transport errors arrive as
+  /// The stream itself is not wrapped in Result - transport errors arrive as
   /// terminal [ErrorEvent]s. Catastrophic setup errors are caught and emitted
   /// as a single [ErrorEvent] so the notifier always has one code path.
   @override

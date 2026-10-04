@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,7 +26,7 @@ import '../widgets/adoption_species_filter_row.dart';
 /// re-runs the board query. Layout + state wiring only.
 ///
 /// When [embedded] (inside the Community hub) it renders without its own AppBar
-/// — the hub supplies the shared header — and surfaces the count + "List a pet"
+/// - the hub supplies the shared header - and surfaces the count + "List a pet"
 /// action as an inline header row instead.
 class AdoptionBoardPage extends ConsumerWidget {
   const AdoptionBoardPage({this.embedded = false, super.key});
@@ -121,7 +121,7 @@ class AdoptionBoardPage extends ConsumerWidget {
             ],
           ),
           actions: [
-            // "List a pet" — the primary create action, in the top bar next to
+            // "List a pet" - the primary create action, in the top bar next to
             // the "N pets looking for a home" subtitle.
             Padding(
               padding: const EdgeInsets.only(right: AppSpacing.sm),
@@ -182,8 +182,8 @@ class _EmbeddedHeader extends StatelessWidget {
 }
 
 /// The single, discoverable entry into the user's personal adoption space
-/// (their listings + applications). A full-width tappable row — leading tile,
-/// label + hint, a live count badge, and a chevron — so the destination is
+/// (their listings + applications). A full-width tappable row - leading tile,
+/// label + hint, a live count badge, and a chevron - so the destination is
 /// obvious without crowding the header.
 class _MyAdoptionsRow extends ConsumerWidget {
   const _MyAdoptionsRow();
@@ -354,7 +354,7 @@ class _Body extends ConsumerWidget {
   }
 }
 
-/// Empty state for the board — an inviting paw prompt, with an optional
+/// Empty state for the board - an inviting paw prompt, with an optional
 /// clear-filters action when the emptiness is due to a filter/search.
 class _EmptyBoard extends StatelessWidget {
   const _EmptyBoard({

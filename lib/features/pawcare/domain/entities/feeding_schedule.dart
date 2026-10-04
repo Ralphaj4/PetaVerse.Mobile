@@ -1,6 +1,6 @@
-/// A pet's feeding schedule — recurring meals on selected days of the week.
+﻿/// A pet's feeding schedule - recurring meals on selected days of the week.
 ///
-/// Domain layer — no Flutter or JSON imports. Mirrors
+/// Domain layer - no Flutter or JSON imports. Mirrors
 /// `GET/PUT /api/pets/{petId}/feeding-schedule`. Feeding reminders are shown by
 /// device-local notifications the app schedules itself; the backend only stores
 /// this config.

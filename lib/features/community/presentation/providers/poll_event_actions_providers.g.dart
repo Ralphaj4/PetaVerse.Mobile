@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+﻿// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'poll_event_actions_providers.dart';
 
@@ -15,7 +15,7 @@ part of 'poll_event_actions_providers.dart';
 ///
 /// Read as a plain object (`ref.read(pollEventActionsProvider)`); holds no
 /// state. Reads/mutations of the loaded lists still go through the list
-/// notifiers at the call site — this only owns the repo call + analytics.
+/// notifiers at the call site - this only owns the repo call + analytics.
 
 @ProviderFor(pollEventActions)
 final pollEventActionsProvider = PollEventActionsProvider._();
@@ -27,7 +27,7 @@ final pollEventActionsProvider = PollEventActionsProvider._();
 ///
 /// Read as a plain object (`ref.read(pollEventActionsProvider)`); holds no
 /// state. Reads/mutations of the loaded lists still go through the list
-/// notifiers at the call site — this only owns the repo call + analytics.
+/// notifiers at the call site - this only owns the repo call + analytics.
 
 final class PollEventActionsProvider
     extends
@@ -44,7 +44,7 @@ final class PollEventActionsProvider
   ///
   /// Read as a plain object (`ref.read(pollEventActionsProvider)`); holds no
   /// state. Reads/mutations of the loaded lists still go through the list
-  /// notifiers at the call site — this only owns the repo call + analytics.
+  /// notifiers at the call site - this only owns the repo call + analytics.
   PollEventActionsProvider._()
     : super(
         from: null,

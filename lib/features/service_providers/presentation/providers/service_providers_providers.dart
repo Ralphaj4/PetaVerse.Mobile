@@ -31,7 +31,7 @@ Future<List<ProviderCategoryRef>> providerCategories(Ref ref) async {
 }
 
 /// The device's current location, resolved once in the background. Null until
-/// (or unless) it lands — the search runs against the viewport regardless, and
+/// (or unless) it lands - the search runs against the viewport regardless, and
 /// distance is simply omitted when this is null.
 @Riverpod(keepAlive: true)
 class ProviderUserLocation extends _$ProviderUserLocation {
@@ -49,7 +49,7 @@ class ProviderUserLocation extends _$ProviderUserLocation {
           .timeout(const Duration(seconds: 8));
       if (here != null) state = here;
     } catch (_) {
-      // No fix / denied — distance is omitted; search still works.
+      // No fix / denied - distance is omitted; search still works.
     }
   }
 
@@ -193,7 +193,7 @@ class ServiceProvidersNotifier extends _$ServiceProvidersNotifier {
 /// API results (added/removed/updated). Prevents flickering when zooming in/out.
 ///
 /// Reconciliation is driven by listening to [serviceProvidersProvider] rather
-/// than by a derived provider writing here during its build — Riverpod forbids
+/// than by a derived provider writing here during its build - Riverpod forbids
 /// one provider mutating another mid-build.
 @riverpod
 class ProviderPinCache extends _$ProviderPinCache {
@@ -227,7 +227,7 @@ class ProviderPinCache extends _$ProviderPinCache {
 }
 
 /// The branch pins actually shown (map + list). A pure derivation of the pin
-/// cache and the current selection — the selected pin floats to the top.
+/// cache and the current selection - the selected pin floats to the top.
 @riverpod
 List<ServiceProvider> visibleProviders(Ref ref) {
   final cache = ref.watch(providerPinCacheProvider);

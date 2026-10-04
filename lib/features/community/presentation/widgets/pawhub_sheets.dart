@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
@@ -90,7 +90,7 @@ Future<PostAction?> showPostOptionsSheet(
 /// Shows the block-confirmation dialog for [authorName].
 ///
 /// Returns true if the user confirmed, false if they cancelled. The sheet
-/// calling this has already closed — this dialog appears on the page behind it.
+/// calling this has already closed - this dialog appears on the page behind it.
 Future<bool> showBlockConfirmDialog(
   BuildContext context, {
   required String authorName,

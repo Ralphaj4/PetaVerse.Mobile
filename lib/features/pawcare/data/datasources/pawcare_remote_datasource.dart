@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+﻿import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../../../core/network/api_client.dart';
@@ -129,7 +129,7 @@ class PawCareRemoteDataSource {
   /// The API's update contract requires the medication identity too (a
   /// name-required validation). The GET response only carries the resolved
   /// [medicationName], not the original lookup id, so we round-trip the current
-  /// name as [customMedicationName] — it keeps the name unchanged and satisfies
+  /// name as [customMedicationName] - it keeps the name unchanged and satisfies
   /// the validation.
   ///
   /// [nextDueDate] is sent explicitly because the backend does not recompute it

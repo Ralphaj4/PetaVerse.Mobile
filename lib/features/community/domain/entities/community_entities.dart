@@ -1,14 +1,13 @@
-import 'community_enums.dart';
+﻿import 'community_enums.dart';
 import 'community_group_entities.dart';
 
-/// Domain entities for PawHub (Community). Pure Dart — no Flutter, no JSON.
+/// Domain entities for PawHub (Community). Pure Dart - no Flutter, no JSON.
 ///
 /// These mirror the API's response shapes (guide §11) but are the app's own
 /// vocabulary: DTOs map onto these in the data layer, and the UI only ever
 /// sees these. Ids are ints (the API uses int ids throughout).
 
-/// A pet's public identity card (`PetSummaryResponse`). The social actor —
-/// posts, comments, follows and notifications are all attributed to one of
+/// A pet's public identity card (`PetSummaryResponse`). The social actor - /// posts, comments, follows and notifications are all attributed to one of
 /// these, never to a user account.
 class CommunityPet {
   const CommunityPet({
@@ -39,7 +38,7 @@ class CommunityPet {
   final bool isFollowing;
 
   /// Whether this pet belongs to the signed-in user (can be acted as). Not on
-  /// the wire — derived client-side by comparing against the user's pets.
+  /// the wire - derived client-side by comparing against the user's pets.
   final bool isMine;
 
   /// Breed if present, otherwise species (for the subtitle line).
@@ -189,8 +188,7 @@ class Post {
       );
 }
 
-/// A comment or reply (`CommentResponse`). Threading is one level deep —
-/// [replies] is only populated on top-level comments.
+/// A comment or reply (`CommentResponse`). Threading is one level deep - /// [replies] is only populated on top-level comments.
 class Comment {
   const Comment({
     required this.id,
@@ -356,7 +354,7 @@ class FeedPage {
   final int? postCount;
 }
 
-/// A page of the Discover feed (`DiscoverFeedResponse`) — posts plus the
+/// A page of the Discover feed (`DiscoverFeedResponse`) - posts plus the
 /// suggested-pets rail, suggested-communities rail, and lost & found alerts.
 class DiscoverPage {
   const DiscoverPage({
@@ -401,7 +399,7 @@ class PetPage {
 }
 
 /// A page of notifications (`NotificationsResponse`). [unreadCount] is the bell
-/// badge — the full unread total, unaffected by paging.
+/// badge - the full unread total, unaffected by paging.
 class NotificationPage {
   const NotificationPage({
     required this.notifications,
@@ -473,7 +471,7 @@ class SaveResult {
   final int saveCount;
 }
 
-/// Result of sharing (`SharePostResponse`) — the deep link to copy.
+/// Result of sharing (`SharePostResponse`) - the deep link to copy.
 class ShareResult {
   const ShareResult({required this.postId, required this.shareUrl});
 

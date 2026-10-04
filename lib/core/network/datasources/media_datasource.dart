@@ -57,7 +57,7 @@ class MediaDatasource implements IMediaDatasource {
     void Function(int sent, int total)? onProgress,
   }) async {
     try {
-      // Stream the file instead of reading it fully into memory — avoids a
+      // Stream the file instead of reading it fully into memory - avoids a
       // large spike for videos and lets Dio report real send progress.
       final length = await file.length();
       // Use raw Dio without interceptors for R2 upload.

@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -128,7 +128,7 @@ class WalkHistoryPage extends ConsumerWidget {
                         : null,
                   ),
                 );
-                // Older walks can't be deleted — skip the swipe affordance.
+                // Older walks can't be deleted - skip the swipe affordance.
                 if (!activity.canDelete) return tile;
                 return Dismissible(
                   key: ValueKey('walk-${activity.id}'),
@@ -232,7 +232,7 @@ class _ActivityCard extends StatelessWidget {
 
   final WalkActivity activity;
 
-  /// Null when the walk is too old to delete — hides the trash button.
+  /// Null when the walk is too old to delete - hides the trash button.
   final VoidCallback? onDelete;
 
   @override

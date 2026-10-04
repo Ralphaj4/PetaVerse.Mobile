@@ -1,4 +1,4 @@
-import '../../../../core/errors/result.dart';
+﻿import '../../../../core/errors/result.dart';
 import '../entities/appointment.dart';
 import '../entities/feeding_schedule.dart';
 import '../entities/grooming_schedule.dart';
@@ -35,7 +35,7 @@ abstract interface class PawCareRepository {
   Future<Result<List<Medication>>> getMedications(int petId);
 
   /// Adds a medication schedule. Provide EITHER [medicationId] (from the
-  /// lookup) OR [customMedicationName] — not both.
+  /// lookup) OR [customMedicationName] - not both.
   Future<Result<Medication>> addMedication(
     int petId, {
     int? medicationId,
@@ -56,8 +56,7 @@ abstract interface class PawCareRepository {
 
   /// Changes a medication's frequency (and optionally end date / notes).
   /// [medicationName] is the med's current name, re-sent to satisfy the API's
-  /// name-required update validation. [nextDueDate] must be passed explicitly —
-  /// the backend does not recompute it on a frequency-only change.
+  /// name-required update validation. [nextDueDate] must be passed explicitly - /// the backend does not recompute it on a frequency-only change.
   Future<Result<Medication>> updateMedication(
     int petId,
     int medicationId, {
@@ -169,7 +168,7 @@ abstract interface class PawCareRepository {
   // ── Grooming schedule ─────────────────────────────────────────────────────
 
   /// The pet's grooming schedule, or null when none is configured. Grooming
-  /// reminders are server-pushed (FCM) — nothing is scheduled locally.
+  /// reminders are server-pushed (FCM) - nothing is scheduled locally.
   Future<Result<GroomingSchedule?>> getGroomingSchedule(int petId);
 
   /// Creates or replaces the grooming schedule.

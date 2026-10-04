@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/extensions/context_extensions.dart';
@@ -10,7 +10,7 @@ import '../providers/pets_provider.dart';
 import '../widgets/pet_card_grid.dart';
 
 /// Full pet listing, pushed from the profile tab when the user has more than
-/// 2 pets. Reads from [petListProvider] (already loaded) — no extra fetch.
+/// 2 pets. Reads from [petListProvider] (already loaded) - no extra fetch.
 class PetListPage extends ConsumerWidget {
   const PetListPage({super.key});
 

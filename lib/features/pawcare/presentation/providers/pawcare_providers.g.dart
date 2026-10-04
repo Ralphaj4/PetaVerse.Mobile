@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+﻿// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'pawcare_providers.dart';
 
@@ -106,14 +106,14 @@ final class PawCareRepositoryProvider
 
 String _$pawCareRepositoryHash() => r'399a004ced84f282cfcfc2c6fb4c11eac46c8b10';
 
-/// Loads the health snapshot for a pet — the three sections in parallel, with a
+/// Loads the health snapshot for a pet - the three sections in parallel, with a
 /// single loading / error surface for the dashboard. Family-keyed so each pet
 /// caches independently.
 
 @ProviderFor(petHealthSnapshot)
 final petHealthSnapshotProvider = PetHealthSnapshotFamily._();
 
-/// Loads the health snapshot for a pet — the three sections in parallel, with a
+/// Loads the health snapshot for a pet - the three sections in parallel, with a
 /// single loading / error surface for the dashboard. Family-keyed so each pet
 /// caches independently.
 
@@ -127,7 +127,7 @@ final class PetHealthSnapshotProvider
     with
         $FutureModifier<PetHealthSnapshot>,
         $FutureProvider<PetHealthSnapshot> {
-  /// Loads the health snapshot for a pet — the three sections in parallel, with a
+  /// Loads the health snapshot for a pet - the three sections in parallel, with a
   /// single loading / error surface for the dashboard. Family-keyed so each pet
   /// caches independently.
   PetHealthSnapshotProvider._({
@@ -176,7 +176,7 @@ final class PetHealthSnapshotProvider
 
 String _$petHealthSnapshotHash() => r'e59b4fffcb7d9134ba3c6a17f8c0f9b0ca6ee8a3';
 
-/// Loads the health snapshot for a pet — the three sections in parallel, with a
+/// Loads the health snapshot for a pet - the three sections in parallel, with a
 /// single loading / error surface for the dashboard. Family-keyed so each pet
 /// caches independently.
 
@@ -191,7 +191,7 @@ final class PetHealthSnapshotFamily extends $Family
         isAutoDispose: true,
       );
 
-  /// Loads the health snapshot for a pet — the three sections in parallel, with a
+  /// Loads the health snapshot for a pet - the three sections in parallel, with a
   /// single loading / error surface for the dashboard. Family-keyed so each pet
   /// caches independently.
 
@@ -554,7 +554,7 @@ final class UpcomingMedicationsFamily extends $Family
 /// across all pets, for the home "Upcoming" section.
 ///
 /// Reads purely from the local cache written on each medication / vaccination
-/// fetch — no network. Pet names are joined from the pet gate (the per-pet
+/// fetch - no network. Pet names are joined from the pet gate (the per-pet
 /// health endpoints don't carry them). Sorted soonest-first; overdue included.
 /// A dedicated home endpoint will replace this source later.
 
@@ -565,7 +565,7 @@ final upcomingHealthRemindersProvider = UpcomingHealthRemindersProvider._();
 /// across all pets, for the home "Upcoming" section.
 ///
 /// Reads purely from the local cache written on each medication / vaccination
-/// fetch — no network. Pet names are joined from the pet gate (the per-pet
+/// fetch - no network. Pet names are joined from the pet gate (the per-pet
 /// health endpoints don't carry them). Sorted soonest-first; overdue included.
 /// A dedicated home endpoint will replace this source later.
 
@@ -583,7 +583,7 @@ final class UpcomingHealthRemindersProvider
   /// across all pets, for the home "Upcoming" section.
   ///
   /// Reads purely from the local cache written on each medication / vaccination
-  /// fetch — no network. Pet names are joined from the pet gate (the per-pet
+  /// fetch - no network. Pet names are joined from the pet gate (the per-pet
   /// health endpoints don't carry them). Sorted soonest-first; overdue included.
   /// A dedicated home endpoint will replace this source later.
   UpcomingHealthRemindersProvider._()
@@ -794,14 +794,14 @@ final class PetAppointmentsFamily extends $Family
 }
 
 /// The pet's server-computed health score. Family-keyed per pet. Invalidate it
-/// alongside [petHealthSnapshotProvider] after the user logs data — the score
+/// alongside [petHealthSnapshotProvider] after the user logs data - the score
 /// is live and will move.
 
 @ProviderFor(petHealthScore)
 final petHealthScoreProvider = PetHealthScoreFamily._();
 
 /// The pet's server-computed health score. Family-keyed per pet. Invalidate it
-/// alongside [petHealthSnapshotProvider] after the user logs data — the score
+/// alongside [petHealthSnapshotProvider] after the user logs data - the score
 /// is live and will move.
 
 final class PetHealthScoreProvider
@@ -813,7 +813,7 @@ final class PetHealthScoreProvider
         >
     with $FutureModifier<PetHealthScore>, $FutureProvider<PetHealthScore> {
   /// The pet's server-computed health score. Family-keyed per pet. Invalidate it
-  /// alongside [petHealthSnapshotProvider] after the user logs data — the score
+  /// alongside [petHealthSnapshotProvider] after the user logs data - the score
   /// is live and will move.
   PetHealthScoreProvider._({
     required PetHealthScoreFamily super.from,
@@ -862,7 +862,7 @@ final class PetHealthScoreProvider
 String _$petHealthScoreHash() => r'28c2beaf4e1737d66604dda58c0aae98adb1d3e7';
 
 /// The pet's server-computed health score. Family-keyed per pet. Invalidate it
-/// alongside [petHealthSnapshotProvider] after the user logs data — the score
+/// alongside [petHealthSnapshotProvider] after the user logs data - the score
 /// is live and will move.
 
 final class PetHealthScoreFamily extends $Family
@@ -877,7 +877,7 @@ final class PetHealthScoreFamily extends $Family
       );
 
   /// The pet's server-computed health score. Family-keyed per pet. Invalidate it
-  /// alongside [petHealthSnapshotProvider] after the user logs data — the score
+  /// alongside [petHealthSnapshotProvider] after the user logs data - the score
   /// is live and will move.
 
   PetHealthScoreProvider call(int petId) =>

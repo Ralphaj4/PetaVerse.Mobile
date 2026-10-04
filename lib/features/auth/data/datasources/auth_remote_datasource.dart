@@ -1,4 +1,4 @@
-import '../../../../core/network/api_client.dart';
+﻿import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_endpoints.dart';
 import '../dtos/auth_tokens_dto.dart';
 import '../dtos/login_response_dto.dart';
@@ -6,7 +6,7 @@ import '../dtos/otp_dispatch_dto.dart';
 
 /// Remote auth data source. Talks to the API exclusively through
 /// [ApiClient]; never touches Dio directly. Throws AppExceptions
-/// (mapped by ApiClient) — the repository turns those into Failures.
+/// (mapped by ApiClient) - the repository turns those into Failures.
 class AuthRemoteDataSource {
   const AuthRemoteDataSource(this._client);
 
@@ -79,7 +79,7 @@ class AuthRemoteDataSource {
   }
 
   /// Exchanges a refresh token for a fresh token pair. Used by the proactive
-  /// startup refresh (an expired access token on cold launch) — the reactive
+  /// startup refresh (an expired access token on cold launch) - the reactive
   /// 401 path in [AuthInterceptor] refreshes on its own and does not use this.
   Future<AuthTokensDto> refreshSession(String refreshToken) async {
     final json = await _client.post<Map<String, dynamic>>(
@@ -164,7 +164,7 @@ class AuthRemoteDataSource {
     );
   }
 
-  /// Removes a device FCM token — call on logout so the backend stops
+  /// Removes a device FCM token - call on logout so the backend stops
   /// sending pushes to this device.
   Future<void> unregisterFcmToken({required String deviceId}) async {
     await _client.deleteWithBody<void>(

@@ -9,7 +9,7 @@ import '../theme/app_spacing.dart';
 import '../theme/app_text_styles.dart';
 
 /// Shown on cold launch when [appConfigProvider] fails (network down, no
-/// usable cache). The user cannot proceed until config loads — tap Retry
+/// usable cache). The user cannot proceed until config loads - tap Retry
 /// to re-attempt the fetch.
 class ConfigErrorPage extends ConsumerWidget {
   const ConfigErrorPage({super.key});

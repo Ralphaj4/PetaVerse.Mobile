@@ -166,7 +166,7 @@ class _MapViewState extends State<MapView> {
           gmaps.CameraUpdate.newLatLngZoom(here.toGoogle, 15),
         ));
       } catch (_) {
-        // Location unavailable — nothing to recenter on.
+        // Location unavailable - nothing to recenter on.
       }
       return;
     }

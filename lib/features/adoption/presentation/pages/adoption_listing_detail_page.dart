@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -286,7 +286,7 @@ class _AdoptionListingDetailPageState
         r.adopterConfirmedAt != null).firstOrNull;
 
     // Adopter: fire the welcome page the moment the lister completes the
-    // transfer — no manual refresh required. Two-step cascade:
+    // transfer - no manual refresh required. Two-step cascade:
     //   1. Listen to the listing itself. When it flips to `adopted` while the
     //      adopter has an awaitingHandover request, invalidate their requests
     //      provider so the derived provider refreshes.
@@ -690,7 +690,7 @@ class _ActionStrip extends StatelessWidget {
     final req = myRequest;
 
     // If the user has an existing request, always show their status and any
-    // available actions — even if the listing is now closed. This covers:
+    // available actions - even if the listing is now closed. This covers:
     //   - approved (awaiting acceptance) → Accept button still visible
     //   - awaitingHandover → polling banner while lister completes
     //   - completed → triggers _onTransferred via ref.listen above
@@ -733,7 +733,7 @@ class _ActionStrip extends StatelessWidget {
           isAdopted: listing.status == AdoptionListingStatus.adopted);
     }
 
-    // No request yet — show Apply.
+    // No request yet - show Apply.
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -1030,7 +1030,7 @@ class _DeleteButton extends StatelessWidget {
   }
 }
 
-/// Grid of key facts (species / age / sex) — only the ones we know.
+/// Grid of key facts (species / age / sex) - only the ones we know.
 class _FactsGrid extends StatelessWidget {
   const _FactsGrid({required this.listing, required this.now});
 

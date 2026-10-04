@@ -123,7 +123,7 @@ class ProviderCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: AppSpacing.sm),
-                  // View Details — full-width primary button.
+                  // View Details - full-width primary button.
                   SizedBox(
                     width: double.infinity,
                     child: Material(

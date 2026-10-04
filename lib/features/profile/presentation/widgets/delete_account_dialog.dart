@@ -9,8 +9,8 @@ import '../../../../core/theme/app_text_styles.dart';
 
 /// Two-step account deletion dialog.
 ///
-/// Step 1 — [_ConfirmStep]: warns the user and asks them to confirm intent.
-/// Step 2 — [_TypeStep]: requires typing "DELETE" verbatim before the
+/// Step 1 - [_ConfirmStep]: warns the user and asks them to confirm intent.
+/// Step 2 - [_TypeStep]: requires typing "DELETE" verbatim before the
 ///           destructive button becomes active.
 ///
 /// Returns true only when the user completes the type step and taps the

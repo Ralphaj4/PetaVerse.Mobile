@@ -6,7 +6,7 @@ part 'secure_storage_service.g.dart';
 
 /// Wrapper around [FlutterSecureStorage].
 ///
-/// Access and refresh tokens live ONLY here — never in Hive or
+/// Access and refresh tokens live ONLY here - never in Hive or
 /// SharedPreferences.
 class SecureStorageService {
   SecureStorageService([FlutterSecureStorage? storage])

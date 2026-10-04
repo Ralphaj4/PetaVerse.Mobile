@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -98,7 +98,7 @@ class _PawHubPostDetailPageState extends ConsumerState<PawHubPostDetailPage> {
     );
   }
 
-  /// Shown when the post no longer exists (404) — e.g. deleted after the
+  /// Shown when the post no longer exists (404) - e.g. deleted after the
   /// notification was sent. Retrying can't recover it, so no retry button.
   Widget _notFoundState() {
     return Center(

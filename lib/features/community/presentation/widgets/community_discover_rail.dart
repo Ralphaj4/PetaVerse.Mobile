@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
@@ -12,8 +12,8 @@ import '../../domain/entities/community_group_entities.dart';
 import 'community_card.dart';
 
 /// A "Communities to join" rail for the Discover tab: a titled header (glyph +
-/// title + count + chevron) — tapping anywhere on the header opens the full
-/// communities directory — over a horizontally-scrolling row of community
+/// title + count + chevron) - tapping anywhere on the header opens the full
+/// communities directory - over a horizontally-scrolling row of community
 /// tiles. No collapse; the carousel is always shown.
 class CommunityDiscoverRail extends StatelessWidget {
   const CommunityDiscoverRail({

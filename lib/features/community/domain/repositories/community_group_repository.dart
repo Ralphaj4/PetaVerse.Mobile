@@ -1,4 +1,4 @@
-import '../../../../core/errors/result.dart';
+﻿import '../../../../core/errors/result.dart';
 import '../entities/community_entities.dart';
 import '../entities/community_enums.dart';
 import '../entities/community_group_entities.dart';
@@ -9,11 +9,11 @@ import '../entities/community_group_enums.dart';
 /// [Result] so the UI never sees raw exceptions.
 ///
 /// The **acting pet** is passed explicitly where the API takes it. Membership
-/// and leadership are per-pet — a user with several pets can have each pet in
+/// and leadership are per-pet - a user with several pets can have each pet in
 /// different communities.
 ///
 /// Note: posting *into* a community reuses `CommunityRepository.createPost`
-/// with its `communityId` argument — there is no separate method here.
+/// with its `communityId` argument - there is no separate method here.
 abstract interface class CommunityGroupRepository {
   // ── Directory & discovery ──────────────────────────────────────────────────
 
@@ -49,7 +49,7 @@ abstract interface class CommunityGroupRepository {
     int? viewerPetId,
   });
 
-  /// The community's post feed — reuses the shared [FeedPage] shape, so the
+  /// The community's post feed - reuses the shared [FeedPage] shape, so the
   /// same feed list machinery and [PostCard] render it.
   Future<Result<FeedPage>> getCommunityFeed({
     required int communityId,
@@ -103,7 +103,7 @@ abstract interface class CommunityGroupRepository {
     required int petId,
   });
 
-  /// Lead only — removes another pet from the community.
+  /// Lead only - removes another pet from the community.
   Future<Result<void>> removeMember({
     required int communityId,
     required int petId,

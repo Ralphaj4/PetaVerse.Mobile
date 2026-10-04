@@ -1,7 +1,7 @@
-import 'community_entities.dart' show CommunityPet, PageCursor;
+﻿import 'community_entities.dart' show CommunityPet, PageCursor;
 import 'poll_event_enums.dart';
 
-/// Domain entities for community **polls** and **events**. Pure Dart — no
+/// Domain entities for community **polls** and **events**. Pure Dart - no
 /// Flutter, no JSON. DTOs map onto these; the UI only sees these.
 ///
 /// The social actor is always a [CommunityPet] (the creator / attendee).
@@ -65,7 +65,7 @@ class Poll {
   final DateTime createdAt;
   final DateTime? expiresAt;
 
-  /// A [0,1] fraction of total votes for [option] — 0 when there are no votes.
+  /// A [0,1] fraction of total votes for [option] - 0 when there are no votes.
   double share(PollOption option) =>
       totalVotes <= 0 ? 0 : option.voteCount / totalVotes;
 

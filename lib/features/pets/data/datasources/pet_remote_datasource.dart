@@ -1,4 +1,4 @@
-import '../../../../core/network/api_client.dart';
+﻿import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_endpoints.dart';
 import '../../domain/entities/new_pet.dart';
 import '../dtos/breed_dto.dart';
@@ -10,7 +10,7 @@ import '../dtos/species_dto.dart';
 
 /// Remote pet data source. Talks to the API exclusively through
 /// [ApiClient]; never touches Dio directly. Throws AppExceptions
-/// (mapped by ApiClient) — the repository turns those into Failures.
+/// (mapped by ApiClient) - the repository turns those into Failures.
 class PetRemoteDataSource {
   const PetRemoteDataSource(this._client);
 

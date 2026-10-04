@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -52,7 +52,7 @@ String _normalizeForMatch(String s) => s
 /// Removes from [text] any paragraph that a structured [blocks] card already
 /// covers, so a section isn't shown twice (once inline, once as a card). We
 /// keep the cards and drop the inline copy. A paragraph is dropped when its
-/// normalized content is contained in — or contains — a block's normalized
+/// normalized content is contained in - or contains - a block's normalized
 /// title+body. Paragraphs the blocks don't cover (e.g. the intro) are kept
 /// verbatim, preserving their markdown.
 String _stripBlocksFromText(String text, List<ChatBlock> blocks) {
@@ -164,7 +164,7 @@ class ChatMessageDto {
   ChatMessage toEntity() {
     // The footer is a short call-to-action line, not a copy of the answer.
     // History payloads sometimes echo the whole reply into `footer.text`,
-    // which would render the message twice — drop it when it just duplicates
+    // which would render the message twice - drop it when it just duplicates
     // the body.
     final footerText = footer?['text'] as String?;
     final dedupedFooter =
@@ -175,7 +175,7 @@ class ChatMessageDto {
     // On history reload the backend flattens the whole reply into
     // `textContent` (intro + every structured section inline, with markdown
     // headings) AND *also* returns those sections as separate blocks. Rendered
-    // together each section shows up twice — once inline in the body text, once
+    // together each section shows up twice - once inline in the body text, once
     // as a styled card. We keep the styled cards (they carry the design) and
     // strip the sections they cover out of the inline text, leaving only the
     // intro paragraph in the body.

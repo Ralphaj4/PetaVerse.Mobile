@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+﻿import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../constants/app_constants.dart';
@@ -16,7 +16,7 @@ part 'api_client.g.dart';
 
 /// The single HTTP gateway of the app.
 ///
-/// Every network request flows through this class — it owns auth headers,
+/// Every network request flows through this class - it owns auth headers,
 /// token refresh, retry policy, logging, and error mapping. Data sources
 /// receive this, never a raw Dio.
 class ApiClient {
@@ -128,7 +128,7 @@ class ApiClient {
   }
 
   /// Maps transport errors to internal [AppException]s. Repositories turn
-  /// these into [Failure]s — raw Dio errors never leave this class.
+  /// these into [Failure]s - raw Dio errors never leave this class.
   AppException _mapError(DioException e) {
     switch (e.type) {
       case DioExceptionType.connectionTimeout:
@@ -166,9 +166,9 @@ class ApiClient {
   }
 
   /// Distinguishes the three 401 subtypes:
-  ///   • suspended — body has `extensions.suspendedUntil`
-  ///   • banned    — body detail contains "banned"
-  ///   • generic   — session expired / bad credentials
+  ///   • suspended - body has `extensions.suspendedUntil`
+  ///   • banned - body detail contains "banned"
+  ///   • generic - session expired / bad credentials
   AppException _map401(dynamic body, String message) {
     if (body is Map<String, dynamic>) {
       final extensions = body['extensions'];

@@ -23,7 +23,7 @@ enum ProviderCategory {
   pharmacy,
 }
 
-/// Presentation metadata for a [ProviderCategory] — the glyph shown on pins and
+/// Presentation metadata for a [ProviderCategory] - the glyph shown on pins and
 /// chips, and the accent color used to tint them. Kept on the enum (not in the
 /// widgets) so every surface stays consistent and a new category is one edit.
 extension ProviderCategoryX on ProviderCategory {
@@ -41,7 +41,7 @@ extension ProviderCategoryX on ProviderCategory {
     return null;
   }
 
-  /// Regular (outline) icon — used for unselected chips.
+  /// Regular (outline) icon - used for unselected chips.
   IconData get icon => switch (this) {
         ProviderCategory.all => FluentIcons.grid_24_regular,
         ProviderCategory.veterinary => FluentIcons.stethoscope_24_regular,
@@ -56,7 +56,7 @@ extension ProviderCategoryX on ProviderCategory {
         ProviderCategory.pharmacy => FluentIcons.pill_24_regular,
       };
 
-  /// Filled variant — used on selected chips and map pins.
+  /// Filled variant - used on selected chips and map pins.
   IconData get filledIcon => switch (this) {
         ProviderCategory.all => FluentIcons.grid_24_filled,
         ProviderCategory.veterinary => FluentIcons.stethoscope_24_filled,

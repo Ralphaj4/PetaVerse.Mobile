@@ -7,7 +7,7 @@ import '../../domain/repositories/co_ownership_repository.dart';
 import '../datasources/co_ownership_remote_datasource.dart';
 
 /// Co-ownership repository. Wraps every remote call so exceptions never cross
-/// the repository boundary — mapped AppExceptions become typed [Failure]s, and
+/// the repository boundary - mapped AppExceptions become typed [Failure]s, and
 /// any other error (e.g. a response-shape/parse error) becomes a
 /// [ServerFailure] rather than escaping and hanging the caller's async state.
 class CoOwnershipRepositoryImpl implements CoOwnershipRepository {
@@ -62,7 +62,7 @@ class CoOwnershipRepositoryImpl implements CoOwnershipRepository {
       _guard(() => _remote.removeOwner(petId: petId, userId: userId));
 
   /// Runs [action], mapping AppExceptions to typed failures and any other
-  /// error to a [ServerFailure] — so no exception ever escapes.
+  /// error to a [ServerFailure] - so no exception ever escapes.
   Future<Result<T>> _guard<T>(Future<T> Function() action) async {
     try {
       return Result.success(await action());

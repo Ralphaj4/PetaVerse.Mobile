@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
@@ -69,7 +69,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     final confirmed = await DeleteAccountDialog.show(context);
     if (!confirmed || !context.mounted) return;
 
-    // Read all stable refs before any await — the providers we touch
+    // Read all stable refs before any await - the providers we touch
     // (authProvider in particular) are auto-disposed and their refs become
     // invalid the moment the session gate flips and the router rebuilds.
     final petsNotifier = ref.read(petsProvider.notifier);
@@ -86,7 +86,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       return;
     }
 
-    // Flip the session gate FIRST (synchronous) — the router immediately
+    // Flip the session gate FIRST (synchronous) - the router immediately
     // redirects to /login. Any remaining async teardown (pet cache reset)
     // runs after, mirroring the logout sequence.
     sessionNotifier.setLoggedIn(false);
@@ -168,7 +168,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 label: l10n.personalInformation,
                 onTap: () => context.push(AppRoutes.personalInformation),
               ),
-              // Pet Invitations — shown only when there are pending invites.
+              // Pet Invitations - shown only when there are pending invites.
               if (pendingInvites > 0) ...[
                 const SizedBox(height: AppSpacing.sm),
                 SettingsTile(
@@ -278,7 +278,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   final petsNotifier = ref.read(petsProvider.notifier);
                   final authNotifier = ref.read(authProvider.notifier);
                   final sessionNotifier = ref.read(sessionProvider.notifier);
-                  // 1) Flip the session gate FIRST — this is synchronous and
+                  // 1) Flip the session gate FIRST - this is synchronous and
                   // sends the router straight to /login (the auth gate wins
                   // regardless of pet-gate readiness). Clearing pets first
                   // would set pets.ready=false while still logged in, which

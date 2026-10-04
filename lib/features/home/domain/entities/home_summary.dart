@@ -1,11 +1,11 @@
-import '../../../pawcare/domain/entities/health_reminder.dart';
+﻿import '../../../pawcare/domain/entities/health_reminder.dart';
 import '../../../pawcare/domain/entities/pet_health_score.dart';
 import '../../../pawcare/domain/entities/weight_record.dart';
 
 /// The aggregated home dashboard for the active pet plus a cross-pet "what do I
 /// need to take care of" timeline. Mirrors `GET /api/users/me/home-summary`.
 ///
-/// Domain layer — no Flutter or JSON imports.
+/// Domain layer - no Flutter or JSON imports.
 class HomeSummary {
   const HomeSummary({
     required this.petId,
@@ -44,12 +44,12 @@ class HomeSummary {
   /// Selected pet's latest weight, or null when it has no records.
   final WeightStat? weight;
 
-  /// Cross-pet, cross-kind reminders — soonest first, all overdue included,
+  /// Cross-pet, cross-kind reminders - soonest first, all overdue included,
   /// no future cutoff. Empty when nothing is due across any pet.
   final List<HealthReminder> upcoming;
 
   /// Lost pets reported near the user, backing the Home "Explore" tile.
-  /// Null until the backend supplies it — the tile falls back to a static
+  /// Null until the backend supplies it - the tile falls back to a static
   /// subtitle rather than showing a count of zero.
   final int? lostNearbyCount;
 

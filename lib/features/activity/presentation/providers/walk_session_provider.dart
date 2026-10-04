@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
@@ -102,7 +102,7 @@ class WalkSessionNotifier extends _$WalkSessionNotifier {
     _ticker = null;
     await WalkForegroundService.stop();
 
-    // Walks under the minimum aren't worth recording — discard the row.
+    // Walks under the minimum aren't worth recording - discard the row.
     if (session.elapsed < kMinWalkDuration) {
       await WalkDatabase.instance.deleteWalk(rowId);
       _activeRowId = null;
@@ -140,7 +140,7 @@ class WalkSessionNotifier extends _$WalkSessionNotifier {
       );
     } else if (data['action'] == 'stop_walk') {
       // Notification Stop button: the service isolate already marked the
-      // row 'pending_sync' and stopped itself — just finalize UI + sync.
+      // row 'pending_sync' and stopped itself - just finalize UI + sync.
       _ticker?.cancel();
       _ticker = null;
       _activeRowId = null;
@@ -195,7 +195,7 @@ class WalkSessionNotifier extends _$WalkSessionNotifier {
       final petId = row['pet_id'] as int;
       final petName = (row['pet_name'] as String?) ?? '';
       final startedAt = DateTime.parse(row['started_at'] as String);
-      // Re-check (without prompting) — permission may have been revoked
+      // Re-check (without prompting) - permission may have been revoked
       // while the app was dead, and the location-typed FGS needs it.
       final hasLocation = (row['has_location'] as int) == 1 &&
           await _requestLocation(request: false);

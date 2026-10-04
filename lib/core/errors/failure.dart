@@ -15,12 +15,12 @@ final class NetworkFailure extends Failure {
   const NetworkFailure({super.message});
 }
 
-/// 401 responses — session expired or invalid credentials.
+/// 401 responses - session expired or invalid credentials.
 final class UnauthorizedFailure extends Failure {
   const UnauthorizedFailure({super.message});
 }
 
-/// 401 — account is temporarily suspended.
+/// 401 - account is temporarily suspended.
 final class SuspendedFailure extends Failure {
   const SuspendedFailure({super.message, this.suspendedUntil});
 
@@ -28,17 +28,17 @@ final class SuspendedFailure extends Failure {
   final DateTime? suspendedUntil;
 }
 
-/// 401 — account is permanently banned.
+/// 401 - account is permanently banned.
 final class BannedFailure extends Failure {
   const BannedFailure({super.message});
 }
 
-/// 403 responses — authenticated but not allowed.
+/// 403 responses - authenticated but not allowed.
 final class ForbiddenFailure extends Failure {
   const ForbiddenFailure({super.message});
 }
 
-/// 404 responses — the requested resource does not exist.
+/// 404 responses - the requested resource does not exist.
 final class NotFoundFailure extends Failure {
   const NotFoundFailure({super.message});
 }
@@ -56,7 +56,7 @@ final class ServerFailure extends Failure {
   const ServerFailure({super.message});
 }
 
-/// 429 responses — the caller hit a rate limit. [retryAfter] carries the
+/// 429 responses - the caller hit a rate limit. [retryAfter] carries the
 /// server's `Retry-After` hint (seconds) when present, so the UI can show a
 /// "try again in Ns" message and disable the action until then.
 final class RateLimitFailure extends Failure {
@@ -65,7 +65,7 @@ final class RateLimitFailure extends Failure {
   final Duration? retryAfter;
 }
 
-/// 409 responses — the resource is in a state that conflicts with the request.
+/// 409 responses - the resource is in a state that conflicts with the request.
 final class ConflictFailure extends Failure {
   const ConflictFailure({super.message});
 }

@@ -1,4 +1,4 @@
-import '../../../../core/errors/app_exception.dart';
+﻿import '../../../../core/errors/app_exception.dart';
 import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
 import '../../../pawcare/data/datasources/health_reminder_local_datasource.dart';
@@ -14,7 +14,7 @@ import '../dtos/home_summary_dto.dart';
 ///
 /// Offline-first: every successful fetch is cached in Hive (whole payload) and
 /// also fans the timeline into the per-slice reminder cache. A network failure
-/// reconciles against the last cached payload — the dashboard keeps rendering
+/// reconciles against the last cached payload - the dashboard keeps rendering
 /// the previous snapshot instead of erroring out. Non-network failures (403 /
 /// 404 / server) propagate so the UI can surface them honestly.
 class HomeRepositoryImpl implements HomeRepository {
@@ -55,7 +55,7 @@ class HomeRepositoryImpl implements HomeRepository {
     }
   }
 
-  /// Best-effort write of the full payload — a cache failure never fails the
+  /// Best-effort write of the full payload - a cache failure never fails the
   /// fetch.
   Future<void> _cacheSummary(int? petId, HomeSummaryDto dto) async {
     try {
@@ -65,7 +65,7 @@ class HomeRepositoryImpl implements HomeRepository {
 
   /// Rewrites the reminder cache from the server timeline, one slice per
   /// (pet, kind), so the offline home view matches what the server just
-  /// returned. Best-effort — a cache write failure never fails the fetch.
+  /// returned. Best-effort - a cache write failure never fails the fetch.
   Future<void> _cacheTimeline(List<HealthReminder> upcoming) async {
     try {
       // Group by (petId, kind) to match the cache's per-slice key scheme.

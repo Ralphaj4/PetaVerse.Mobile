@@ -1,4 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+﻿import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../domain/entities/community_entities.dart';
 import 'community_providers.dart';
@@ -91,7 +91,7 @@ class CommunityNotifications extends _$CommunityNotifications {
   }
 }
 
-/// The bell badge count on its own — the number of unread notifications for the
+/// The bell badge count on its own - the number of unread notifications for the
 /// acting pet. Reads through the notifications page so it stays live.
 @riverpod
 int communityUnreadCount(Ref ref) {

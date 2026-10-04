@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/extensions/context_extensions.dart';
@@ -187,7 +187,7 @@ class RichCaption extends StatelessWidget {
   }
 }
 
-/// A count badge (e.g. unread notifications) — a small red pill.
+/// A count badge (e.g. unread notifications) - a small red pill.
 class CountBadge extends StatelessWidget {
   const CountBadge({required this.count, super.key});
 
@@ -219,7 +219,7 @@ class CountBadge extends StatelessWidget {
 }
 
 /// Opens the "Posting as / Acting as" sheet and returns the chosen pet.
-/// This is the signature PawHub interaction — always let the user confirm
+/// This is the signature PawHub interaction - always let the user confirm
 /// which pet persona an action is performed under.
 Future<PawPet?> showPetSwitcherSheet(
   BuildContext context, {

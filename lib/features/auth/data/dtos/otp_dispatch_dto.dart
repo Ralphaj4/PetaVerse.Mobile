@@ -1,11 +1,11 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+﻿import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'otp_dispatch_dto.freezed.dart';
 part 'otp_dispatch_dto.g.dart';
 
 /// Response from endpoints that trigger an OTP send (`register`,
 /// `resend-otp`, `forgot-password`). [devOtp] is populated only by the
-/// Development environment — null otherwise — and is shown in debug builds
+/// Development environment - null otherwise - and is shown in debug builds
 /// to ease local testing. [isOtp] is only meaningful for `forgot-password`:
 /// true = SMS OTP was sent, false = email reset link was sent.
 @freezed

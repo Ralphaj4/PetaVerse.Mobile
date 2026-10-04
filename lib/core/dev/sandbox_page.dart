@@ -44,7 +44,7 @@ class _SectionHeader extends StatelessWidget {
 /// Simulates the "day-2 cold launch" state: overwrites the stored access token
 /// with an already-expired JWT while leaving the refresh token untouched. On
 /// the next cold launch (or any authenticated request) this is exactly what the
-/// app sees the morning after login — the path that used to log the user out.
+/// app sees the morning after login - the path that used to log the user out.
 ///
 /// Expected behaviour AFTER the fix: the app stays signed in. `hasSession()`
 /// sees the expired access token, refreshes proactively, and the concurrent
@@ -71,14 +71,14 @@ class _ExpireAccessTokenTileState
       if (refresh == null || refresh.isEmpty) {
         messenger.showSnackBar(
           const SnackBar(
-            content: Text('No refresh token stored — log in first.'),
+            content: Text('No refresh token stored - log in first.'),
           ),
         );
         return;
       }
       // Overwrite ONLY the access token with a well-formed but already-expired
       // JWT. Refresh token is left intact so the refresh flow has something to
-      // work with — the whole point of the repro.
+      // work with - the whole point of the repro.
       await storage.write('access_token', _expiredJwt());
       if (!mounted) return;
       messenger.showSnackBar(
@@ -161,7 +161,7 @@ class _LocalNotificationTileState
     if (mounted) {
       setState(() => _busy = false);
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Scheduled — fires in 5 s')),
+        const SnackBar(content: Text('Scheduled - fires in 5 s')),
       );
     }
   }
@@ -224,7 +224,7 @@ class _LocalNotificationTileState
 }
 
 /// A structurally valid JWT (header.payload.signature) whose `exp` is far in the
-/// past, so [JwtUtils.isExpired] reports true. The signature is a placeholder —
+/// past, so [JwtUtils.isExpired] reports true. The signature is a placeholder -
 /// the backend rejects it on use (→ 401), which is precisely the day-2 path we
 /// want to exercise; the client-side expiry check short-circuits before that.
 String _expiredJwt() {

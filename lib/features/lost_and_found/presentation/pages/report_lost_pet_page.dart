@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -434,7 +434,7 @@ class _ReportLostPetPageState extends ConsumerState<ReportLostPetPage> {
 /// Borderless input decoration so fields sit flush inside a [_CardSurface].
 InputDecoration _borderless(String hint) => InputDecoration(
       hintText: hint,
-      // Strip the theme's outlined borders for every state — fields sit flush
+      // Strip the theme's outlined borders for every state - fields sit flush
       // inside a [_CardSurface], which supplies the surface + shadow.
       filled: false,
       border: InputBorder.none,

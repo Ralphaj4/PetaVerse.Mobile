@@ -107,12 +107,12 @@ class NotificationList extends _$NotificationList {
   }
 }
 
-/// Convenience selector — true while more pages are available.
+/// Convenience selector - true while more pages are available.
 @riverpod
 bool notificationHasMore(Ref ref) =>
     ref.watch(notificationListProvider.notifier).hasMore;
 
-/// Convenience selector — true while a page is being fetched.
+/// Convenience selector - true while a page is being fetched.
 @riverpod
 bool notificationIsLoadingMore(Ref ref) =>
     ref.watch(notificationListProvider.notifier).isLoadingMore;

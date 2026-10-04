@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+﻿// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'community_providers.dart';
 
@@ -73,7 +73,7 @@ final class CommunityRepositoryProvider
 String _$communityRepositoryHash() =>
     r'5e32323aaaefe513608c0ee2399507d0ad8acf55';
 
-/// The acting pet — the social identity actions are attributed to. Bound to
+/// The acting pet - the social identity actions are attributed to. Bound to
 /// the app-wide current-pet selection ([PetsNotifier]); switching pets in the
 /// PawHub switcher goes through `selectPet`, so the whole app stays in sync.
 ///
@@ -83,7 +83,7 @@ String _$communityRepositoryHash() =>
 @ProviderFor(actingPet)
 final actingPetProvider = ActingPetProvider._();
 
-/// The acting pet — the social identity actions are attributed to. Bound to
+/// The acting pet - the social identity actions are attributed to. Bound to
 /// the app-wide current-pet selection ([PetsNotifier]); switching pets in the
 /// PawHub switcher goes through `selectPet`, so the whole app stays in sync.
 ///
@@ -93,7 +93,7 @@ final actingPetProvider = ActingPetProvider._();
 final class ActingPetProvider
     extends $FunctionalProvider<PetRef?, PetRef?, PetRef?>
     with $Provider<PetRef?> {
-  /// The acting pet — the social identity actions are attributed to. Bound to
+  /// The acting pet - the social identity actions are attributed to. Bound to
   /// the app-wide current-pet selection ([PetsNotifier]); switching pets in the
   /// PawHub switcher goes through `selectPet`, so the whole app stays in sync.
   ///

@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +17,7 @@ import '../providers/poll_event_actions_providers.dart';
 import '../providers/poll_event_providers.dart';
 
 /// An inline community event card. Shows a date chip, title, location, RSVP
-/// counts, and — for members — Going / Interested / Can't-go buttons. Tapping
+/// counts, and - for members - Going / Interested / Can't-go buttons. Tapping
 /// the body opens the event detail page. Non-members see a "Join to RSVP" hint.
 class EventCard extends ConsumerStatefulWidget {
   const EventCard({

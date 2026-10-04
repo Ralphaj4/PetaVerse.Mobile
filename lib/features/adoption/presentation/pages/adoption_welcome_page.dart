@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,7 +19,7 @@ class AdoptionWelcomeArgs {
 
 /// Celebratory screen shown to the ADOPTER once a transfer completes and the
 /// pet lands in their account. (Distinct from the lister's rehome-success
-/// screen.) The pet already has a full profile + records — this links straight
+/// screen.) The pet already has a full profile + records - this links straight
 /// to it. Terminal: "Done" returns to My adoptions.
 class AdoptionWelcomePage extends StatelessWidget {
   const AdoptionWelcomePage({required this.args, super.key});

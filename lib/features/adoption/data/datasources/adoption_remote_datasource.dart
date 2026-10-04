@@ -1,16 +1,16 @@
-import '../../../../core/network/api_client.dart';
+﻿import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_endpoints.dart';
 import '../dtos/adoption_dtos.dart';
 
 /// Remote adoption data source. Talks to the API exclusively through
 /// [ApiClient]; never touches Dio directly. Throws AppExceptions (mapped by
-/// ApiClient) — the repository turns those into Failures.
+/// ApiClient) - the repository turns those into Failures.
 class AdoptionRemoteDataSource {
   const AdoptionRemoteDataSource(this._client);
 
   final ApiClient _client;
 
-  /// GET /adoption/listings — paged board. Only Available (16) listings.
+  /// GET /adoption/listings - paged board. Only Available (16) listings.
   Future<AdoptionListingPageDto> getListings({
     int? speciesId,
     String? query,
@@ -112,7 +112,7 @@ class AdoptionRemoteDataSource {
   }
 
   /// POST .../requests/{reqId}/complete (owner). Triggers the irreversible
-  /// transfer — enabled only once the adopter has accepted. → 200 PetResponse
+  /// transfer - enabled only once the adopter has accepted. → 200 PetResponse
   /// (the pet, now owned by the adopter). Idempotent. 409 if the adopter hasn't
   /// accepted yet.
   Future<AdoptionPetDto> completeRequest(int listingId, int reqId) async {
@@ -146,7 +146,7 @@ class AdoptionRemoteDataSource {
   }
 
   /// POST /users/me/adoption-requests/{reqId}/accept (adopter). Records the
-  /// opt-in ("I'll take it") — does NOT transfer. Idempotent. → 200 updated
+  /// opt-in ("I'll take it") - does NOT transfer. Idempotent. → 200 updated
   /// MyAdoptionRequest.
   Future<MyAdoptionRequestDto> acceptRequest(int reqId) async {
     final data = await _client.post<Map<String, dynamic>>(

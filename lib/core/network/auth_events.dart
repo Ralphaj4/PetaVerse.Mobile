@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 /// A tiny, framework-free broadcaster for auth lifecycle events.
 ///
@@ -8,8 +8,8 @@ import 'dart:async';
 /// emits [onSessionExpired] here; the session gate listens and flips the app
 /// to logged-out, which drives the router back to login.
 ///
-/// This decouples the network layer from presentation — core never imports a
-/// feature — while still letting a dead session propagate out of the interceptor.
+/// This decouples the network layer from presentation - core never imports a
+/// feature - while still letting a dead session propagate out of the interceptor.
 class AuthEvents {
   final _controller = StreamController<void>.broadcast();
 

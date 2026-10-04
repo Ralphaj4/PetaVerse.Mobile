@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -27,7 +27,7 @@ abstract final class ContactOwnerSheet {
   }) {
     return WoltModalSheet.show<void>(
       context: context,
-      // A single bottom-sheet page; no top bar — the header is custom.
+      // A single bottom-sheet page; no top bar - the header is custom.
       pageListBuilder: (sheetContext) => [
         WoltModalSheetPage(
           hasTopBarLayer: false,

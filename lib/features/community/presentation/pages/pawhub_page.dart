@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +29,7 @@ import '../widgets/upload_progress_banner.dart';
 import 'pawhub_search_page.dart';
 import 'pawhub_pet_profile_page.dart';
 
-/// PawHub — the pet social feed, wired to real backend providers.
+/// PawHub - the pet social feed, wired to real backend providers.
 class PawHubPage extends ConsumerStatefulWidget {
   const PawHubPage({this.barsVisible = true, super.key});
 
@@ -42,8 +42,7 @@ class PawHubPage extends ConsumerStatefulWidget {
 class _PawHubPageState extends ConsumerState<PawHubPage> {
   /// The feed's scroll controller. Adopted from the ambient
   /// [PrimaryScrollController] (owned by CommunityHubPage) so re-tapping the
-  /// Community bottom-nav tab scrolls the feed to the top. Not disposed here —
-  /// the hub owns its lifecycle.
+  /// Community bottom-nav tab scrolls the feed to the top. Not disposed here - /// the hub owns its lifecycle.
   late ScrollController _scrollController;
 
   FeedTab _tab = FeedTab.following;
@@ -88,8 +87,7 @@ class _PawHubPageState extends ConsumerState<PawHubPage> {
     );
     if (chosen != null) {
       unawaited(HapticFeedback.selectionClick());
-      // The acting pet is derived from PetsNotifier.currentPet —
-      // selectPet changes it app-wide.
+      // The acting pet is derived from PetsNotifier.currentPet - // selectPet changes it app-wide.
       final notifier = ref.read(petsProvider.notifier);
       notifier.selectPet(chosen.backendId);
     }
@@ -361,7 +359,7 @@ void _openProfile(PawPet pet) {
                   ? _topBar(actingPawPet)
                   : const SizedBox.shrink(),
             ),
-            // Background post-upload progress — shown here (below the
+            // Background post-upload progress - shown here (below the
             // Following/Discover bar, above the feed) rather than app-wide.
             const UploadProgressBanner(),
             Expanded(
@@ -522,7 +520,7 @@ void _openProfile(PawPet pet) {
           return pet;
         }).toList();
         // Community suggestions now live in the dedicated Communities tab, so
-        // Discover is pure post discovery — no communities rail here.
+        // Discover is pure post discovery - no communities rail here.
         if (posts.isEmpty) {
           return FeedEmptyState(
             title: context.l10n.pawhubDiscoverEmptyTitle,

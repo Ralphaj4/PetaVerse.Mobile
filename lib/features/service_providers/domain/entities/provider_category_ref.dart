@@ -1,6 +1,6 @@
 import 'provider_category.dart';
 
-/// A row from `GET /service-providers/categories` — the admin-configurable
+/// A row from `GET /service-providers/categories` - the admin-configurable
 /// category table that maps a numeric [id] (used in search items' `categoryIds`
 /// / `primaryCategoryId`) to a [slug] the client owns icons/colors for.
 ///

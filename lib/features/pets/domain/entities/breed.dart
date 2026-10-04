@@ -1,6 +1,6 @@
-/// A breed within a species, used to populate the breed dropdown.
+﻿/// A breed within a species, used to populate the breed dropdown.
 ///
-/// Domain layer — no Flutter or JSON imports.
+/// Domain layer - no Flutter or JSON imports.
 class Breed {
   const Breed({required this.id, required this.name, this.origin});
 

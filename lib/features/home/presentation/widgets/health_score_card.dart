@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
@@ -8,7 +8,7 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 
 /// Floating white card showing the pet's overall health score, with a
-/// small heart badge overlapping the corner — from the home hero design.
+/// small heart badge overlapping the corner - from the home hero design.
 class HealthScoreCard extends StatelessWidget {
   const HealthScoreCard({
     required this.score,

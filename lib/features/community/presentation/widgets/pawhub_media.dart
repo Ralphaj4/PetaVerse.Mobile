@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
@@ -24,7 +24,7 @@ class PostMediaCarousel extends StatefulWidget {
 
   final List<PawMedia> media;
 
-  /// Current like state — a double-tap only *adds* a like (never unlikes),
+  /// Current like state - a double-tap only *adds* a like (never unlikes),
   /// mirroring Instagram semantics; the burst always plays.
   final bool liked;
   final VoidCallback onDoubleTapLike;

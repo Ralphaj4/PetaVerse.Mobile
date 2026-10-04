@@ -1,4 +1,4 @@
-import 'dart:async' show Timer;
+﻿import 'dart:async' show Timer;
 
 import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
@@ -85,7 +85,7 @@ class _EmailSentPageState extends ConsumerState<EmailSentPage> {
         AppRoutes.setNewPassword,
         extra: SetNewPasswordArgs(
           phone: widget.phone,
-          // code is null — the OTP field is shown inline on SetNewPasswordPage.
+          // code is null - the OTP field is shown inline on SetNewPasswordPage.
         ),
       );
     } else {

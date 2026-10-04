@@ -10,7 +10,7 @@ import '../theme/app_spacing.dart';
 import '../theme/app_text_styles.dart';
 
 /// Blocking screen shown when the installed app version is below
-/// [AppConfig.minAppVersion]. The user cannot proceed — the only action
+/// [AppConfig.minAppVersion]. The user cannot proceed - the only action
 /// is to open the store listing or retry (in case the admin raised the
 /// min version bar and then lowered it again).
 class ForceUpdatePage extends ConsumerWidget {

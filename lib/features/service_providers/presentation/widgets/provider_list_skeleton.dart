@@ -4,7 +4,7 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../shared/widgets/shimmer.dart';
 
-/// Shimmer placeholder list shown while providers load — mirrors the real
+/// Shimmer placeholder list shown while providers load - mirrors the real
 /// [ProviderCard] layout (photo + text lines + action row) so nothing shifts
 /// when data arrives. Wrapped in a single [Shimmer] so all boxes share one
 /// sweep (cheaper + coherent). Honors reduced-motion via [Shimmer].

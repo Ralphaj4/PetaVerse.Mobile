@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 
 import '../../../../core/theme/app_colors.dart';
@@ -8,7 +8,7 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_card.dart';
 
 /// Upcoming appointment card: date block, details, and a trailing
-/// calendar icon — from the "Upcoming" section of the dashboard.
+/// calendar icon - from the "Upcoming" section of the dashboard.
 class AppointmentCard extends StatelessWidget {
   const AppointmentCard({
     required this.monthLabel,

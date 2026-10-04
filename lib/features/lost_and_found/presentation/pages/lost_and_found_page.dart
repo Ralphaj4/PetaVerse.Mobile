@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,7 +30,7 @@ class LostAndFoundPage extends ConsumerStatefulWidget {
   const LostAndFoundPage({this.embedded = false, super.key});
 
   /// When true (inside the Community hub) the page renders without its own
-  /// AppBar — the hub supplies the shared header — surfacing the count + Report
+  /// AppBar - the hub supplies the shared header - surfacing the count + Report
   /// action as an inline header row instead.
   final bool embedded;
 
@@ -111,7 +111,7 @@ class _LostAndFoundPageState extends ConsumerState<LostAndFoundPage> {
           onToggleMap: () => setState(() => _mapExpanded = !_mapExpanded),
           onFilterChanged: (f) {
             // A filter change refetches the dashboard, whose volunteer
-            // status is then authoritative — drop the optimistic override.
+            // status is then authoritative - drop the optimistic override.
             setState(() => _volunteerOverride = null);
             ref
                 .read(lostFoundFilterProvider.notifier)
@@ -200,7 +200,7 @@ class _LostAndFoundPageState extends ConsumerState<LostAndFoundPage> {
     final l10n = context.l10n;
     final messenger = ScaffoldMessenger.of(context);
     final info = await ref.read(volunteerActionsProvider.notifier).join();
-    // Use the State's own `mounted` — it survives the await as long as the
+    // Use the State's own `mounted` - it survives the await as long as the
     // page is on screen, unlike a transient builder `BuildContext`.
     if (!mounted) return;
 
@@ -370,7 +370,7 @@ class _DashboardBody extends StatelessWidget {
 
   final LostFoundDashboard dashboard;
 
-  /// Effective volunteer status — the optimistic override when present, else
+  /// Effective volunteer status - the optimistic override when present, else
   /// the dashboard's value. Drives the banner's shape.
   final VolunteerInfo volunteer;
   final AlertFilter filter;
@@ -441,7 +441,7 @@ class _DashboardBody extends StatelessWidget {
           ),
         ),
 
-        // ── Volunteer affordance — in the header so it's ALWAYS reachable,
+        // ── Volunteer affordance - in the header so it's ALWAYS reachable,
         // regardless of how long the alert list grows. State-adaptive:
         // an inviting banner when not a volunteer, a slim status pill once
         // joined.
@@ -653,7 +653,7 @@ class _VolunteerBanner extends StatelessWidget {
               ),
             ),
             const SizedBox(width: AppSpacing.sm),
-            // Leave button — compact, icon over label, so it never forces the
+            // Leave button - compact, icon over label, so it never forces the
             // row to overflow on narrow screens.
             _LeaveButton(label: l10n.leaveVolunteerAction, onTap: onLeave),
           ],

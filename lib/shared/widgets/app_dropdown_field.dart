@@ -38,7 +38,7 @@ class AppDropdownField<T> extends StatelessWidget {
   final bool searchable;
 
   /// Optional leading visual (e.g. an avatar/thumbnail) shown before each
-  /// option's label — both in the picker sheet and the collapsed value. Return
+  /// option's label - both in the picker sheet and the collapsed value. Return
   /// null for an item with no media.
   final Widget? Function(T value)? leadingBuilder;
 

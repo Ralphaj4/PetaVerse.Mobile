@@ -1,10 +1,10 @@
-import '../../../../core/storage/hive_service.dart';
+﻿import '../../../../core/storage/hive_service.dart';
 import '../../domain/entities/pet_ref.dart';
 import '../dtos/pet_dto.dart';
 
 /// Local cache of the current user's pets, in the `pets` Hive box:
-///   • `refs` — lightweight {id, name, imagePath} for the routing gate,
-///   • `full` — full PetResponse records for display screens (offline-first).
+///   • `refs` - lightweight {id, name, imagePath} for the routing gate,
+///   • `full` - full PetResponse records for display screens (offline-first).
 ///
 /// The box is cleared on logout, so it only ever holds the signed-in user's
 /// data.

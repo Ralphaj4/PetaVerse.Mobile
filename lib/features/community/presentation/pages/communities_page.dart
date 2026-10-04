@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -27,11 +27,10 @@ enum _CommunitiesTab { discover, mine }
 /// category chips (Discover only), and lists of community cards. Reached via
 /// `/community/communities`.
 ///
-/// The search field and tab bar stay mounted at all times — only the list area
+/// The search field and tab bar stay mounted at all times - only the list area
 /// below them swaps between loading / data / empty.
 class CommunitiesPage extends ConsumerStatefulWidget {
-  /// When [embedded] (inside the PetaHub) it renders without its own AppBar —
-  /// the hub supplies the shared header. Standalone (`/community/communities`)
+  /// When [embedded] (inside the PetaHub) it renders without its own AppBar - /// the hub supplies the shared header. Standalone (`/community/communities`)
   /// keeps its own AppBar with the create-community action.
   const CommunitiesPage({this.embedded = false, super.key});
 
@@ -108,7 +107,7 @@ class _CommunitiesPageState extends ConsumerState<CommunitiesPage> {
       ],
     );
 
-    // Embedded: no Scaffold/AppBar — the PetaHub supplies the chrome.
+    // Embedded: no Scaffold/AppBar - the PetaHub supplies the chrome.
     if (widget.embedded) return body;
 
     return Scaffold(
@@ -233,7 +232,7 @@ class _CommunitiesPageState extends ConsumerState<CommunitiesPage> {
 
   // ── Directory (browse) ──────────────────────────────────────────────────────
 
-  /// Only the list area reacts to loading/error — the controls above stay put.
+  /// Only the list area reacts to loading/error - the controls above stay put.
   Widget _directory() {
     final state = ref.watch(communityDirectoryProvider);
     return state.when(

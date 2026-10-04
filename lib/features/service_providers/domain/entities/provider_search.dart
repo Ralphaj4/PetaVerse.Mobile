@@ -3,7 +3,7 @@ import 'package:latlong2/latlong.dart';
 import 'provider_category.dart';
 import 'service_provider.dart';
 
-/// A geographic bounding box (SW/NE corners) — the visible map viewport. A pure
+/// A geographic bounding box (SW/NE corners) - the visible map viewport. A pure
 /// Dart type so the domain stays Flutter-free; the map widget converts
 /// flutter_map's `LatLngBounds` into this.
 class GeoBounds {
@@ -51,7 +51,7 @@ class ProviderSearchParams {
   /// The visible map bounding box (SW/NE corners).
   final GeoBounds bounds;
 
-  /// The device location, when known — enables distance stamping + distance
+  /// The device location, when known - enables distance stamping + distance
   /// sort. Null when denied/unavailable.
   final LatLng? userLocation;
 
@@ -93,7 +93,7 @@ class ProviderSearchResult {
   /// True when more results exist beyond the returned cap.
   final bool hasMore;
 
-  /// True when the bbox is too large to search — [items] is empty and the UI
+  /// True when the bbox is too large to search - [items] is empty and the UI
   /// should prompt "zoom in".
   final bool tooZoomedOut;
 }

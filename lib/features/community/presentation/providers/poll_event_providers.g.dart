@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+﻿// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'poll_event_providers.dart';
 
@@ -11,7 +11,7 @@ part of 'poll_event_providers.dart';
 /// The poll & event repository, wired to the shared [ApiClient].
 ///
 /// `myPetIds` is a callback reading [PetsNotifier] so the `isMine` flag on
-/// creator/attendee pets always reflects the current pet set — same pattern as
+/// creator/attendee pets always reflects the current pet set - same pattern as
 /// `communityGroupRepository`.
 
 @ProviderFor(pollEventRepository)
@@ -20,7 +20,7 @@ final pollEventRepositoryProvider = PollEventRepositoryProvider._();
 /// The poll & event repository, wired to the shared [ApiClient].
 ///
 /// `myPetIds` is a callback reading [PetsNotifier] so the `isMine` flag on
-/// creator/attendee pets always reflects the current pet set — same pattern as
+/// creator/attendee pets always reflects the current pet set - same pattern as
 /// `communityGroupRepository`.
 
 final class PollEventRepositoryProvider
@@ -34,7 +34,7 @@ final class PollEventRepositoryProvider
   /// The poll & event repository, wired to the shared [ApiClient].
   ///
   /// `myPetIds` is a callback reading [PetsNotifier] so the `isMine` flag on
-  /// creator/attendee pets always reflects the current pet set — same pattern as
+  /// creator/attendee pets always reflects the current pet set - same pattern as
   /// `communityGroupRepository`.
   PollEventRepositoryProvider._()
     : super(
@@ -277,17 +277,17 @@ abstract class _$CommunityEvents extends $AsyncNotifier<PagedEvents> {
   }
 }
 
-/// A single event's detail (family-keyed by id) — used by the event detail
+/// A single event's detail (family-keyed by id) - used by the event detail
 /// page and the attendees list.
 
 @ProviderFor(EventDetail)
 final eventDetailProvider = EventDetailFamily._();
 
-/// A single event's detail (family-keyed by id) — used by the event detail
+/// A single event's detail (family-keyed by id) - used by the event detail
 /// page and the attendees list.
 final class EventDetailProvider
     extends $AsyncNotifierProvider<EventDetail, CommunityEvent> {
-  /// A single event's detail (family-keyed by id) — used by the event detail
+  /// A single event's detail (family-keyed by id) - used by the event detail
   /// page and the attendees list.
   EventDetailProvider._({
     required EventDetailFamily super.from,
@@ -327,7 +327,7 @@ final class EventDetailProvider
 
 String _$eventDetailHash() => r'a3b4960f53f2ed096baf751e08712210ed47abac';
 
-/// A single event's detail (family-keyed by id) — used by the event detail
+/// A single event's detail (family-keyed by id) - used by the event detail
 /// page and the attendees list.
 
 final class EventDetailFamily extends $Family
@@ -348,7 +348,7 @@ final class EventDetailFamily extends $Family
         isAutoDispose: true,
       );
 
-  /// A single event's detail (family-keyed by id) — used by the event detail
+  /// A single event's detail (family-keyed by id) - used by the event detail
   /// page and the attendees list.
 
   EventDetailProvider call(int eventId) =>
@@ -358,7 +358,7 @@ final class EventDetailFamily extends $Family
   String toString() => r'eventDetailProvider';
 }
 
-/// A single event's detail (family-keyed by id) — used by the event detail
+/// A single event's detail (family-keyed by id) - used by the event detail
 /// page and the attendees list.
 
 abstract class _$EventDetail extends $AsyncNotifier<CommunityEvent> {

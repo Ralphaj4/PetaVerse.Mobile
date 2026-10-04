@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -133,7 +133,7 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
     // The passed-in [PawPet] can carry stale follow state (e.g. a tagged pet,
     // whose payload omits `isFollowing`). Fetch the pet's profile by id
     // (`/community/pets/{id}?viewerPetId=…`) and adopt its authoritative
-    // follow state — correct from any entry point.
+    // follow state - correct from any entry point.
     ref.listen(petProfileProvider(widget.pet.backendId), (_, next) {
       final fresh = next.value;
       if (fresh == null || _syncedFromServer) return;
@@ -224,7 +224,7 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              // Decorative paw prints — fixed positions, very faint.
+              // Decorative paw prints - fixed positions, very faint.
               Positioned(
                 top: -8,
                 right: 24,

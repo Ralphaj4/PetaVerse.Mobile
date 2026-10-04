@@ -8,7 +8,7 @@ import '../../core/theme/app_text_styles.dart';
 /// A modern confirmation dialog: a tinted icon badge, title, message, and
 /// two stacked buttons (confirm + cancel).
 ///
-/// Use [show] and await the bool? result — true if confirmed, null/false
+/// Use [show] and await the bool? result - true if confirmed, null/false
 /// if dismissed or cancelled.
 class AppConfirmDialog extends StatelessWidget {
   const AppConfirmDialog({

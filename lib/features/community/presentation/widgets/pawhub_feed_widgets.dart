@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
@@ -154,7 +154,7 @@ class NewPostsPill extends StatelessWidget {
   }
 }
 
-/// A Lost & Found alert injected into the feed — distinct accent styling.
+/// A Lost & Found alert injected into the feed - distinct accent styling.
 class AlertCard extends StatelessWidget {
   const AlertCard({required this.alert, required this.onView, super.key});
 
@@ -524,7 +524,7 @@ class FeedEmptyState extends StatelessWidget {
   /// tab itself, where the CTA would be redundant).
   final VoidCallback? onDiscover;
 
-  /// Copy overrides — default to the Following-feed wording.
+  /// Copy overrides - default to the Following-feed wording.
   final String? title;
   final String? message;
 

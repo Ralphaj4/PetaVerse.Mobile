@@ -275,7 +275,7 @@ AppConfigDatasource appConfigDatasource(Ref ref) => AppConfigDatasource(
 
 /// Fetches (or cache-falls-back) the app config once per process lifetime.
 /// The result is a [Result<AppConfig>] so the router can handle failure
-/// explicitly — it never throws.
+/// explicitly - it never throws.
 @Riverpod(keepAlive: true)
 Future<Result<AppConfig>> appConfig(Ref ref) =>
     ref.watch(appConfigDatasourceProvider).getConfig();

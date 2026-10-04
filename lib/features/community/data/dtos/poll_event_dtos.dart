@@ -1,4 +1,4 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+﻿import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/entities/community_entities.dart' show PageCursor;
 import '../../domain/entities/poll_event_entities.dart';
@@ -41,7 +41,7 @@ abstract class PollOptionDto with _$PollOptionDto {
       );
 }
 
-/// `PollResponse` — a single poll.
+/// `PollResponse` - a single poll.
 @freezed
 abstract class PollDto with _$PollDto {
   const factory PollDto({
@@ -104,8 +104,8 @@ abstract class PollListResponseDto with _$PollListResponseDto {
 
 // ── Events ───────────────────────────────────────────────────────────────────
 
-/// `EventResponse` — a single event.
-/// `EventResponse.location` — a geocoded place, or null when unset.
+/// `EventResponse` - a single event.
+/// `EventResponse.location` - a geocoded place, or null when unset.
 @freezed
 abstract class EventLocationDto with _$EventLocationDto {
   const factory EventLocationDto({

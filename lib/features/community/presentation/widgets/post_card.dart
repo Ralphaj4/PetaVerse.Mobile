@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -240,7 +240,7 @@ class _PostCardState extends ConsumerState<PostCard>
               post.communityId != null &&
               post.communityName != null) ...[
             // Capped, shrink-wrapped so it sits just left of the chip/ellipsis
-            // without stealing flex from the identity — the ellipsis keeps the
+            // without stealing flex from the identity - the ellipsis keeps the
             // same right-edge position as on non-community posts.
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 140),
@@ -398,8 +398,7 @@ class _PostCardState extends ConsumerState<PostCard>
     final captionText = post.hashtags.isEmpty
         ? post.caption
         : '${post.caption} ${post.hashtags.map((h) => '#$h').join(' ')}'.trim();
-    // Only lead with the bold author name when there's actual caption text —
-    // an empty-caption post shouldn't render a lone name.
+    // Only lead with the bold author name when there's actual caption text - // an empty-caption post shouldn't render a lone name.
     final hasCaption = captionText.trim().isNotEmpty;
     return Padding(
       padding: const EdgeInsets.fromLTRB(

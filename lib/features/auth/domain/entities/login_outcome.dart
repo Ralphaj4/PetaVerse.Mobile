@@ -1,8 +1,8 @@
-import 'auth_session.dart';
+﻿import 'auth_session.dart';
 
 /// The two shapes a successful (HTTP 200) login can take:
-///   • [LoginAuthenticated] — verified user, full token set issued.
-///   • [LoginNeedsVerification] — unverified user; the backend resent an
+///   • [LoginAuthenticated] - verified user, full token set issued.
+///   • [LoginNeedsVerification] - unverified user; the backend resent an
 ///     OTP and issued no tokens, so the client must route to OTP entry.
 sealed class LoginOutcome {
   const LoginOutcome();
@@ -19,6 +19,6 @@ final class LoginNeedsVerification extends LoginOutcome {
 
   final String mobileNumber;
 
-  /// OTP echoed back by the Development backend only — for local testing.
+  /// OTP echoed back by the Development backend only - for local testing.
   final String? devOtp;
 }

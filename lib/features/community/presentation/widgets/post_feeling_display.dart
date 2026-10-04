@@ -1,10 +1,10 @@
-import 'package:flutter/widgets.dart';
+﻿import 'package:flutter/widgets.dart';
 
 import '../../../../core/localization/generated/app_localizations.dart';
 import '../../domain/entities/community_enums.dart';
 
 /// Presentation-layer mapping for [PostFeeling]: the emoji glyph and the
-/// localized label. Kept out of the domain layer (pure Dart — no Flutter, no
+/// localized label. Kept out of the domain layer (pure Dart - no Flutter, no
 /// l10n). The emoji is keyed off the enum so it stays stable even if the server
 /// relabels a feeling.
 extension PostFeelingDisplay on PostFeeling {
@@ -37,7 +37,7 @@ extension PostFeelingDisplay on PostFeeling {
       };
 }
 
-/// Feelings in wire order (1–10) — the display order for the picker.
+/// Feelings in wire order (1–10) - the display order for the picker.
 const List<PostFeeling> kPostFeelingsInOrder = [
   PostFeeling.happy,
   PostFeeling.relaxed,

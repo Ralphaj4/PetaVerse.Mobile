@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
@@ -14,8 +14,7 @@ import '../providers/community_actions_providers.dart';
 /// [context] anchors the share-sheet popover on iPad / macOS (ignored on
 /// phones). Safe to omit.
 ///
-/// Set [showLoadingSnackbar] to true when called from the ellipsis sheet —
-/// the sheet dismisses before this runs, leaving a blank page with no feedback.
+/// Set [showLoadingSnackbar] to true when called from the ellipsis sheet - /// the sheet dismisses before this runs, leaving a blank page with no feedback.
 /// Leave it false when called from the card's share button, which has its own
 /// inline spinner.
 Future<void> sharePostToSheet(

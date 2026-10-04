@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -6,7 +6,7 @@ import '../../../../core/theme/app_text_styles.dart';
 
 enum AlertFilter { all, lost, found }
 
-/// Three pill chips — All / Lost / Found — for filtering the alert list.
+/// Three pill chips - All / Lost / Found - for filtering the alert list.
 class FilterChipRow extends StatelessWidget {
   const FilterChipRow({
     required this.selected,

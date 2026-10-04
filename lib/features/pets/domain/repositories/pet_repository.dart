@@ -1,4 +1,4 @@
-import '../../../../core/errors/result.dart';
+﻿import '../../../../core/errors/result.dart';
 import '../entities/breed.dart';
 import '../entities/coat_color.dart';
 import '../entities/new_pet.dart';
@@ -9,7 +9,7 @@ import '../entities/species.dart';
 
 /// Contract for pet data against the PetsApp API.
 ///
-/// All methods return [Result] — exceptions never cross this boundary.
+/// All methods return [Result] - exceptions never cross this boundary.
 ///
 /// Two distinct concerns:
 ///   • lightweight [PetRef]s drive the routing gate (does the user have a
@@ -30,7 +30,7 @@ abstract interface class PetRepository {
   Future<Result<List<PetRef>>> fetchRefs();
 
   /// Creates a pet for the current user. Returns the slim [PetRef] from the
-  /// create response — no extra round-trip. The gate appends this ref; full
+  /// create response - no extra round-trip. The gate appends this ref; full
   /// data is fetched later by display screens.
   Future<Result<PetRef>> createPet(NewPet pet);
 

@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +42,7 @@ class _EmailVerificationPageState
   @override
   void initState() {
     super.initState();
-    // Defer past the current build frame — Riverpod requires this before
+    // Defer past the current build frame - Riverpod requires this before
     // any provider state mutation.
     Future(() => _requestCode());
   }

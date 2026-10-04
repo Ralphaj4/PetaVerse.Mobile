@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -29,7 +29,7 @@ class PetListNotifier extends _$PetListNotifier {
       unawaited(Future.microtask(refresh));
       return cached;
     }
-    // Nothing cached — block on the network for the first load.
+    // Nothing cached - block on the network for the first load.
     return _fetch();
   }
 

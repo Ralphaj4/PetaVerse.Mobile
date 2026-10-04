@@ -8,7 +8,7 @@ import '../theme/app_spacing.dart';
 import '../theme/app_text_styles.dart';
 
 /// Fullscreen blocking screen shown when [AppConfigMaintenance.active] is true.
-/// The user cannot navigate elsewhere — they must wait for maintenance to end
+/// The user cannot navigate elsewhere - they must wait for maintenance to end
 /// and relaunch the app (or the admin disables maintenance and the cache TTL
 /// expires on the next cold launch).
 class MaintenancePage extends StatelessWidget {

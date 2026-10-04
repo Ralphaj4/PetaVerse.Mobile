@@ -9,7 +9,7 @@ import '../../../../core/localization/generated/app_localizations.dart';
 import '../../domain/entities/pet_health_score.dart';
 import 'health_score_style.dart';
 
-/// Localized display label for a [HealthBand]. `band` is a stable identifier —
+/// Localized display label for a [HealthBand]. `band` is a stable identifier -
 /// the string always comes from l10n, never the wire token.
 String healthBandLabel(AppLocalizations l10n, HealthBand band) => switch (band) {
       HealthBand.excellent => l10n.healthScoreBandExcellent,
@@ -20,7 +20,7 @@ String healthBandLabel(AppLocalizations l10n, HealthBand band) => switch (band) 
     };
 
 /// A pill showing the band label in the band color. `band` is a stable
-/// identifier — the display string comes from l10n, never the wire token.
+/// identifier - the display string comes from l10n, never the wire token.
 class HealthBandChip extends StatelessWidget {
   const HealthBandChip({required this.band, super.key});
 

@@ -4,7 +4,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 
-/// Compact empty state used inside a [HealthSectionCard] body — a short message
+/// Compact empty state used inside a [HealthSectionCard] body - a short message
 /// and an inline text action, sized to sit under the card header rather than
 /// filling the screen like the full-page EmptyStateWidget.
 class HealthSectionEmpty extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -44,7 +44,7 @@ class PostDraft {
   final int? communityId;
 
   /// A local file to show as the job's preview thumbnail (first image, else the
-  /// first media file — a video's frame isn't extracted here).
+  /// first media file - a video's frame isn't extracted here).
   File? get thumbnailFile {
     if (media.isEmpty) return null;
     final image = media.where((m) => !m.isVideo);
@@ -91,7 +91,7 @@ class PostUploadJob {
 
 /// App-scoped queue that uploads post media in the background and creates the
 /// post, so the composer can pop immediately. Drives the global progress
-/// banner. In-process only — a job does not survive the app being killed.
+/// banner. In-process only - a job does not survive the app being killed.
 final postUploadQueueProvider =
     NotifierProvider<PostUploadQueue, List<PostUploadJob>>(PostUploadQueue.new);
 
@@ -160,7 +160,7 @@ class PostUploadQueue extends Notifier<List<PostUploadJob>> {
 
     // Step 1: upload each file, collecting confirmed asset ids. For a video
     // with a user-chosen cover image, upload that too and attach its id as the
-    // thumbnail. Progress weighting covers the main files only — the small
+    // thumbnail. Progress weighting covers the main files only - the small
     // cover JPEGs don't move the bar meaningfully.
     final drafts = <PostMediaDraft>[];
     for (var i = 0; i < draft.media.length; i++) {
@@ -191,7 +191,7 @@ class PostUploadQueue extends Notifier<List<PostUploadJob>> {
       report();
 
       // Upload the optional cover image as a separate asset. A failed cover
-      // upload doesn't fail the post — we just omit the thumbnail.
+      // upload doesn't fail the post - we just omit the thumbnail.
       String? thumbnailAssetId;
       final thumb = m.thumbnailFile;
       if (thumb != null) {

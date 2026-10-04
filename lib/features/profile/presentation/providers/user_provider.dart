@@ -37,14 +37,14 @@ class UserNotifier extends _$UserNotifier {
     );
   }
 
-  /// Background sync — refreshes from the server without flipping the UI
+  /// Background sync - refreshes from the server without flipping the UI
   /// back to a loading state. Silently keeps a stale-but-usable cache on
   /// failure (the user still sees their cached profile).
   Future<void> _reconcile() async {
     final result = await ref.read(fetchUserProfileUsecaseProvider)();
     final user = result.valueOrNull;
     // The notifier may have been disposed while the network call was in
-    // flight (e.g. the user left the screen) — don't touch state if so.
+    // flight (e.g. the user left the screen) - don't touch state if so.
     if (user != null && ref.mounted) {
       state = AsyncValue.data(user);
     }
@@ -52,7 +52,7 @@ class UserNotifier extends _$UserNotifier {
 
   /// Updates the profile. On success the state is refreshed with the new
   /// user and null is returned; on failure the existing (data) state is kept
-  /// intact — so the form isn't wiped — and the [Failure] is returned for the
+  /// intact - so the form isn't wiped - and the [Failure] is returned for the
   /// page to surface (e.g. a snackbar).
   Future<Failure?> updateProfile({
     required String firstName,

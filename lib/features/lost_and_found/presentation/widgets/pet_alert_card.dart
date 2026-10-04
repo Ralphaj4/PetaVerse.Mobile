@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
@@ -10,7 +10,7 @@ import '../../../../shared/widgets/app_cached_image.dart';
 import '../models/pet_alert.dart';
 import 'alert_type_badge.dart';
 
-/// Card showing a single lost/found pet alert — photo, badge, name,
+/// Card showing a single lost/found pet alert - photo, badge, name,
 /// location, time, description excerpt, and a primary action button.
 class PetAlertCard extends StatelessWidget {
   const PetAlertCard({

@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -47,13 +47,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     switch (outcome.result) {
       case LoginResult.authenticated:
         // Resolve the pet gate BEFORE navigating so we land on the right
-        // screen directly — no home/splash flash. The spinner stays up during
+        // screen directly - no home/splash flash. The spinner stays up during
         // this short fetch. Destination: home / pet-onboarding / select-pet.
         await ref.read(petsProvider.notifier).reconcile();
         if (!mounted) return;
         context.go(petLandingFor(ref.read(petsProvider)));
       case LoginResult.needsVerification:
-        // Account exists but the phone isn't confirmed — the backend
+        // Account exists but the phone isn't confirmed - the backend
         // resent an OTP, so continue to verification.
         unawaited(context.push(
           AppRoutes.otp,

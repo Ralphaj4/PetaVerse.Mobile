@@ -1,8 +1,8 @@
-import '../../../../core/errors/result.dart';
+﻿import '../../../../core/errors/result.dart';
 import '../entities/adoption_listing.dart';
 
 /// Contract for the adoption board and its request/transfer flows.
-/// Every method returns a [Result] — failures never throw.
+/// Every method returns a [Result] - failures never throw.
 abstract interface class AdoptionRepository {
   // ── Board / discovery ──────────────────────────────────────────────────
   /// Paged board of Available listings. Server-side filtered by [speciesId]

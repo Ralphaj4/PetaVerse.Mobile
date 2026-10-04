@@ -21,7 +21,7 @@ import '../datasources/health_reminder_local_datasource.dart';
 import '../datasources/pawcare_remote_datasource.dart';
 import '../dtos/pawcare_dtos.dart';
 
-/// Notification ID ranges — stable so cancel + reschedule always targets the
+/// Notification ID ranges - stable so cancel + reschedule always targets the
 /// same slot. Derived from entity IDs to avoid collisions across pets.
 ///
 /// Medication:   10_000_000 + medicationId
@@ -29,7 +29,7 @@ import '../dtos/pawcare_dtos.dart';
 /// Appointment:  30_000_000 + appointmentId * 10      (day-before reminder)
 ///               30_000_000 + appointmentId * 10 + 1  (hour-before reminder)
 /// Feeding:     40_000_000 + feedingTime.id * 10 + weekday.bit   (one slot per
-///              meal per active weekday — weekly-recurring local notifications).
+///              meal per active weekday - weekly-recurring local notifications).
 ///              The whole band is swept on reconcile since the server reassigns
 ///              time ids on each full-replace. Band bounds live on
 ///              [NotificationService] so the prefs toggle can sweep them too.
@@ -551,7 +551,7 @@ class PawCareRepositoryImpl implements PawCareRepository {
   // ── Feeding (device-local, weekly-recurring) ────────────────────────────────
 
   /// Reads the Feeding notification pref from the Hive prefs box. Opens the box
-  /// (idempotent — returns the already-open instance) rather than assuming it's
+  /// (idempotent - returns the already-open instance) rather than assuming it's
   /// open, because it is only lazily opened when the notification-settings page
   /// is visited; a synchronous `Hive.box(...)` peek would throw on a fresh
   /// launch and fail open, re-arming notifications the user disabled. Defaults
@@ -565,7 +565,7 @@ class PawCareRepositoryImpl implements PawCareRepository {
     }
   }
 
-  /// Cancels the whole feeding id band, then reschedules from [schedule] — one
+  /// Cancels the whole feeding id band, then reschedules from [schedule] - one
   /// weekly-recurring notification per meal per active weekday. No-ops the
   /// reschedule (leaving everything cancelled) when the Feeding pref is off or
   /// there is no schedule. Feeding prefs are enforced app-side, so a disabled
@@ -573,7 +573,7 @@ class PawCareRepositoryImpl implements PawCareRepository {
   Future<void> _reconcileFeedingNotifications(FeedingSchedule? schedule) async {
     await _notifications.cancelInRange(_feedBase, _feedBandEnd);
     if (schedule == null || !await _feedingEnabled()) return;
-    // The per-slot schedule() calls are independent — fan them out concurrently
+    // The per-slot schedule() calls are independent - fan them out concurrently
     // (a dense schedule is up to 7 meals × 7 days of platform-channel calls).
     await Future.wait([
       for (final time in schedule.times)
@@ -583,7 +583,7 @@ class PawCareRepositoryImpl implements PawCareRepository {
               id: _feedBase + timeId * 10 + day.bit,
               title: 'Feeding time',
               body: time.quantity != null
-                  ? 'Time to feed your pet — ${_amountLabel(time)}.'
+                  ? 'Time to feed your pet - ${_amountLabel(time)}.'
                   : 'Time to feed your pet.',
               when: _nextWeekdayTime(day, time.hour, time.minute),
               category: NotificationCategory.feeding,
@@ -593,7 +593,7 @@ class PawCareRepositoryImpl implements PawCareRepository {
   }
 
   /// The next DateTime matching [day]'s weekday at [hour]:[minute], today or in
-  /// the coming week — the anchor for a weekly-recurring notification.
+  /// the coming week - the anchor for a weekly-recurring notification.
   DateTime _nextWeekdayTime(Weekday day, int hour, int minute) {
     final now = DateTime.now();
     var candidate = DateTime(now.year, now.month, now.day, hour, minute);

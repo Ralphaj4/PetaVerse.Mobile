@@ -1,11 +1,11 @@
-import 'package:sqflite/sqflite.dart';
+﻿import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
 
 /// Multi-row SQLite store for walks awaiting upload.
 ///
 /// Each walk is its own row. Status lifecycle:
-///   'active'       — walk in progress (at most one at a time)
-///   'pending_sync' — stopped, waiting for a successful API upload
+///   'active' - walk in progress (at most one at a time)
+///   'pending_sync' - stopped, waiting for a successful API upload
 /// Rows are deleted once synced; the table only ever holds unsynced work.
 class WalkDatabase {
   WalkDatabase._();

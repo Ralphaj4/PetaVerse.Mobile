@@ -1,6 +1,6 @@
-/// A single weight measurement for a pet.
+﻿/// A single weight measurement for a pet.
 ///
-/// Domain layer — no Flutter or JSON imports. Mirrors
+/// Domain layer - no Flutter or JSON imports. Mirrors
 /// `GET /api/pets/{petId}/weight` (`{id, weight, unit, recordedDate, notes}`).
 class WeightRecord {
   const WeightRecord({

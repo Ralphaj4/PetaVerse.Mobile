@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,7 +21,7 @@ enum _CommentSort { top, newest }
 
 /// The comments bottom sheet: threaded (one level) comments with likes, a
 /// sort toggle, pinned comments, and a composer that posts as the acting pet.
-/// Wired to [PostComments] provider — all mutations go through the backend.
+/// Wired to [PostComments] provider - all mutations go through the backend.
 class CommentsSheet extends ConsumerStatefulWidget {
   const CommentsSheet({
     required this.post,

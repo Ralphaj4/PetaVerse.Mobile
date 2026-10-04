@@ -72,7 +72,7 @@ class _Placeholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // A shimmering grey block while the image loads — matches the app's
+    // A shimmering grey block while the image loads - matches the app's
     // skeleton language instead of a spinner-on-tint.
     return Shimmer(
       child: SkeletonBox(

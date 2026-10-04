@@ -11,7 +11,7 @@ import '../../core/theme/app_text_styles.dart';
 /// Shows the shared "Change Photo" bottom sheet and returns the chosen
 /// [ImageSource] (or null if dismissed).
 ///
-/// Single source of truth for the camera/gallery picker drawer — every screen
+/// Single source of truth for the camera/gallery picker drawer - every screen
 /// that lets the user attach a photo uses it so they all look identical.
 Future<ImageSource?> showPhotoSourceSheet(BuildContext context) {
   return showModalBottomSheet<ImageSource>(

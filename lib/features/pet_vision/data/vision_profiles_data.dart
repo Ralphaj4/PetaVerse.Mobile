@@ -1,4 +1,4 @@
-import '../domain/entities/vision_profile.dart';
+﻿import '../domain/entities/vision_profile.dart';
 
 /// Hardcoded vision profiles keyed by lowercase species name.
 /// Matches against [Pet.speciesName] (case-insensitive).
@@ -8,7 +8,7 @@ const Map<String, VisionProfile> visionProfiles = {
   'dog': VisionProfile(
     speciesName: 'dog',
     displayName: 'Canine Vision',
-    description: 'Dogs are dichromats — they see blue and yellow, but not red.',
+    description: 'Dogs are dichromats - they see blue and yellow, but not red.',
     funFact: 'Dogs can detect motion up to 5× better than humans.',
     // Simulates protanopia-like dichromacy: reds shift to yellow/brown.
     colorMatrix: [
@@ -37,7 +37,7 @@ const Map<String, VisionProfile> visionProfiles = {
   'bird': VisionProfile(
     speciesName: 'bird',
     displayName: 'Avian Vision',
-    description: 'Birds are tetrachromats — they see UV light and have richer color than humans.',
+    description: 'Birds are tetrachromats - they see UV light and have richer color than humans.',
     funFact: 'Birds can see the Earth\'s magnetic field as a visual overlay.',
     // Tetrachromacy simulation: shifted toward UV/violet, boosted saturation.
     colorMatrix: [

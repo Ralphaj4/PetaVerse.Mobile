@@ -1,4 +1,4 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
+﻿import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -28,21 +28,21 @@ const _logger = LoggerService();
 
 /// Message ids already routed this session. Firebase can deliver the same tap
 /// through both [FirebaseMessaging.getInitialMessage] (cold start) and
-/// [FirebaseMessaging.onMessageOpenedApp] (stream) — handling it twice pushes
+/// [FirebaseMessaging.onMessageOpenedApp] (stream) - handling it twice pushes
 /// two pages with the same GoRouter pageKey and trips the Navigator's
 /// `!keyReservation.contains(key)` assertion. Dedupe on messageId so each tap
 /// navigates exactly once.
 final Set<String> _handledTapIds = <String>{};
 
 /// Called from the top-level background handler in main.dart.
-/// Runs in a separate isolate — no UI, no providers, no router.
+/// Runs in a separate isolate - no UI, no providers, no router.
 class FcmHandler {
   static Future<void> handleBackground(RemoteMessage message) async {
     _logger.info('Background message: ${message.messageId}', tag: _tag);
 
     if (message.data[FcmPayloadKeys.category] == 'sync') {
       await _writeSyncFlag(message.data);
-      return; // silent push — no UI notification needed
+      return; // silent push - no UI notification needed
     }
     // Android shows the notification automatically when a `notification`
     // payload is present. No local display needed for non-silent messages.
@@ -90,7 +90,7 @@ class FcmHandler {
     if (token != null) await _registerTokenDirect(authRepo, token);
     messaging.onTokenRefresh.listen((t) => _registerTokenDirect(authRepo, t));
 
-    // Foreground: FCM suppresses the system notification — show it ourselves.
+    // Foreground: FCM suppresses the system notification - show it ourselves.
     // Silent sync pushes have no notification block; skip local display.
     FirebaseMessaging.onMessage.listen((message) {
       _logger.info('Foreground message: ${message.messageId}', tag: _tag);
@@ -115,7 +115,7 @@ class FcmHandler {
     }
   }
 
-  /// Unregisters the FCM token — call on logout so the backend stops
+  /// Unregisters the FCM token - call on logout so the backend stops
   /// sending push notifications to this device.
   static Future<void> unregister(WidgetRef ref) async {
     try {
@@ -130,7 +130,7 @@ class FcmHandler {
     AuthRepository authRepo,
     String token,
   ) async {
-    _logger.info('FCM token refreshed — registering with backend', tag: _tag);
+    _logger.info('FCM token refreshed - registering with backend', tag: _tag);
     await authRepo.registerFcmToken(token);
   }
 
@@ -141,12 +141,12 @@ class FcmHandler {
       final box = Hive.box<bool>('notification_prefs');
       return box.get(key, defaultValue: true) ?? true;
     } catch (_) {
-      return true; // box not open yet — allow through
+      return true; // box not open yet - allow through
     }
   }
 
   /// Maps a FCM message to the pref key that controls its visibility.
-  /// Returns null for security-category messages — they are always allowed.
+  /// Returns null for security-category messages - they are always allowed.
   static String? _prefKeyForMessage(RemoteMessage message) {
     final category = message.data[FcmPayloadKeys.category] as String?;
     final type = message.data['type'] as String?;
@@ -154,7 +154,7 @@ class FcmHandler {
     // Emergency: only lost-pet is toggleable; security alerts always pass.
     if (category == 'emergency') {
       if (type == 'lost_pet_nearby') return NotifPrefKeys.lostPetNearby;
-      return null; // security alerts — always allowed
+      return null; // security alerts - always allowed
     }
 
     // Social sub-types
@@ -184,7 +184,7 @@ class FcmHandler {
       'vaccination' => NotifPrefKeys.vaccination,
       'appointment' => NotifPrefKeys.appointment,
       'grooming' => NotifPrefKeys.grooming,
-      _ => null, // unknown/marketplace — always allow
+      _ => null, // unknown/marketplace - always allow
     };
   }
 
@@ -219,7 +219,7 @@ class FcmHandler {
     final tapId = message.messageId;
     if (tapId != null) {
       if (_handledTapIds.contains(tapId)) {
-        _logger.info('Tap $tapId already handled — skipping', tag: _tag);
+        _logger.info('Tap $tapId already handled - skipping', tag: _tag);
         return;
       }
       _handledTapIds.add(tapId);
@@ -234,7 +234,7 @@ class FcmHandler {
   }
 
   static void _routeForMessage(GoRouter router, RemoteMessage message) {
-    // Respect the user's pref even on tap — don't navigate to a screen for a
+    // Respect the user's pref even on tap - don't navigate to a screen for a
     // category they've disabled (security alerts always navigate through).
     final prefKey = _prefKeyForMessage(message);
     if (prefKey != null && !_isPrefEnabled(prefKey)) return;
@@ -242,8 +242,8 @@ class FcmHandler {
     final data = message.data;
 
     // Explicit route takes priority over category-based routing.
-    // Any route into a shell branch — the tab root (/community) OR a route
-    // nested under it (/community/post/5) — must use go(). push()-ing a
+    // Any route into a shell branch - the tab root (/community) OR a route
+    // nested under it (/community/post/5) - must use go(). push()-ing a
     // branch-nested location re-materialises the branch stack on top of the
     // shell that already mounts the branch root, colliding pageKeys and
     // tripping the Navigator's `!keyReservation.contains(key)` assertion.
@@ -284,7 +284,7 @@ class FcmHandler {
       case NotificationCategory.feeding:
         if (petId != null) router.push(AppRoutes.feedingSchedulePath(petId));
       case NotificationCategory.social:
-        // Community is a shell tab — use go() so the shell is preserved.
+        // Community is a shell tab - use go() so the shell is preserved.
         router.go(AppRoutes.community);
       case NotificationCategory.emergency:
         router.push(AppRoutes.lostAndFound);
@@ -298,6 +298,6 @@ class FcmHandler {
 
 @Riverpod(keepAlive: true)
 Future<void> fcmHandler(Ref ref) async {
-  // Placeholder — actual init requires WidgetRef (for routing).
+  // Placeholder - actual init requires WidgetRef (for routing).
   // AppShell calls FcmHandler.init(ref) from initState instead.
 }

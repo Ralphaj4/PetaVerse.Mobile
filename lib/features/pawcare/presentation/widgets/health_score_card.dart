@@ -17,7 +17,7 @@ import 'health_score_bits.dart';
 import 'health_score_gauge.dart';
 import 'health_score_style.dart';
 
-/// The compact health-score entry point on the pet profile — a gauge (value +
+/// The compact health-score entry point on the pet profile - a gauge (value +
 /// band chip + confidence) that taps through to the full breakdown page.
 ///
 /// Owns its own async wiring so the profile only has to place it. Renders the

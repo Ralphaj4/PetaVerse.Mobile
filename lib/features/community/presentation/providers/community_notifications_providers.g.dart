@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+﻿// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'community_notifications_providers.dart';
 
@@ -65,19 +65,19 @@ abstract class _$CommunityNotifications
   }
 }
 
-/// The bell badge count on its own — the number of unread notifications for the
+/// The bell badge count on its own - the number of unread notifications for the
 /// acting pet. Reads through the notifications page so it stays live.
 
 @ProviderFor(communityUnreadCount)
 final communityUnreadCountProvider = CommunityUnreadCountProvider._();
 
-/// The bell badge count on its own — the number of unread notifications for the
+/// The bell badge count on its own - the number of unread notifications for the
 /// acting pet. Reads through the notifications page so it stays live.
 
 final class CommunityUnreadCountProvider
     extends $FunctionalProvider<int, int, int>
     with $Provider<int> {
-  /// The bell badge count on its own — the number of unread notifications for the
+  /// The bell badge count on its own - the number of unread notifications for the
   /// acting pet. Reads through the notifications page so it stays live.
   CommunityUnreadCountProvider._()
     : super(

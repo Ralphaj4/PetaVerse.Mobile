@@ -1,4 +1,4 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+﻿import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/entities/community_entities.dart';
 import '../../domain/entities/community_group_entities.dart';
@@ -16,7 +16,7 @@ part 'community_group_dtos.g.dart';
 /// Category/role enums arrive as ints and go through the domain `fromWire`
 /// mappers, so declaration order here never has to match the server.
 
-/// `CommunityResponse` — a single community.
+/// `CommunityResponse` - a single community.
 @freezed
 abstract class CommunityDto with _$CommunityDto {
   const factory CommunityDto({
@@ -82,7 +82,7 @@ abstract class CommunityMemberDto with _$CommunityMemberDto {
       );
 }
 
-/// `CommunityDirectoryResponse` — a page of communities.
+/// `CommunityDirectoryResponse` - a page of communities.
 @freezed
 abstract class CommunityDirectoryResponseDto
     with _$CommunityDirectoryResponseDto {
@@ -108,7 +108,7 @@ abstract class CommunityDirectoryResponseDto
       );
 }
 
-/// `CommunityMembersResponse` — a page of a community's members.
+/// `CommunityMembersResponse` - a page of a community's members.
 @freezed
 abstract class CommunityMembersResponseDto with _$CommunityMembersResponseDto {
   const factory CommunityMembersResponseDto({
@@ -133,7 +133,7 @@ abstract class CommunityMembersResponseDto with _$CommunityMembersResponseDto {
       );
 }
 
-/// `CommunityListResponse` — a bare list of communities (suggested / mine).
+/// `CommunityListResponse` - a bare list of communities (suggested / mine).
 @freezed
 abstract class CommunityListResponseDto with _$CommunityListResponseDto {
   const factory CommunityListResponseDto({
@@ -150,7 +150,7 @@ abstract class CommunityListResponseDto with _$CommunityListResponseDto {
       .toList(growable: false);
 }
 
-/// `CommunityJoinResponse` — result of joining/leaving.
+/// `CommunityJoinResponse` - result of joining/leaving.
 @freezed
 abstract class CommunityJoinResponseDto with _$CommunityJoinResponseDto {
   const factory CommunityJoinResponseDto({

@@ -1,10 +1,10 @@
-/// A pet size (ExtraSmall, Small, …) used to populate the size picker.
+﻿/// A pet size (ExtraSmall, Small, …) used to populate the size picker.
 ///
 /// Backed by the API's PetSizes lookup, where id equals the PetSize enum value
 /// and is fixed forever (1-based, no zero row). "Not specified" is the pet's
-/// size FK being null — never a size row.
+/// size FK being null - never a size row.
 ///
-/// Domain layer — no Flutter or JSON imports.
+/// Domain layer - no Flutter or JSON imports.
 class PetSize {
   const PetSize({required this.id, required this.name, required this.displayName});
 

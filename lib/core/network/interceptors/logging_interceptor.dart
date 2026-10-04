@@ -1,4 +1,4 @@
-import 'dart:convert';
+﻿import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -7,7 +7,7 @@ import '../../utils/logger_service.dart';
 
 /// Logs requests/responses through [LoggerService].
 ///
-/// Request/response bodies are logged ONLY in debug builds — they may
+/// Request/response bodies are logged ONLY in debug builds - they may
 /// contain tokens or personal data, so they are never emitted in release.
 class LoggingInterceptor extends Interceptor {
   LoggingInterceptor(this._logger);
@@ -45,7 +45,7 @@ class LoggingInterceptor extends Interceptor {
     if (kDebugMode && err.response?.data != null) {
       _emit('    response: ${_pretty(err.response!.data)}', isError: true);
     }
-    // The underlying error itself — crucial when there is NO response body,
+    // The underlying error itself - crucial when there is NO response body,
     // e.g. a JSON parse/type-cast failure or a connection error, where the
     // above line alone wouldn't tell us what actually went wrong.
     if (kDebugMode) {

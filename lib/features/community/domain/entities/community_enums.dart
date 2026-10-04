@@ -1,7 +1,7 @@
-/// Wire enums for the PawHub (Community) API.
+﻿/// Wire enums for the PawHub (Community) API.
 ///
 /// The API serializes most enums as **integers** (see the API guide §9). The
-/// two report enums are the exception — they travel as camelCase **strings**.
+/// two report enums are the exception - they travel as camelCase **strings**.
 /// Each enum here carries an explicit wire mapper so the DTO layer never
 /// depends on Dart's declaration order matching the server's numbering.
 library;
@@ -30,7 +30,7 @@ extension PostVisibilityX on PostVisibility {
 }
 
 /// Maps a server visibility int → [PostVisibility]. Unknown values fall back
-/// to [PostVisibility.public] (the safest default for display — it never
+/// to [PostVisibility.public] (the safest default for display - it never
 /// over-exposes because the server already filtered what we can see).
 PostVisibility postVisibilityFromWire(int? value) => switch (value) {
       0 => PostVisibility.public,
@@ -40,7 +40,7 @@ PostVisibility postVisibilityFromWire(int? value) => switch (value) {
     };
 
 /// How a pet is feeling in a post (`PostFeeling`, request & response). Integer
-/// wire values 1–10 — there is no 0, since a post with no feeling sends/receives
+/// wire values 1–10 - there is no 0, since a post with no feeling sends/receives
 /// null. Icon + display are mapped in the presentation layer (this layer is
 /// pure Dart, no Flutter), keyed off this enum.
 enum PostFeeling {
@@ -72,7 +72,7 @@ extension PostFeelingX on PostFeeling {
 }
 
 /// Maps a server feeling int → [PostFeeling], or null for absent/out-of-range
-/// (a post with no feeling). Never throws — an unknown value is treated as no
+/// (a post with no feeling). Never throws - an unknown value is treated as no
 /// feeling so a future server addition can't crash the client.
 PostFeeling? postFeelingFromWire(int? value) => switch (value) {
       1 => PostFeeling.happy,

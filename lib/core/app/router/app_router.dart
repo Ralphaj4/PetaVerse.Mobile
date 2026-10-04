@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -155,7 +155,7 @@ abstract final class AppRoutes {
   static const String sandbox = '/sandbox';
   static const String tagPets = '/community/tag-pets';
 
-  // PawCare — appointments (under a pet)
+  // PawCare - appointments (under a pet)
   static String addAppointmentPath(int petId) => '/pet/$petId/appointments/add';
   static const String addAppointment = '/pet/:id/appointments/add';
   static String appointmentsPath(int petId) => '/pet/$petId/appointments';
@@ -287,7 +287,7 @@ GoRouter appRouter(Ref ref) {
           (configAsync.hasValue && configAsync.value!.isFailure)) {
         return onConfigError ? null : AppRoutes.configError;
       }
-      // Config loaded — bounce off the error screen.
+      // Config loaded - bounce off the error screen.
       if (onConfigError) return AppRoutes.splash;
 
       final config = configAsync.value!.valueOrNull!;
@@ -307,7 +307,7 @@ GoRouter appRouter(Ref ref) {
 
       // While either gate is resolving, stay put (return null). On cold start
       // that means holding on the splash (initialLocation) until both gates
-      // are ready — so a real screen never flashes first.
+      // are ready - so a real screen never flashes first.
       if (onboardingAsync.isLoading || !session.ready) return null;
 
       final completed = onboardingAsync.value ?? true;
@@ -321,13 +321,13 @@ GoRouter appRouter(Ref ref) {
       // user is allowed to sit on it without being bounced to onboarding.
       // Avatar setup is also part of the post-register flow. Pet avatar setup
       // follows create-pet (before the gate is committed), so it must be
-      // allowed too — match on the prefix since it carries a :id segment.
+      // allowed too - match on the prefix since it carries a :id segment.
       final onPetAvatarSetup = location.startsWith('/pet-avatar-setup/');
       // A pet-less user may also open their co-owner invitations from the
       // onboarding gate (accepting one is how they get their first pet).
       final onCoOwnerInvitations = location == AppRoutes.coOwnerInvitations;
       // A pet-less user may also browse the adoption board (and open a listing)
-      // from the onboarding gate — adopting is a way to get their first pet.
+      // from the onboarding gate - adopting is a way to get their first pet.
       final onAdoption = location == AppRoutes.adoptionBoard ||
           location.startsWith('/adoption/');
       final onPetCreation = onPetOnboarding ||
@@ -338,7 +338,7 @@ GoRouter appRouter(Ref ref) {
           onAdoption;
 
       // The post-auth landing for a logged-in user. The pet gate must resolve
-      // BEFORE we ever allow /home — otherwise home flashes for a frame before
+      // BEFORE we ever allow /home - otherwise home flashes for a frame before
       // being replaced. While the gate is still resolving we hold on the splash
       // (a neutral screen), never on home.
       String petLanding() =>
@@ -353,28 +353,28 @@ GoRouter appRouter(Ref ref) {
         return landing == AppRoutes.splash ? null : landing;
       }
 
-      // 1. Onboarding gate — must finish onboarding first.
+      // 1. Onboarding gate - must finish onboarding first.
       if (!completed) return onOnboarding ? null : AppRoutes.onboarding;
       if (onOnboarding) {
         if (!loggedIn) return AppRoutes.login;
         return petLanding();
       }
 
-      // 2. Auth gate — protect everything except the auth flow.
+      // 2. Auth gate - protect everything except the auth flow.
       if (!loggedIn && !onAuthRoute) return AppRoutes.login;
       // Logged in but still on an auth route: the auth page resolves the pet
       // gate itself and then navigates directly to the landing. Hold on the
-      // auth screen (its spinner is up) until it does — never bounce to the
+      // auth screen (its spinner is up) until it does - never bounce to the
       // splash, which would flash between login and the real destination.
       if (loggedIn && onAuthRoute) {
         // Avatar setup (post-register) is a special auth route that transitions
-        // itself when ready — never bounce it to pet landing.
+        // itself when ready - never bounce it to pet landing.
         if (onAvatarSetup) return null;
         if (!pets.ready) return null; // hold on the auth page; it will route.
         return petLanding();
       }
 
-      // 3. Pet gate — decide where a logged-in user belongs.
+      // 3. Pet gate - decide where a logged-in user belongs.
       // Until the gate is ready, hold on the splash (cold start already shows
       // it) so /home can never render before the gate decides.
       if (loggedIn) {
@@ -391,7 +391,7 @@ GoRouter appRouter(Ref ref) {
         }
 
         // A pet is selected: the onboarding / selection screens no longer
-        // apply — send those back to home; everything else is allowed.
+        // apply - send those back to home; everything else is allowed.
         if (onPetOnboarding || onSelectPet) return AppRoutes.home;
       }
 

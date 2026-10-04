@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,7 +22,7 @@ class AdoptionRehomeSuccessArgs {
 
 /// Celebratory screen shown to the LISTER after they complete a transfer and
 /// their pet moves to the adopter. (Distinct from the adopter's own welcome
-/// screen for receiving a pet.) Terminal — "Done" returns to the board.
+/// screen for receiving a pet.) Terminal - "Done" returns to the board.
 class AdoptionRehomeSuccessPage extends StatelessWidget {
   const AdoptionRehomeSuccessPage({required this.args, super.key});
 

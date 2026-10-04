@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,7 +13,7 @@ import 'feeding_grooming_l10n.dart';
 
 // The bottom-sheet pickers behind the feeding / grooming edit forms. All share
 // the app's sheet language: a rounded-top surface, a grab handle, a title, and
-// tappable rows with a primary check on the active option — matching
+// tappable rows with a primary check on the active option - matching
 // `showMedicationFrequencySheet` and `AppDropdownField`'s picker.
 
 /// Rounded-top sheet frame with the standard grab handle and title.
@@ -357,7 +357,7 @@ Future<FeedUnit?> showFeedUnitSheet(BuildContext context, FeedUnit current) {
 
 /// Shows the battery-optimization exemption sheet after every feeding schedule
 /// save, as long as the app is not yet exempted. Once the user grants it the
-/// OS state flips and this becomes a no-op on all future saves — no separate
+/// OS state flips and this becomes a no-op on all future saves - no separate
 /// "asked" flag needed. If they deny, they'll see it again next save, giving
 /// them a natural retry path without any extra nagging logic.
 Future<void> showBatteryOptimizationSheetIfNeeded(

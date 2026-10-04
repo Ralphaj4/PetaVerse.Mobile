@@ -1,4 +1,4 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+﻿import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../domain/entities/appointment.dart';
 import '../../domain/entities/feeding_schedule.dart';
@@ -367,7 +367,7 @@ abstract class FeedingTimeDto with _$FeedingTimeDto {
     );
   }
 
-  /// Builds the request-side DTO from a domain time (no id — the server assigns
+  /// Builds the request-side DTO from a domain time (no id - the server assigns
   /// one and echoes it in the PUT response).
   factory FeedingTimeDto.fromEntity(FeedingTime time) => FeedingTimeDto(
         timeOfDay: formatTimeOfDay(time.hour, time.minute),

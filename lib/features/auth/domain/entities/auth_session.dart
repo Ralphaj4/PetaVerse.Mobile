@@ -1,6 +1,6 @@
-/// An authenticated session: the token pair and the user's identity.
+﻿/// An authenticated session: the token pair and the user's identity.
 ///
-/// Domain layer — no Flutter or JSON imports.
+/// Domain layer - no Flutter or JSON imports.
 class AuthSession {
   const AuthSession({
     required this.accessToken,

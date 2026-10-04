@@ -1,6 +1,6 @@
-/// A pet's grooming schedule — a recurring interval with a next-due anchor.
+﻿/// A pet's grooming schedule - a recurring interval with a next-due anchor.
 ///
-/// Domain layer — no Flutter or JSON imports. Mirrors
+/// Domain layer - no Flutter or JSON imports. Mirrors
 /// `GET/PUT /api/pets/{petId}/grooming-schedule`. Grooming reminders arrive as
 /// FCM server pushes (due-soon + overdue); the app does not schedule them
 /// locally. Marking groomed advances [nextDueDate] server-side.

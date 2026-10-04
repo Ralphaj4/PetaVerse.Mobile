@@ -1,17 +1,17 @@
-import '../../../../core/network/api_client.dart';
+﻿import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_endpoints.dart';
 import '../dtos/lost_found_dashboard_dto.dart';
 import '../dtos/lost_found_report_dto.dart';
 
 /// Remote Lost & Found data source. Talks to the API exclusively through
 /// [ApiClient]; never touches Dio directly. Throws AppExceptions (mapped by
-/// ApiClient) — the repository turns those into Failures.
+/// ApiClient) - the repository turns those into Failures.
 class LostFoundRemoteDataSource {
   const LostFoundRemoteDataSource(this._client);
 
   final ApiClient _client;
 
-  /// GET /lost-found/dashboard — map pins, recent alerts, volunteer status for
+  /// GET /lost-found/dashboard - map pins, recent alerts, volunteer status for
   /// the given location. [filter] is "lost" | "found" (omit for all).
   Future<LostFoundDashboardDto> getDashboard({
     required double latitude,
@@ -31,7 +31,7 @@ class LostFoundRemoteDataSource {
     return LostFoundDashboardDto.fromJson(data);
   }
 
-  /// POST /lost-found/listings — creates a report and returns it. [type] is the
+  /// POST /lost-found/listings - creates a report and returns it. [type] is the
   /// integer enum (1 = lost, 2 = found). [avatarMediaAssetId] is optional and
   /// omitted when null.
   Future<LostFoundReportDto> createListing({
@@ -69,7 +69,7 @@ class LostFoundRemoteDataSource {
     return LostFoundReportDto.fromJson(data);
   }
 
-  /// GET /lost-found/listings/{id} — fetches a single report by id.
+  /// GET /lost-found/listings/{id} - fetches a single report by id.
   Future<LostFoundReportDto> getListing(int id) async {
     final data = await _client.get<Map<String, dynamic>>(
       ApiEndpoints.lostFoundListing(id),
@@ -77,19 +77,19 @@ class LostFoundRemoteDataSource {
     return LostFoundReportDto.fromJson(data);
   }
 
-  /// DELETE /lost-found/listings/{id} — deletes the user's own report (204).
+  /// DELETE /lost-found/listings/{id} - deletes the user's own report (204).
   Future<void> deleteListing(int id) async {
     await _client.delete<void>(ApiEndpoints.lostFoundListing(id));
   }
 
-  /// GET /lost-found/volunteer — the viewer's current volunteer status.
+  /// GET /lost-found/volunteer - the viewer's current volunteer status.
   Future<VolunteerInfoDto> getVolunteerStatus() async {
     final data =
         await _client.get<Map<String, dynamic>>(ApiEndpoints.lostFoundVolunteer);
     return VolunteerInfoDto.fromJson(data);
   }
 
-  /// POST /lost-found/volunteer — join the volunteers; returns the updated
+  /// POST /lost-found/volunteer - join the volunteers; returns the updated
   /// status/count.
   Future<VolunteerInfoDto> joinVolunteers() async {
     final data = await _client
@@ -97,7 +97,7 @@ class LostFoundRemoteDataSource {
     return VolunteerInfoDto.fromJson(data);
   }
 
-  /// DELETE /lost-found/volunteer — leave the volunteers (204 No Content).
+  /// DELETE /lost-found/volunteer - leave the volunteers (204 No Content).
   Future<void> leaveVolunteers() async {
     await _client.delete<void>(ApiEndpoints.lostFoundVolunteer);
   }

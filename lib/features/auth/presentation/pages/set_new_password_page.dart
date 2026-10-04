@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,7 +19,7 @@ const int _otpLength = 4;
 
 /// Args passed via router extra to [SetNewPasswordPage].
 ///
-/// [code] is null when coming from the SMS path — the OTP input is shown
+/// [code] is null when coming from the SMS path - the OTP input is shown
 /// inline on this page and collected before submitting.
 class SetNewPasswordArgs {
   const SetNewPasswordArgs({required this.phone, this.code});
@@ -96,7 +96,7 @@ class _SetNewPasswordPageState extends ConsumerState<SetNewPasswordPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // OTP input — only shown when arriving from the SMS path directly
+            // OTP input - only shown when arriving from the SMS path directly
             if (_needsOtp) ...[
               OtpInput(
                 length: _otpLength,

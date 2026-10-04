@@ -11,7 +11,7 @@ part 'session_provider.g.dart';
 ///
 /// [ready] flips true once the one-time secure-storage check completes;
 /// until then the router holds on the splash. [loggedIn] is then flipped
-/// synchronously by the auth flows. Kept synchronous on purpose — an
+/// synchronously by the auth flows. Kept synchronous on purpose - an
 /// async re-read would let the router's redirect observe a stale value
 /// and bounce the user (e.g. login → home right after logout).
 class SessionState {
@@ -37,7 +37,7 @@ class SessionNotifier extends _$SessionNotifier {
     // Listen for unrecoverable auth failures from the network layer (the
     // interceptor cleared the tokens because refresh failed/was refused). This
     // is what flips the gate to logged-out mid-session so the router redirects
-    // to login — without it the tokens would be gone but the app would still
+    // to login - without it the tokens would be gone but the app would still
     // believe it was signed in, stranding the user on 401s.
     final sub =
         ref.watch(authEventsProvider).onSessionExpired.listen((_) {

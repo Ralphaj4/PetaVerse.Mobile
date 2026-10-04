@@ -1,4 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+﻿import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/app/notification_service.dart';
 import '../../../../core/errors/failure.dart';
@@ -73,7 +73,7 @@ T _unwrap<T>(Result<T> result) =>
     result.when(success: (v) => v, failure: (f) => throw f);
 
 /// Unwraps a list [Result], but treats a 404 as "no records yet" (empty) rather
-/// than an error — some section endpoints return 404 when a pet has no data (or
+/// than an error - some section endpoints return 404 when a pet has no data (or
 /// isn't deployed yet), which shouldn't blank out the whole dashboard.
 List<T> _listOrEmptyOnNotFound<T>(Result<List<T>> result) => result.when(
       success: (v) => v,
@@ -86,7 +86,7 @@ T? _valueOrNullOnNotFound<T>(Result<T?> result) => result.when(
       failure: (f) => f is NotFoundFailure ? null : throw f,
     );
 
-/// Loads the health snapshot for a pet — the three sections in parallel, with a
+/// Loads the health snapshot for a pet - the three sections in parallel, with a
 /// single loading / error surface for the dashboard. Family-keyed so each pet
 /// caches independently.
 @riverpod
@@ -154,7 +154,7 @@ Future<List<UpcomingMedication>> upcomingMedications(
 /// across all pets, for the home "Upcoming" section.
 ///
 /// Reads purely from the local cache written on each medication / vaccination
-/// fetch — no network. Pet names are joined from the pet gate (the per-pet
+/// fetch - no network. Pet names are joined from the pet gate (the per-pet
 /// health endpoints don't carry them). Sorted soonest-first; overdue included.
 /// A dedicated home endpoint will replace this source later.
 @riverpod
@@ -206,7 +206,7 @@ Future<List<Appointment>> petAppointments(Ref ref, int petId) async {
 }
 
 /// The pet's server-computed health score. Family-keyed per pet. Invalidate it
-/// alongside [petHealthSnapshotProvider] after the user logs data — the score
+/// alongside [petHealthSnapshotProvider] after the user logs data - the score
 /// is live and will move.
 @riverpod
 Future<PetHealthScore> petHealthScore(Ref ref, int petId) async {

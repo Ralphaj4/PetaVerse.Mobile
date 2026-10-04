@@ -108,19 +108,19 @@ String _$providerCategoriesHash() =>
     r'f557f36ae201ff032cf98a70c796d66b73bd180e';
 
 /// The device's current location, resolved once in the background. Null until
-/// (or unless) it lands — the search runs against the viewport regardless, and
+/// (or unless) it lands - the search runs against the viewport regardless, and
 /// distance is simply omitted when this is null.
 
 @ProviderFor(ProviderUserLocation)
 final providerUserLocationProvider = ProviderUserLocationProvider._();
 
 /// The device's current location, resolved once in the background. Null until
-/// (or unless) it lands — the search runs against the viewport regardless, and
+/// (or unless) it lands - the search runs against the viewport regardless, and
 /// distance is simply omitted when this is null.
 final class ProviderUserLocationProvider
     extends $NotifierProvider<ProviderUserLocation, LatLng?> {
   /// The device's current location, resolved once in the background. Null until
-  /// (or unless) it lands — the search runs against the viewport regardless, and
+  /// (or unless) it lands - the search runs against the viewport regardless, and
   /// distance is simply omitted when this is null.
   ProviderUserLocationProvider._()
     : super(
@@ -153,7 +153,7 @@ String _$providerUserLocationHash() =>
     r'f20cee0a81697c1e17bfb01780545de0892afe4b';
 
 /// The device's current location, resolved once in the background. Null until
-/// (or unless) it lands — the search runs against the viewport regardless, and
+/// (or unless) it lands - the search runs against the viewport regardless, and
 /// distance is simply omitted when this is null.
 
 abstract class _$ProviderUserLocation extends $Notifier<LatLng?> {
@@ -722,7 +722,7 @@ abstract class _$ServiceProvidersNotifier
 /// API results (added/removed/updated). Prevents flickering when zooming in/out.
 ///
 /// Reconciliation is driven by listening to [serviceProvidersProvider] rather
-/// than by a derived provider writing here during its build — Riverpod forbids
+/// than by a derived provider writing here during its build - Riverpod forbids
 /// one provider mutating another mid-build.
 
 @ProviderFor(ProviderPinCache)
@@ -734,7 +734,7 @@ final providerPinCacheProvider = ProviderPinCacheProvider._();
 /// API results (added/removed/updated). Prevents flickering when zooming in/out.
 ///
 /// Reconciliation is driven by listening to [serviceProvidersProvider] rather
-/// than by a derived provider writing here during its build — Riverpod forbids
+/// than by a derived provider writing here during its build - Riverpod forbids
 /// one provider mutating another mid-build.
 final class ProviderPinCacheProvider
     extends $NotifierProvider<ProviderPinCache, Map<int, ServiceProvider>> {
@@ -744,7 +744,7 @@ final class ProviderPinCacheProvider
   /// API results (added/removed/updated). Prevents flickering when zooming in/out.
   ///
   /// Reconciliation is driven by listening to [serviceProvidersProvider] rather
-  /// than by a derived provider writing here during its build — Riverpod forbids
+  /// than by a derived provider writing here during its build - Riverpod forbids
   /// one provider mutating another mid-build.
   ProviderPinCacheProvider._()
     : super(
@@ -781,7 +781,7 @@ String _$providerPinCacheHash() => r'004fdb62f4b097bdd158b407175c9f7f25f04b76';
 /// API results (added/removed/updated). Prevents flickering when zooming in/out.
 ///
 /// Reconciliation is driven by listening to [serviceProvidersProvider] rather
-/// than by a derived provider writing here during its build — Riverpod forbids
+/// than by a derived provider writing here during its build - Riverpod forbids
 /// one provider mutating another mid-build.
 
 abstract class _$ProviderPinCache extends $Notifier<Map<int, ServiceProvider>> {
@@ -804,13 +804,13 @@ abstract class _$ProviderPinCache extends $Notifier<Map<int, ServiceProvider>> {
 }
 
 /// The branch pins actually shown (map + list). A pure derivation of the pin
-/// cache and the current selection — the selected pin floats to the top.
+/// cache and the current selection - the selected pin floats to the top.
 
 @ProviderFor(visibleProviders)
 final visibleProvidersProvider = VisibleProvidersProvider._();
 
 /// The branch pins actually shown (map + list). A pure derivation of the pin
-/// cache and the current selection — the selected pin floats to the top.
+/// cache and the current selection - the selected pin floats to the top.
 
 final class VisibleProvidersProvider
     extends
@@ -821,7 +821,7 @@ final class VisibleProvidersProvider
         >
     with $Provider<List<ServiceProvider>> {
   /// The branch pins actually shown (map + list). A pure derivation of the pin
-  /// cache and the current selection — the selected pin floats to the top.
+  /// cache and the current selection - the selected pin floats to the top.
   VisibleProvidersProvider._()
     : super(
         from: null,

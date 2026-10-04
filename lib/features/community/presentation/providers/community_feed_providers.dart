@@ -1,4 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+﻿import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../domain/entities/community_entities.dart';
 import '../../domain/entities/community_group_entities.dart';
@@ -37,7 +37,7 @@ class PagedFeed {
       );
 }
 
-/// The following feed — posts from pets the acting profile follows. Loads page
+/// The following feed - posts from pets the acting profile follows. Loads page
 /// 0 on build, appends further pages via [loadMore]. Rebuilds when the acting
 /// pet changes.
 @riverpod
@@ -105,7 +105,7 @@ class FollowingFeed extends _$FollowingFeed {
   }
 }
 
-/// The discover feed — public posts from pets the profile doesn't follow, plus
+/// The discover feed - public posts from pets the profile doesn't follow, plus
 /// the suggested-pets rail and lost & found alerts. Accumulates posts across
 /// pages; the rail and alerts come from page 0.
 @riverpod

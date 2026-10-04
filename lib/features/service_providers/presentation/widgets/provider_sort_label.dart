@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import '../../../../core/localization/generated/app_localizations.dart';
 import '../../domain/entities/provider_search.dart';
 
-/// Localized label for a [ProviderSort] — shared by the sheet header chip and
+/// Localized label for a [ProviderSort] - shared by the sheet header chip and
 /// the sort selector so they never drift.
 String providerSortLabel(AppLocalizations l10n, ProviderSort sort) =>
     switch (sort) {

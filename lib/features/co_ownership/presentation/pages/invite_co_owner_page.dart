@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -45,7 +45,7 @@ class _InviteCoOwnerPageState extends ConsumerState<InviteCoOwnerPage> {
 
   /// A profile tag (userCode) is 8 characters; allow a little slack (8–10)
   /// before we bother the API. Shorter/longer input isn't a valid tag, so we
-  /// don't call — and there's no debounce: we fire as soon as the length is in
+  /// don't call - and there's no debounce: we fire as soon as the length is in
   /// range.
   static const int _minTagLength = 8;
   static const int _maxTagLength = 10;
@@ -54,7 +54,7 @@ class _InviteCoOwnerPageState extends ConsumerState<InviteCoOwnerPage> {
     final code = raw.trim();
     _lastQuery = code;
     if (code.length < _minTagLength || code.length > _maxTagLength) {
-      // Not a searchable tag yet — clear any result and don't call the API.
+      // Not a searchable tag yet - clear any result and don't call the API.
       setState(() => _lookup = null);
       return;
     }
@@ -83,7 +83,7 @@ class _InviteCoOwnerPageState extends ConsumerState<InviteCoOwnerPage> {
             userCode: user.userCode,
           );
     } finally {
-      // Always clear the spinner, even if the call throws unexpectedly — a
+      // Always clear the spinner, even if the call throws unexpectedly - a
       // hung spinner is worse than an error.
       if (mounted) setState(() => _sending = false);
     }
@@ -179,7 +179,7 @@ class _InviteCoOwnerPageState extends ConsumerState<InviteCoOwnerPage> {
       success: (_) {
         ref.invalidate(petOwnersProvider(widget.petId));
         if (leaving) {
-          // The user just gave up access — leave the page; the pet gate will
+          // The user just gave up access - leave the page; the pet gate will
           // reconcile on next fetch.
           ref.read(petsProvider.notifier).reconcile();
           context.pop();
@@ -294,7 +294,7 @@ class _LookupResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final lookup = this.lookup;
-    // Idle (no query yet / too short) — a subtle centered hint.
+    // Idle (no query yet / too short) - a subtle centered hint.
     if (lookup == null) {
       return Center(
         child: Text(
@@ -420,7 +420,7 @@ class _InvitedChip extends StatelessWidget {
 
 /// Labeled "Invite" button used in the lookup result. Sized to its content
 /// (MainAxisSize.min) so it never demands unbounded intrinsic width as a
-/// non-flex Row child — a full-width button there collapses the card.
+/// non-flex Row child - a full-width button there collapses the card.
 class _InviteButton extends StatelessWidget {
   const _InviteButton({required this.busy, required this.onTap});
 
@@ -722,10 +722,10 @@ class _SentInvitesSection extends ConsumerWidget {
   }
 }
 
-/// Plain search field (no debounce) — fires [onChanged] on every keystroke;
+/// Plain search field (no debounce) - fires [onChanged] on every keystroke;
 /// the page decides when the input is a searchable tag (8–10 chars).
 /// Shimmer placeholder shaped like an owner/invite tile (avatar + two lines +
-/// a trailing action block). Standalone — carries its own [Shimmer].
+/// a trailing action block). Standalone - carries its own [Shimmer].
 class _OwnerRowSkeleton extends StatelessWidget {
   const _OwnerRowSkeleton();
 
@@ -735,7 +735,7 @@ class _OwnerRowSkeleton extends StatelessWidget {
   }
 }
 
-/// The static skeleton content — reused inside a shared [Shimmer] by the
+/// The static skeleton content - reused inside a shared [Shimmer] by the
 /// multi-row list so the whole list sweeps as one.
 class _OwnerRowSkeletonBody extends StatelessWidget {
   const _OwnerRowSkeletonBody();

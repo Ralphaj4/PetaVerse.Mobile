@@ -6,7 +6,7 @@ import '../../domain/repositories/adoption_repository.dart';
 import '../datasources/adoption_remote_datasource.dart';
 
 /// Adoption repository. Maps remote DTOs onto domain entities and turns
-/// [AppException]s into [Failure]s. No local cache — the board is fetched fresh
+/// [AppException]s into [Failure]s. No local cache - the board is fetched fresh
 /// for the current query.
 class AdoptionRepositoryImpl implements AdoptionRepository {
   const AdoptionRepositoryImpl(this._remote);

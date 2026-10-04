@@ -1,4 +1,4 @@
-import '../../../../core/errors/failure.dart';
+﻿import '../../../../core/errors/failure.dart';
 import '../../../../core/errors/result.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/user_repository_interface.dart';
@@ -24,7 +24,7 @@ class UserRepository implements IUserRepository {
       final dto = await _local.readUser();
       return Result.success(dto?.toEntity());
     } catch (e) {
-      // A corrupt/unreadable cache is not fatal — reconcile from the network.
+      // A corrupt/unreadable cache is not fatal - reconcile from the network.
       return const Result.success(null);
     }
   }
@@ -41,7 +41,7 @@ class UserRepository implements IUserRepository {
     if (dto == null) {
       return Result.failure(result.failureOrNull ?? const UnknownFailure());
     }
-    // Best-effort cache reconcile — a write failure doesn't fail the fetch.
+    // Best-effort cache reconcile - a write failure doesn't fail the fetch.
     try {
       await _local.writeUser(dto);
       // ignore: avoid_print

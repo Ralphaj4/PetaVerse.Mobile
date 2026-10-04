@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -78,8 +78,7 @@ class ShelterListingFormState extends ConsumerState<ShelterListingForm> {
   ShelterFormData? readData() {
     final form = widget.formKey.currentState!;
     if (!form.saveAndValidate()) return null;
-    // A picked-but-unconfirmed photo means the upload failed or is pending —
-    // don't submit a listing that silently drops the photo.
+    // A picked-but-unconfirmed photo means the upload failed or is pending - // don't submit a listing that silently drops the photo.
     if (_photoFile != null && _photoAssetId == null) return null;
 
     final values = form.value;

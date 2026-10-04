@@ -511,7 +511,7 @@ abstract class AppLocalizations {
   /// No description provided for @statNoData.
   ///
   /// In en, this message translates to:
-  /// **'—'**
+  /// **'-'**
   String get statNoData;
 
   /// No description provided for @nextVisitNone.
@@ -1981,7 +1981,7 @@ abstract class AppLocalizations {
   /// No description provided for @createPetAdditionalInfoSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Optional — you can fill these in later'**
+  /// **'Optional - you can fill these in later'**
   String get createPetAdditionalInfoSubtitle;
 
   /// No description provided for @createPetSize.
@@ -2689,7 +2689,7 @@ abstract class AppLocalizations {
   /// No description provided for @healthScoreRedistributedWith.
   ///
   /// In en, this message translates to:
-  /// **'{reason} — weight redistributed to the other signals'**
+  /// **'{reason} - weight redistributed to the other signals'**
   String healthScoreRedistributedWith(String reason);
 
   /// No description provided for @healthScoreDeltaPoints.
@@ -3187,7 +3187,7 @@ abstract class AppLocalizations {
   /// No description provided for @petAvatarSetupOptional.
   ///
   /// In en, this message translates to:
-  /// **'Optional — you can change it anytime.'**
+  /// **'Optional - you can change it anytime.'**
   String get petAvatarSetupOptional;
 
   /// No description provided for @petAvatarUploadHint.
@@ -3391,7 +3391,7 @@ abstract class AppLocalizations {
   /// No description provided for @providerShowingOf.
   ///
   /// In en, this message translates to:
-  /// **'Showing {shown} of {total} — zoom in to see more'**
+  /// **'Showing {shown} of {total} - zoom in to see more'**
   String providerShowingOf(int shown, int total);
 
   /// No description provided for @providerForPet.
@@ -4171,7 +4171,7 @@ abstract class AppLocalizations {
   /// No description provided for @adoptionTransferNote.
   ///
   /// In en, this message translates to:
-  /// **'You\'ll both confirm before ownership transfers — nothing moves without your approval.'**
+  /// **'You\'ll both confirm before ownership transfers - nothing moves without your approval.'**
   String get adoptionTransferNote;
 
   /// No description provided for @adoptionListTitle.
@@ -4231,7 +4231,7 @@ abstract class AppLocalizations {
   /// No description provided for @adoptionListTransferNote.
   ///
   /// In en, this message translates to:
-  /// **'When someone applies, you review and approve them. Ownership transfers only after you both confirm — records travel with your pet.'**
+  /// **'When someone applies, you review and approve them. Ownership transfers only after you both confirm - records travel with your pet.'**
   String get adoptionListTransferNote;
 
   /// No description provided for @adoptionListSubmit.
@@ -4477,7 +4477,7 @@ abstract class AppLocalizations {
   /// No description provided for @walkNoLocation.
   ///
   /// In en, this message translates to:
-  /// **'Location unavailable — showing timer only'**
+  /// **'Location unavailable - showing timer only'**
   String get walkNoLocation;
 
   /// No description provided for @walkHistoryTitle.
@@ -5581,7 +5581,7 @@ abstract class AppLocalizations {
   /// No description provided for @notifSecurityAlertsDesc.
   ///
   /// In en, this message translates to:
-  /// **'Password changes and new device sign-ins — always enabled'**
+  /// **'Password changes and new device sign-ins - always enabled'**
   String get notifSecurityAlertsDesc;
 
   /// No description provided for @pawHubPostLike.
@@ -6061,7 +6061,7 @@ abstract class AppLocalizations {
   /// No description provided for @communityDetailFeedEmpty.
   ///
   /// In en, this message translates to:
-  /// **'No posts yet — be the first to share'**
+  /// **'No posts yet - be the first to share'**
   String get communityDetailFeedEmpty;
 
   /// No description provided for @communityDetailJoinToPost.
@@ -7489,7 +7489,7 @@ abstract class AppLocalizations {
   /// No description provided for @contactUsSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Reach out anytime — we usually reply within 24 hours.'**
+  /// **'Reach out anytime - we usually reply within 24 hours.'**
   String get contactUsSubtitle;
 
   /// No description provided for @contactUsEmailSubtitle.
@@ -7513,7 +7513,7 @@ abstract class AppLocalizations {
   /// No description provided for @reportProblemEmailSubject.
   ///
   /// In en, this message translates to:
-  /// **'PetaVerse — Bug Report'**
+  /// **'PetaVerse - Bug Report'**
   String get reportProblemEmailSubject;
 
   /// No description provided for @contactUsResponseTime.
@@ -7795,7 +7795,7 @@ abstract class AppLocalizations {
   /// No description provided for @openByDefaultSheetBody.
   ///
   /// In en, this message translates to:
-  /// **'Tap a shared PetaVerse link and it will open straight in the app — no browser, no extra steps. Enable it in two taps.'**
+  /// **'Tap a shared PetaVerse link and it will open straight in the app - no browser, no extra steps. Enable it in two taps.'**
   String get openByDefaultSheetBody;
 
   /// No description provided for @openByDefaultSheetEnable.

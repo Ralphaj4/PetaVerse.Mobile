@@ -1,6 +1,6 @@
-// Co-ownership domain entities.
+﻿// Co-ownership domain entities.
 //
-// Domain layer — no Flutter or JSON imports. Mirrors the API's co-ownership
+// Domain layer - no Flutter or JSON imports. Mirrors the API's co-ownership
 // contract; the data layer maps the DTOs onto these.
 
 /// Lifecycle of a co-owner invite.
@@ -31,7 +31,7 @@ class PublicUserCard {
   String get fullName => '$firstName $lastName'.trim();
 }
 
-/// A person with access to a pet — the primary owner or an accepted co-owner.
+/// A person with access to a pet - the primary owner or an accepted co-owner.
 class PetOwner {
   const PetOwner({
     required this.id,

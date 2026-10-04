@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 
 /// Resolved icon+color pair after mapping from wire enum names.
 /// The data layer resolves iconName/color strings here so raw strings
@@ -33,7 +33,7 @@ class ChatBlock {
   final ResolvedTipStyle? resolved;
 }
 
-/// A single message in the chat — user or assistant.
+/// A single message in the chat - user or assistant.
 class ChatMessage {
   const ChatMessage({
     required this.id,
@@ -89,7 +89,7 @@ final _chatMetaLineRegExp = RegExp(
 
 /// Removes any `Quick Replies:` / `Footer:` lines from [text]. These are
 /// rendered separately (quick-reply chips + footer line), so they must never
-/// appear inline in the message body — whether the backend flattened them into
+/// appear inline in the message body - whether the backend flattened them into
 /// history `textContent` or streamed them as tokens.
 String stripChatMetaLines(String text) {
   if (!text.contains(':')) return text;

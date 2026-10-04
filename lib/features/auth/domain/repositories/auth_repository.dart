@@ -1,10 +1,10 @@
-import '../../../../core/errors/result.dart';
+﻿import '../../../../core/errors/result.dart';
 import '../entities/auth_session.dart';
 import '../entities/login_outcome.dart';
 
 /// Contract for authentication against the PetsApp API.
 ///
-/// All methods return [Result] — exceptions never cross this boundary.
+/// All methods return [Result] - exceptions never cross this boundary.
 abstract interface class AuthRepository {
   /// Registers a new user. The backend sends an OTP to the mobile number;
   /// no tokens are issued until the phone is verified. Returns the dev OTP
@@ -33,7 +33,7 @@ abstract interface class AuthRepository {
   /// Authenticates with mobile number + password.
   ///
   /// Returns a [LoginAuthenticated] (tokens issued) or, for an unverified
-  /// account, a [LoginNeedsVerification] (the backend resent an OTP — the
+  /// account, a [LoginNeedsVerification] (the backend resent an OTP - the
   /// caller must route to OTP entry).
   Future<Result<LoginOutcome>> login({
     required String mobileNumber,

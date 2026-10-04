@@ -33,7 +33,7 @@ class HealthDateField extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
 
-  /// When non-null a clear (×) button is shown — used for optional dates.
+  /// When non-null a clear (×) button is shown - used for optional dates.
   final VoidCallback? onClear;
 
   /// Renders [label] in the muted placeholder color when true.

@@ -1,6 +1,6 @@
-/// A vaccination record for a pet.
+﻿/// A vaccination record for a pet.
 ///
-/// Domain layer — no Flutter or JSON imports. Mirrors
+/// Domain layer - no Flutter or JSON imports. Mirrors
 /// `GET /api/pets/{petId}/vaccinations`.
 class Vaccination {
   const Vaccination({

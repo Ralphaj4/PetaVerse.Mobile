@@ -98,7 +98,7 @@ class _OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
     if (_code.length != _otpLength) return;
 
     // Forgot-password: the code is verified together with the new password
-    // at the reset endpoint — navigate to the set-new-password screen.
+    // at the reset endpoint - navigate to the set-new-password screen.
     if (widget.isForgotPassword) {
       unawaited(context.push(
         AppRoutes.setNewPassword,

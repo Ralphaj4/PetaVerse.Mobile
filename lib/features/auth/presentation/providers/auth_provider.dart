@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -146,7 +146,7 @@ class AuthNotifier extends _$AuthNotifier {
 
     switch (outcome) {
       case LoginAuthenticated():
-        // Warm the profile cache before completing — login blocks until /me
+        // Warm the profile cache before completing - login blocks until /me
         // is fetched and cached, so the Personal Information page renders
         // instantly afterwards.
         final warmed = await _warmProfileCache();
@@ -213,7 +213,7 @@ class AuthNotifier extends _$AuthNotifier {
   /// local credentials and cached data.
   ///
   /// Mirrors [logout]: all providers are read up front, no [state] writes
-  /// happen after the awaits — the notifier is auto-disposed and its ref
+  /// happen after the awaits - the notifier is auto-disposed and its ref
   /// becomes invalid as soon as the session gate is flipped by the caller.
   /// Returns the [Result] directly so the caller can handle errors and drive
   /// the gate flip from a stable ref.
@@ -248,7 +248,7 @@ class AuthNotifier extends _$AuthNotifier {
     final homeCache = ref.read(homeSummaryCacheProvider);
     final notifications = ref.read(notificationServiceProvider);
     // Await the local clears so they're durably written before logout is
-    // considered done — otherwise a user who kills the app immediately after
+    // considered done - otherwise a user who kills the app immediately after
     // tapping "log out" can relaunch with tokens/cache still present (skipping
     // login and showing the previous user's data).
     await Future.wait([

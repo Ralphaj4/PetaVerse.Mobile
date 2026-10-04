@@ -1,4 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+﻿import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/network/api_client.dart';
 import '../../../../core/storage/hive_service.dart';
@@ -31,7 +31,7 @@ CommunityRepository communityRepository(Ref ref) {
   );
 }
 
-/// The acting pet — the social identity actions are attributed to. Bound to
+/// The acting pet - the social identity actions are attributed to. Bound to
 /// the app-wide current-pet selection ([PetsNotifier]); switching pets in the
 /// PawHub switcher goes through `selectPet`, so the whole app stays in sync.
 ///

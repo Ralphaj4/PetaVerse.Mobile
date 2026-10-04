@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -10,7 +10,7 @@ import 'package:path_provider/path_provider.dart';
 /// serves it as a local [File], so playback and thumbnailing never re-fetch it.
 ///
 /// Without this, `VideoPlayerController.networkUrl` re-streams the whole clip on
-/// every open (and the thumbnail generator would fetch it too) — the cause of
+/// every open (and the thumbnail generator would fetch it too) - the cause of
 /// tens of MB per view. Here the first view downloads; every later view (and
 /// the poster frame) reads the local file for free.
 class VideoCache {
@@ -35,7 +35,7 @@ class VideoCache {
     return dir;
   }
 
-  /// Stable, filesystem-safe filename for [url] (FNV-1a hash — no crypto dep).
+  /// Stable, filesystem-safe filename for [url] (FNV-1a hash - no crypto dep).
   String _keyFor(String url) {
     var hash = 0xcbf29ce484222325;
     for (final c in url.codeUnits) {
@@ -63,7 +63,7 @@ class VideoCache {
       return file;
     }
 
-    // Download to a temp file, then atomically rename in — avoids a half-written
+    // Download to a temp file, then atomically rename in - avoids a half-written
     // file being treated as cached if the download is interrupted.
     final tmp = File('${file.path}.part');
     await _dio.download(url, tmp.path);

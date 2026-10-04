@@ -159,17 +159,17 @@ abstract class _$NotificationList
   }
 }
 
-/// Convenience selector — true while more pages are available.
+/// Convenience selector - true while more pages are available.
 
 @ProviderFor(notificationHasMore)
 final notificationHasMoreProvider = NotificationHasMoreProvider._();
 
-/// Convenience selector — true while more pages are available.
+/// Convenience selector - true while more pages are available.
 
 final class NotificationHasMoreProvider
     extends $FunctionalProvider<bool, bool, bool>
     with $Provider<bool> {
-  /// Convenience selector — true while more pages are available.
+  /// Convenience selector - true while more pages are available.
   NotificationHasMoreProvider._()
     : super(
         from: null,
@@ -206,17 +206,17 @@ final class NotificationHasMoreProvider
 String _$notificationHasMoreHash() =>
     r'6e4901ccb4e11089ac3fc6a2cdbf9aced3f2de31';
 
-/// Convenience selector — true while a page is being fetched.
+/// Convenience selector - true while a page is being fetched.
 
 @ProviderFor(notificationIsLoadingMore)
 final notificationIsLoadingMoreProvider = NotificationIsLoadingMoreProvider._();
 
-/// Convenience selector — true while a page is being fetched.
+/// Convenience selector - true while a page is being fetched.
 
 final class NotificationIsLoadingMoreProvider
     extends $FunctionalProvider<bool, bool, bool>
     with $Provider<bool> {
-  /// Convenience selector — true while a page is being fetched.
+  /// Convenience selector - true while a page is being fetched.
   NotificationIsLoadingMoreProvider._()
     : super(
         from: null,

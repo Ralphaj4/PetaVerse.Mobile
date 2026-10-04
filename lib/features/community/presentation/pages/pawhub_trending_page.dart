@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -113,7 +113,7 @@ class _PawHubTrendingPageState extends ConsumerState<PawHubTrendingPage> {
   }
 
   Widget _content(domain.Trending trending, PawPet actingPet) {
-    // Nothing trending yet — surface an empty state instead of a blank scroll.
+    // Nothing trending yet - surface an empty state instead of a blank scroll.
     if (trending.hashtags.isEmpty && trending.posts.isEmpty) {
       return EmptyStateWidget(
         icon: FluentIcons.fire_24_regular,

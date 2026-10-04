@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+﻿// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'community_group_providers.dart';
 
@@ -12,7 +12,7 @@ part of 'community_group_providers.dart';
 ///
 /// `myPetIds` is a callback reading [PetsNotifier] so the `isMine` flag on
 /// lead/member pets always reflects the current pet set without holding a
-/// stale snapshot — same pattern as `communityRepository`.
+/// stale snapshot - same pattern as `communityRepository`.
 
 @ProviderFor(communityGroupRepository)
 final communityGroupRepositoryProvider = CommunityGroupRepositoryProvider._();
@@ -21,7 +21,7 @@ final communityGroupRepositoryProvider = CommunityGroupRepositoryProvider._();
 ///
 /// `myPetIds` is a callback reading [PetsNotifier] so the `isMine` flag on
 /// lead/member pets always reflects the current pet set without holding a
-/// stale snapshot — same pattern as `communityRepository`.
+/// stale snapshot - same pattern as `communityRepository`.
 
 final class CommunityGroupRepositoryProvider
     extends
@@ -35,7 +35,7 @@ final class CommunityGroupRepositoryProvider
   ///
   /// `myPetIds` is a callback reading [PetsNotifier] so the `isMine` flag on
   /// lead/member pets always reflects the current pet set without holding a
-  /// stale snapshot — same pattern as `communityRepository`.
+  /// stale snapshot - same pattern as `communityRepository`.
   CommunityGroupRepositoryProvider._()
     : super(
         from: null,

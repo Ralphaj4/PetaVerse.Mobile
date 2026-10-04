@@ -1,6 +1,6 @@
-/// A pet appointment (vet, groomer, etc.) stored in the backend.
+﻿/// A pet appointment (vet, groomer, etc.) stored in the backend.
 ///
-/// Domain layer — no Flutter or JSON imports.
+/// Domain layer - no Flutter or JSON imports.
 class Appointment {
   const Appointment({
     required this.id,

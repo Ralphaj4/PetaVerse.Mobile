@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,7 +32,7 @@ import '../widgets/user_bubble.dart';
 ///   3. User can switch which pet the conversation is about via the app-bar
 ///      pet chip. Switching starts a fresh session for the newly-selected pet
 ///      (with a confirm dialog first if a conversation is already underway).
-///   4. Messages render via [_BotMessageView] / QuickReplyChips — the data
+///   4. Messages render via [_BotMessageView] / QuickReplyChips - the data
 ///      layer resolved iconName/color to real Flutter constants.
 class AssistantPage extends ConsumerStatefulWidget {
   const AssistantPage({this.petId, this.sessionId, super.key});
@@ -42,7 +42,7 @@ class AssistantPage extends ConsumerStatefulWidget {
   final int? petId;
 
   /// When opening an existing conversation from the history page, its id.
-  /// Takes precedence over [petId] — the chat's pet comes from the session.
+  /// Takes precedence over [petId] - the chat's pet comes from the session.
   final int? sessionId;
 
   @override
@@ -57,7 +57,7 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
   int? _petId;
 
   /// The active session id, or null when no session exists yet. A session is
-  /// created lazily — see [_handleSend]. It's non-null immediately only when
+  /// created lazily - see [_handleSend]. It's non-null immediately only when
   /// opening an existing conversation from history.
   int? _sessionId;
 
@@ -71,7 +71,7 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
   void initState() {
     super.initState();
     if (widget.sessionId != null) {
-      // Opening an existing conversation — the session already exists.
+      // Opening an existing conversation - the session already exists.
       _sessionId = widget.sessionId;
       _isOpenedSession = true;
     } else {
@@ -161,7 +161,7 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
     return null;
   }
 
-  /// True once the current session has at least one exchanged message — used
+  /// True once the current session has at least one exchanged message - used
   /// to decide whether switching pets needs a confirm.
   bool get _conversationStarted {
     if (_sessionId == null) return false;
@@ -170,7 +170,7 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
   }
 
   /// Opens the shared PawHub pet-switcher sheet; on choosing a *different* pet,
-  /// re-scopes the chat to it. Switching does NOT create a session — that
+  /// re-scopes the chat to it. Switching does NOT create a session - that
   /// happens lazily on the first message (see [_handleSend]).
   Future<void> _openPetSwitcher() async {
     final pets = _pawPets();
@@ -240,7 +240,7 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
 
     // Lazy: create the session for this pet on the first message. On success
     // _ensureSession setStates _sessionId, which makes build() start watching
-    // chatSessionProvider — establishing the notifier instance the UI is bound
+    // chatSessionProvider - establishing the notifier instance the UI is bound
     // to before we send on it.
     final sessionId = await _ensureSession();
     if (sessionId == null || !mounted) return; // creation failed
@@ -274,7 +274,7 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
     _scrollToBottom();
   }
 
-  /// Completes after the next frame is rendered — i.e. after the pending
+  /// Completes after the next frame is rendered - i.e. after the pending
   /// setState-driven build() has run and its ref.watch calls are live.
   Future<void> _nextFrame() {
     final completer = Completer<void>();
@@ -393,7 +393,7 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
     AsyncValue<List<ChatMessage>>? sessionState,
     dynamic l10n,
   ) {
-    // Lazy session creation failed on send — let the user retry.
+    // Lazy session creation failed on send - let the user retry.
     if (_sessionError != null) {
       return _ErrorView(
         message: _sessionError!,
@@ -401,7 +401,7 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
       );
     }
 
-    // No session yet (new/empty chat) — show the suggested prompts. Typing in
+    // No session yet (new/empty chat) - show the suggested prompts. Typing in
     // the input bar (or tapping a prompt) creates the session lazily.
     if (_sessionId == null) {
       if (_creatingSession) {
@@ -451,7 +451,7 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
                       );
                     }
 
-                    // Streaming placeholder — show typing indicator until text arrives.
+                    // Streaming placeholder - show typing indicator until text arrives.
                     if (msg.status == ChatMessageStatus.streaming &&
                         msg.text.isEmpty &&
                         msg.blocks.isEmpty) {
@@ -552,7 +552,7 @@ class _BotMessageView extends StatelessWidget {
 
                     // Footer info line. The server also sends a
                     // [footerActionLabel] (e.g. "View Pet Profile"), but it
-                    // carries no destination — so we render the informational
+                    // carries no destination - so we render the informational
                     // text only and omit the dead action button.
                     if (message.footerText != null) ...[
                       const SizedBox(height: AppSpacing.md),
@@ -583,7 +583,7 @@ class _BotMessageView extends StatelessWidget {
   }
 }
 
-/// Renders a single [ChatBlock] — tip card or plain-text fallback.
+/// Renders a single [ChatBlock] - tip card or plain-text fallback.
 class _BlockView extends StatelessWidget {
   const _BlockView({required this.block});
 

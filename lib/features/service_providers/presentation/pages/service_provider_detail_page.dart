@@ -111,7 +111,7 @@ class _DetailView extends ConsumerWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // Column carries the hero + content sheet — lays out height.
+          // Column carries the hero + content sheet - lays out height.
           Column(
             children: [
               _ProviderHeroHeader(

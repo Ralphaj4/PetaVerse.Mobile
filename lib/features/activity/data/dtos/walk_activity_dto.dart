@@ -1,4 +1,4 @@
-import '../../domain/entities/walk_activity.dart';
+﻿import '../../domain/entities/walk_activity.dart';
 
 class WalkActivityDto {
   const WalkActivityDto({
@@ -19,7 +19,7 @@ class WalkActivityDto {
   final double? distanceMeters;
   final double? avgSpeedKmh;
 
-  /// [petId] is passed in from the request context — the list endpoint
+  /// [petId] is passed in from the request context - the list endpoint
   /// omits it from each item since it's implied by the URL.
   factory WalkActivityDto.fromJson(Map<String, dynamic> json, {int petId = 0}) =>
       WalkActivityDto(

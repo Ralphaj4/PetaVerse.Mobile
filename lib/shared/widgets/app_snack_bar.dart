@@ -10,15 +10,15 @@ enum AppSnackBarVariant { info, success, error, warning }
 
 /// App-wide toast. A dark-navy rounded card with a colored accent icon bubble,
 /// a white message, a whisper-faint paw-print watermark, and an optional action
-/// — matching the app's premium, rounded, softly-shadowed surface language
+/// - matching the app's premium, rounded, softly-shadowed surface language
 /// rather than a loud full-width colored bar.
 abstract final class AppSnackBar {
-  /// Deep navy surface — a touch bluer and darker than [AppColors.textPrimary],
+  /// Deep navy surface - a touch bluer and darker than [AppColors.textPrimary],
   /// kept nearly opaque (subtle transparency, not glassy) so it reads premium
   /// without heavy blur.
   static const Color _navy = Color(0xFF171B2E);
 
-  /// Soft red for errors — gentler than the harsh semantic [AppColors.error].
+  /// Soft red for errors - gentler than the harsh semantic [AppColors.error].
   static const Color _softRed = Color(0xFFF2686A);
 
   /// Shows a toast. [message] is the primary line; pass [subtitle] for a muted

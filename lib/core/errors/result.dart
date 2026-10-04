@@ -2,7 +2,7 @@ import 'failure.dart';
 
 /// Functional result type returned by every repository method.
 ///
-/// Forces callers to handle both outcomes explicitly — exceptions never
+/// Forces callers to handle both outcomes explicitly - exceptions never
 /// cross the repository boundary.
 sealed class Result<T> {
   const Result();

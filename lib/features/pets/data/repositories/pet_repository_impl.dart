@@ -17,7 +17,7 @@ import '../datasources/pet_remote_datasource.dart';
 /// The routing gate runs on lightweight refs (cache for an instant cold-start
 /// answer, [fetchRefs] for the authoritative one). Full records ([getPets])
 /// are display-only and never cached. Creating a pet returns the slim ref from
-/// the create response — no extra round-trip.
+/// the create response - no extra round-trip.
 class PetRepositoryImpl implements PetRepository {
   const PetRepositoryImpl({
     required PetRemoteDataSource remote,
@@ -62,7 +62,7 @@ class PetRepositoryImpl implements PetRepository {
       final created = await _remote.createPet(pet);
       final ref = created.toRef();
       // Keep the ref cache in step so a cold start sees the new pet too.
-      // Best-effort — a cache write failure doesn't fail the creation.
+      // Best-effort - a cache write failure doesn't fail the creation.
       try {
         final refs = [...await _local.readRefs(), ref];
         await _local.writeRefs(refs);

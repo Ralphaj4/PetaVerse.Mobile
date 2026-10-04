@@ -1,11 +1,11 @@
-import '../../../../core/network/api_client.dart';
+﻿import '../../../../core/network/api_client.dart';
 import '../../../../core/network/api_endpoints.dart';
 import '../../../pets/data/dtos/pet_dto.dart';
 import '../dtos/co_ownership_dtos.dart';
 
 /// Remote co-ownership data source. Talks to the API exclusively through
 /// [ApiClient]; never touches Dio directly. Throws AppExceptions (mapped by
-/// ApiClient) — the repository turns those into Failures.
+/// ApiClient) - the repository turns those into Failures.
 class CoOwnershipRemoteDataSource {
   const CoOwnershipRemoteDataSource(this._client);
 

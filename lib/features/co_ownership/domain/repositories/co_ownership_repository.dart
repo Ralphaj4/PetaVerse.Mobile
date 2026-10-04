@@ -1,9 +1,9 @@
-import '../../../../core/errors/result.dart';
+﻿import '../../../../core/errors/result.dart';
 import '../../../pets/domain/entities/pet.dart';
 import '../entities/co_ownership.dart';
 
 /// Contract for co-ownership invitations, both owner (sent) and invitee
-/// (incoming) sides. Every method returns a [Result] — failures never throw.
+/// (incoming) sides. Every method returns a [Result] - failures never throw.
 abstract interface class CoOwnershipRepository {
   /// Resolves a public user code to a shareable identity card. When [petId] is
   /// given, the card's `hasBeenInvited` reflects a pending invite for that pet.

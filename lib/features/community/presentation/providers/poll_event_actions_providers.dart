@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -19,7 +19,7 @@ part 'poll_event_actions_providers.g.dart';
 ///
 /// Read as a plain object (`ref.read(pollEventActionsProvider)`); holds no
 /// state. Reads/mutations of the loaded lists still go through the list
-/// notifiers at the call site — this only owns the repo call + analytics.
+/// notifiers at the call site - this only owns the repo call + analytics.
 @Riverpod(keepAlive: true)
 PollEventActions pollEventActions(Ref ref) => PollEventActions(ref);
 

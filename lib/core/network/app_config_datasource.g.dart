@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+﻿// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'app_config_datasource.dart';
 
@@ -59,14 +59,14 @@ String _$appConfigDatasourceHash() =>
 
 /// Fetches (or cache-falls-back) the app config once per process lifetime.
 /// The result is a [Result<AppConfig>] so the router can handle failure
-/// explicitly — it never throws.
+/// explicitly - it never throws.
 
 @ProviderFor(appConfig)
 final appConfigProvider = AppConfigProvider._();
 
 /// Fetches (or cache-falls-back) the app config once per process lifetime.
 /// The result is a [Result<AppConfig>] so the router can handle failure
-/// explicitly — it never throws.
+/// explicitly - it never throws.
 
 final class AppConfigProvider
     extends
@@ -80,7 +80,7 @@ final class AppConfigProvider
         $FutureProvider<Result<AppConfig>> {
   /// Fetches (or cache-falls-back) the app config once per process lifetime.
   /// The result is a [Result<AppConfig>] so the router can handle failure
-  /// explicitly — it never throws.
+  /// explicitly - it never throws.
   AppConfigProvider._()
     : super(
         from: null,

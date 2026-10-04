@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -145,7 +145,7 @@ class _PetDetailPageState extends ConsumerState<PetDetailPage> {
                 ),
 
                 // The white content sheet is pulled up over the header's
-                // bottom edge — same gesture the tab bar used to make.
+                // bottom edge - same gesture the tab bar used to make.
                 Transform.translate(
                   offset: const Offset(0, -AppRadius.lg),
                   child: _PetContent(
@@ -227,7 +227,7 @@ class _PetHeroHeader extends StatelessWidget {
             ),
           ),
 
-          // Pet image — right portion, with a rounded bottom-start corner so
+          // Pet image - right portion, with a rounded bottom-start corner so
           // the white sheet curves in beneath it. A start-edge gradient fades
           // the photo into the warm background instead of a hard seam.
           PositionedDirectional(
@@ -274,7 +274,7 @@ class _PetHeroHeader extends StatelessWidget {
             ),
           ),
 
-          // Left-side info — anchored under the back button so the pill and
+          // Left-side info - anchored under the back button so the pill and
           // name sit high and fill the space above the action cards.
           PositionedDirectional(
             start: AppSpacing.lg,
@@ -375,7 +375,7 @@ class _PetHeroHeader extends StatelessWidget {
             ),
           ),
 
-          // Action cards — pinned to the bottom, overlapping the image's curved
+          // Action cards - pinned to the bottom, overlapping the image's curved
           // cutout. Smaller squares with generous gaps.
           PositionedDirectional(
             start: AppSpacing.lg,
@@ -511,8 +511,7 @@ class _PetHeroHeader extends StatelessWidget {
 
 // ── Content sheet (below the header) ──────────────────────────────────────────
 
-/// The white content sheet below the hero: the pet info card. Non-scrolling —
-/// the page owns the single scroll view.
+/// The white content sheet below the hero: the pet info card. Non-scrolling - /// the page owns the single scroll view.
 class _PetContent extends ConsumerWidget {
   const _PetContent({
     required this.petId,

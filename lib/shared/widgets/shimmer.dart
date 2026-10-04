@@ -38,7 +38,7 @@ class _ShimmerState extends State<Shimmer>
 
   @override
   Widget build(BuildContext context) {
-    // Accessibility: honor reduced-motion — no sweep, just the base tint.
+    // Accessibility: honor reduced-motion - no sweep, just the base tint.
     if (MediaQuery.of(context).disableAnimations) {
       return widget.child;
     }
@@ -138,7 +138,7 @@ class SkeletonLine extends StatelessWidget {
 }
 
 /// A surface card wrapper matching the app's card language (white, rounded,
-/// soft shadow) — used to frame grouped skeleton rows.
+/// soft shadow) - used to frame grouped skeleton rows.
 class SkeletonCard extends StatelessWidget {
   const SkeletonCard({required this.child, this.padding, super.key});
 

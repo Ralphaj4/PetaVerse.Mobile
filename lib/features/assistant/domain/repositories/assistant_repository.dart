@@ -1,4 +1,4 @@
-import '../../../../core/errors/result.dart';
+﻿import '../../../../core/errors/result.dart';
 import '../entities/chat_entities.dart';
 
 /// Sealed event emitted by the SSE message stream.
@@ -6,7 +6,7 @@ sealed class ChatStreamEvent {
   const ChatStreamEvent();
 }
 
-/// Incremental text token — append to the current bot message's intro text.
+/// Incremental text token - append to the current bot message's intro text.
 final class TokenEvent extends ChatStreamEvent {
   const TokenEvent(this.text);
   final String text;
@@ -18,7 +18,7 @@ final class BlockEvent extends ChatStreamEvent {
   final ChatBlock block;
 }
 
-/// Quick-replies + footer — arrives once, just before [DoneEvent].
+/// Quick-replies + footer - arrives once, just before [DoneEvent].
 final class MetaEvent extends ChatStreamEvent {
   const MetaEvent({
     required this.quickReplies,

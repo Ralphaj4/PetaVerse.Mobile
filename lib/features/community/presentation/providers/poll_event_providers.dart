@@ -1,4 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+﻿import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/network/api_client.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
@@ -14,7 +14,7 @@ part 'poll_event_providers.g.dart';
 /// The poll & event repository, wired to the shared [ApiClient].
 ///
 /// `myPetIds` is a callback reading [PetsNotifier] so the `isMine` flag on
-/// creator/attendee pets always reflects the current pet set — same pattern as
+/// creator/attendee pets always reflects the current pet set - same pattern as
 /// `communityGroupRepository`.
 @Riverpod(keepAlive: true)
 PollEventRepository pollEventRepository(Ref ref) {
@@ -223,7 +223,7 @@ class CommunityEvents extends _$CommunityEvents {
   }
 }
 
-/// A single event's detail (family-keyed by id) — used by the event detail
+/// A single event's detail (family-keyed by id) - used by the event detail
 /// page and the attendees list.
 @riverpod
 class EventDetail extends _$EventDetail {

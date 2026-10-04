@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,13 +26,13 @@ import '../providers/pawcare_providers.dart';
 import '../widgets/health_dashboard.dart';
 import '../widgets/health_score_card.dart';
 
-/// The PetaCare tab — a full scrollable care dashboard.
+/// The PetaCare tab - a full scrollable care dashboard.
 ///
 /// Layout (top to bottom):
-///   1. Teal gradient hero  — pet name + inline health score, "Track Health" CTA.
-///   2. White content sheet — overlaps the hero with a rounded top edge.
+///   1. Teal gradient hero - pet name + inline health score, "Track Health" CTA.
+///   2. White content sheet - overlaps the hero with a rounded top edge.
 ///        a. Upcoming health reminders
-///        b. "Find Care Near You" map card — embedded live map with provider
+///        b. "Find Care Near You" map card - embedded live map with provider
 ///           pins; tapping opens the full discovery screen.
 ///        c. Health score + dashboard (same widgets as pet detail page)
 class PetaCareTabPage extends ConsumerStatefulWidget {
@@ -299,7 +299,7 @@ class _HeroPetSwitcher extends ConsumerWidget {
   }
 }
 
-/// Compact health-score pill shown inside the hero — score + band label.
+/// Compact health-score pill shown inside the hero - score + band label.
 class _HeroScorePill extends ConsumerWidget {
   const _HeroScorePill({required this.petId});
 
@@ -482,7 +482,7 @@ class _FindCareSection extends StatelessWidget {
     required this.center,
   });
 
-  /// Teaser map center — the user's location, or the app default. Providers
+  /// Teaser map center - the user's location, or the app default. Providers
   /// aren't preloaded here; they load in the full map screen on tap.
   final LatLng center;
 
@@ -509,7 +509,7 @@ class _FindCareSection extends StatelessWidget {
                 child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  // Live map teaser — non-interactive, no controls, pure visual.
+                  // Live map teaser - non-interactive, no controls, pure visual.
                   MapView(
                     center: center,
                     zoom: 14,
@@ -540,7 +540,7 @@ class _FindCareSection extends StatelessWidget {
                     ),
                   ),
 
-                  // "Find nearby" chip — top-left
+                  // "Find nearby" chip - top-left
                   PositionedDirectional(
                     top: AppSpacing.md,
                     start: AppSpacing.md,
@@ -580,7 +580,7 @@ class _FindCareSection extends StatelessWidget {
                     ),
                   ),
 
-                  // "Open Map" CTA — bottom-left
+                  // "Open Map" CTA - bottom-left
                   PositionedDirectional(
                     start: AppSpacing.md,
                     bottom: AppSpacing.md,

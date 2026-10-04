@@ -7,7 +7,7 @@ import '../../domain/repositories/lost_found_repository.dart';
 import '../datasources/lost_found_remote_datasource.dart';
 
 /// Lost & Found repository. Maps remote DTOs onto domain entities and turns
-/// [AppException]s into [Failure]s. No local cache — the dashboard is always
+/// [AppException]s into [Failure]s. No local cache - the dashboard is always
 /// fetched fresh for the current location.
 class LostFoundRepositoryImpl implements LostFoundRepository {
   const LostFoundRepositoryImpl(this._remote);

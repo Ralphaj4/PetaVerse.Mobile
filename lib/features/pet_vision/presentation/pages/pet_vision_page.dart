@@ -1,4 +1,4 @@
-import 'dart:io';
+﻿import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:camera/camera.dart';
@@ -66,7 +66,7 @@ class _PetVisionPageState extends ConsumerState<PetVisionPage>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     // Controller is disposed in _navigateBack before pop, so it may already
-    // be null here — guard accordingly.
+    // be null here - guard accordingly.
     _controller?.dispose();
     super.dispose();
   }
@@ -1105,7 +1105,7 @@ class _BottomControls extends StatelessWidget {
                 color: Colors.white, size: 28),
           ),
         ),
-        // Flip camera — kept in the layout as a fixed-width slot so the shutter
+        // Flip camera - kept in the layout as a fixed-width slot so the shutter
         // stays centered whether or not a second lens exists.
         canFlip
             ? Semantics(

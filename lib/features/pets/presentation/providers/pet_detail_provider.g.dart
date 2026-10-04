@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+﻿// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'pet_detail_provider.dart';
 
@@ -9,19 +9,19 @@ part of 'pet_detail_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 /// Fetches the full detail record for a single pet by id.
-/// Auto-disposed — each sheet open gets a fresh fetch.
+/// Auto-disposed - each sheet open gets a fresh fetch.
 
 @ProviderFor(petDetail)
 final petDetailProvider = PetDetailFamily._();
 
 /// Fetches the full detail record for a single pet by id.
-/// Auto-disposed — each sheet open gets a fresh fetch.
+/// Auto-disposed - each sheet open gets a fresh fetch.
 
 final class PetDetailProvider
     extends $FunctionalProvider<AsyncValue<Pet>, Pet, FutureOr<Pet>>
     with $FutureModifier<Pet>, $FutureProvider<Pet> {
   /// Fetches the full detail record for a single pet by id.
-  /// Auto-disposed — each sheet open gets a fresh fetch.
+  /// Auto-disposed - each sheet open gets a fresh fetch.
   PetDetailProvider._({
     required PetDetailFamily super.from,
     required int super.argument,
@@ -68,7 +68,7 @@ final class PetDetailProvider
 String _$petDetailHash() => r'b8edff5ed247c305bf45500298294707f83966b7';
 
 /// Fetches the full detail record for a single pet by id.
-/// Auto-disposed — each sheet open gets a fresh fetch.
+/// Auto-disposed - each sheet open gets a fresh fetch.
 
 final class PetDetailFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<Pet>, int> {
@@ -82,7 +82,7 @@ final class PetDetailFamily extends $Family
       );
 
   /// Fetches the full detail record for a single pet by id.
-  /// Auto-disposed — each sheet open gets a fresh fetch.
+  /// Auto-disposed - each sheet open gets a fresh fetch.
 
   PetDetailProvider call(int id) =>
       PetDetailProvider._(argument: id, from: this);

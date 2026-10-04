@@ -1,4 +1,4 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+﻿import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../auth/presentation/providers/session_provider.dart';
@@ -9,7 +9,7 @@ part 'pets_provider.g.dart';
 
 /// Pet routing-gate state, read synchronously by the router's redirect.
 ///
-/// Holds only lightweight [PetRef]s ({id, name, image}) — enough to answer
+/// Holds only lightweight [PetRef]s ({id, name, image}) - enough to answer
 /// "does the user have a pet?" and to point at the current pet. Full records
 /// (breed, DOB, gender) are NOT here; display screens fetch those on demand.
 ///
@@ -18,7 +18,7 @@ part 'pets_provider.g.dart';
 ///
 /// The offline edge case matters: when the cache is empty AND the
 /// authoritative fetch fails, [hasPets] is false but [reconcileFailed] is
-/// true — the router must NOT send such a user to pet onboarding (they may
+/// true - the router must NOT send such a user to pet onboarding (they may
 /// own pets on another device), it must hold on a retryable gate instead.
 class PetsState {
   const PetsState({
@@ -76,8 +76,7 @@ class PetsNotifier extends _$PetsNotifier {
   PetsState build() {
     // Drive the gate off the session: reconcile when the user becomes
     // logged-in (login / verify / cold start with a stored token), reset on
-    // logout. Reading the session here also resolves the cold-start case —
-    // the gate is built on the first router redirect, by which time the
+    // logout. Reading the session here also resolves the cold-start case - // the gate is built on the first router redirect, by which time the
     // session has hydrated.
     ref.listen(sessionProvider, (previous, next) {
       final wasLoggedIn = previous?.loggedIn ?? false;
@@ -134,8 +133,7 @@ class PetsNotifier extends _$PetsNotifier {
   /// Re-runs [reconcile] after a failure (driven by the onboarding/error UI).
   Future<void> retry() => reconcile();
 
-  /// Optimistically adds a just-created pet from the slim create response —
-  /// no re-fetch. Flips [PetsState.hasPets] true instantly and makes the new
+  /// Optimistically adds a just-created pet from the slim create response - /// no re-fetch. Flips [PetsState.hasPets] true instantly and makes the new
   /// pet the current one. The next [reconcile] reconciles any drift.
   void addCreatedPet(PetRef petRef) {
     state = _resolved(

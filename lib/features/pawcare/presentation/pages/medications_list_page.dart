@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -100,8 +100,7 @@ class _MedicationsListPageState extends ConsumerState<MedicationsListPage> {
         await showMedicationFrequencySheet(context, med.frequencyDays);
     if (picked == null || picked == med.frequencyDays || !mounted) return;
 
-    // The backend does not recompute nextDueDate on a frequency-only change —
-    // it only shifts it on mark-given. Derive the new due date client-side:
+    // The backend does not recompute nextDueDate on a frequency-only change - // it only shifts it on mark-given. Derive the new due date client-side:
     // (lastGivenDate ?? startDate ?? today) + newFrequency.
     final base = med.lastGivenDate ?? med.startDate ?? DateTime.now();
     final newNextDueDate = DateTime(

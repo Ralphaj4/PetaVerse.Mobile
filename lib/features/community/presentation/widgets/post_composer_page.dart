@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 import 'dart:io';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
@@ -51,7 +51,7 @@ class PostComposerPage extends ConsumerStatefulWidget {
   final String? communityName;
 
   /// Local image file paths to pre-seed the media strip with (e.g. a photo
-  /// captured in Pet Vision). Images only — treated as regular photo media.
+  /// captured in Pet Vision). Images only - treated as regular photo media.
   final List<String> initialImagePaths;
 
   @override
@@ -367,8 +367,7 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
       );
     }).toList();
 
-    // Hand the post off to the background upload queue and leave immediately —
-    // uploading (which can be slow for videos) continues via the global
+    // Hand the post off to the background upload queue and leave immediately - // uploading (which can be slow for videos) continues via the global
     // progress banner while the user keeps browsing.
     ref.read(postUploadQueueProvider.notifier).enqueue(
           PostDraft(
@@ -1157,7 +1156,7 @@ class _MediaThumb extends StatelessWidget {
     );
   }
 
-  /// Placeholder tile for a picked video — dark background with play badge
+  /// Placeholder tile for a picked video - dark background with play badge
   /// overlay. Prefers the user-chosen cover image; otherwise falls back to the
   /// raw video file's first frame (best-effort).
   Widget _videoThumb(bool isLocalFile) {

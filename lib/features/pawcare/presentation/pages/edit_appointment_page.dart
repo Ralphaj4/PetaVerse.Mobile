@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,7 +15,7 @@ import '../../domain/entities/appointment.dart';
 import '../providers/pawcare_providers.dart';
 import '../widgets/health_form_fields.dart';
 
-/// Edit an existing appointment — same fields as [AddAppointmentPage],
+/// Edit an existing appointment - same fields as [AddAppointmentPage],
 /// pre-filled from the existing record. Hits PUT on success.
 class EditAppointmentPage extends ConsumerStatefulWidget {
   const EditAppointmentPage({

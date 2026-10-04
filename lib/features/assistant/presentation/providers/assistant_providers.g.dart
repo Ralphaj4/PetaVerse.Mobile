@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+﻿// GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'assistant_providers.dart';
 
@@ -250,7 +250,7 @@ abstract class _$ActiveChatSessionId extends $Notifier<int?> {
   }
 }
 
-/// The user's chat sessions for the history screen — newest-updated first,
+/// The user's chat sessions for the history screen - newest-updated first,
 /// archived sessions filtered out (the backend soft-deletes, we hide them).
 ///
 /// Backed by `GET /ai/chat/sessions` (endpoint 2). [archive] calls
@@ -260,7 +260,7 @@ abstract class _$ActiveChatSessionId extends $Notifier<int?> {
 @ProviderFor(ChatHistory)
 final chatHistoryProvider = ChatHistoryProvider._();
 
-/// The user's chat sessions for the history screen — newest-updated first,
+/// The user's chat sessions for the history screen - newest-updated first,
 /// archived sessions filtered out (the backend soft-deletes, we hide them).
 ///
 /// Backed by `GET /ai/chat/sessions` (endpoint 2). [archive] calls
@@ -268,7 +268,7 @@ final chatHistoryProvider = ChatHistoryProvider._();
 /// row so the list updates instantly.
 final class ChatHistoryProvider
     extends $AsyncNotifierProvider<ChatHistory, List<ChatSessionSummary>> {
-  /// The user's chat sessions for the history screen — newest-updated first,
+  /// The user's chat sessions for the history screen - newest-updated first,
   /// archived sessions filtered out (the backend soft-deletes, we hide them).
   ///
   /// Backed by `GET /ai/chat/sessions` (endpoint 2). [archive] calls
@@ -295,7 +295,7 @@ final class ChatHistoryProvider
 
 String _$chatHistoryHash() => r'aa2c2f0c2cc1c5659effcbf255c645485dd451c2';
 
-/// The user's chat sessions for the history screen — newest-updated first,
+/// The user's chat sessions for the history screen - newest-updated first,
 /// archived sessions filtered out (the backend soft-deletes, we hide them).
 ///
 /// Backed by `GET /ai/chat/sessions` (endpoint 2). [archive] calls

@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -214,7 +214,7 @@ class _AddMedicationPageState extends ConsumerState<AddMedicationPage> {
   }
 }
 
-/// The medication lookup dropdown — the same [AppDropdownField] used for
+/// The medication lookup dropdown - the same [AppDropdownField] used for
 /// species / breed / coat color, with loading / error fallbacks.
 class _MedicationDropdown extends StatelessWidget {
   const _MedicationDropdown({

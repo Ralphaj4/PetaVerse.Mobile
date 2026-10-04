@@ -1,4 +1,4 @@
-import '../../../../core/errors/result.dart';
+﻿import '../../../../core/errors/result.dart';
 import '../entities/home_summary.dart';
 
 /// Contract for the aggregated home dashboard. The data layer maps the DTO onto
@@ -11,7 +11,7 @@ abstract interface class HomeRepository {
   Future<Result<HomeSummary>> getHomeSummary({int? petId});
 
   /// The last cached home summary for [petId], or null when nothing is cached.
-  /// Read-only, no network — used to paint the dashboard instantly before the
+  /// Read-only, no network - used to paint the dashboard instantly before the
   /// live fetch resolves.
   Future<HomeSummary?> getCachedHomeSummary({int? petId});
 }

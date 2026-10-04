@@ -1,4 +1,4 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -71,7 +71,7 @@ class _FeedingForm extends ConsumerStatefulWidget {
   ConsumerState<_FeedingForm> createState() => _FeedingFormState();
 }
 
-/// A meal being edited — a mutable draft of a [FeedingTime].
+/// A meal being edited - a mutable draft of a [FeedingTime].
 class _MealDraft {
   _MealDraft({
     required this.hour,
@@ -309,7 +309,7 @@ class _FeedingFormState extends ConsumerState<_FeedingForm> {
 }
 
 /// A single meal editor card: a time picker field, an optional amount field, and
-/// a unit picker — all in the app's field language (no raw dropdowns).
+/// a unit picker - all in the app's field language (no raw dropdowns).
 class _MealEditor extends StatefulWidget {
   const _MealEditor({
     required this.meal,

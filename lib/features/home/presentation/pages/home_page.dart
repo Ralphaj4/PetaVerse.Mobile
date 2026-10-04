@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -83,7 +83,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     // while it's in flight or errored (the sheet carries the error state).
     final healthScore = summary?.healthScore ?? 0;
     final healthStatusLabel = summary == null
-        ? '—'
+        ? ' - '
         : healthBandLabel(l10n, summary.healthBand);
     final nextVisit = summary?.nextVisit;
     final nextVisitLabel = nextVisit == null
@@ -184,7 +184,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 }
 
-/// Section header for Upcoming — shows "See all" only when there are more than
+/// Section header for Upcoming - shows "See all" only when there are more than
 /// 3 reminders. Prefers the server timeline; falls back to the cached count.
 class _UpcomingSectionHeader extends ConsumerWidget {
   const _UpcomingSectionHeader({required this.summary});
@@ -288,7 +288,7 @@ class _UpcomingEmpty extends StatelessWidget {
   }
 }
 
-/// The four stat cards — Health, Activity, Vaccines, Weight — driven by the
+/// The four stat cards - Health, Activity, Vaccines, Weight - driven by the
 /// home summary. Values fall back to a neutral dash while the summary loads.
 class _StatsRow extends StatelessWidget {
   const _StatsRow({required this.l10n, required this.summary});

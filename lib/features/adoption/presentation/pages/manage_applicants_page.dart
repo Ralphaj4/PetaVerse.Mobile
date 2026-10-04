@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +27,7 @@ import 'adoption_rehome_success_page.dart';
 ///
 /// Lists everyone who has applied to adopt the pet and drives the owner half of
 /// the transfer handshake per request: Approve / Reject a pending applicant,
-/// then — once the adopter has accepted ("I'll take it") — the gated
+/// then - once the adopter has accepted ("I'll take it") - the gated
 /// "Complete transfer" that irreversibly hands the pet over.
 class ManageApplicantsPage extends ConsumerStatefulWidget {
   const ManageApplicantsPage({
@@ -53,7 +53,7 @@ class _ManageApplicantsPageState extends ConsumerState<ManageApplicantsPage> {
   int? _busyRequestId;
 
   /// Kicks off a background refresh of the board, this listing, its applicant
-  /// list, and the lister's own listings tab. Fire-and-forget — callers don't
+  /// list, and the lister's own listings tab. Fire-and-forget - callers don't
   /// wait on it.
   void _refreshBoard() {
     unawaited(ref.read(adoptionListingsProvider.notifier).refresh());
@@ -148,7 +148,7 @@ class _ManageApplicantsPageState extends ConsumerState<ManageApplicantsPage> {
 
     result.when(
       success: (transferredPet) {
-        // For a rehome, the pet has left this user's account — drop it from the
+        // For a rehome, the pet has left this user's account - drop it from the
         // gate optimistically and reconcile. A shelter listing has no backing
         // pet (id null), so there's nothing local to remove.
         final transferredId = transferredPet.id;
@@ -218,7 +218,7 @@ class _ManageApplicantsPageState extends ConsumerState<ManageApplicantsPage> {
             }
             // Only one applicant can be in the transfer track at a time. Once
             // someone is approved (or the transfer completed), the other pending
-            // applicants can't be approved — the lister must reject the current
+            // applicants can't be approved - the lister must reject the current
             // pick first (which reopens the listing) before choosing another.
             final hasActivePick = requests.any(
               (r) =>

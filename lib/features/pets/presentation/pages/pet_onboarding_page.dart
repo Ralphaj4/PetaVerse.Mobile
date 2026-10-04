@@ -1,4 +1,4 @@
-import 'dart:async';
+﻿import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -230,7 +230,7 @@ class _AddFirstPetState extends ConsumerState<_AddFirstPet> {
 
                   // ── adopt escape hatch ───────────────────────────────
                   // A pet-less first-timer's most common intent: get a pet by
-                  // adopting one — so it leads over the co-own section.
+                  // adopting one - so it leads over the co-own section.
                   _AdoptPill(
                     onTap: () => context.push(AppRoutes.adoptionBoard),
                   ),

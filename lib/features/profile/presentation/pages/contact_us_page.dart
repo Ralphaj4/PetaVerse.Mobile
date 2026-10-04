@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -129,7 +129,7 @@ class _Body extends StatelessWidget {
           onTap: () => _openEmail(context, l10n.reportProblemEmailSubject),
         ),
 
-        // Text Us (WhatsApp) card — only when a support phone is configured.
+        // Text Us (WhatsApp) card - only when a support phone is configured.
         if (supportPhone.trim().isNotEmpty) ...[
           const SizedBox(height: AppSpacing.md),
           _EmailCard(

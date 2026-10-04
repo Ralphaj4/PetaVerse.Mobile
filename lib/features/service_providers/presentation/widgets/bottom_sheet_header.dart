@@ -9,7 +9,7 @@ import '../../domain/entities/provider_search.dart';
 import 'provider_sort_label.dart';
 
 /// Pinned header of the providers bottom sheet: a grab handle, the result
-/// count, and the current sort — the part that stays visible while the sheet
+/// count, and the current sort - the part that stays visible while the sheet
 /// is collapsed. Tapping the sort chip opens the sort menu.
 class BottomSheetHeader extends StatelessWidget {
   const BottomSheetHeader({

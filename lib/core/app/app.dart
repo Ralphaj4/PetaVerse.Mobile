@@ -16,7 +16,7 @@ class PetaVerseApp extends ConsumerWidget {
     final router = ref.watch(appRouterProvider);
     final culture = ref.watch(cultureProvider);
     return PopScope(
-      // Never let the OS close the app via back — if the router has nothing
+      // Never let the OS close the app via back - if the router has nothing
       // left to pop (e.g. the app was cold-launched from a notification deep
       // link), go home instead of exiting.
       canPop: false,

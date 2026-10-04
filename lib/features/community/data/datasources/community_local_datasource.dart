@@ -1,10 +1,10 @@
-import '../../../../core/storage/hive_service.dart';
+﻿import '../../../../core/storage/hive_service.dart';
 import '../dtos/community_dtos.dart';
 
 /// Offline cache for PawHub, in the `community` Hive box.
 ///
-/// We cache only the read-mostly surfaces that matter offline — the **first
-/// page** of the following feed and the notifications list — as raw DTO JSON.
+/// We cache only the read-mostly surfaces that matter offline - the **first
+/// page** of the following feed and the notifications list - as raw DTO JSON.
 /// Deeper pages, discover, search and interactions are always live. The box is
 /// cleared on logout so it only holds the signed-in user's data.
 class CommunityLocalDataSource {
