@@ -222,7 +222,7 @@ class _WalkTaskHandler extends TaskHandler {
   }
 
   @override
-  Future<void> onDestroy(DateTime timestamp) async {
+  Future<void> onDestroy(DateTime timestamp, bool isTimeout) async {
     await _locationSub?.cancel();
     _locationSub = null;
   }
