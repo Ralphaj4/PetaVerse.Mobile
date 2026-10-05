@@ -12,6 +12,7 @@ import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
+import '../../../../shared/widgets/captcha_challenge.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/auth_layout.dart';
 import '../widgets/auth_submit_button.dart';
@@ -31,11 +32,20 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
   final GlobalKey<FormBuilderState> _phoneKey = GlobalKey<FormBuilderState>();
   String _completePhone = '';
 
-  Future<void> _sendCode() async {
+  Future<void> _sendCode({bool captchaAcknowledged = false}) async {
     if (!_phoneKey.currentState!.saveAndValidate()) return;
     final notifier = ref.read(authProvider.notifier);
-    final result = await notifier.forgotPassword(phone: _completePhone);
+    final result = await notifier.forgotPassword(
+      phone: _completePhone,
+      captchaAcknowledged: captchaAcknowledged,
+    );
     if (!mounted) return;
+    if (result.captchaRequired) {
+      final passed = await showCaptchaChallenge(context);
+      if (!mounted) return;
+      if (passed) await _sendCode(captchaAcknowledged: true);
+      return;
+    }
     if (result.ok) {
       if (result.isOtp) {
         unawaited(context.push(

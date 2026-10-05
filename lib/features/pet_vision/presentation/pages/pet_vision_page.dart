@@ -10,6 +10,7 @@ import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../../../core/app/first_open_service.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
@@ -22,6 +23,7 @@ import '../../../../features/pets/domain/entities/pet.dart';
 import '../../../../features/pets/domain/entities/pet_ref.dart';
 import '../../../../features/pets/presentation/providers/pet_detail_provider.dart';
 import '../../../../features/pets/presentation/providers/pets_provider.dart';
+import '../../../../shared/widgets/pet_vision_disclaimer_dialog.dart';
 import '../providers/vision_profile_provider.dart';
 import '../../domain/entities/vision_profile.dart';
 
@@ -48,11 +50,20 @@ class _PetVisionPageState extends ConsumerState<PetVisionPage>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    // Wait for the route transition to finish before touching the camera,
-    // so the animation isn't competing with camera initialization.
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Always register the animation listener first so _initCamera() fires
+      // after the route transition regardless of whether the disclaimer shows.
       ModalRoute.of(context)?.animation?.addStatusListener(_onRouteStatus);
+      _maybeShowDisclaimer();
     });
+  }
+
+  Future<void> _maybeShowDisclaimer() async {
+    if (!mounted) return;
+    final already = await FirstOpenService.hasSeenPetVisionDisclaimer();
+    if (already || !mounted) return;
+    await showPetVisionDisclaimerDialog(context);
+    await FirstOpenService.markPetVisionDisclaimerSeen();
   }
 
   void _onRouteStatus(AnimationStatus status) {

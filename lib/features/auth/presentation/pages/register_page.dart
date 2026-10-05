@@ -14,6 +14,7 @@ import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../shared/widgets/captcha_challenge.dart';
 import '../../../../shared/widgets/location_field.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/auth_layout.dart';
@@ -38,7 +39,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   LatLng? _location;
   bool _locationTouched = false;
 
-  Future<void> _submit() async {
+  Future<void> _submit({bool captchaAcknowledged = false}) async {
     setState(() => _locationTouched = true);
     final form = _formKey.currentState!;
     final formOk = form.saveAndValidate();
@@ -55,8 +56,15 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       latitude: location.latitude,
       longitude: location.longitude,
       locationName: (form.value['locationName'] as String).trim(),
+      captchaAcknowledged: captchaAcknowledged,
     );
     if (!mounted) return;
+    if (result.captchaRequired) {
+      final passed = await showCaptchaChallenge(context);
+      if (!mounted) return;
+      if (passed) await _submit(captchaAcknowledged: true);
+      return;
+    }
     if (result.ok) {
       await context.push(
         AppRoutes.otp,

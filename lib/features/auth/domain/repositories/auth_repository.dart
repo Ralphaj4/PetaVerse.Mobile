@@ -7,9 +7,10 @@ import '../entities/login_outcome.dart';
 /// All methods return [Result] - exceptions never cross this boundary.
 abstract interface class AuthRepository {
   /// Registers a new user. The backend sends an OTP to the mobile number;
-  /// no tokens are issued until the phone is verified. Returns the dev OTP
-  /// echoed by the Development backend (null in production).
-  Future<Result<String?>> register({
+  /// no tokens are issued until the phone is verified.
+  /// Returns [captchaRequired: true] when the backend asks for CAPTCHA first.
+  /// On success, [devOtp] carries the OTP echoed by the Development backend.
+  Future<Result<({bool captchaRequired, String? devOtp})>> register({
     required String firstName,
     required String lastName,
     required String mobileNumber,
@@ -18,11 +19,15 @@ abstract interface class AuthRepository {
     required double longitude,
     required String locationName,
     String? email,
+    bool captchaAcknowledged = false,
   });
 
   /// Requests a fresh OTP for an existing, not-yet-verified account.
-  /// Returns the dev OTP (null in production).
-  Future<Result<String?>> resendOtp({required String mobileNumber});
+  /// Returns [captchaRequired: true] when the backend asks for CAPTCHA first.
+  Future<Result<({bool captchaRequired, String? devOtp})>> resendOtp({
+    required String mobileNumber,
+    bool captchaAcknowledged = false,
+  });
 
   /// Confirms the registration OTP and returns an authenticated session.
   Future<Result<AuthSession>> verifyPhone({
@@ -42,11 +47,13 @@ abstract interface class AuthRepository {
 
   /// Starts a password reset. When [requestOtp] is true the backend forces
   /// SMS OTP delivery; otherwise it picks email link vs. SMS automatically.
-  /// Returns isOtp (true = SMS sent, false = email link sent) and the dev OTP
-  /// echoed by the Development backend (null in production).
-  Future<Result<({bool isOtp, String? devOtp})>> forgotPassword({
+  /// Returns [captchaRequired: true] when the backend asks for CAPTCHA first.
+  /// On success, [isOtp] is true = SMS sent, false = email link sent.
+  Future<Result<({bool captchaRequired, bool isOtp, String? devOtp})>>
+      forgotPassword({
     required String mobileNumber,
     bool requestOtp = false,
+    bool captchaAcknowledged = false,
   });
 
   /// Completes a password reset with the OTP and a new password.

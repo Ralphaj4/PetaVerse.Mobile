@@ -21,6 +21,8 @@ class AuthRemoteDataSource {
     required double longitude,
     required String locationName,
     String? email,
+    String? deviceId,
+    bool captchaAcknowledged = false,
   }) async {
     final json = await _client.post<Map<String, dynamic>>(
       ApiEndpoints.register,
@@ -33,15 +35,25 @@ class AuthRemoteDataSource {
         'longitude': longitude,
         'locationName': locationName,
         if (email != null && email.isNotEmpty) 'email': email,
+        'deviceId': deviceId,
+        'captchaAcknowledged': captchaAcknowledged,
       },
     );
     return OtpDispatchDto.fromJson(json);
   }
 
-  Future<OtpDispatchDto> resendOtp(String mobileNumber) async {
+  Future<OtpDispatchDto> resendOtp(
+    String mobileNumber, {
+    String? deviceId,
+    bool captchaAcknowledged = false,
+  }) async {
     final json = await _client.post<Map<String, dynamic>>(
       ApiEndpoints.resendOtp,
-      data: {'mobileNumber': mobileNumber},
+      data: {
+        'mobileNumber': mobileNumber,
+        'deviceId': deviceId,
+        'captchaAcknowledged': captchaAcknowledged,
+      },
     );
     return OtpDispatchDto.fromJson(json);
   }
@@ -94,12 +106,16 @@ class AuthRemoteDataSource {
   Future<OtpDispatchDto> forgotPassword(
     String mobileNumber, {
     bool requestOtp = false,
+    String? deviceId,
+    bool captchaAcknowledged = false,
   }) async {
     final json = await _client.post<Map<String, dynamic>>(
       ApiEndpoints.forgotPassword,
       data: {
         'mobileNumber': mobileNumber,
         if (requestOtp) 'requestOtp': true,
+        'deviceId': deviceId,
+        'captchaAcknowledged': captchaAcknowledged,
       },
     );
     return OtpDispatchDto.fromJson(json);

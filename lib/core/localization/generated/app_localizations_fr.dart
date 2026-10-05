@@ -957,6 +957,19 @@ class AppLocalizationsFr extends AppLocalizations {
       'Aucun compte n\'est enregistré avec ce numéro de mobile.';
 
   @override
+  String get captchaTitle => 'Vérification de sécurité';
+
+  @override
+  String get captchaSubtitle =>
+      'Veuillez résoudre le problème mathématique pour continuer.';
+
+  @override
+  String get captchaWrong => 'Réponse incorrecte, veuillez réessayer.';
+
+  @override
+  String get captchaCancel => 'Annuler';
+
+  @override
   String get petOnboardingTitleTop => 'Ajoutez votre';
 
   @override
@@ -1432,7 +1445,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String healthScoreBasedOnSignals(int count) {
-    return 'Basé sur $count des 4 signaux';
+    return 'Basé sur $count des 5 signaux';
   }
 
   @override
@@ -1449,6 +1462,26 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get healthScoreBandNoData => 'Aucune donnée';
+
+  @override
+  String get healthScoreComponentGrooming => 'Planning toilettage';
+
+  @override
+  String get healthScoreGroomingNoSchedule => 'Aucun planning de toilettage';
+
+  @override
+  String get healthScoreGroomingOnSchedule => 'Toilettage à jour';
+
+  @override
+  String healthScoreGroomingOverdue(int weeks) {
+    String _temp0 = intl.Intl.pluralLogic(
+      weeks,
+      locale: localeName,
+      other: '$weeks semaines',
+      one: '1 semaine',
+    );
+    return 'Toilettage en retard de $_temp0';
+  }
 
   @override
   String get healthScoreEmptyGeneric =>
@@ -4509,4 +4542,28 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get batteryOptSheetNotNow => 'Pas maintenant';
+
+  @override
+  String get aiDisclaimerTitle => 'Assistant propulsé par l\'IA';
+
+  @override
+  String get aiDisclaimerBody =>
+      'PetaBot est propulsé par l\'intelligence artificielle et fournit des informations générales uniquement. Il ne remplace pas les conseils vétérinaires professionnels, le diagnostic ou le traitement. Consultez toujours un vétérinaire qualifié pour les problèmes de santé de votre animal. PetaVerse décline toute responsabilité pour les décisions prises sur la base des réponses de PetaBot.';
+
+  @override
+  String get aiDisclaimerConsent =>
+      'Je comprends que les réponses de PetaBot sont générées par l\'IA et ne remplacent pas les soins vétérinaires professionnels.';
+
+  @override
+  String get aiDisclaimerAction => 'Je comprends';
+
+  @override
+  String get petVisionDisclaimerTitle => 'Fonctionnalité expérimentale';
+
+  @override
+  String get petVisionDisclaimerBody =>
+      'Pet Vision simule la façon dont les animaux perçoivent les couleurs, d\'après des recherches scientifiques sur leur vision. Ce sont des approximations - la vision réelle de l\'animal peut différer. Cette fonctionnalité est fournie à des fins récréatives et éducatives uniquement.';
+
+  @override
+  String get petVisionDisclaimerAction => 'Compris';
 }

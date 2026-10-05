@@ -41,7 +41,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Result<String?>> register({
+  Future<Result<({bool captchaRequired, String? devOtp})>> register({
     required String firstName,
     required String lastName,
     required String mobileNumber,
@@ -50,21 +50,35 @@ class AuthRepositoryImpl implements AuthRepository {
     required double longitude,
     required String locationName,
     String? email,
-  }) =>
-      _guardOtp(() => _remote.register(
-            firstName: firstName,
-            lastName: lastName,
-            mobileNumber: mobileNumber,
-            password: password,
-            latitude: latitude,
-            longitude: longitude,
-            locationName: locationName,
-            email: email,
-          ));
+    bool captchaAcknowledged = false,
+  }) async {
+    final deviceId = await _secureStorage.getOrCreateDeviceId();
+    return _guardOtp(() => _remote.register(
+          firstName: firstName,
+          lastName: lastName,
+          mobileNumber: mobileNumber,
+          password: password,
+          latitude: latitude,
+          longitude: longitude,
+          locationName: locationName,
+          email: email,
+          deviceId: deviceId,
+          captchaAcknowledged: captchaAcknowledged,
+        ));
+  }
 
   @override
-  Future<Result<String?>> resendOtp({required String mobileNumber}) =>
-      _guardOtp(() => _remote.resendOtp(mobileNumber));
+  Future<Result<({bool captchaRequired, String? devOtp})>> resendOtp({
+    required String mobileNumber,
+    bool captchaAcknowledged = false,
+  }) async {
+    final deviceId = await _secureStorage.getOrCreateDeviceId();
+    return _guardOtp(() => _remote.resendOtp(
+          mobileNumber,
+          deviceId: deviceId,
+          captchaAcknowledged: captchaAcknowledged,
+        ));
+  }
 
   @override
   Future<Result<AuthSession>> verifyPhone({
@@ -115,13 +129,22 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Result<({bool isOtp, String? devOtp})>> forgotPassword({
+  Future<Result<({bool captchaRequired, bool isOtp, String? devOtp})>>
+      forgotPassword({
     required String mobileNumber,
     bool requestOtp = false,
-  }) =>
-      _guardForgotPassword(
-        () => _remote.forgotPassword(mobileNumber, requestOtp: requestOtp),
-      );
+    bool captchaAcknowledged = false,
+  }) async {
+    final deviceId = await _secureStorage.getOrCreateDeviceId();
+    return _guardForgotPassword(
+      () => _remote.forgotPassword(
+        mobileNumber,
+        requestOtp: requestOtp,
+        deviceId: deviceId,
+        captchaAcknowledged: captchaAcknowledged,
+      ),
+    );
+  }
 
   @override
   Future<Result<void>> resetPassword({
@@ -254,27 +277,39 @@ class AuthRepositoryImpl implements AuthRepository {
 
   // ── Helpers ──────────────────────────────────────────────────────────
 
-  /// Runs an OTP-dispatch action (register / resend),
-  /// returning the dev OTP echoed by the Development backend (null in prod).
-  Future<Result<String?>> _guardOtp(
+  /// Runs an OTP-dispatch action (register / resend). Returns
+  /// [captchaRequired: true] when the backend asks for CAPTCHA without sending
+  /// an SMS. On success [devOtp] carries the Development-env echo (null in prod).
+  Future<Result<({bool captchaRequired, String? devOtp})>> _guardOtp(
     Future<OtpDispatchDto> Function() action,
   ) async {
     try {
       final dto = await action();
-      return Result.success(dto.devOtp);
+      if (dto.showCaptcha) {
+        return const Result.success((captchaRequired: true, devOtp: null));
+      }
+      return Result.success((captchaRequired: false, devOtp: dto.devOtp));
     } on AppException catch (e) {
       return Result.failure(_mapFailure(e));
     }
   }
 
-  /// Runs the forgot-password action, returning both [isOtp] and [devOtp]
-  /// so the caller can branch between the email-sent screen and OTP entry.
-  Future<Result<({bool isOtp, String? devOtp})>> _guardForgotPassword(
+  /// Runs the forgot-password action. Returns [captchaRequired: true] when the
+  /// backend asks for CAPTCHA. On success returns [isOtp] and [devOtp].
+  Future<Result<({bool captchaRequired, bool isOtp, String? devOtp})>>
+      _guardForgotPassword(
     Future<OtpDispatchDto> Function() action,
   ) async {
     try {
       final dto = await action();
-      return Result.success((isOtp: dto.isOtp, devOtp: dto.devOtp));
+      if (dto.showCaptcha) {
+        return const Result.success(
+          (captchaRequired: true, isOtp: false, devOtp: null),
+        );
+      }
+      return Result.success(
+        (captchaRequired: false, isOtp: dto.isOtp, devOtp: dto.devOtp),
+      );
     } on AppException catch (e) {
       return Result.failure(_mapFailure(e));
     }

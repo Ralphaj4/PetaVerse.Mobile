@@ -390,6 +390,10 @@
   "errorUnknown": "An unexpected error occurred. Please try again.",
   "errorNotFound": "We couldn't find an account with that information.",
   "errorPhoneNotRegistered": "No account is registered with this mobile number.",
+  "captchaTitle": "Security Check",
+  "captchaSubtitle": "Please solve the math question to continue.",
+  "captchaWrong": "Incorrect answer, please try again.",
+  "captchaCancel": "Cancel",
   "petOnboardingTitleTop": "Add your",
   "petOnboardingTitleAccent": "first pet",
   "petOnboardingSubtitle": "Tell us about your companion so we can tailor health, reminders, and care to them.",
@@ -583,7 +587,7 @@
   "healthScoreOutOf": "out of 100",
   "healthScoreViewBreakdown": "View breakdown",
   "healthScoreConfidence": "Confidence",
-  "healthScoreBasedOnSignals": "Based on {count} of 4 signals",
+  "healthScoreBasedOnSignals": "Based on {count} of 5 signals",
   "@healthScoreBasedOnSignals": {
     "placeholders": { "count": { "type": "int" } }
   },
@@ -592,6 +596,13 @@
   "healthScoreBandFair": "Fair",
   "healthScoreBandNeedsAttention": "Needs Attention",
   "healthScoreBandNoData": "No data",
+  "healthScoreComponentGrooming": "Grooming schedule",
+  "healthScoreGroomingNoSchedule": "No grooming schedule set",
+  "healthScoreGroomingOnSchedule": "Grooming on schedule",
+  "healthScoreGroomingOverdue": "Grooming overdue by {weeks, plural, =1{1 week} other{{weeks} weeks}}",
+  "@healthScoreGroomingOverdue": {
+    "placeholders": { "weeks": { "type": "int" } }
+  },
   "healthScoreEmptyGeneric": "Start logging vaccinations, weight, and meds to see this pet's health score.",
   "healthScoreEmptyNamed": "Start logging vaccinations, weight, and meds to see {name}'s health score.",
   "@healthScoreEmptyNamed": {
@@ -2029,5 +2040,14 @@
   "batteryOptSheetTitle": "Get reliable reminders",
   "batteryOptSheetBody": "To make sure feeding and medication reminders reach you even when the app is closed, allow PetaVerse to run in the background.",
   "batteryOptSheetAllow": "Allow",
-  "batteryOptSheetNotNow": "Not now"
+  "batteryOptSheetNotNow": "Not now",
+
+  "aiDisclaimerTitle": "AI-Powered Assistant",
+  "aiDisclaimerBody": "PetaBot is powered by artificial intelligence and provides general information only. It is not a substitute for professional veterinary advice, diagnosis, or treatment. Always consult a qualified veterinarian for your pet's health concerns. PetaVerse is not responsible for decisions made based on PetaBot's responses.",
+  "aiDisclaimerConsent": "I understand that PetaBot's responses are AI-generated and not a replacement for professional veterinary care.",
+  "aiDisclaimerAction": "I Understand",
+
+  "petVisionDisclaimerTitle": "Experimental Feature",
+  "petVisionDisclaimerBody": "Pet Vision simulates how animals may perceive color based on scientific research into their vision. These are approximations - actual animal vision may differ. This feature is provided for fun and educational purposes only.",
+  "petVisionDisclaimerAction": "Got It"
 }

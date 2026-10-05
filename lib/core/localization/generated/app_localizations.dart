@@ -1762,6 +1762,30 @@ abstract class AppLocalizations {
   /// **'No account is registered with this mobile number.'**
   String get errorPhoneNotRegistered;
 
+  /// No description provided for @captchaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Security Check'**
+  String get captchaTitle;
+
+  /// No description provided for @captchaSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please solve the math question to continue.'**
+  String get captchaSubtitle;
+
+  /// No description provided for @captchaWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect answer, please try again.'**
+  String get captchaWrong;
+
+  /// No description provided for @captchaCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get captchaCancel;
+
   /// No description provided for @petOnboardingTitleTop.
   ///
   /// In en, this message translates to:
@@ -2611,7 +2635,7 @@ abstract class AppLocalizations {
   /// No description provided for @healthScoreBasedOnSignals.
   ///
   /// In en, this message translates to:
-  /// **'Based on {count} of 4 signals'**
+  /// **'Based on {count} of 5 signals'**
   String healthScoreBasedOnSignals(int count);
 
   /// No description provided for @healthScoreBandExcellent.
@@ -2643,6 +2667,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No data'**
   String get healthScoreBandNoData;
+
+  /// No description provided for @healthScoreComponentGrooming.
+  ///
+  /// In en, this message translates to:
+  /// **'Grooming schedule'**
+  String get healthScoreComponentGrooming;
+
+  /// No description provided for @healthScoreGroomingNoSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'No grooming schedule set'**
+  String get healthScoreGroomingNoSchedule;
+
+  /// No description provided for @healthScoreGroomingOnSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Grooming on schedule'**
+  String get healthScoreGroomingOnSchedule;
+
+  /// No description provided for @healthScoreGroomingOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Grooming overdue by {weeks, plural, =1{1 week} other{{weeks} weeks}}'**
+  String healthScoreGroomingOverdue(int weeks);
 
   /// No description provided for @healthScoreEmptyGeneric.
   ///
@@ -7833,6 +7881,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not now'**
   String get batteryOptSheetNotNow;
+
+  /// No description provided for @aiDisclaimerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI-Powered Assistant'**
+  String get aiDisclaimerTitle;
+
+  /// No description provided for @aiDisclaimerBody.
+  ///
+  /// In en, this message translates to:
+  /// **'PetaBot is powered by artificial intelligence and provides general information only. It is not a substitute for professional veterinary advice, diagnosis, or treatment. Always consult a qualified veterinarian for your pet\'s health concerns. PetaVerse is not responsible for decisions made based on PetaBot\'s responses.'**
+  String get aiDisclaimerBody;
+
+  /// No description provided for @aiDisclaimerConsent.
+  ///
+  /// In en, this message translates to:
+  /// **'I understand that PetaBot\'s responses are AI-generated and not a replacement for professional veterinary care.'**
+  String get aiDisclaimerConsent;
+
+  /// No description provided for @aiDisclaimerAction.
+  ///
+  /// In en, this message translates to:
+  /// **'I Understand'**
+  String get aiDisclaimerAction;
+
+  /// No description provided for @petVisionDisclaimerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Experimental Feature'**
+  String get petVisionDisclaimerTitle;
+
+  /// No description provided for @petVisionDisclaimerBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Pet Vision simulates how animals may perceive color based on scientific research into their vision. These are approximations - actual animal vision may differ. This feature is provided for fun and educational purposes only.'**
+  String get petVisionDisclaimerBody;
+
+  /// No description provided for @petVisionDisclaimerAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Got It'**
+  String get petVisionDisclaimerAction;
 }
 
 class _AppLocalizationsDelegate

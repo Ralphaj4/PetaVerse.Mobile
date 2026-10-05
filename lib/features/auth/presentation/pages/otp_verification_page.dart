@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/errors/failure_l10n.dart';
+import '../../../../shared/widgets/captcha_challenge.dart';
 import 'set_new_password_page.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -21,7 +22,7 @@ import '../widgets/auth_submit_button.dart';
 import '../widgets/otp_input.dart';
 
 const int _otpLength = 4;
-const int _resendCooldownSeconds = 30;
+const int _resendCooldownSeconds = 60;
 
 /// Arguments for the OTP route: the phone to verify and, in Development,
 /// the OTP echoed back by the backend so testers don't need a real SMS.
@@ -128,10 +129,19 @@ class _OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
     }
   }
 
-  Future<void> _resend() async {
+  Future<void> _resend({bool captchaAcknowledged = false}) async {
     final notifier = ref.read(authProvider.notifier);
-    final result = await notifier.resendOtp(phone: widget.phone);
+    final result = await notifier.resendOtp(
+      phone: widget.phone,
+      captchaAcknowledged: captchaAcknowledged,
+    );
     if (!mounted) return;
+    if (result.captchaRequired) {
+      final passed = await showCaptchaChallenge(context);
+      if (!mounted) return;
+      if (passed) await _resend(captchaAcknowledged: true);
+      return;
+    }
     if (result.ok) {
       setState(() => _devOtp = result.devOtp);
       _startCooldown();

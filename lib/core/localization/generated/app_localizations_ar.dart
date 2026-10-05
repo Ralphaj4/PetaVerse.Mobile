@@ -946,6 +946,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get errorPhoneNotRegistered => 'لا يوجد حساب مسجّل بهذا الرقم.';
 
   @override
+  String get captchaTitle => 'التحقق الأمني';
+
+  @override
+  String get captchaSubtitle => 'يرجى حل السؤال الرياضي للمتابعة.';
+
+  @override
+  String get captchaWrong => 'إجابة خاطئة، يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get captchaCancel => 'إلغاء';
+
+  @override
   String get petOnboardingTitleTop => 'أضف';
 
   @override
@@ -1422,7 +1434,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String healthScoreBasedOnSignals(int count) {
-    return 'بناءً على $count من ٤ مؤشرات';
+    return 'بناءً على $count من ٥ مؤشرات';
   }
 
   @override
@@ -1439,6 +1451,26 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get healthScoreBandNoData => 'لا توجد بيانات';
+
+  @override
+  String get healthScoreComponentGrooming => 'جدول العناية بالفرو';
+
+  @override
+  String get healthScoreGroomingNoSchedule => 'لا يوجد جدول عناية بالفرو';
+
+  @override
+  String get healthScoreGroomingOnSchedule => 'العناية بالفرو حسب الجدول';
+
+  @override
+  String healthScoreGroomingOverdue(int weeks) {
+    String _temp0 = intl.Intl.pluralLogic(
+      weeks,
+      locale: localeName,
+      other: '$weeks أسابيع',
+      one: 'أسبوع واحد',
+    );
+    return 'العناية بالفرو متأخرة عن $_temp0';
+  }
 
   @override
   String get healthScoreEmptyGeneric =>
@@ -4477,4 +4509,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get batteryOptSheetNotNow => 'ليس الآن';
+
+  @override
+  String get aiDisclaimerTitle => 'المساعد الذكي';
+
+  @override
+  String get aiDisclaimerBody =>
+      'يعمل PetaBot بالذكاء الاصطناعي ويقدم معلومات عامة فقط. لا يُعدّ بديلاً عن الاستشارة البيطرية المتخصصة أو التشخيص أو العلاج. استشر دائماً طبيباً بيطرياً مؤهلاً لمخاوف صحة حيوانك الأليف. PetaVerse غير مسؤولة عن القرارات المتخذة بناءً على ردود PetaBot.';
+
+  @override
+  String get aiDisclaimerConsent =>
+      'أفهم أن ردود PetaBot مولّدة بالذكاء الاصطناعي وليست بديلاً عن الرعاية البيطرية المتخصصة.';
+
+  @override
+  String get aiDisclaimerAction => 'فهمت';
+
+  @override
+  String get petVisionDisclaimerTitle => 'ميزة تجريبية';
+
+  @override
+  String get petVisionDisclaimerBody =>
+      'تحاكي Pet Vision طريقة إدراك الحيوانات للألوان استناداً إلى أبحاث علمية في رؤيتها. هذه تقريبات فقط - قد تختلف الرؤية الفعلية للحيوان. تُقدَّم هذه الميزة لأغراض ترفيهية وتعليمية فقط.';
+
+  @override
+  String get petVisionDisclaimerAction => 'حسناً';
 }

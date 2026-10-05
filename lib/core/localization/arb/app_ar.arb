@@ -390,6 +390,10 @@
   "errorUnknown": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.",
   "errorNotFound": "لم نتمكن من العثور على حساب بهذه المعلومات.",
   "errorPhoneNotRegistered": "لا يوجد حساب مسجّل بهذا الرقم.",
+  "captchaTitle": "التحقق الأمني",
+  "captchaSubtitle": "يرجى حل السؤال الرياضي للمتابعة.",
+  "captchaWrong": "إجابة خاطئة، يرجى المحاولة مرة أخرى.",
+  "captchaCancel": "إلغاء",
   "petOnboardingTitleTop": "أضف",
   "petOnboardingTitleAccent": "حيوانك الأول",
   "petOnboardingSubtitle": "أخبرنا عن رفيقك لنخصّص له الرعاية الصحية والتذكيرات والعناية.",
@@ -583,7 +587,7 @@
   "healthScoreOutOf": "من ١٠٠",
   "healthScoreViewBreakdown": "عرض التفاصيل",
   "healthScoreConfidence": "الموثوقية",
-  "healthScoreBasedOnSignals": "بناءً على {count} من ٤ مؤشرات",
+  "healthScoreBasedOnSignals": "بناءً على {count} من ٥ مؤشرات",
   "@healthScoreBasedOnSignals": {
     "placeholders": { "count": { "type": "int" } }
   },
@@ -592,6 +596,13 @@
   "healthScoreBandFair": "مقبول",
   "healthScoreBandNeedsAttention": "يحتاج إلى اهتمام",
   "healthScoreBandNoData": "لا توجد بيانات",
+  "healthScoreComponentGrooming": "جدول العناية بالفرو",
+  "healthScoreGroomingNoSchedule": "لا يوجد جدول عناية بالفرو",
+  "healthScoreGroomingOnSchedule": "العناية بالفرو حسب الجدول",
+  "healthScoreGroomingOverdue": "العناية بالفرو متأخرة عن {weeks, plural, =1{أسبوع واحد} other{{weeks} أسابيع}}",
+  "@healthScoreGroomingOverdue": {
+    "placeholders": { "weeks": { "type": "int" } }
+  },
   "healthScoreEmptyGeneric": "ابدأ بتسجيل التطعيمات والوزن والأدوية لعرض مؤشر صحة حيوانك الأليف.",
   "healthScoreEmptyNamed": "ابدأ بتسجيل التطعيمات والوزن والأدوية لعرض مؤشر صحة {name}.",
   "@healthScoreEmptyNamed": {
@@ -1869,5 +1880,14 @@
   "batteryOptSheetTitle": "احصل على تذكيرات موثوقة",
   "batteryOptSheetBody": "لضمان وصول تذكيرات التغذية والدواء إليك حتى عند إغلاق التطبيق، اسمح لـ PetaVerse بالعمل في الخلفية.",
   "batteryOptSheetAllow": "السماح",
-  "batteryOptSheetNotNow": "ليس الآن"
+  "batteryOptSheetNotNow": "ليس الآن",
+
+  "aiDisclaimerTitle": "المساعد الذكي",
+  "aiDisclaimerBody": "يعمل PetaBot بالذكاء الاصطناعي ويقدم معلومات عامة فقط. لا يُعدّ بديلاً عن الاستشارة البيطرية المتخصصة أو التشخيص أو العلاج. استشر دائماً طبيباً بيطرياً مؤهلاً لمخاوف صحة حيوانك الأليف. PetaVerse غير مسؤولة عن القرارات المتخذة بناءً على ردود PetaBot.",
+  "aiDisclaimerConsent": "أفهم أن ردود PetaBot مولّدة بالذكاء الاصطناعي وليست بديلاً عن الرعاية البيطرية المتخصصة.",
+  "aiDisclaimerAction": "فهمت",
+
+  "petVisionDisclaimerTitle": "ميزة تجريبية",
+  "petVisionDisclaimerBody": "تحاكي Pet Vision طريقة إدراك الحيوانات للألوان استناداً إلى أبحاث علمية في رؤيتها. هذه تقريبات فقط - قد تختلف الرؤية الفعلية للحيوان. تُقدَّم هذه الميزة لأغراض ترفيهية وتعليمية فقط.",
+  "petVisionDisclaimerAction": "حسناً"
 }

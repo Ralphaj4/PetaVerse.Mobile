@@ -6,11 +6,13 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/analytics/analytics_service.dart';
+import '../../../../core/app/first_open_service.dart';
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../shared/widgets/ai_disclaimer_dialog.dart';
 import '../../../community/presentation/models/pawhub_models.dart';
 import '../../../community/presentation/widgets/pawhub_common.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
@@ -81,6 +83,20 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
       _petId = widget.petId ?? ref.read(petsProvider).currentPetId;
     }
     ref.read(analyticsServiceProvider).logEvent('ai_chat_started');
+    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeShowDisclaimer());
+  }
+
+  Future<void> _maybeShowDisclaimer() async {
+    if (!mounted) return;
+    final already = await FirstOpenService.hasAcceptedAiDisclaimer();
+    if (already || !mounted) return;
+    final accepted = await showAiDisclaimerDialog(context);
+    if (accepted) {
+      await FirstOpenService.markAiDisclaimerAccepted();
+    } else if (mounted) {
+      // User dismissed without consenting - go back.
+      context.popOrHome();
+    }
   }
 
   @override

@@ -390,6 +390,10 @@
   "errorUnknown": "Une erreur inattendue est survenue. Veuillez réessayer.",
   "errorNotFound": "Nous n'avons trouvé aucun compte avec ces informations.",
   "errorPhoneNotRegistered": "Aucun compte n'est enregistré avec ce numéro de mobile.",
+  "captchaTitle": "Vérification de sécurité",
+  "captchaSubtitle": "Veuillez résoudre le problème mathématique pour continuer.",
+  "captchaWrong": "Réponse incorrecte, veuillez réessayer.",
+  "captchaCancel": "Annuler",
   "petOnboardingTitleTop": "Ajoutez votre",
   "petOnboardingTitleAccent": "premier animal",
   "petOnboardingSubtitle": "Parlez-nous de votre compagnon afin d'adapter sa santé, ses rappels et ses soins.",
@@ -583,7 +587,7 @@
   "healthScoreOutOf": "sur 100",
   "healthScoreViewBreakdown": "Voir le détail",
   "healthScoreConfidence": "Fiabilité",
-  "healthScoreBasedOnSignals": "Basé sur {count} des 4 signaux",
+  "healthScoreBasedOnSignals": "Basé sur {count} des 5 signaux",
   "@healthScoreBasedOnSignals": {
     "placeholders": { "count": { "type": "int" } }
   },
@@ -592,6 +596,13 @@
   "healthScoreBandFair": "Moyen",
   "healthScoreBandNeedsAttention": "À surveiller",
   "healthScoreBandNoData": "Aucune donnée",
+  "healthScoreComponentGrooming": "Planning toilettage",
+  "healthScoreGroomingNoSchedule": "Aucun planning de toilettage",
+  "healthScoreGroomingOnSchedule": "Toilettage à jour",
+  "healthScoreGroomingOverdue": "Toilettage en retard de {weeks, plural, =1{1 semaine} other{{weeks} semaines}}",
+  "@healthScoreGroomingOverdue": {
+    "placeholders": { "weeks": { "type": "int" } }
+  },
   "healthScoreEmptyGeneric": "Commencez à enregistrer vaccinations, poids et médicaments pour voir le score de santé de cet animal.",
   "healthScoreEmptyNamed": "Commencez à enregistrer vaccinations, poids et médicaments pour voir le score de santé de {name}.",
   "@healthScoreEmptyNamed": {
@@ -1869,5 +1880,14 @@
   "batteryOptSheetTitle": "Des rappels fiables",
   "batteryOptSheetBody": "Pour que les rappels de repas et de médicaments vous parviennent même lorsque l'application est fermée, autorisez PetaVerse à s'exécuter en arrière-plan.",
   "batteryOptSheetAllow": "Autoriser",
-  "batteryOptSheetNotNow": "Pas maintenant"
+  "batteryOptSheetNotNow": "Pas maintenant",
+
+  "aiDisclaimerTitle": "Assistant propulsé par l'IA",
+  "aiDisclaimerBody": "PetaBot est propulsé par l'intelligence artificielle et fournit des informations générales uniquement. Il ne remplace pas les conseils vétérinaires professionnels, le diagnostic ou le traitement. Consultez toujours un vétérinaire qualifié pour les problèmes de santé de votre animal. PetaVerse décline toute responsabilité pour les décisions prises sur la base des réponses de PetaBot.",
+  "aiDisclaimerConsent": "Je comprends que les réponses de PetaBot sont générées par l'IA et ne remplacent pas les soins vétérinaires professionnels.",
+  "aiDisclaimerAction": "Je comprends",
+
+  "petVisionDisclaimerTitle": "Fonctionnalité expérimentale",
+  "petVisionDisclaimerBody": "Pet Vision simule la façon dont les animaux perçoivent les couleurs, d'après des recherches scientifiques sur leur vision. Ce sont des approximations - la vision réelle de l'animal peut différer. Cette fonctionnalité est fournie à des fins récréatives et éducatives uniquement.",
+  "petVisionDisclaimerAction": "Compris"
 }

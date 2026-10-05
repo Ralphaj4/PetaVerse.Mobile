@@ -35,9 +35,9 @@ class AuthNotifier extends _$AuthNotifier {
     return err is Failure ? err : null;
   }
 
-  /// Registers a user. Returns whether it succeeded and the dev OTP the
-  /// Development backend echoes back (null in production / on failure).
-  Future<({bool ok, String? devOtp})> register({
+  /// Registers a user. Returns success, whether CAPTCHA is required, and the
+  /// dev OTP echoed by the Development backend (null in production / on failure).
+  Future<({bool ok, bool captchaRequired, String? devOtp})> register({
     required String firstName,
     required String lastName,
     required String phone,
@@ -46,6 +46,7 @@ class AuthNotifier extends _$AuthNotifier {
     required double longitude,
     required String locationName,
     String? email,
+    bool captchaAcknowledged = false,
   }) =>
       _runOtp(
         () => ref.read(authRepositoryProvider).register(
@@ -57,33 +58,50 @@ class AuthNotifier extends _$AuthNotifier {
               longitude: longitude,
               locationName: locationName,
               email: email,
+              captchaAcknowledged: captchaAcknowledged,
             ),
       );
 
-  /// Requests a fresh OTP. Returns success + the dev OTP (null in prod).
-  Future<({bool ok, String? devOtp})> resendOtp({required String phone}) =>
+  /// Requests a fresh OTP. Returns success, whether CAPTCHA is required,
+  /// and the dev OTP (null in prod).
+  Future<({bool ok, bool captchaRequired, String? devOtp})> resendOtp({
+    required String phone,
+    bool captchaAcknowledged = false,
+  }) =>
       _runOtp(
-        () => ref.read(authRepositoryProvider).resendOtp(mobileNumber: phone),
+        () => ref.read(authRepositoryProvider).resendOtp(
+              mobileNumber: phone,
+              captchaAcknowledged: captchaAcknowledged,
+            ),
       );
 
-  /// Starts a password reset. Returns success, whether an SMS OTP was sent
-  /// (vs. an email link), and the dev OTP echoed by the Development backend.
-  Future<({bool ok, bool isOtp, String? devOtp})> forgotPassword({
+  /// Starts a password reset. Returns success, whether CAPTCHA is required,
+  /// whether an SMS OTP was sent (vs. an email link), and the dev OTP.
+  Future<({bool ok, bool captchaRequired, bool isOtp, String? devOtp})>
+      forgotPassword({
     required String phone,
     bool requestOtp = false,
+    bool captchaAcknowledged = false,
   }) async {
     state = const AsyncLoading();
-    final result = await ref
-        .read(authRepositoryProvider)
-        .forgotPassword(mobileNumber: phone, requestOtp: requestOtp);
+    final result = await ref.read(authRepositoryProvider).forgotPassword(
+          mobileNumber: phone,
+          requestOtp: requestOtp,
+          captchaAcknowledged: captchaAcknowledged,
+        );
     return result.when(
       success: (data) {
         state = const AsyncData(null);
-        return (ok: true, isOtp: data.isOtp, devOtp: data.devOtp);
+        return (
+          ok: !data.captchaRequired,
+          captchaRequired: data.captchaRequired,
+          isOtp: data.isOtp,
+          devOtp: data.devOtp,
+        );
       },
       failure: (f) {
         state = AsyncError(f, StackTrace.current);
-        return (ok: false, isOtp: false, devOtp: null);
+        return (ok: false, captchaRequired: false, isOtp: false, devOtp: null);
       },
     );
   }
@@ -165,21 +183,25 @@ class AuthNotifier extends _$AuthNotifier {
 
   // ── Helpers ──────────────────────────────────────────────────────────
 
-  /// Runs an OTP-dispatch call (register / resend / forgot-password),
-  /// reflecting the outcome in the AsyncValue and returning success + OTP.
-  Future<({bool ok, String? devOtp})> _runOtp(
-    Future<Result<String?>> Function() action,
+  /// Runs an OTP-dispatch call (register / resend), reflecting the outcome in
+  /// the AsyncValue and returning success, captchaRequired, and the dev OTP.
+  Future<({bool ok, bool captchaRequired, String? devOtp})> _runOtp(
+    Future<Result<({bool captchaRequired, String? devOtp})>> Function() action,
   ) async {
     state = const AsyncLoading();
     final result = await action();
     return result.when(
-      success: (devOtp) {
+      success: (data) {
         state = const AsyncData(null);
-        return (ok: true, devOtp: devOtp);
+        return (
+          ok: !data.captchaRequired,
+          captchaRequired: data.captchaRequired,
+          devOtp: data.devOtp,
+        );
       },
       failure: (f) {
         state = AsyncError(f, StackTrace.current);
-        return (ok: false, devOtp: null);
+        return (ok: false, captchaRequired: false, devOtp: null);
       },
     );
   }

@@ -152,6 +152,7 @@ class _ComponentRow extends StatelessWidget {
         'vaccinations' => AppColors.secondary,
         'medications' => AppColors.accentPurple,
         'weight' => AppColors.primary,
+        'grooming' => const Color(0xFFA64FBD), // Grooming: purple
         'activity' => const Color(0xFF2FB87A),
         _ => AppColors.secondary,
       };
