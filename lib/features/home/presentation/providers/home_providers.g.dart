@@ -163,4 +163,4 @@ final class HomeSummaryProvider
   }
 }
 
-String _$homeSummaryHash() => r'bc696851d469b6765933415ab562256fea4e66a4';
+String _$homeSummaryHash() => r'f144fc09b6d52da170237ec3d98206572fb7d056';

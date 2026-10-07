@@ -249,6 +249,13 @@ abstract final class ApiEndpoints {
   // App config (support email, etc.)
   static const String appConfig = '/config';
 
+  // Legal documents & acceptance
+  static const String legalCurrent = '/legal/current';
+  static const String legalStatus = '/legal/status';
+  static const String legalAccept = '/legal/accept';
+  static String legalContent(String documentType, String version) =>
+      '/legal/$documentType/$version/content';
+
   // Media (avatars, pet documents, etc.)
   static const String mediaUploadUrl = '/media/upload-url';
   static String mediaConfirm(String assetId) => '/media/$assetId/confirm';

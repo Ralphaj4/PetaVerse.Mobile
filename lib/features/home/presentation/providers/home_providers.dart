@@ -37,9 +37,11 @@ Stream<HomeSummary> homeSummary(Ref ref) async* {
   final petId = ref.watch(petsProvider).currentPetId;
   final repo = ref.watch(homeRepositoryProvider);
 
-  // 1) Paint whatever we cached last, if anything.
+  // 1) Paint whatever we cached last, if anything. Mark it cache-sourced so the
+  //    legal gate (which watches this provider) ignores it - legal status is
+  //    authoritative-only and must never seed from a stale local snapshot.
   final cached = await repo.getCachedHomeSummary(petId: petId);
-  if (cached != null) yield cached;
+  if (cached != null) yield cached.asCached();
 
   // 2) Fetch fresh and reconcile. Suppress a network failure when we already
   //    showed cache; otherwise surface it.

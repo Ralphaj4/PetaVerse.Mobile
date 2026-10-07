@@ -4384,6 +4384,57 @@ class AppLocalizationsEn extends AppLocalizations {
       'Couldn\'t open the store. Please update manually.';
 
   @override
+  String get legalUpdatedTitle => 'We\'ve updated our policies';
+
+  @override
+  String get legalUpdatedMessage =>
+      'Please review and accept the updated documents below to continue using PetaVerse.';
+
+  @override
+  String get legalAcceptAll => 'Accept & Continue';
+
+  @override
+  String get legalViewDocument => 'View document';
+
+  @override
+  String get legalPrivacyPolicy => 'Privacy Policy';
+
+  @override
+  String get legalTermsAndConditions => 'Terms & Conditions';
+
+  @override
+  String get legalCommunityGuidelines => 'Community Guidelines';
+
+  @override
+  String get legalDocument => 'Legal Document';
+
+  @override
+  String get legalDocumentUnavailable =>
+      'Couldn\'t open the document. Please try again.';
+
+  @override
+  String get legalCommunityGuidelinesTitle => 'Community Guidelines';
+
+  @override
+  String get legalCommunityGuidelinesMessage =>
+      'Before joining the PetaHub, please read and acknowledge our community guidelines.';
+
+  @override
+  String get legalIUnderstand => 'I Understand';
+
+  @override
+  String get legalConsentRequired => 'You must accept to continue';
+
+  @override
+  String get legalConsentPrefix => 'I agree to the ';
+
+  @override
+  String get legalConsentAnd => ' and ';
+
+  @override
+  String get legalConsentSuffix => '.';
+
+  @override
   String errorSuspended(String date) {
     return 'Your account is suspended until $date.';
   }

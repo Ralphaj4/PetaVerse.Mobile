@@ -28,7 +28,7 @@ $OtpDispatchDtoCopyWith<OtpDispatchDto> get copyWith => _$OtpDispatchDtoCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OtpDispatchDto&&(identical(other.message, message) || other.message == message)&&(identical(other.requiresVerification, requiresVerification) || other.requiresVerification == requiresVerification)&&(identical(other.showCaptcha, showCaptcha) || other.showCaptcha == showCaptcha)&&(identical(other.userCode, userCode) || other.userCode == userCode)&&(identical(other.devOtp, devOtp) || other.devOtp == devOtp));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OtpDispatchDto&&(identical(other.message, message) || other.message == message)&&(identical(other.requiresVerification, requiresVerification) || other.requiresVerification == requiresVerification)&&(identical(other.isOtp, isOtp) || other.isOtp == isOtp)&&(identical(other.showCaptcha, showCaptcha) || other.showCaptcha == showCaptcha)&&(identical(other.userCode, userCode) || other.userCode == userCode)&&(identical(other.devOtp, devOtp) || other.devOtp == devOtp));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -237,7 +237,7 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OtpDispatchDto&&(identical(other.message, message) || other.message == message)&&(identical(other.requiresVerification, requiresVerification) || other.requiresVerification == requiresVerification)&&(identical(other.showCaptcha, showCaptcha) || other.showCaptcha == showCaptcha)&&(identical(other.userCode, userCode) || other.userCode == userCode)&&(identical(other.devOtp, devOtp) || other.devOtp == devOtp));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OtpDispatchDto&&(identical(other.message, message) || other.message == message)&&(identical(other.requiresVerification, requiresVerification) || other.requiresVerification == requiresVerification)&&(identical(other.isOtp, isOtp) || other.isOtp == isOtp)&&(identical(other.showCaptcha, showCaptcha) || other.showCaptcha == showCaptcha)&&(identical(other.userCode, userCode) || other.userCode == userCode)&&(identical(other.devOtp, devOtp) || other.devOtp == devOtp));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)

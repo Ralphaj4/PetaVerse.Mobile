@@ -4401,6 +4401,57 @@ class AppLocalizationsAr extends AppLocalizations {
   String get forceUpdateNoStoreUrl => 'تعذّر فتح المتجر. يرجى التحديث يدوياً.';
 
   @override
+  String get legalUpdatedTitle => 'لقد قمنا بتحديث سياساتنا';
+
+  @override
+  String get legalUpdatedMessage =>
+      'يرجى مراجعة المستندات المحدّثة أدناه والموافقة عليها لمتابعة استخدام PetaVerse.';
+
+  @override
+  String get legalAcceptAll => 'الموافقة والمتابعة';
+
+  @override
+  String get legalViewDocument => 'عرض المستند';
+
+  @override
+  String get legalPrivacyPolicy => 'سياسة الخصوصية';
+
+  @override
+  String get legalTermsAndConditions => 'الشروط والأحكام';
+
+  @override
+  String get legalCommunityGuidelines => 'إرشادات المجتمع';
+
+  @override
+  String get legalDocument => 'مستند قانوني';
+
+  @override
+  String get legalDocumentUnavailable =>
+      'تعذّر فتح المستند. يرجى المحاولة مرة أخرى.';
+
+  @override
+  String get legalCommunityGuidelinesTitle => 'إرشادات المجتمع';
+
+  @override
+  String get legalCommunityGuidelinesMessage =>
+      'قبل الانضمام إلى PetaHub، يرجى قراءة إرشادات مجتمعنا والإقرار بها.';
+
+  @override
+  String get legalIUnderstand => 'لقد فهمت';
+
+  @override
+  String get legalConsentRequired => 'يجب عليك الموافقة للمتابعة';
+
+  @override
+  String get legalConsentPrefix => 'أوافق على ';
+
+  @override
+  String get legalConsentAnd => ' و';
+
+  @override
+  String get legalConsentSuffix => '.';
+
+  @override
   String errorSuspended(String date) {
     return 'حسابك موقوف حتى $date.';
   }

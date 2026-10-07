@@ -14,6 +14,7 @@ import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../legal/presentation/providers/legal_providers.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/auth_layout.dart';
@@ -46,12 +47,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     if (!mounted) return;
     switch (outcome.result) {
       case LoginResult.authenticated:
-        // Resolve the pet gate BEFORE navigating so we land on the right
-        // screen directly - no home/splash flash. The spinner stays up during
-        // this short fetch. Destination: home / pet-onboarding / select-pet.
-        await ref.read(petsProvider.notifier).reconcile();
+        // Resolve the legal + pet gates BEFORE navigating so we land on the
+        // right screen directly - no home/splash flash. The spinner stays up
+        // during these short fetches. Destination: the legal wall (if an
+        // acceptance is owed) else home / pet-onboarding / select-pet.
+        await Future.wait([
+          ref.read(legalGateProvider.notifier).reconcile(),
+          ref.read(petsProvider.notifier).reconcile(),
+        ]);
         if (!mounted) return;
-        context.go(petLandingFor(ref.read(petsProvider)));
+        context.go(postAuthLandingFor(
+          ref.read(legalGateProvider),
+          ref.read(petsProvider),
+        ));
       case LoginResult.needsVerification:
         // Account exists but the phone isn't confirmed - the backend
         // resent an OTP, so continue to verification.

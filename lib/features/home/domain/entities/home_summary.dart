@@ -1,4 +1,5 @@
-﻿import '../../../pawcare/domain/entities/health_reminder.dart';
+﻿import '../../../legal/domain/entities/legal.dart';
+import '../../../pawcare/domain/entities/health_reminder.dart';
 import '../../../pawcare/domain/entities/pet_health_score.dart';
 import '../../../pawcare/domain/entities/weight_record.dart';
 
@@ -19,6 +20,8 @@ class HomeSummary {
     required this.upcoming,
     this.lostNearbyCount,
     this.adoptionAvailableCount,
+    this.legal,
+    this.fromCache = false,
   });
 
   /// The pet the hero + stat cards describe (primary/active, or the queried id).
@@ -57,7 +60,66 @@ class HomeSummary {
   /// the backend supplies it.
   final int? adoptionAvailableCount;
 
+  /// The legal pre-check delegated from /legal/status, or null when the backend
+  /// omitted the block (older server). The legal gate seeds itself from this -
+  /// but only off a FRESH (non-cache) summary, so a stale cached value can never
+  /// wrongly wall or release the user; a null block falls back to /legal/status.
+  final HomeLegal? legal;
+
+  /// True when this summary came from the local Hive cache (offline paint).
+  /// The legal gate ignores cached summaries to preserve its authoritative-only
+  /// invariant.
+  final bool fromCache;
+
   bool get hasHealthData => healthBand != HealthBand.noData;
+
+  /// Returns a copy marked as cache-sourced (used by the offline-first read
+  /// path so the legal gate can tell fresh from cached).
+  HomeSummary asCached() => HomeSummary(
+        petId: petId,
+        petName: petName,
+        healthScore: healthScore,
+        healthBand: healthBand,
+        nextVisit: nextVisit,
+        activity: activity,
+        vaccinesUpcomingCount: vaccinesUpcomingCount,
+        weight: weight,
+        upcoming: upcoming,
+        lostNearbyCount: lostNearbyCount,
+        adoptionAvailableCount: adoptionAvailableCount,
+        legal: legal,
+        fromCache: true,
+      );
+}
+
+/// The legal pre-check carried on the home-summary: whether the signed-in user
+/// owes any acceptance, and the pending (documentType, currentVersion) pairs.
+/// This is authoritative server-side (delegated from /legal/status) but carries
+/// only the minimal shape - the acceptance wall still resolves the full version
+/// via legalCurrent when it needs to POST.
+class HomeLegal {
+  const HomeLegal({
+    required this.requiresAcceptance,
+    required this.pending,
+  });
+
+  const HomeLegal.none()
+      : requiresAcceptance = false,
+        pending = const [];
+
+  final bool requiresAcceptance;
+  final List<HomeLegalPending> pending;
+}
+
+/// One pending legal document from the home-summary pre-check.
+class HomeLegalPending {
+  const HomeLegalPending({
+    required this.documentType,
+    required this.currentVersion,
+  });
+
+  final LegalDocumentType documentType;
+  final String? currentVersion;
 }
 
 /// The next vet visit chip on the hero.

@@ -1,5 +1,6 @@
 ﻿import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../legal/domain/entities/legal.dart';
 import '../../../pawcare/domain/entities/health_reminder.dart';
 import '../../../pawcare/domain/entities/pet_health_score.dart';
 import '../../../pawcare/domain/entities/weight_record.dart';
@@ -17,6 +18,7 @@ abstract class HomeSummaryDto with _$HomeSummaryDto {
     required HomeStatsDto stats,
     @Default(<HomeUpcomingItemDto>[]) List<HomeUpcomingItemDto> upcoming,
     HomeExploreDto? explore,
+    HomeLegalDto? legal,
   }) = _HomeSummaryDto;
 
   const HomeSummaryDto._();
@@ -39,6 +41,49 @@ abstract class HomeSummaryDto with _$HomeSummaryDto {
             upcoming.map((e) => e.toEntity()).toList(growable: false),
         lostNearbyCount: explore?.lostNearbyCount,
         adoptionAvailableCount: explore?.adoptionAvailableCount,
+        // Null when the backend omitted the block (older server): the gate then
+        // falls back to its authoritative /legal/status reconcile.
+        legal: legal?.toEntity(),
+      );
+}
+
+/// The legal pre-check delegated from /legal/status into the home-summary, so
+/// the common "nothing owed" case is learned without a second round-trip.
+/// Absent on older backends - treated as "nothing owed" (the gate then falls
+/// through to its authoritative /legal/status reconcile).
+@freezed
+abstract class HomeLegalDto with _$HomeLegalDto {
+  const factory HomeLegalDto({
+    @Default(false) bool requiresAcceptance,
+    @Default(<HomeLegalPendingDto>[]) List<HomeLegalPendingDto> pending,
+  }) = _HomeLegalDto;
+
+  const HomeLegalDto._();
+
+  factory HomeLegalDto.fromJson(Map<String, dynamic> json) =>
+      _$HomeLegalDtoFromJson(json);
+
+  HomeLegal toEntity() => HomeLegal(
+        requiresAcceptance: requiresAcceptance,
+        pending: pending.map((e) => e.toEntity()).toList(growable: false),
+      );
+}
+
+@freezed
+abstract class HomeLegalPendingDto with _$HomeLegalPendingDto {
+  const factory HomeLegalPendingDto({
+    String? documentType,
+    String? currentVersion,
+  }) = _HomeLegalPendingDto;
+
+  const HomeLegalPendingDto._();
+
+  factory HomeLegalPendingDto.fromJson(Map<String, dynamic> json) =>
+      _$HomeLegalPendingDtoFromJson(json);
+
+  HomeLegalPending toEntity() => HomeLegalPending(
+        documentType: LegalDocumentType.fromWire(documentType),
+        currentVersion: currentVersion,
       );
 }
 

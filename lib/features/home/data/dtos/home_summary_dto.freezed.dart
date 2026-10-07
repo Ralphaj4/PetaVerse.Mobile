@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HomeSummaryDto {
 
- HomePetDto get pet; HomeHeroDto get hero; HomeStatsDto get stats; List<HomeUpcomingItemDto> get upcoming; HomeExploreDto? get explore;
+ HomePetDto get pet; HomeHeroDto get hero; HomeStatsDto get stats; List<HomeUpcomingItemDto> get upcoming; HomeExploreDto? get explore; HomeLegalDto? get legal;
 /// Create a copy of HomeSummaryDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $HomeSummaryDtoCopyWith<HomeSummaryDto> get copyWith => _$HomeSummaryDtoCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeSummaryDto&&(identical(other.pet, pet) || other.pet == pet)&&(identical(other.hero, hero) || other.hero == hero)&&(identical(other.stats, stats) || other.stats == stats)&&const DeepCollectionEquality().equals(other.upcoming, upcoming)&&(identical(other.explore, explore) || other.explore == explore));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeSummaryDto&&(identical(other.pet, pet) || other.pet == pet)&&(identical(other.hero, hero) || other.hero == hero)&&(identical(other.stats, stats) || other.stats == stats)&&const DeepCollectionEquality().equals(other.upcoming, upcoming)&&(identical(other.explore, explore) || other.explore == explore)&&(identical(other.legal, legal) || other.legal == legal));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,pet,hero,stats,const DeepCollectionEquality().hash(upcoming),explore);
+int get hashCode => Object.hash(runtimeType,pet,hero,stats,const DeepCollectionEquality().hash(upcoming),explore,legal);
 
 @override
 String toString() {
-  return 'HomeSummaryDto(pet: $pet, hero: $hero, stats: $stats, upcoming: $upcoming, explore: $explore)';
+  return 'HomeSummaryDto(pet: $pet, hero: $hero, stats: $stats, upcoming: $upcoming, explore: $explore, legal: $legal)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $HomeSummaryDtoCopyWith<$Res>  {
   factory $HomeSummaryDtoCopyWith(HomeSummaryDto value, $Res Function(HomeSummaryDto) _then) = _$HomeSummaryDtoCopyWithImpl;
 @useResult
 $Res call({
- HomePetDto pet, HomeHeroDto hero, HomeStatsDto stats, List<HomeUpcomingItemDto> upcoming, HomeExploreDto? explore
+ HomePetDto pet, HomeHeroDto hero, HomeStatsDto stats, List<HomeUpcomingItemDto> upcoming, HomeExploreDto? explore, HomeLegalDto? legal
 });
 
 
-$HomePetDtoCopyWith<$Res> get pet;$HomeHeroDtoCopyWith<$Res> get hero;$HomeStatsDtoCopyWith<$Res> get stats;$HomeExploreDtoCopyWith<$Res>? get explore;
+$HomePetDtoCopyWith<$Res> get pet;$HomeHeroDtoCopyWith<$Res> get hero;$HomeStatsDtoCopyWith<$Res> get stats;$HomeExploreDtoCopyWith<$Res>? get explore;$HomeLegalDtoCopyWith<$Res>? get legal;
 
 }
 /// @nodoc
@@ -65,14 +65,15 @@ class _$HomeSummaryDtoCopyWithImpl<$Res>
 
 /// Create a copy of HomeSummaryDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? pet = null,Object? hero = null,Object? stats = null,Object? upcoming = null,Object? explore = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? pet = null,Object? hero = null,Object? stats = null,Object? upcoming = null,Object? explore = freezed,Object? legal = freezed,}) {
   return _then(_self.copyWith(
 pet: null == pet ? _self.pet : pet // ignore: cast_nullable_to_non_nullable
 as HomePetDto,hero: null == hero ? _self.hero : hero // ignore: cast_nullable_to_non_nullable
 as HomeHeroDto,stats: null == stats ? _self.stats : stats // ignore: cast_nullable_to_non_nullable
 as HomeStatsDto,upcoming: null == upcoming ? _self.upcoming : upcoming // ignore: cast_nullable_to_non_nullable
 as List<HomeUpcomingItemDto>,explore: freezed == explore ? _self.explore : explore // ignore: cast_nullable_to_non_nullable
-as HomeExploreDto?,
+as HomeExploreDto?,legal: freezed == legal ? _self.legal : legal // ignore: cast_nullable_to_non_nullable
+as HomeLegalDto?,
   ));
 }
 /// Create a copy of HomeSummaryDto
@@ -113,6 +114,18 @@ $HomeExploreDtoCopyWith<$Res>? get explore {
 
   return $HomeExploreDtoCopyWith<$Res>(_self.explore!, (value) {
     return _then(_self.copyWith(explore: value));
+  });
+}/// Create a copy of HomeSummaryDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$HomeLegalDtoCopyWith<$Res>? get legal {
+    if (_self.legal == null) {
+    return null;
+  }
+
+  return $HomeLegalDtoCopyWith<$Res>(_self.legal!, (value) {
+    return _then(_self.copyWith(legal: value));
   });
 }
 }
@@ -196,10 +209,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( HomePetDto pet,  HomeHeroDto hero,  HomeStatsDto stats,  List<HomeUpcomingItemDto> upcoming,  HomeExploreDto? explore)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( HomePetDto pet,  HomeHeroDto hero,  HomeStatsDto stats,  List<HomeUpcomingItemDto> upcoming,  HomeExploreDto? explore,  HomeLegalDto? legal)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HomeSummaryDto() when $default != null:
-return $default(_that.pet,_that.hero,_that.stats,_that.upcoming,_that.explore);case _:
+return $default(_that.pet,_that.hero,_that.stats,_that.upcoming,_that.explore,_that.legal);case _:
   return orElse();
 
 }
@@ -217,10 +230,10 @@ return $default(_that.pet,_that.hero,_that.stats,_that.upcoming,_that.explore);c
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( HomePetDto pet,  HomeHeroDto hero,  HomeStatsDto stats,  List<HomeUpcomingItemDto> upcoming,  HomeExploreDto? explore)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( HomePetDto pet,  HomeHeroDto hero,  HomeStatsDto stats,  List<HomeUpcomingItemDto> upcoming,  HomeExploreDto? explore,  HomeLegalDto? legal)  $default,) {final _that = this;
 switch (_that) {
 case _HomeSummaryDto():
-return $default(_that.pet,_that.hero,_that.stats,_that.upcoming,_that.explore);case _:
+return $default(_that.pet,_that.hero,_that.stats,_that.upcoming,_that.explore,_that.legal);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -237,10 +250,10 @@ return $default(_that.pet,_that.hero,_that.stats,_that.upcoming,_that.explore);c
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( HomePetDto pet,  HomeHeroDto hero,  HomeStatsDto stats,  List<HomeUpcomingItemDto> upcoming,  HomeExploreDto? explore)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( HomePetDto pet,  HomeHeroDto hero,  HomeStatsDto stats,  List<HomeUpcomingItemDto> upcoming,  HomeExploreDto? explore,  HomeLegalDto? legal)?  $default,) {final _that = this;
 switch (_that) {
 case _HomeSummaryDto() when $default != null:
-return $default(_that.pet,_that.hero,_that.stats,_that.upcoming,_that.explore);case _:
+return $default(_that.pet,_that.hero,_that.stats,_that.upcoming,_that.explore,_that.legal);case _:
   return null;
 
 }
@@ -252,7 +265,7 @@ return $default(_that.pet,_that.hero,_that.stats,_that.upcoming,_that.explore);c
 @JsonSerializable()
 
 class _HomeSummaryDto extends HomeSummaryDto {
-  const _HomeSummaryDto({required this.pet, required this.hero, required this.stats, final  List<HomeUpcomingItemDto> upcoming = const <HomeUpcomingItemDto>[], this.explore}): _upcoming = upcoming,super._();
+  const _HomeSummaryDto({required this.pet, required this.hero, required this.stats, final  List<HomeUpcomingItemDto> upcoming = const <HomeUpcomingItemDto>[], this.explore, this.legal}): _upcoming = upcoming,super._();
   factory _HomeSummaryDto.fromJson(Map<String, dynamic> json) => _$HomeSummaryDtoFromJson(json);
 
 @override final  HomePetDto pet;
@@ -266,6 +279,7 @@ class _HomeSummaryDto extends HomeSummaryDto {
 }
 
 @override final  HomeExploreDto? explore;
+@override final  HomeLegalDto? legal;
 
 /// Create a copy of HomeSummaryDto
 /// with the given fields replaced by the non-null parameter values.
@@ -280,16 +294,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeSummaryDto&&(identical(other.pet, pet) || other.pet == pet)&&(identical(other.hero, hero) || other.hero == hero)&&(identical(other.stats, stats) || other.stats == stats)&&const DeepCollectionEquality().equals(other._upcoming, _upcoming)&&(identical(other.explore, explore) || other.explore == explore));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeSummaryDto&&(identical(other.pet, pet) || other.pet == pet)&&(identical(other.hero, hero) || other.hero == hero)&&(identical(other.stats, stats) || other.stats == stats)&&const DeepCollectionEquality().equals(other._upcoming, _upcoming)&&(identical(other.explore, explore) || other.explore == explore)&&(identical(other.legal, legal) || other.legal == legal));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,pet,hero,stats,const DeepCollectionEquality().hash(_upcoming),explore);
+int get hashCode => Object.hash(runtimeType,pet,hero,stats,const DeepCollectionEquality().hash(_upcoming),explore,legal);
 
 @override
 String toString() {
-  return 'HomeSummaryDto(pet: $pet, hero: $hero, stats: $stats, upcoming: $upcoming, explore: $explore)';
+  return 'HomeSummaryDto(pet: $pet, hero: $hero, stats: $stats, upcoming: $upcoming, explore: $explore, legal: $legal)';
 }
 
 
@@ -300,11 +314,11 @@ abstract mixin class _$HomeSummaryDtoCopyWith<$Res> implements $HomeSummaryDtoCo
   factory _$HomeSummaryDtoCopyWith(_HomeSummaryDto value, $Res Function(_HomeSummaryDto) _then) = __$HomeSummaryDtoCopyWithImpl;
 @override @useResult
 $Res call({
- HomePetDto pet, HomeHeroDto hero, HomeStatsDto stats, List<HomeUpcomingItemDto> upcoming, HomeExploreDto? explore
+ HomePetDto pet, HomeHeroDto hero, HomeStatsDto stats, List<HomeUpcomingItemDto> upcoming, HomeExploreDto? explore, HomeLegalDto? legal
 });
 
 
-@override $HomePetDtoCopyWith<$Res> get pet;@override $HomeHeroDtoCopyWith<$Res> get hero;@override $HomeStatsDtoCopyWith<$Res> get stats;@override $HomeExploreDtoCopyWith<$Res>? get explore;
+@override $HomePetDtoCopyWith<$Res> get pet;@override $HomeHeroDtoCopyWith<$Res> get hero;@override $HomeStatsDtoCopyWith<$Res> get stats;@override $HomeExploreDtoCopyWith<$Res>? get explore;@override $HomeLegalDtoCopyWith<$Res>? get legal;
 
 }
 /// @nodoc
@@ -317,14 +331,15 @@ class __$HomeSummaryDtoCopyWithImpl<$Res>
 
 /// Create a copy of HomeSummaryDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? pet = null,Object? hero = null,Object? stats = null,Object? upcoming = null,Object? explore = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? pet = null,Object? hero = null,Object? stats = null,Object? upcoming = null,Object? explore = freezed,Object? legal = freezed,}) {
   return _then(_HomeSummaryDto(
 pet: null == pet ? _self.pet : pet // ignore: cast_nullable_to_non_nullable
 as HomePetDto,hero: null == hero ? _self.hero : hero // ignore: cast_nullable_to_non_nullable
 as HomeHeroDto,stats: null == stats ? _self.stats : stats // ignore: cast_nullable_to_non_nullable
 as HomeStatsDto,upcoming: null == upcoming ? _self._upcoming : upcoming // ignore: cast_nullable_to_non_nullable
 as List<HomeUpcomingItemDto>,explore: freezed == explore ? _self.explore : explore // ignore: cast_nullable_to_non_nullable
-as HomeExploreDto?,
+as HomeExploreDto?,legal: freezed == legal ? _self.legal : legal // ignore: cast_nullable_to_non_nullable
+as HomeLegalDto?,
   ));
 }
 
@@ -367,7 +382,557 @@ $HomeExploreDtoCopyWith<$Res>? get explore {
   return $HomeExploreDtoCopyWith<$Res>(_self.explore!, (value) {
     return _then(_self.copyWith(explore: value));
   });
+}/// Create a copy of HomeSummaryDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$HomeLegalDtoCopyWith<$Res>? get legal {
+    if (_self.legal == null) {
+    return null;
+  }
+
+  return $HomeLegalDtoCopyWith<$Res>(_self.legal!, (value) {
+    return _then(_self.copyWith(legal: value));
+  });
 }
+}
+
+
+/// @nodoc
+mixin _$HomeLegalDto {
+
+ bool get requiresAcceptance; List<HomeLegalPendingDto> get pending;
+/// Create a copy of HomeLegalDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$HomeLegalDtoCopyWith<HomeLegalDto> get copyWith => _$HomeLegalDtoCopyWithImpl<HomeLegalDto>(this as HomeLegalDto, _$identity);
+
+  /// Serializes this HomeLegalDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeLegalDto&&(identical(other.requiresAcceptance, requiresAcceptance) || other.requiresAcceptance == requiresAcceptance)&&const DeepCollectionEquality().equals(other.pending, pending));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,requiresAcceptance,const DeepCollectionEquality().hash(pending));
+
+@override
+String toString() {
+  return 'HomeLegalDto(requiresAcceptance: $requiresAcceptance, pending: $pending)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $HomeLegalDtoCopyWith<$Res>  {
+  factory $HomeLegalDtoCopyWith(HomeLegalDto value, $Res Function(HomeLegalDto) _then) = _$HomeLegalDtoCopyWithImpl;
+@useResult
+$Res call({
+ bool requiresAcceptance, List<HomeLegalPendingDto> pending
+});
+
+
+
+
+}
+/// @nodoc
+class _$HomeLegalDtoCopyWithImpl<$Res>
+    implements $HomeLegalDtoCopyWith<$Res> {
+  _$HomeLegalDtoCopyWithImpl(this._self, this._then);
+
+  final HomeLegalDto _self;
+  final $Res Function(HomeLegalDto) _then;
+
+/// Create a copy of HomeLegalDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? requiresAcceptance = null,Object? pending = null,}) {
+  return _then(_self.copyWith(
+requiresAcceptance: null == requiresAcceptance ? _self.requiresAcceptance : requiresAcceptance // ignore: cast_nullable_to_non_nullable
+as bool,pending: null == pending ? _self.pending : pending // ignore: cast_nullable_to_non_nullable
+as List<HomeLegalPendingDto>,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [HomeLegalDto].
+extension HomeLegalDtoPatterns on HomeLegalDto {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _HomeLegalDto value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _HomeLegalDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _HomeLegalDto value)  $default,){
+final _that = this;
+switch (_that) {
+case _HomeLegalDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _HomeLegalDto value)?  $default,){
+final _that = this;
+switch (_that) {
+case _HomeLegalDto() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool requiresAcceptance,  List<HomeLegalPendingDto> pending)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _HomeLegalDto() when $default != null:
+return $default(_that.requiresAcceptance,_that.pending);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool requiresAcceptance,  List<HomeLegalPendingDto> pending)  $default,) {final _that = this;
+switch (_that) {
+case _HomeLegalDto():
+return $default(_that.requiresAcceptance,_that.pending);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool requiresAcceptance,  List<HomeLegalPendingDto> pending)?  $default,) {final _that = this;
+switch (_that) {
+case _HomeLegalDto() when $default != null:
+return $default(_that.requiresAcceptance,_that.pending);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _HomeLegalDto extends HomeLegalDto {
+  const _HomeLegalDto({this.requiresAcceptance = false, final  List<HomeLegalPendingDto> pending = const <HomeLegalPendingDto>[]}): _pending = pending,super._();
+  factory _HomeLegalDto.fromJson(Map<String, dynamic> json) => _$HomeLegalDtoFromJson(json);
+
+@override@JsonKey() final  bool requiresAcceptance;
+ final  List<HomeLegalPendingDto> _pending;
+@override@JsonKey() List<HomeLegalPendingDto> get pending {
+  if (_pending is EqualUnmodifiableListView) return _pending;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_pending);
+}
+
+
+/// Create a copy of HomeLegalDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$HomeLegalDtoCopyWith<_HomeLegalDto> get copyWith => __$HomeLegalDtoCopyWithImpl<_HomeLegalDto>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$HomeLegalDtoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeLegalDto&&(identical(other.requiresAcceptance, requiresAcceptance) || other.requiresAcceptance == requiresAcceptance)&&const DeepCollectionEquality().equals(other._pending, _pending));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,requiresAcceptance,const DeepCollectionEquality().hash(_pending));
+
+@override
+String toString() {
+  return 'HomeLegalDto(requiresAcceptance: $requiresAcceptance, pending: $pending)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$HomeLegalDtoCopyWith<$Res> implements $HomeLegalDtoCopyWith<$Res> {
+  factory _$HomeLegalDtoCopyWith(_HomeLegalDto value, $Res Function(_HomeLegalDto) _then) = __$HomeLegalDtoCopyWithImpl;
+@override @useResult
+$Res call({
+ bool requiresAcceptance, List<HomeLegalPendingDto> pending
+});
+
+
+
+
+}
+/// @nodoc
+class __$HomeLegalDtoCopyWithImpl<$Res>
+    implements _$HomeLegalDtoCopyWith<$Res> {
+  __$HomeLegalDtoCopyWithImpl(this._self, this._then);
+
+  final _HomeLegalDto _self;
+  final $Res Function(_HomeLegalDto) _then;
+
+/// Create a copy of HomeLegalDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? requiresAcceptance = null,Object? pending = null,}) {
+  return _then(_HomeLegalDto(
+requiresAcceptance: null == requiresAcceptance ? _self.requiresAcceptance : requiresAcceptance // ignore: cast_nullable_to_non_nullable
+as bool,pending: null == pending ? _self._pending : pending // ignore: cast_nullable_to_non_nullable
+as List<HomeLegalPendingDto>,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$HomeLegalPendingDto {
+
+ String? get documentType; String? get currentVersion;
+/// Create a copy of HomeLegalPendingDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$HomeLegalPendingDtoCopyWith<HomeLegalPendingDto> get copyWith => _$HomeLegalPendingDtoCopyWithImpl<HomeLegalPendingDto>(this as HomeLegalPendingDto, _$identity);
+
+  /// Serializes this HomeLegalPendingDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeLegalPendingDto&&(identical(other.documentType, documentType) || other.documentType == documentType)&&(identical(other.currentVersion, currentVersion) || other.currentVersion == currentVersion));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,documentType,currentVersion);
+
+@override
+String toString() {
+  return 'HomeLegalPendingDto(documentType: $documentType, currentVersion: $currentVersion)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $HomeLegalPendingDtoCopyWith<$Res>  {
+  factory $HomeLegalPendingDtoCopyWith(HomeLegalPendingDto value, $Res Function(HomeLegalPendingDto) _then) = _$HomeLegalPendingDtoCopyWithImpl;
+@useResult
+$Res call({
+ String? documentType, String? currentVersion
+});
+
+
+
+
+}
+/// @nodoc
+class _$HomeLegalPendingDtoCopyWithImpl<$Res>
+    implements $HomeLegalPendingDtoCopyWith<$Res> {
+  _$HomeLegalPendingDtoCopyWithImpl(this._self, this._then);
+
+  final HomeLegalPendingDto _self;
+  final $Res Function(HomeLegalPendingDto) _then;
+
+/// Create a copy of HomeLegalPendingDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? documentType = freezed,Object? currentVersion = freezed,}) {
+  return _then(_self.copyWith(
+documentType: freezed == documentType ? _self.documentType : documentType // ignore: cast_nullable_to_non_nullable
+as String?,currentVersion: freezed == currentVersion ? _self.currentVersion : currentVersion // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [HomeLegalPendingDto].
+extension HomeLegalPendingDtoPatterns on HomeLegalPendingDto {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _HomeLegalPendingDto value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _HomeLegalPendingDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _HomeLegalPendingDto value)  $default,){
+final _that = this;
+switch (_that) {
+case _HomeLegalPendingDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _HomeLegalPendingDto value)?  $default,){
+final _that = this;
+switch (_that) {
+case _HomeLegalPendingDto() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? documentType,  String? currentVersion)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _HomeLegalPendingDto() when $default != null:
+return $default(_that.documentType,_that.currentVersion);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? documentType,  String? currentVersion)  $default,) {final _that = this;
+switch (_that) {
+case _HomeLegalPendingDto():
+return $default(_that.documentType,_that.currentVersion);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? documentType,  String? currentVersion)?  $default,) {final _that = this;
+switch (_that) {
+case _HomeLegalPendingDto() when $default != null:
+return $default(_that.documentType,_that.currentVersion);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _HomeLegalPendingDto extends HomeLegalPendingDto {
+  const _HomeLegalPendingDto({this.documentType, this.currentVersion}): super._();
+  factory _HomeLegalPendingDto.fromJson(Map<String, dynamic> json) => _$HomeLegalPendingDtoFromJson(json);
+
+@override final  String? documentType;
+@override final  String? currentVersion;
+
+/// Create a copy of HomeLegalPendingDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$HomeLegalPendingDtoCopyWith<_HomeLegalPendingDto> get copyWith => __$HomeLegalPendingDtoCopyWithImpl<_HomeLegalPendingDto>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$HomeLegalPendingDtoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeLegalPendingDto&&(identical(other.documentType, documentType) || other.documentType == documentType)&&(identical(other.currentVersion, currentVersion) || other.currentVersion == currentVersion));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,documentType,currentVersion);
+
+@override
+String toString() {
+  return 'HomeLegalPendingDto(documentType: $documentType, currentVersion: $currentVersion)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$HomeLegalPendingDtoCopyWith<$Res> implements $HomeLegalPendingDtoCopyWith<$Res> {
+  factory _$HomeLegalPendingDtoCopyWith(_HomeLegalPendingDto value, $Res Function(_HomeLegalPendingDto) _then) = __$HomeLegalPendingDtoCopyWithImpl;
+@override @useResult
+$Res call({
+ String? documentType, String? currentVersion
+});
+
+
+
+
+}
+/// @nodoc
+class __$HomeLegalPendingDtoCopyWithImpl<$Res>
+    implements _$HomeLegalPendingDtoCopyWith<$Res> {
+  __$HomeLegalPendingDtoCopyWithImpl(this._self, this._then);
+
+  final _HomeLegalPendingDto _self;
+  final $Res Function(_HomeLegalPendingDto) _then;
+
+/// Create a copy of HomeLegalPendingDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? documentType = freezed,Object? currentVersion = freezed,}) {
+  return _then(_HomeLegalPendingDto(
+documentType: freezed == documentType ? _self.documentType : documentType // ignore: cast_nullable_to_non_nullable
+as String?,currentVersion: freezed == currentVersion ? _self.currentVersion : currentVersion // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
 }
 
 

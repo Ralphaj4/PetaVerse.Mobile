@@ -4434,6 +4434,57 @@ class AppLocalizationsFr extends AppLocalizations {
       'Impossible d\'ouvrir le store. Veuillez mettre à jour manuellement.';
 
   @override
+  String get legalUpdatedTitle => 'Nous avons mis à jour nos politiques';
+
+  @override
+  String get legalUpdatedMessage =>
+      'Veuillez consulter et accepter les documents mis à jour ci-dessous pour continuer à utiliser PetaVerse.';
+
+  @override
+  String get legalAcceptAll => 'Accepter et continuer';
+
+  @override
+  String get legalViewDocument => 'Voir le document';
+
+  @override
+  String get legalPrivacyPolicy => 'Politique de confidentialité';
+
+  @override
+  String get legalTermsAndConditions => 'Conditions générales';
+
+  @override
+  String get legalCommunityGuidelines => 'Règles de la communauté';
+
+  @override
+  String get legalDocument => 'Document juridique';
+
+  @override
+  String get legalDocumentUnavailable =>
+      'Impossible d\'ouvrir le document. Veuillez réessayer.';
+
+  @override
+  String get legalCommunityGuidelinesTitle => 'Règles de la communauté';
+
+  @override
+  String get legalCommunityGuidelinesMessage =>
+      'Avant de rejoindre PetaHub, veuillez lire et accepter nos règles de la communauté.';
+
+  @override
+  String get legalIUnderstand => 'J\'ai compris';
+
+  @override
+  String get legalConsentRequired => 'Vous devez accepter pour continuer';
+
+  @override
+  String get legalConsentPrefix => 'J\'accepte la ';
+
+  @override
+  String get legalConsentAnd => ' et les ';
+
+  @override
+  String get legalConsentSuffix => '.';
+
+  @override
   String errorSuspended(String date) {
     return 'Votre compte est suspendu jusqu\'au $date.';
   }

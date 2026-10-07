@@ -35,9 +35,10 @@ class HomeRepositoryImpl implements HomeRepository {
       return Result.success(summary);
     } on NetworkException catch (e) {
       // Offline / unreachable: fall back to the last cached snapshot if we have
-      // one; otherwise surface the network failure.
+      // one; otherwise surface the network failure. Mark it cache-sourced so the
+      // legal gate won't seed from this stale snapshot (authoritative-only).
       final cached = await _readCached(petId);
-      if (cached != null) return Result.success(cached);
+      if (cached != null) return Result.success(cached.asCached());
       return Result.failure(_mapFailure(e));
     } on AppException catch (e) {
       return Result.failure(_mapFailure(e));

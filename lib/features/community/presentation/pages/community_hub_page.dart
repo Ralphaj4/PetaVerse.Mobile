@@ -9,6 +9,8 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../legal/presentation/pages/legal_acceptance_page.dart';
+import '../../../legal/presentation/providers/legal_providers.dart';
 import 'communities_page.dart';
 import 'pawhub_page.dart';
 
@@ -51,11 +53,25 @@ class _CommunityHubPageState extends ConsumerState<CommunityHubPage>
 
   bool _tabBarVisible = true;
   double _lastScrollOffset = 0;
+  bool _communityGuidelinesDialogShown = false;
 
   @override
   void initState() {
     super.initState();
     _innerScrollControllers[0].addListener(_onFeedScroll);
+    // Show the community-guidelines popup on first frame if it's already owed.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _maybeShowCommunityGuidelinesPopup();
+    });
+  }
+
+  void _maybeShowCommunityGuidelinesPopup() {
+    if (_communityGuidelinesDialogShown) return;
+    if (!mounted) return;
+    final item = ref.read(legalGateProvider).pendingCommunityGuidelines;
+    if (item == null) return;
+    _communityGuidelinesDialogShown = true;
+    showCommunityGuidelinesDialog(context, item);
   }
 
   void _onFeedScroll() {
@@ -104,6 +120,14 @@ class _CommunityHubPageState extends ConsumerState<CommunityHubPage>
     ref.listen(
       tabScrollToTopProvider.select((m) => m[1]),
       (_, _) => _scrollActiveTabToTop(),
+    );
+
+    // Show the community-guidelines popup when the gate resolves (late arrival).
+    ref.listen(
+      legalGateProvider.select((s) => s.pendingCommunityGuidelines),
+      (_, item) {
+        if (item != null) _maybeShowCommunityGuidelinesPopup();
+      },
     );
 
     return AnnotatedRegion<SystemUiOverlayStyle>(

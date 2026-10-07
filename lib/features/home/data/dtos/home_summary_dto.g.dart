@@ -21,6 +21,9 @@ _HomeSummaryDto _$HomeSummaryDtoFromJson(Map<String, dynamic> json) =>
       explore: json['explore'] == null
           ? null
           : HomeExploreDto.fromJson(json['explore'] as Map<String, dynamic>),
+      legal: json['legal'] == null
+          ? null
+          : HomeLegalDto.fromJson(json['legal'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$HomeSummaryDtoToJson(_HomeSummaryDto instance) =>
@@ -30,7 +33,39 @@ Map<String, dynamic> _$HomeSummaryDtoToJson(_HomeSummaryDto instance) =>
       'stats': instance.stats,
       'upcoming': instance.upcoming,
       'explore': instance.explore,
+      'legal': instance.legal,
     };
+
+_HomeLegalDto _$HomeLegalDtoFromJson(Map<String, dynamic> json) =>
+    _HomeLegalDto(
+      requiresAcceptance: json['requiresAcceptance'] as bool? ?? false,
+      pending:
+          (json['pending'] as List<dynamic>?)
+              ?.map(
+                (e) => HomeLegalPendingDto.fromJson(e as Map<String, dynamic>),
+              )
+              .toList() ??
+          const <HomeLegalPendingDto>[],
+    );
+
+Map<String, dynamic> _$HomeLegalDtoToJson(_HomeLegalDto instance) =>
+    <String, dynamic>{
+      'requiresAcceptance': instance.requiresAcceptance,
+      'pending': instance.pending,
+    };
+
+_HomeLegalPendingDto _$HomeLegalPendingDtoFromJson(Map<String, dynamic> json) =>
+    _HomeLegalPendingDto(
+      documentType: json['documentType'] as String?,
+      currentVersion: json['currentVersion'] as String?,
+    );
+
+Map<String, dynamic> _$HomeLegalPendingDtoToJson(
+  _HomeLegalPendingDto instance,
+) => <String, dynamic>{
+  'documentType': instance.documentType,
+  'currentVersion': instance.currentVersion,
+};
 
 _HomeExploreDto _$HomeExploreDtoFromJson(Map<String, dynamic> json) =>
     _HomeExploreDto(

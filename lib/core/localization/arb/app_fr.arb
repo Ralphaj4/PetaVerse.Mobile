@@ -1830,6 +1830,23 @@
   "forceUpdateButton": "Mettre à jour",
   "forceUpdateNoStoreUrl": "Impossible d'ouvrir le store. Veuillez mettre à jour manuellement.",
 
+  "legalUpdatedTitle": "Nous avons mis à jour nos politiques",
+  "legalUpdatedMessage": "Veuillez consulter et accepter les documents mis à jour ci-dessous pour continuer à utiliser PetaVerse.",
+  "legalAcceptAll": "Accepter et continuer",
+  "legalViewDocument": "Voir le document",
+  "legalPrivacyPolicy": "Politique de confidentialité",
+  "legalTermsAndConditions": "Conditions générales",
+  "legalCommunityGuidelines": "Règles de la communauté",
+  "legalDocument": "Document juridique",
+  "legalDocumentUnavailable": "Impossible d'ouvrir le document. Veuillez réessayer.",
+  "legalCommunityGuidelinesTitle": "Règles de la communauté",
+  "legalCommunityGuidelinesMessage": "Avant de rejoindre PetaHub, veuillez lire et accepter nos règles de la communauté.",
+  "legalIUnderstand": "J'ai compris",
+  "legalConsentRequired": "Vous devez accepter pour continuer",
+  "legalConsentPrefix": "J'accepte la ",
+  "legalConsentAnd": " et les ",
+  "legalConsentSuffix": ".",
+
   "errorSuspended": "Votre compte est suspendu jusqu'au {date}.",
   "@errorSuspended": {
     "placeholders": {

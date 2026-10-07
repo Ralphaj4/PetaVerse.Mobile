@@ -47,6 +47,8 @@ import '../../../features/community/presentation/pages/pawhub_blocked_page.dart'
 import '../../../features/community/presentation/pages/pawhub_trending_page.dart';
 import '../../../features/community/presentation/pages/pawhub_pet_profile_page.dart';
 import '../../../features/community/presentation/pages/tag_pets_page.dart';
+import '../../../features/legal/presentation/pages/legal_acceptance_page.dart';
+import '../../../features/legal/presentation/providers/legal_providers.dart';
 import '../../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../../features/pets/domain/entities/pet_ref.dart';
 import '../../../features/pets/presentation/pages/create_pet_page.dart';
@@ -208,6 +210,9 @@ abstract final class AppRoutes {
   static const String configError = '/config-error';
   static const String maintenance = '/maintenance';
   static const String forceUpdate = '/force-update';
+
+  // Legal acceptance wall (post-auth, blocks until updated documents accepted)
+  static const String legalAcceptance = '/legal-acceptance';
 }
 
 /// The route a logged-in user should land on, given the RESOLVED pet gate.
@@ -221,6 +226,17 @@ String petLandingFor(PetsState pets) {
   if (pets.unresolvedEmpty || !pets.hasPets) return AppRoutes.petOnboarding;
   if (pets.currentPetId == null) return AppRoutes.selectPet;
   return AppRoutes.home;
+}
+
+/// The full post-auth landing, with the legal wall taking priority over the pet
+/// gate. Auth pages that navigate imperatively (login / OTP verify) call this
+/// AFTER awaiting both gates' reconcile so they land directly on the right
+/// screen - the legal wall when an acceptance is owed, otherwise the pet
+/// landing - with no intermediate home flash. The router's redirect enforces
+/// the same order for every non-imperative path.
+String postAuthLandingFor(LegalGateState legal, PetsState pets) {
+  if (legal.ready && legal.blocksNavigation) return AppRoutes.legalAcceptance;
+  return petLandingFor(pets);
 }
 
 
@@ -244,6 +260,7 @@ GoRouter appRouter(Ref ref) {
     ..listen(currentAppVersionProvider, (_, _) => refresh.value++)
     ..listen(onboardingCompletedProvider, (_, _) => refresh.value++)
     ..listen(sessionProvider, (_, _) => refresh.value++)
+    ..listen(legalGateProvider, (_, _) => refresh.value++)
     ..listen(petsProvider, (_, _) => refresh.value++);
 
   // Routes reachable while signed out (the auth flow itself).
@@ -266,6 +283,7 @@ GoRouter appRouter(Ref ref) {
       final versionAsync = ref.read(currentAppVersionProvider);
       final onboardingAsync = ref.read(onboardingCompletedProvider);
       final session = ref.read(sessionProvider);
+      final legalGate = ref.read(legalGateProvider);
       final pets = ref.read(petsProvider);
       final location = state.matchedLocation;
       final onSplash = location == AppRoutes.splash;
@@ -317,6 +335,7 @@ GoRouter appRouter(Ref ref) {
       final onPetOnboarding = location == AppRoutes.petOnboarding;
       final onSelectPet = location == AppRoutes.selectPet;
       final onAvatarSetup = location == AppRoutes.avatarSetup;
+      final onLegalAcceptance = location == AppRoutes.legalAcceptance;
       // The create-pet form is part of the "no pet yet" flow, so a pet-less
       // user is allowed to sit on it without being bounced to onboarding.
       // Avatar setup is also part of the post-register flow. Pet avatar setup
@@ -337,18 +356,28 @@ GoRouter appRouter(Ref ref) {
           onCoOwnerInvitations ||
           onAdoption;
 
-      // The post-auth landing for a logged-in user. The pet gate must resolve
-      // BEFORE we ever allow /home - otherwise home flashes for a frame before
-      // being replaced. While the gate is still resolving we hold on the splash
-      // (a neutral screen), never on home.
-      String petLanding() =>
-          pets.ready ? petLandingFor(pets) : AppRoutes.splash;
+      // The post-auth landing for a logged-in user. The legal wall takes
+      // priority over the pet gate: a user who owes acceptance of an updated
+      // document must clear it before any pet routing. Only a *resolved* legal
+      // gate (ready) with pending items routes to the wall - a still-loading or
+      // failed gate falls open to the pet landing (see LegalGateState doc), so
+      // a transient status-fetch failure never traps the user.
+      //
+      // The pet gate must then resolve BEFORE we ever allow /home - otherwise
+      // home flashes for a frame before being replaced. While a gate is still
+      // resolving we hold on the splash (a neutral screen), never on home.
+      String postAuthLanding() {
+        if (legalGate.ready && legalGate.blocksNavigation) {
+          return AppRoutes.legalAcceptance;
+        }
+        return pets.ready ? petLandingFor(pets) : AppRoutes.splash;
+      }
 
       // Resolve the splash to the correct first destination.
       if (onSplash) {
         if (!completed) return AppRoutes.onboarding;
         if (!loggedIn) return AppRoutes.login;
-        final landing = petLanding();
+        final landing = postAuthLanding();
         // Already on splash and still resolving → stay put (no self-redirect).
         return landing == AppRoutes.splash ? null : landing;
       }
@@ -357,7 +386,7 @@ GoRouter appRouter(Ref ref) {
       if (!completed) return onOnboarding ? null : AppRoutes.onboarding;
       if (onOnboarding) {
         if (!loggedIn) return AppRoutes.login;
-        return petLanding();
+        return postAuthLanding();
       }
 
       // 2. Auth gate - protect everything except the auth flow.
@@ -370,11 +399,24 @@ GoRouter appRouter(Ref ref) {
         // Avatar setup (post-register) is a special auth route that transitions
         // itself when ready - never bounce it to pet landing.
         if (onAvatarSetup) return null;
-        if (!pets.ready) return null; // hold on the auth page; it will route.
-        return petLanding();
+        // Hold on the auth page until both gates it needs have resolved.
+        if (!legalGate.ready || !pets.ready) return null;
+        return postAuthLanding();
       }
 
-      // 3. Pet gate - decide where a logged-in user belongs.
+      // 3. Legal gate - a logged-in user who owes an acceptance is walled here
+      // before any pet routing. A resolved gate with no pending items (or with
+      // only community guidelines pending) bounces off the wall to the pet
+      // landing. Community-guidelines-only is handled via a PetaHub popup.
+      if (loggedIn && legalGate.ready && legalGate.blocksNavigation) {
+        return onLegalAcceptance ? null : AppRoutes.legalAcceptance;
+      }
+      if (onLegalAcceptance) {
+        // Nothing (or no longer anything) pending: move on.
+        return postAuthLanding();
+      }
+
+      // 4. Pet gate - decide where a logged-in user belongs.
       // Until the gate is ready, hold on the splash (cold start already shows
       // it) so /home can never render before the gate decides.
       if (loggedIn) {
@@ -1268,6 +1310,15 @@ GoRouter appRouter(Ref ref) {
         pageBuilder: (context, state) => AppTransitionPage(
               key: state.pageKey,
               child: const ContactUsPage(),
+            ),
+      ),
+      GoRoute(
+        path: AppRoutes.legalAcceptance,
+        name: 'legalAcceptance',
+        parentNavigatorKey: _rootNavigatorKey,
+        pageBuilder: (context, state) => AppFadeTransitionPage(
+              key: state.pageKey,
+              child: const LegalAcceptancePage(),
             ),
       ),
       GoRoute(

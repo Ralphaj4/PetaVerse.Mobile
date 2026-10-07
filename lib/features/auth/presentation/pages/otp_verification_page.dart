@@ -15,6 +15,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../legal/presentation/providers/legal_providers.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/auth_layout.dart';
@@ -116,10 +117,17 @@ class _OtpVerificationPageState extends ConsumerState<OtpVerificationPage> {
         // New user: go to avatar setup (use go to replace stack and prevent redirect)
         context.go(AppRoutes.avatarSetup);
       } else {
-        // Login: resolve pet gate and navigate directly
-        await ref.read(petsProvider.notifier).reconcile();
+        // Login: resolve the legal + pet gates and navigate directly - the
+        // legal wall (if an acceptance is owed) else the pet landing.
+        await Future.wait([
+          ref.read(legalGateProvider.notifier).reconcile(),
+          ref.read(petsProvider.notifier).reconcile(),
+        ]);
         if (!mounted) return;
-        context.go(petLandingFor(ref.read(petsProvider)));
+        context.go(postAuthLandingFor(
+          ref.read(legalGateProvider),
+          ref.read(petsProvider),
+        ));
       }
     } else {
       final failure = notifier.lastFailure;

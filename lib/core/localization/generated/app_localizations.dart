@@ -7690,6 +7690,102 @@ abstract class AppLocalizations {
   /// **'Couldn\'t open the store. Please update manually.'**
   String get forceUpdateNoStoreUrl;
 
+  /// No description provided for @legalUpdatedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ve updated our policies'**
+  String get legalUpdatedTitle;
+
+  /// No description provided for @legalUpdatedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please review and accept the updated documents below to continue using PetaVerse.'**
+  String get legalUpdatedMessage;
+
+  /// No description provided for @legalAcceptAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept & Continue'**
+  String get legalAcceptAll;
+
+  /// No description provided for @legalViewDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'View document'**
+  String get legalViewDocument;
+
+  /// No description provided for @legalPrivacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get legalPrivacyPolicy;
+
+  /// No description provided for @legalTermsAndConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & Conditions'**
+  String get legalTermsAndConditions;
+
+  /// No description provided for @legalCommunityGuidelines.
+  ///
+  /// In en, this message translates to:
+  /// **'Community Guidelines'**
+  String get legalCommunityGuidelines;
+
+  /// No description provided for @legalDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal Document'**
+  String get legalDocument;
+
+  /// No description provided for @legalDocumentUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the document. Please try again.'**
+  String get legalDocumentUnavailable;
+
+  /// No description provided for @legalCommunityGuidelinesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Community Guidelines'**
+  String get legalCommunityGuidelinesTitle;
+
+  /// No description provided for @legalCommunityGuidelinesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Before joining the PetaHub, please read and acknowledge our community guidelines.'**
+  String get legalCommunityGuidelinesMessage;
+
+  /// No description provided for @legalIUnderstand.
+  ///
+  /// In en, this message translates to:
+  /// **'I Understand'**
+  String get legalIUnderstand;
+
+  /// No description provided for @legalConsentRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'You must accept to continue'**
+  String get legalConsentRequired;
+
+  /// No description provided for @legalConsentPrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to the '**
+  String get legalConsentPrefix;
+
+  /// No description provided for @legalConsentAnd.
+  ///
+  /// In en, this message translates to:
+  /// **' and '**
+  String get legalConsentAnd;
+
+  /// No description provided for @legalConsentSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'.'**
+  String get legalConsentSuffix;
+
   /// No description provided for @errorSuspended.
   ///
   /// In en, this message translates to:

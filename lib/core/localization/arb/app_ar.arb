@@ -1830,6 +1830,23 @@
   "forceUpdateButton": "تحديث الآن",
   "forceUpdateNoStoreUrl": "تعذّر فتح المتجر. يرجى التحديث يدوياً.",
 
+  "legalUpdatedTitle": "لقد قمنا بتحديث سياساتنا",
+  "legalUpdatedMessage": "يرجى مراجعة المستندات المحدّثة أدناه والموافقة عليها لمتابعة استخدام PetaVerse.",
+  "legalAcceptAll": "الموافقة والمتابعة",
+  "legalViewDocument": "عرض المستند",
+  "legalPrivacyPolicy": "سياسة الخصوصية",
+  "legalTermsAndConditions": "الشروط والأحكام",
+  "legalCommunityGuidelines": "إرشادات المجتمع",
+  "legalDocument": "مستند قانوني",
+  "legalDocumentUnavailable": "تعذّر فتح المستند. يرجى المحاولة مرة أخرى.",
+  "legalCommunityGuidelinesTitle": "إرشادات المجتمع",
+  "legalCommunityGuidelinesMessage": "قبل الانضمام إلى PetaHub، يرجى قراءة إرشادات مجتمعنا والإقرار بها.",
+  "legalIUnderstand": "لقد فهمت",
+  "legalConsentRequired": "يجب عليك الموافقة للمتابعة",
+  "legalConsentPrefix": "أوافق على ",
+  "legalConsentAnd": " و",
+  "legalConsentSuffix": ".",
+
   "errorSuspended": "حسابك موقوف حتى {date}.",
   "@errorSuspended": {
     "placeholders": {
