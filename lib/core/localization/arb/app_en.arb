@@ -31,6 +31,8 @@
   "registerTitle1": "Join the",
   "registerTitle2": "Family",
   "registerSubtitle": "Create an account and give your pets the care they deserve.",
+  "registerDobLabel": "Date of Birth",
+  "registerAgeError": "You must be at least 16 years old to register.",
   "firstName": "First Name",
   "lastName": "Last Name",
   "emailOptional": "Email (optional)",

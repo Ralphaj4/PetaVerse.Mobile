@@ -49,6 +49,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required double latitude,
     required double longitude,
     required String locationName,
+    required DateTime dateOfBirth,
     String? email,
     bool captchaAcknowledged = false,
   }) async {
@@ -61,6 +62,7 @@ class AuthRepositoryImpl implements AuthRepository {
           latitude: latitude,
           longitude: longitude,
           locationName: locationName,
+          dateOfBirth: dateOfBirth,
           email: email,
           deviceId: deviceId,
           captchaAcknowledged: captchaAcknowledged,

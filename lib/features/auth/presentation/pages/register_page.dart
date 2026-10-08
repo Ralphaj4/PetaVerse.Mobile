@@ -46,6 +46,10 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   LatLng? _location;
   bool _locationTouched = false;
 
+  // Date of birth — required, user must be ≥ 16 years old.
+  DateTime? _dateOfBirth;
+  bool _dobTouched = false;
+
   void _openDocument(LegalDocumentType type) {
     final current = ref.read(legalCurrentProvider).value;
     final doc = current?.forType(type);
@@ -79,11 +83,13 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     setState(() {
       _locationTouched = true;
       _legalTouched = true;
+      _dobTouched = true;
     });
     final form = _formKey.currentState!;
     final formOk = form.saveAndValidate();
     final location = _location;
-    if (!formOk || location == null || !_legalAccepted) return;
+    final dob = _dateOfBirth;
+    if (!formOk || location == null || dob == null || !_legalAccepted) return;
 
     final notifier = ref.read(authProvider.notifier);
     final result = await notifier.register(
@@ -95,6 +101,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       latitude: location.latitude,
       longitude: location.longitude,
       locationName: (form.value['locationName'] as String).trim(),
+      dateOfBirth: dob,
       captchaAcknowledged: captchaAcknowledged,
     );
     if (!mounted) return;
@@ -240,6 +247,12 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 return null;
               },
             ),
+            const SizedBox(height: AppSpacing.lg),
+            _DateOfBirthField(
+              value: _dateOfBirth,
+              showError: _dobTouched && _dateOfBirth == null,
+              onChanged: (date) => setState(() => _dateOfBirth = date),
+            ),
             const SizedBox(height: AppSpacing.xl),
             Align(
               alignment: AlignmentDirectional.centerStart,
@@ -282,6 +295,115 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
         ),
       ),
     );
+  }
+}
+
+/// Tappable date-of-birth field. Opens the system date picker capped at the
+/// latest date that keeps the user ≥ 16 years old. Shows a required-field error
+/// when [showError] is true and no date has been selected.
+class _DateOfBirthField extends StatelessWidget {
+  const _DateOfBirthField({
+    required this.value,
+    required this.showError,
+    required this.onChanged,
+  });
+
+  final DateTime? value;
+  final bool showError;
+  final ValueChanged<DateTime> onChanged;
+
+  static DateTime _maxDate() {
+    final now = DateTime.now();
+    return DateTime(now.year - 16, now.month, now.day);
+  }
+
+  Future<void> _pick(BuildContext context) async {
+    final max = _maxDate();
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: value ?? max,
+      firstDate: DateTime(1900),
+      lastDate: max,
+      helpText: context.l10n.registerDobLabel,
+    );
+    if (picked != null) onChanged(picked);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final hasValue = value != null;
+    final errorColor = Theme.of(context).colorScheme.error;
+    final borderColor = showError ? errorColor : AppColors.divider;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onTap: () => _pick(context),
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.lg,
+              vertical: AppSpacing.md,
+            ),
+            decoration: BoxDecoration(
+              border: Border.all(color: borderColor),
+              borderRadius: AppRadius.smAll,
+              color: AppColors.surface,
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.registerDobLabel,
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: showError
+                              ? errorColor
+                              : AppColors.textSecondary,
+                          fontSize: hasValue ? 11 : 14,
+                        ),
+                      ),
+                      if (hasValue) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          _formatDate(value!),
+                          style: AppTextStyles.bodyMedium,
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                Icon(
+                  FluentIcons.calendar_24_regular,
+                  size: 20,
+                  color: showError ? errorColor : AppColors.textSecondary,
+                ),
+              ],
+            ),
+          ),
+        ),
+        if (showError) ...[
+          const SizedBox(height: AppSpacing.xs),
+          Padding(
+            padding: const EdgeInsetsDirectional.only(start: AppSpacing.lg),
+            child: Text(
+              l10n.fieldRequired,
+              style: AppTextStyles.bodySmall.copyWith(color: errorColor),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  String _formatDate(DateTime date) {
+    final y = date.year.toString().padLeft(4, '0');
+    final m = date.month.toString().padLeft(2, '0');
+    final d = date.day.toString().padLeft(2, '0');
+    return '$d / $m / $y';
   }
 }
 

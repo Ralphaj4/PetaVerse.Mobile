@@ -106,6 +106,12 @@ class AppLocalizationsAr extends AppLocalizations {
       'أنشئ حساباً وامنح حيواناتك الأليفة الرعاية التي تستحقها.';
 
   @override
+  String get registerDobLabel => 'تاريخ الميلاد';
+
+  @override
+  String get registerAgeError => 'يجب أن يكون عمرك 16 عامًا على الأقل للتسجيل.';
+
+  @override
   String get firstName => 'الاسم الأول';
 
   @override

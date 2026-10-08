@@ -31,6 +31,8 @@
   "registerTitle1": "Rejoignez la",
   "registerTitle2": "Famille",
   "registerSubtitle": "Créez un compte et offrez à vos animaux les soins qu'ils méritent.",
+  "registerDobLabel": "Date de naissance",
+  "registerAgeError": "Vous devez avoir au moins 16 ans pour vous inscrire.",
   "firstName": "Prénom",
   "lastName": "Nom",
   "emailOptional": "E-mail (facultatif)",

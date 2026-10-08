@@ -286,6 +286,18 @@ abstract class AppLocalizations {
   /// **'Create an account and give your pets the care they deserve.'**
   String get registerSubtitle;
 
+  /// No description provided for @registerDobLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of Birth'**
+  String get registerDobLabel;
+
+  /// No description provided for @registerAgeError.
+  ///
+  /// In en, this message translates to:
+  /// **'You must be at least 16 years old to register.'**
+  String get registerAgeError;
+
   /// No description provided for @firstName.
   ///
   /// In en, this message translates to:

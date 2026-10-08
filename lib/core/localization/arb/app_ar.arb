@@ -31,6 +31,8 @@
   "registerTitle1": "انضم إلى",
   "registerTitle2": "العائلة",
   "registerSubtitle": "أنشئ حساباً وامنح حيواناتك الأليفة الرعاية التي تستحقها.",
+  "registerDobLabel": "تاريخ الميلاد",
+  "registerAgeError": "يجب أن يكون عمرك 16 عامًا على الأقل للتسجيل.",
   "firstName": "الاسم الأول",
   "lastName": "اسم العائلة",
   "emailOptional": "البريد الإلكتروني (اختياري)",

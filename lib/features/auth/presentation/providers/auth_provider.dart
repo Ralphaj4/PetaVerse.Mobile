@@ -45,6 +45,7 @@ class AuthNotifier extends _$AuthNotifier {
     required double latitude,
     required double longitude,
     required String locationName,
+    required DateTime dateOfBirth,
     String? email,
     bool captchaAcknowledged = false,
   }) =>
@@ -57,6 +58,7 @@ class AuthNotifier extends _$AuthNotifier {
               latitude: latitude,
               longitude: longitude,
               locationName: locationName,
+              dateOfBirth: dateOfBirth,
               email: email,
               captchaAcknowledged: captchaAcknowledged,
             ),

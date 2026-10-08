@@ -107,6 +107,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Create an account and give your pets the care they deserve.';
 
   @override
+  String get registerDobLabel => 'Date of Birth';
+
+  @override
+  String get registerAgeError =>
+      'You must be at least 16 years old to register.';
+
+  @override
   String get firstName => 'First Name';
 
   @override

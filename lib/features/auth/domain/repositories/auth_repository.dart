@@ -18,6 +18,7 @@ abstract interface class AuthRepository {
     required double latitude,
     required double longitude,
     required String locationName,
+    required DateTime dateOfBirth,
     String? email,
     bool captchaAcknowledged = false,
   });

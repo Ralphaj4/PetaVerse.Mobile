@@ -107,6 +107,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Créez un compte et offrez à vos animaux les soins qu\'ils méritent.';
 
   @override
+  String get registerDobLabel => 'Date de naissance';
+
+  @override
+  String get registerAgeError =>
+      'Vous devez avoir au moins 16 ans pour vous inscrire.';
+
+  @override
   String get firstName => 'Prénom';
 
   @override
