@@ -31,18 +31,26 @@ class AuthInterceptor extends Interceptor {
   AuthInterceptor({
     required SecureStorageService secureStorage,
     required Dio refreshDio,
+    required Dio mainDio,
     required AuthEvents authEvents,
     required LoggerService logger,
   })  : _secureStorage = secureStorage,
         _refreshDio = refreshDio,
+        _mainDio = mainDio,
         _authEvents = authEvents,
         _logger = logger;
 
   final SecureStorageService _secureStorage;
 
-  /// A bare Dio (no interceptors) used only for the refresh call, so a
-  /// failing refresh can never recurse.
+  /// A bare Dio (no interceptors) used ONLY for the /auth/refresh call itself,
+  /// so a failing refresh can never recurse through this interceptor.
   final Dio _refreshDio;
+
+  /// The main Dio instance (with the full interceptor chain) used to replay the
+  /// original request after a successful token refresh. Using the main Dio
+  /// ensures redirects, culture headers, and HTTPS handling are all applied
+  /// correctly — the bare _refreshDio strips Authorization on HTTPS redirects.
+  final Dio _mainDio;
 
   /// Emits when the session dies unrecoverably; the session gate listens and
   /// redirects to login. Without this the tokens would be cleared but the
@@ -107,13 +115,12 @@ class AuthInterceptor extends Interceptor {
     }
 
     try {
-      // Mark as retried so we don't loop infinitely
+      // Mark as retried so we don't loop infinitely on a fresh 401.
+      // Use the main Dio (full interceptor chain) so the replay goes through
+      // CultureInterceptor and handles HTTPS redirects correctly — the bare
+      // _refreshDio would strip the Authorization header on any redirect.
       final options = err.requestOptions..extra['auth_retried'] = true;
-      final token = await _secureStorage.readAccessToken();
-      if (token != null && token.isNotEmpty) {
-        options.headers['Authorization'] = 'Bearer $token';
-      }
-      final response = await _refreshDio.fetch<dynamic>(options);
+      final response = await _mainDio.fetch<dynamic>(options);
       handler.resolve(response);
     } on DioException catch (retryError) {
       // Only a real 401 here means the freshly-issued access token is already

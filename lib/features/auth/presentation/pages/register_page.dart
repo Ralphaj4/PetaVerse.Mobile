@@ -408,8 +408,7 @@ class _ConsentText extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-          TextSpan(text: l10n.legalConsentSuffix),
+          )
         ],
       ),
     );

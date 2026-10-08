@@ -48,6 +48,7 @@ class ApiClient {
       AuthInterceptor(
         secureStorage: secureStorage,
         refreshDio: refreshDio,
+        mainDio: _dio,
         authEvents: authEvents,
         logger: logger,
       ),
