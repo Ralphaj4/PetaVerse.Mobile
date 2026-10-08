@@ -12,13 +12,11 @@ class PagedFeed {
   const PagedFeed({
     required this.posts,
     required this.cursor,
-    this.postCount,
     this.loadingMore = false,
   });
 
   final List<Post> posts;
   final PageCursor cursor;
-  final int? postCount;
   final bool loadingMore;
 
   bool get hasMore => cursor.hasMore;
@@ -26,13 +24,11 @@ class PagedFeed {
   PagedFeed copyWith({
     List<Post>? posts,
     PageCursor? cursor,
-    int? postCount,
     bool? loadingMore,
   }) =>
       PagedFeed(
         posts: posts ?? this.posts,
         cursor: cursor ?? this.cursor,
-        postCount: postCount ?? this.postCount,
         loadingMore: loadingMore ?? this.loadingMore,
       );
 }
@@ -64,7 +60,7 @@ class FollowingFeed extends _$FollowingFeed {
 
     final result = await ref.read(communityRepositoryProvider).getFollowingFeed(
           actingPetId: ref.read(actingPetIdProvider),
-          page: current.cursor.nextPage ?? 0,
+          cursor: current.cursor.nextCursor,
         );
     result.when(
       success: (page) => state = AsyncData(
@@ -139,7 +135,7 @@ class DiscoverFeed extends _$DiscoverFeed {
     state = AsyncData(current.copyWith(loadingMore: true));
     final result = await ref.read(communityRepositoryProvider).getDiscoverFeed(
           actingPetId: ref.read(actingPetIdProvider),
-          page: current.cursor.nextPage ?? 0,
+          cursor: current.cursor.nextCursor,
         );
     result.when(
       success: (page) => state = AsyncData(
@@ -226,7 +222,7 @@ class SavedPosts extends _$SavedPosts {
     state = AsyncData(current.copyWith(loadingMore: true));
     final result = await ref.read(communityRepositoryProvider).getSavedPosts(
           actingPetId: ref.read(actingPetIdProvider),
-          page: current.cursor.nextPage ?? 0,
+          cursor: current.cursor.nextCursor,
         );
     result.when(
       success: (page) => state = AsyncData(
@@ -263,7 +259,7 @@ class MyPosts extends _$MyPosts {
           viewerPetId: actingPetId,
         );
     final page = result.when(success: (p) => p, failure: (f) => throw f);
-    return PagedFeed(posts: page.posts, cursor: page.cursor, postCount: page.postCount);
+    return PagedFeed(posts: page.posts, cursor: page.cursor);
   }
 
   Future<void> refresh() async {
@@ -278,14 +274,13 @@ class MyPosts extends _$MyPosts {
     final result = await ref.read(communityRepositoryProvider).getPetPosts(
           petId: ref.read(actingPetIdProvider) ?? 0,
           viewerPetId: ref.read(actingPetIdProvider),
-          page: current.cursor.nextPage ?? 0,
+          cursor: current.cursor.nextCursor,
         );
     result.when(
       success: (page) => state = AsyncData(
         current.copyWith(
           posts: [...current.posts, ...page.posts],
           cursor: page.cursor,
-          postCount: page.postCount,
           loadingMore: false,
         ),
       ),
@@ -315,7 +310,7 @@ class PetPosts extends _$PetPosts {
           viewerPetId: ref.watch(actingPetIdProvider),
         );
     final page = result.when(success: (p) => p, failure: (f) => throw f);
-    return PagedFeed(posts: page.posts, cursor: page.cursor, postCount: page.postCount);
+    return PagedFeed(posts: page.posts, cursor: page.cursor);
   }
 
   Future<void> loadMore() async {
@@ -325,14 +320,13 @@ class PetPosts extends _$PetPosts {
     final result = await ref.read(communityRepositoryProvider).getPetPosts(
           petId: petId,
           viewerPetId: ref.read(actingPetIdProvider),
-          page: current.cursor.nextPage ?? 0,
+          cursor: current.cursor.nextCursor,
         );
     result.when(
       success: (page) => state = AsyncData(
         current.copyWith(
           posts: [...current.posts, ...page.posts],
           cursor: page.cursor,
-          postCount: page.postCount,
           loadingMore: false,
         ),
       ),
@@ -404,7 +398,7 @@ class HashtagFeedNotifier extends _$HashtagFeedNotifier {
     final result = await ref.read(communityRepositoryProvider).getHashtagFeed(
           tag: tag,
           actingPetId: ref.read(actingPetIdProvider),
-          page: current.cursor.nextPage ?? 0,
+          cursor: current.cursor.nextCursor,
         );
     result.when(
       success: (page) => state = AsyncData(

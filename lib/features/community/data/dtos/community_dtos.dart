@@ -331,8 +331,7 @@ abstract class FeedResponseDto with _$FeedResponseDto {
   const factory FeedResponseDto({
     @Default(<PostDto>[]) List<PostDto> posts,
     @Default(false) bool hasMore,
-    int? nextPage,
-    int? postCount,
+    String? nextCursor,
   }) = _FeedResponseDto;
 
   const FeedResponseDto._();
@@ -343,8 +342,7 @@ abstract class FeedResponseDto with _$FeedResponseDto {
   FeedPage toEntity({Set<int> myPetIds = const {}}) => FeedPage(
         posts:
             posts.map((p) => p.toEntity(myPetIds: myPetIds)).toList(growable: false),
-        cursor: PageCursor(hasMore: hasMore, nextPage: nextPage),
-        postCount: postCount,
+        cursor: PageCursor(hasMore: hasMore, nextCursor: nextCursor),
       );
 }
 
@@ -357,7 +355,7 @@ abstract class DiscoverResponseDto with _$DiscoverResponseDto {
     @Default(<CommunityDto>[]) List<CommunityDto> suggestedCommunities,
     @Default(<LostFoundAlertDto>[]) List<LostFoundAlertDto> alerts,
     @Default(false) bool hasMore,
-    int? nextPage,
+    String? nextCursor,
   }) = _DiscoverResponseDto;
 
   const DiscoverResponseDto._();
@@ -375,7 +373,7 @@ abstract class DiscoverResponseDto with _$DiscoverResponseDto {
             .map((c) => c.toEntity(leadIsMine: myPetIds.contains(c.lead.id)))
             .toList(growable: false),
         alerts: alerts.map((a) => a.toEntity()).toList(growable: false),
-        cursor: PageCursor(hasMore: hasMore, nextPage: nextPage),
+        cursor: PageCursor(hasMore: hasMore, nextCursor: nextCursor),
       );
 }
 
@@ -385,7 +383,7 @@ abstract class CommentsResponseDto with _$CommentsResponseDto {
   const factory CommentsResponseDto({
     @Default(<CommentDto>[]) List<CommentDto> comments,
     @Default(false) bool hasMore,
-    int? nextPage,
+    String? nextCursor,
   }) = _CommentsResponseDto;
 
   const CommentsResponseDto._();
@@ -397,7 +395,7 @@ abstract class CommentsResponseDto with _$CommentsResponseDto {
         comments: comments
             .map((c) => c.toEntity(myPetIds: myPetIds))
             .toList(growable: false),
-        cursor: PageCursor(hasMore: hasMore, nextPage: nextPage),
+        cursor: PageCursor(hasMore: hasMore, nextCursor: nextCursor),
       );
 }
 
@@ -412,7 +410,7 @@ abstract class PetPageDto with _$PetPageDto {
     @Default(<PetSummaryDto>[]) List<PetSummaryDto> blockedPets,
     @Default(0) int count,
     @Default(false) bool hasMore,
-    int? nextPage,
+    String? nextCursor,
   }) = _PetPageDto;
 
   const PetPageDto._();
@@ -431,7 +429,7 @@ abstract class PetPageDto with _$PetPageDto {
           .map((p) => p.toEntity(mine: myPetIds.contains(p.id)))
           .toList(growable: false),
       count: count,
-      cursor: PageCursor(hasMore: hasMore, nextPage: nextPage),
+      cursor: PageCursor(hasMore: hasMore, nextCursor: nextCursor),
     );
   }
 }
@@ -460,7 +458,7 @@ abstract class NotificationsResponseDto with _$NotificationsResponseDto {
     @Default(<NotificationDto>[]) List<NotificationDto> notifications,
     @Default(0) int unreadCount,
     @Default(false) bool hasMore,
-    int? nextPage,
+    String? nextCursor,
   }) = _NotificationsResponseDto;
 
   const NotificationsResponseDto._();
@@ -472,7 +470,7 @@ abstract class NotificationsResponseDto with _$NotificationsResponseDto {
         notifications:
             notifications.map((n) => n.toEntity()).toList(growable: false),
         unreadCount: unreadCount,
-        cursor: PageCursor(hasMore: hasMore, nextPage: nextPage),
+        cursor: PageCursor(hasMore: hasMore, nextCursor: nextCursor),
       );
 }
 
@@ -484,7 +482,7 @@ abstract class HashtagFeedResponseDto with _$HashtagFeedResponseDto {
     @Default(0) int postCount,
     @Default(<PostDto>[]) List<PostDto> posts,
     @Default(false) bool hasMore,
-    int? nextPage,
+    String? nextCursor,
   }) = _HashtagFeedResponseDto;
 
   const HashtagFeedResponseDto._();
@@ -497,7 +495,7 @@ abstract class HashtagFeedResponseDto with _$HashtagFeedResponseDto {
         postCount: postCount,
         posts:
             posts.map((p) => p.toEntity(myPetIds: myPetIds)).toList(growable: false),
-        cursor: PageCursor(hasMore: hasMore, nextPage: nextPage),
+        cursor: PageCursor(hasMore: hasMore, nextCursor: nextCursor),
       );
 }
 
@@ -507,7 +505,7 @@ abstract class SearchResponseDto with _$SearchResponseDto {
   const factory SearchResponseDto({
     @Default(<SearchResultDto>[]) List<SearchResultDto> results,
     @Default(false) bool hasMore,
-    int? nextPage,
+    String? nextCursor,
   }) = _SearchResponseDto;
 
   const SearchResponseDto._();
@@ -519,7 +517,7 @@ abstract class SearchResponseDto with _$SearchResponseDto {
         results: results
             .map((r) => r.toEntity(myPetIds: myPetIds))
             .toList(growable: false),
-        cursor: PageCursor(hasMore: hasMore, nextPage: nextPage),
+        cursor: PageCursor(hasMore: hasMore, nextCursor: nextCursor),
       );
 }
 

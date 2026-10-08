@@ -266,16 +266,14 @@ _FeedResponseDto _$FeedResponseDtoFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const <PostDto>[],
       hasMore: json['hasMore'] as bool? ?? false,
-      nextPage: (json['nextPage'] as num?)?.toInt(),
-      postCount: (json['postCount'] as num?)?.toInt(),
+      nextCursor: json['nextCursor'] as String?,
     );
 
 Map<String, dynamic> _$FeedResponseDtoToJson(_FeedResponseDto instance) =>
     <String, dynamic>{
       'posts': instance.posts,
       'hasMore': instance.hasMore,
-      'nextPage': instance.nextPage,
-      'postCount': instance.postCount,
+      'nextCursor': instance.nextCursor,
     };
 
 _DiscoverResponseDto _$DiscoverResponseDtoFromJson(Map<String, dynamic> json) =>
@@ -303,7 +301,7 @@ _DiscoverResponseDto _$DiscoverResponseDtoFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const <LostFoundAlertDto>[],
       hasMore: json['hasMore'] as bool? ?? false,
-      nextPage: (json['nextPage'] as num?)?.toInt(),
+      nextCursor: json['nextCursor'] as String?,
     );
 
 Map<String, dynamic> _$DiscoverResponseDtoToJson(
@@ -314,7 +312,7 @@ Map<String, dynamic> _$DiscoverResponseDtoToJson(
   'suggestedCommunities': instance.suggestedCommunities,
   'alerts': instance.alerts,
   'hasMore': instance.hasMore,
-  'nextPage': instance.nextPage,
+  'nextCursor': instance.nextCursor,
 };
 
 _CommentsResponseDto _$CommentsResponseDtoFromJson(Map<String, dynamic> json) =>
@@ -325,7 +323,7 @@ _CommentsResponseDto _$CommentsResponseDtoFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const <CommentDto>[],
       hasMore: json['hasMore'] as bool? ?? false,
-      nextPage: (json['nextPage'] as num?)?.toInt(),
+      nextCursor: json['nextCursor'] as String?,
     );
 
 Map<String, dynamic> _$CommentsResponseDtoToJson(
@@ -333,7 +331,7 @@ Map<String, dynamic> _$CommentsResponseDtoToJson(
 ) => <String, dynamic>{
   'comments': instance.comments,
   'hasMore': instance.hasMore,
-  'nextPage': instance.nextPage,
+  'nextCursor': instance.nextCursor,
 };
 
 _PetPageDto _$PetPageDtoFromJson(Map<String, dynamic> json) => _PetPageDto(
@@ -354,7 +352,7 @@ _PetPageDto _$PetPageDtoFromJson(Map<String, dynamic> json) => _PetPageDto(
       const <PetSummaryDto>[],
   count: (json['count'] as num?)?.toInt() ?? 0,
   hasMore: json['hasMore'] as bool? ?? false,
-  nextPage: (json['nextPage'] as num?)?.toInt(),
+  nextCursor: json['nextCursor'] as String?,
 );
 
 Map<String, dynamic> _$PetPageDtoToJson(_PetPageDto instance) =>
@@ -364,7 +362,7 @@ Map<String, dynamic> _$PetPageDtoToJson(_PetPageDto instance) =>
       'blockedPets': instance.blockedPets,
       'count': instance.count,
       'hasMore': instance.hasMore,
-      'nextPage': instance.nextPage,
+      'nextCursor': instance.nextCursor,
     };
 
 _SuggestedPetsResponseDto _$SuggestedPetsResponseDtoFromJson(
@@ -391,7 +389,7 @@ _NotificationsResponseDto _$NotificationsResponseDtoFromJson(
       const <NotificationDto>[],
   unreadCount: (json['unreadCount'] as num?)?.toInt() ?? 0,
   hasMore: json['hasMore'] as bool? ?? false,
-  nextPage: (json['nextPage'] as num?)?.toInt(),
+  nextCursor: json['nextCursor'] as String?,
 );
 
 Map<String, dynamic> _$NotificationsResponseDtoToJson(
@@ -400,7 +398,7 @@ Map<String, dynamic> _$NotificationsResponseDtoToJson(
   'notifications': instance.notifications,
   'unreadCount': instance.unreadCount,
   'hasMore': instance.hasMore,
-  'nextPage': instance.nextPage,
+  'nextCursor': instance.nextCursor,
 };
 
 _HashtagFeedResponseDto _$HashtagFeedResponseDtoFromJson(
@@ -414,7 +412,7 @@ _HashtagFeedResponseDto _$HashtagFeedResponseDtoFromJson(
           .toList() ??
       const <PostDto>[],
   hasMore: json['hasMore'] as bool? ?? false,
-  nextPage: (json['nextPage'] as num?)?.toInt(),
+  nextCursor: json['nextCursor'] as String?,
 );
 
 Map<String, dynamic> _$HashtagFeedResponseDtoToJson(
@@ -424,7 +422,7 @@ Map<String, dynamic> _$HashtagFeedResponseDtoToJson(
   'postCount': instance.postCount,
   'posts': instance.posts,
   'hasMore': instance.hasMore,
-  'nextPage': instance.nextPage,
+  'nextCursor': instance.nextCursor,
 };
 
 _SearchResponseDto _$SearchResponseDtoFromJson(Map<String, dynamic> json) =>
@@ -435,14 +433,14 @@ _SearchResponseDto _$SearchResponseDtoFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const <SearchResultDto>[],
       hasMore: json['hasMore'] as bool? ?? false,
-      nextPage: (json['nextPage'] as num?)?.toInt(),
+      nextCursor: json['nextCursor'] as String?,
     );
 
 Map<String, dynamic> _$SearchResponseDtoToJson(_SearchResponseDto instance) =>
     <String, dynamic>{
       'results': instance.results,
       'hasMore': instance.hasMore,
-      'nextPage': instance.nextPage,
+      'nextCursor': instance.nextCursor,
     };
 
 _TrendingResponseDto _$TrendingResponseDtoFromJson(Map<String, dynamic> json) =>

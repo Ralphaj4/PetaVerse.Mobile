@@ -11,7 +11,7 @@ abstract interface class PollEventDataSource {
   Future<PollListResponseDto> getPolls({
     required int communityId,
     int? petId,
-    required int page,
+    String? cursor,
     required int limit,
   });
 
@@ -30,7 +30,7 @@ abstract interface class PollEventDataSource {
   Future<EventListResponseDto> getEvents({
     required int communityId,
     int? petId,
-    required int page,
+    String? cursor,
     required int limit,
   });
 
@@ -39,7 +39,7 @@ abstract interface class PollEventDataSource {
   Future<EventAttendeeListResponseDto> getAttendees({
     required int eventId,
     int? status,
-    required int page,
+    String? cursor,
     required int limit,
   });
 
@@ -65,12 +65,12 @@ class PollEventRemoteDataSource implements PollEventDataSource {
   Future<PollListResponseDto> getPolls({
     required int communityId,
     int? petId,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
       ApiEndpoints.communityPolls(communityId),
-      queryParameters: {'petId': ?petId, 'page': page, 'limit': limit},
+      queryParameters: {'petId': ?petId, 'cursor': ?cursor, 'limit': limit},
     );
     return PollListResponseDto.fromJson(data);
   }
@@ -123,12 +123,12 @@ class PollEventRemoteDataSource implements PollEventDataSource {
   Future<EventListResponseDto> getEvents({
     required int communityId,
     int? petId,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
       ApiEndpoints.communityEvents(communityId),
-      queryParameters: {'petId': ?petId, 'page': page, 'limit': limit},
+      queryParameters: {'petId': ?petId, 'cursor': ?cursor, 'limit': limit},
     );
     return EventListResponseDto.fromJson(data);
   }
@@ -146,14 +146,14 @@ class PollEventRemoteDataSource implements PollEventDataSource {
   Future<EventAttendeeListResponseDto> getAttendees({
     required int eventId,
     int? status,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
       ApiEndpoints.communityEventAttendees(eventId),
       queryParameters: {
         'status': ?status,
-        'page': page,
+        'cursor': ?cursor,
         'limit': limit,
       },
     );

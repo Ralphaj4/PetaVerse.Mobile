@@ -32,16 +32,16 @@ class CommunityRepositoryImpl implements CommunityRepository {
   Future<Result<FeedPage>> getFollowingFeed({
     int? actingPetId,
     FeedSort sort = FeedSort.latest,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) async {
-    // Only the default first page (latest sort) is cached for offline use.
-    final cacheable = page == 0 && sort == FeedSort.latest;
+    // Only the default first page (latest sort, no cursor) is cached for offline use.
+    final cacheable = cursor == null && sort == FeedSort.latest;
     try {
       final dto = await _remote.getFollowingFeed(
         petId: actingPetId,
         sort: sort.wire,
-        page: page,
+        cursor: cursor,
         limit: limit,
       );
       if (cacheable) await _local.writeFollowingFeed(dto);
@@ -62,14 +62,14 @@ class CommunityRepositoryImpl implements CommunityRepository {
   Future<Result<DiscoverPage>> getDiscoverFeed({
     int? actingPetId,
     FeedSort sort = FeedSort.trending,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) =>
       _guard(() async {
         final dto = await _remote.getDiscoverFeed(
           petId: actingPetId,
           sort: sort.wire,
-          page: page,
+          cursor: cursor,
           limit: limit,
         );
         return dto.toEntity(myPetIds: _mine);
@@ -78,13 +78,13 @@ class CommunityRepositoryImpl implements CommunityRepository {
   @override
   Future<Result<FeedPage>> getSavedPosts({
     int? actingPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) =>
       _guard(() async {
         final dto = await _remote.getSaved(
           petId: actingPetId,
-          page: page,
+          cursor: cursor,
           limit: limit,
         );
         return dto.toEntity(myPetIds: _mine);
@@ -94,14 +94,14 @@ class CommunityRepositoryImpl implements CommunityRepository {
   Future<Result<FeedPage>> getPetPosts({
     required int petId,
     int? viewerPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) =>
       _guard(() async {
         final dto = await _remote.getPetPosts(
           petId: petId,
           viewerPetId: viewerPetId,
-          page: page,
+          cursor: cursor,
           limit: limit,
         );
         return dto.toEntity(myPetIds: _mine);
@@ -241,14 +241,14 @@ class CommunityRepositoryImpl implements CommunityRepository {
   Future<Result<CommentPage>> getComments({
     required int postId,
     int? viewerPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) =>
       _guard(() async {
         final dto = await _remote.getComments(
           postId: postId,
           viewerPetId: viewerPetId,
-          page: page,
+          cursor: cursor,
           limit: limit,
         );
         return dto.toEntity(myPetIds: _mine);
@@ -330,14 +330,14 @@ class CommunityRepositoryImpl implements CommunityRepository {
   Future<Result<PetPage>> getFollowers({
     required int petId,
     int? viewerPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) =>
       _guard(() async {
         final dto = await _remote.getFollowers(
           petId: petId,
           viewerPetId: viewerPetId,
-          page: page,
+          cursor: cursor,
           limit: limit,
         );
         return dto.toEntity(myPetIds: _mine);
@@ -347,14 +347,14 @@ class CommunityRepositoryImpl implements CommunityRepository {
   Future<Result<PetPage>> getFollowing({
     required int petId,
     int? viewerPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) =>
       _guard(() async {
         final dto = await _remote.getFollowing(
           petId: petId,
           viewerPetId: viewerPetId,
-          page: page,
+          cursor: cursor,
           limit: limit,
         );
         return dto.toEntity(myPetIds: _mine);
@@ -376,15 +376,15 @@ class CommunityRepositoryImpl implements CommunityRepository {
   Future<Result<NotificationPage>> getNotifications({
     int? actingPetId,
     bool unreadOnly = false,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) async {
-    final cacheable = page == 0 && !unreadOnly;
+    final cacheable = cursor == null && !unreadOnly;
     try {
       final dto = await _remote.getNotifications(
         petId: actingPetId,
         unreadOnly: unreadOnly,
-        page: page,
+        cursor: cursor,
         limit: limit,
       );
       if (cacheable) await _local.writeNotifications(dto);
@@ -477,13 +477,13 @@ class CommunityRepositoryImpl implements CommunityRepository {
   @override
   Future<Result<PetPage>> getBlockedPets({
     int? actingPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) =>
       _guard(() async {
         final dto = await _remote.getBlocked(
           petId: actingPetId,
-          page: page,
+          cursor: cursor,
           limit: limit,
         );
         return dto.toEntity(myPetIds: _mine);
@@ -496,7 +496,7 @@ class CommunityRepositoryImpl implements CommunityRepository {
     required String query,
     int? actingPetId,
     SearchType type = SearchType.all,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) =>
       _guard(() async {
@@ -504,7 +504,7 @@ class CommunityRepositoryImpl implements CommunityRepository {
           query: query,
           petId: actingPetId,
           type: type.wire,
-          page: page,
+          cursor: cursor,
           limit: limit,
         );
         return dto.toEntity(myPetIds: _mine);
@@ -514,14 +514,14 @@ class CommunityRepositoryImpl implements CommunityRepository {
   Future<Result<HashtagFeed>> getHashtagFeed({
     required String tag,
     int? actingPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) =>
       _guard(() async {
         final dto = await _remote.getHashtagFeed(
           tag: tag,
           petId: actingPetId,
-          page: page,
+          cursor: cursor,
           limit: limit,
         );
         return dto.toEntity(myPetIds: _mine);

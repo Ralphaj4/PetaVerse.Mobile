@@ -79,7 +79,7 @@ class CommunityPolls extends _$CommunityPolls {
     final result = await ref.read(pollEventRepositoryProvider).getPolls(
           communityId: communityId,
           actingPetId: ref.read(actingPetIdProvider),
-          page: current.cursor.nextPage ?? 0,
+          cursor: current.cursor.nextCursor,
         );
     result.when(
       success: (page) => state = AsyncData(
@@ -179,7 +179,7 @@ class CommunityEvents extends _$CommunityEvents {
     final result = await ref.read(pollEventRepositoryProvider).getEvents(
           communityId: communityId,
           actingPetId: ref.read(actingPetIdProvider),
-          page: current.cursor.nextPage ?? 0,
+          cursor: current.cursor.nextCursor,
         );
     result.when(
       success: (page) => state = AsyncData(

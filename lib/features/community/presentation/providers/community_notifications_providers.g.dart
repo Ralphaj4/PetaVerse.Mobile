@@ -40,7 +40,7 @@ final class CommunityNotificationsProvider
 }
 
 String _$communityNotificationsHash() =>
-    r'c5045fb430ef2012e23aa419cb6c4d2fa4dc2b4d';
+    r'7cb512e5dd0fb95cc846a993e5a656d1bc82be06';
 
 /// The community notifications list ("the bell"). [NotificationPage.unreadCount]
 /// is the badge total. Offline-first: page 0 falls back to the Hive cache.

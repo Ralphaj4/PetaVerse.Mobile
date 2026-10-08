@@ -68,7 +68,7 @@ _PollListResponseDto _$PollListResponseDtoFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const <PollDto>[],
       hasMore: json['hasMore'] as bool? ?? false,
-      nextPage: (json['nextPage'] as num?)?.toInt(),
+      nextCursor: json['nextCursor'] as String?,
     );
 
 Map<String, dynamic> _$PollListResponseDtoToJson(
@@ -76,7 +76,7 @@ Map<String, dynamic> _$PollListResponseDtoToJson(
 ) => <String, dynamic>{
   'polls': instance.polls,
   'hasMore': instance.hasMore,
-  'nextPage': instance.nextPage,
+  'nextCursor': instance.nextCursor,
 };
 
 _EventLocationDto _$EventLocationDtoFromJson(Map<String, dynamic> json) =>
@@ -140,7 +140,7 @@ _EventListResponseDto _$EventListResponseDtoFromJson(
           .toList() ??
       const <EventDto>[],
   hasMore: json['hasMore'] as bool? ?? false,
-  nextPage: (json['nextPage'] as num?)?.toInt(),
+  nextCursor: json['nextCursor'] as String?,
 );
 
 Map<String, dynamic> _$EventListResponseDtoToJson(
@@ -148,7 +148,7 @@ Map<String, dynamic> _$EventListResponseDtoToJson(
 ) => <String, dynamic>{
   'events': instance.events,
   'hasMore': instance.hasMore,
-  'nextPage': instance.nextPage,
+  'nextCursor': instance.nextCursor,
 };
 
 _EventAttendeeDto _$EventAttendeeDtoFromJson(Map<String, dynamic> json) =>
@@ -176,7 +176,7 @@ _EventAttendeeListResponseDto _$EventAttendeeListResponseDtoFromJson(
           .toList() ??
       const <EventAttendeeDto>[],
   hasMore: json['hasMore'] as bool? ?? false,
-  nextPage: (json['nextPage'] as num?)?.toInt(),
+  nextCursor: json['nextCursor'] as String?,
 );
 
 Map<String, dynamic> _$EventAttendeeListResponseDtoToJson(
@@ -184,5 +184,5 @@ Map<String, dynamic> _$EventAttendeeListResponseDtoToJson(
 ) => <String, dynamic>{
   'attendees': instance.attendees,
   'hasMore': instance.hasMore,
-  'nextPage': instance.nextPage,
+  'nextCursor': instance.nextCursor,
 };

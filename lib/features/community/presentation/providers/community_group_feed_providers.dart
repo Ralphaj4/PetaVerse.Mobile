@@ -91,7 +91,7 @@ class CommunityDirectory extends _$CommunityDirectory {
           actingPetId: ref.read(actingPetIdProvider),
           category: filter.category,
           sort: filter.sort,
-          page: current.cursor.nextPage ?? 0,
+          cursor: current.cursor.nextCursor,
         );
     result.when(
       success: (page) => state = AsyncData(
@@ -197,7 +197,7 @@ class CommunityFeed extends _$CommunityFeed {
           actingPetId: ref.watch(actingPetIdProvider),
         );
     final page = result.when(success: (p) => p, failure: (f) => throw f);
-    return PagedFeed(posts: page.posts, cursor: page.cursor, postCount: page.postCount);
+    return PagedFeed(posts: page.posts, cursor: page.cursor);
   }
 
   Future<void> refresh() async {
@@ -212,7 +212,7 @@ class CommunityFeed extends _$CommunityFeed {
     final result = await ref.read(communityGroupRepositoryProvider).getCommunityFeed(
           communityId: communityId,
           actingPetId: ref.read(actingPetIdProvider),
-          page: current.cursor.nextPage ?? 0,
+          cursor: current.cursor.nextCursor,
         );
     result.when(
       success: (page) => state = AsyncData(

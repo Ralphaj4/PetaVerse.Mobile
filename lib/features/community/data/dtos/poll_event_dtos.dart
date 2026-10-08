@@ -80,13 +80,13 @@ abstract class PollDto with _$PollDto {
       );
 }
 
-/// `{ polls, hasMore, nextPage }`.
+/// `{ polls, hasMore, nextCursor }`.
 @freezed
 abstract class PollListResponseDto with _$PollListResponseDto {
   const factory PollListResponseDto({
     @Default(<PollDto>[]) List<PollDto> polls,
     @Default(false) bool hasMore,
-    int? nextPage,
+    String? nextCursor,
   }) = _PollListResponseDto;
 
   const PollListResponseDto._();
@@ -98,7 +98,7 @@ abstract class PollListResponseDto with _$PollListResponseDto {
         polls: polls
             .map((p) => p.toEntity(myPetIds: myPetIds))
             .toList(growable: false),
-        cursor: PageCursor(hasMore: hasMore, nextPage: nextPage),
+        cursor: PageCursor(hasMore: hasMore, nextCursor: nextCursor),
       );
 }
 
@@ -162,13 +162,13 @@ abstract class EventDto with _$EventDto {
       );
 }
 
-/// `{ events, hasMore, nextPage }`.
+/// `{ events, hasMore, nextCursor }`.
 @freezed
 abstract class EventListResponseDto with _$EventListResponseDto {
   const factory EventListResponseDto({
     @Default(<EventDto>[]) List<EventDto> events,
     @Default(false) bool hasMore,
-    int? nextPage,
+    String? nextCursor,
   }) = _EventListResponseDto;
 
   const EventListResponseDto._();
@@ -180,11 +180,11 @@ abstract class EventListResponseDto with _$EventListResponseDto {
         events: events
             .map((e) => e.toEntity(myPetIds: myPetIds))
             .toList(growable: false),
-        cursor: PageCursor(hasMore: hasMore, nextPage: nextPage),
+        cursor: PageCursor(hasMore: hasMore, nextCursor: nextCursor),
       );
 }
 
-/// One attendee row in `{ attendees, hasMore, nextPage }`.
+/// One attendee row in `{ attendees, hasMore, nextCursor }`.
 @freezed
 abstract class EventAttendeeDto with _$EventAttendeeDto {
   const factory EventAttendeeDto({
@@ -205,14 +205,14 @@ abstract class EventAttendeeDto with _$EventAttendeeDto {
       );
 }
 
-/// `{ attendees, hasMore, nextPage }`.
+/// `{ attendees, hasMore, nextCursor }`.
 @freezed
 abstract class EventAttendeeListResponseDto
     with _$EventAttendeeListResponseDto {
   const factory EventAttendeeListResponseDto({
     @Default(<EventAttendeeDto>[]) List<EventAttendeeDto> attendees,
     @Default(false) bool hasMore,
-    int? nextPage,
+    String? nextCursor,
   }) = _EventAttendeeListResponseDto;
 
   const EventAttendeeListResponseDto._();
@@ -225,6 +225,6 @@ abstract class EventAttendeeListResponseDto
         attendees: attendees
             .map((a) => a.toEntity(mine: myPetIds.contains(a.pet.id)))
             .toList(growable: false),
-        cursor: PageCursor(hasMore: hasMore, nextPage: nextPage),
+        cursor: PageCursor(hasMore: hasMore, nextCursor: nextCursor),
       );
 }

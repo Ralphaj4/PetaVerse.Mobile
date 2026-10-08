@@ -3026,7 +3026,7 @@ as int,
 /// @nodoc
 mixin _$FeedResponseDto {
 
- List<PostDto> get posts; bool get hasMore; int? get nextPage; int? get postCount;
+ List<PostDto> get posts; bool get hasMore; String? get nextCursor;
 /// Create a copy of FeedResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -3039,16 +3039,16 @@ $FeedResponseDtoCopyWith<FeedResponseDto> get copyWith => _$FeedResponseDtoCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedResponseDto&&const DeepCollectionEquality().equals(other.posts, posts)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage)&&(identical(other.postCount, postCount) || other.postCount == postCount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedResponseDto&&const DeepCollectionEquality().equals(other.posts, posts)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(posts),hasMore,nextPage,postCount);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(posts),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'FeedResponseDto(posts: $posts, hasMore: $hasMore, nextPage: $nextPage, postCount: $postCount)';
+  return 'FeedResponseDto(posts: $posts, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -3059,7 +3059,7 @@ abstract mixin class $FeedResponseDtoCopyWith<$Res>  {
   factory $FeedResponseDtoCopyWith(FeedResponseDto value, $Res Function(FeedResponseDto) _then) = _$FeedResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- List<PostDto> posts, bool hasMore, int? nextPage, int? postCount
+ List<PostDto> posts, bool hasMore, String? nextCursor
 });
 
 
@@ -3076,13 +3076,12 @@ class _$FeedResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of FeedResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? posts = null,Object? hasMore = null,Object? nextPage = freezed,Object? postCount = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? posts = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_self.copyWith(
 posts: null == posts ? _self.posts : posts // ignore: cast_nullable_to_non_nullable
 as List<PostDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,postCount: freezed == postCount ? _self.postCount : postCount // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -3167,10 +3166,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<PostDto> posts,  bool hasMore,  int? nextPage,  int? postCount)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<PostDto> posts,  bool hasMore,  String? nextCursor)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FeedResponseDto() when $default != null:
-return $default(_that.posts,_that.hasMore,_that.nextPage,_that.postCount);case _:
+return $default(_that.posts,_that.hasMore,_that.nextCursor);case _:
   return orElse();
 
 }
@@ -3188,10 +3187,10 @@ return $default(_that.posts,_that.hasMore,_that.nextPage,_that.postCount);case _
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<PostDto> posts,  bool hasMore,  int? nextPage,  int? postCount)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<PostDto> posts,  bool hasMore,  String? nextCursor)  $default,) {final _that = this;
 switch (_that) {
 case _FeedResponseDto():
-return $default(_that.posts,_that.hasMore,_that.nextPage,_that.postCount);case _:
+return $default(_that.posts,_that.hasMore,_that.nextCursor);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -3208,10 +3207,10 @@ return $default(_that.posts,_that.hasMore,_that.nextPage,_that.postCount);case _
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<PostDto> posts,  bool hasMore,  int? nextPage,  int? postCount)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<PostDto> posts,  bool hasMore,  String? nextCursor)?  $default,) {final _that = this;
 switch (_that) {
 case _FeedResponseDto() when $default != null:
-return $default(_that.posts,_that.hasMore,_that.nextPage,_that.postCount);case _:
+return $default(_that.posts,_that.hasMore,_that.nextCursor);case _:
   return null;
 
 }
@@ -3223,7 +3222,7 @@ return $default(_that.posts,_that.hasMore,_that.nextPage,_that.postCount);case _
 @JsonSerializable()
 
 class _FeedResponseDto extends FeedResponseDto {
-  const _FeedResponseDto({final  List<PostDto> posts = const <PostDto>[], this.hasMore = false, this.nextPage, this.postCount}): _posts = posts,super._();
+  const _FeedResponseDto({final  List<PostDto> posts = const <PostDto>[], this.hasMore = false, this.nextCursor}): _posts = posts,super._();
   factory _FeedResponseDto.fromJson(Map<String, dynamic> json) => _$FeedResponseDtoFromJson(json);
 
  final  List<PostDto> _posts;
@@ -3234,8 +3233,7 @@ class _FeedResponseDto extends FeedResponseDto {
 }
 
 @override@JsonKey() final  bool hasMore;
-@override final  int? nextPage;
-@override final  int? postCount;
+@override final  String? nextCursor;
 
 /// Create a copy of FeedResponseDto
 /// with the given fields replaced by the non-null parameter values.
@@ -3250,16 +3248,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedResponseDto&&const DeepCollectionEquality().equals(other._posts, _posts)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage)&&(identical(other.postCount, postCount) || other.postCount == postCount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedResponseDto&&const DeepCollectionEquality().equals(other._posts, _posts)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_posts),hasMore,nextPage,postCount);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_posts),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'FeedResponseDto(posts: $posts, hasMore: $hasMore, nextPage: $nextPage, postCount: $postCount)';
+  return 'FeedResponseDto(posts: $posts, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -3270,7 +3268,7 @@ abstract mixin class _$FeedResponseDtoCopyWith<$Res> implements $FeedResponseDto
   factory _$FeedResponseDtoCopyWith(_FeedResponseDto value, $Res Function(_FeedResponseDto) _then) = __$FeedResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- List<PostDto> posts, bool hasMore, int? nextPage, int? postCount
+ List<PostDto> posts, bool hasMore, String? nextCursor
 });
 
 
@@ -3287,13 +3285,12 @@ class __$FeedResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of FeedResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? posts = null,Object? hasMore = null,Object? nextPage = freezed,Object? postCount = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? posts = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_FeedResponseDto(
 posts: null == posts ? _self._posts : posts // ignore: cast_nullable_to_non_nullable
 as List<PostDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,postCount: freezed == postCount ? _self.postCount : postCount // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -3304,7 +3301,7 @@ as int?,
 /// @nodoc
 mixin _$DiscoverResponseDto {
 
- List<PostDto> get posts; List<PetSummaryDto> get suggestedPets; List<CommunityDto> get suggestedCommunities; List<LostFoundAlertDto> get alerts; bool get hasMore; int? get nextPage;
+ List<PostDto> get posts; List<PetSummaryDto> get suggestedPets; List<CommunityDto> get suggestedCommunities; List<LostFoundAlertDto> get alerts; bool get hasMore; String? get nextCursor;
 /// Create a copy of DiscoverResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -3317,16 +3314,16 @@ $DiscoverResponseDtoCopyWith<DiscoverResponseDto> get copyWith => _$DiscoverResp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiscoverResponseDto&&const DeepCollectionEquality().equals(other.posts, posts)&&const DeepCollectionEquality().equals(other.suggestedPets, suggestedPets)&&const DeepCollectionEquality().equals(other.suggestedCommunities, suggestedCommunities)&&const DeepCollectionEquality().equals(other.alerts, alerts)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiscoverResponseDto&&const DeepCollectionEquality().equals(other.posts, posts)&&const DeepCollectionEquality().equals(other.suggestedPets, suggestedPets)&&const DeepCollectionEquality().equals(other.suggestedCommunities, suggestedCommunities)&&const DeepCollectionEquality().equals(other.alerts, alerts)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(posts),const DeepCollectionEquality().hash(suggestedPets),const DeepCollectionEquality().hash(suggestedCommunities),const DeepCollectionEquality().hash(alerts),hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(posts),const DeepCollectionEquality().hash(suggestedPets),const DeepCollectionEquality().hash(suggestedCommunities),const DeepCollectionEquality().hash(alerts),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'DiscoverResponseDto(posts: $posts, suggestedPets: $suggestedPets, suggestedCommunities: $suggestedCommunities, alerts: $alerts, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'DiscoverResponseDto(posts: $posts, suggestedPets: $suggestedPets, suggestedCommunities: $suggestedCommunities, alerts: $alerts, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -3337,7 +3334,7 @@ abstract mixin class $DiscoverResponseDtoCopyWith<$Res>  {
   factory $DiscoverResponseDtoCopyWith(DiscoverResponseDto value, $Res Function(DiscoverResponseDto) _then) = _$DiscoverResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- List<PostDto> posts, List<PetSummaryDto> suggestedPets, List<CommunityDto> suggestedCommunities, List<LostFoundAlertDto> alerts, bool hasMore, int? nextPage
+ List<PostDto> posts, List<PetSummaryDto> suggestedPets, List<CommunityDto> suggestedCommunities, List<LostFoundAlertDto> alerts, bool hasMore, String? nextCursor
 });
 
 
@@ -3354,15 +3351,15 @@ class _$DiscoverResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of DiscoverResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? posts = null,Object? suggestedPets = null,Object? suggestedCommunities = null,Object? alerts = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? posts = null,Object? suggestedPets = null,Object? suggestedCommunities = null,Object? alerts = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_self.copyWith(
 posts: null == posts ? _self.posts : posts // ignore: cast_nullable_to_non_nullable
 as List<PostDto>,suggestedPets: null == suggestedPets ? _self.suggestedPets : suggestedPets // ignore: cast_nullable_to_non_nullable
 as List<PetSummaryDto>,suggestedCommunities: null == suggestedCommunities ? _self.suggestedCommunities : suggestedCommunities // ignore: cast_nullable_to_non_nullable
 as List<CommunityDto>,alerts: null == alerts ? _self.alerts : alerts // ignore: cast_nullable_to_non_nullable
 as List<LostFoundAlertDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -3447,10 +3444,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<PostDto> posts,  List<PetSummaryDto> suggestedPets,  List<CommunityDto> suggestedCommunities,  List<LostFoundAlertDto> alerts,  bool hasMore,  int? nextPage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<PostDto> posts,  List<PetSummaryDto> suggestedPets,  List<CommunityDto> suggestedCommunities,  List<LostFoundAlertDto> alerts,  bool hasMore,  String? nextCursor)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DiscoverResponseDto() when $default != null:
-return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that.alerts,_that.hasMore,_that.nextPage);case _:
+return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that.alerts,_that.hasMore,_that.nextCursor);case _:
   return orElse();
 
 }
@@ -3468,10 +3465,10 @@ return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<PostDto> posts,  List<PetSummaryDto> suggestedPets,  List<CommunityDto> suggestedCommunities,  List<LostFoundAlertDto> alerts,  bool hasMore,  int? nextPage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<PostDto> posts,  List<PetSummaryDto> suggestedPets,  List<CommunityDto> suggestedCommunities,  List<LostFoundAlertDto> alerts,  bool hasMore,  String? nextCursor)  $default,) {final _that = this;
 switch (_that) {
 case _DiscoverResponseDto():
-return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that.alerts,_that.hasMore,_that.nextPage);case _:
+return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that.alerts,_that.hasMore,_that.nextCursor);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -3488,10 +3485,10 @@ return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<PostDto> posts,  List<PetSummaryDto> suggestedPets,  List<CommunityDto> suggestedCommunities,  List<LostFoundAlertDto> alerts,  bool hasMore,  int? nextPage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<PostDto> posts,  List<PetSummaryDto> suggestedPets,  List<CommunityDto> suggestedCommunities,  List<LostFoundAlertDto> alerts,  bool hasMore,  String? nextCursor)?  $default,) {final _that = this;
 switch (_that) {
 case _DiscoverResponseDto() when $default != null:
-return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that.alerts,_that.hasMore,_that.nextPage);case _:
+return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that.alerts,_that.hasMore,_that.nextCursor);case _:
   return null;
 
 }
@@ -3503,7 +3500,7 @@ return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that
 @JsonSerializable()
 
 class _DiscoverResponseDto extends DiscoverResponseDto {
-  const _DiscoverResponseDto({final  List<PostDto> posts = const <PostDto>[], final  List<PetSummaryDto> suggestedPets = const <PetSummaryDto>[], final  List<CommunityDto> suggestedCommunities = const <CommunityDto>[], final  List<LostFoundAlertDto> alerts = const <LostFoundAlertDto>[], this.hasMore = false, this.nextPage}): _posts = posts,_suggestedPets = suggestedPets,_suggestedCommunities = suggestedCommunities,_alerts = alerts,super._();
+  const _DiscoverResponseDto({final  List<PostDto> posts = const <PostDto>[], final  List<PetSummaryDto> suggestedPets = const <PetSummaryDto>[], final  List<CommunityDto> suggestedCommunities = const <CommunityDto>[], final  List<LostFoundAlertDto> alerts = const <LostFoundAlertDto>[], this.hasMore = false, this.nextCursor}): _posts = posts,_suggestedPets = suggestedPets,_suggestedCommunities = suggestedCommunities,_alerts = alerts,super._();
   factory _DiscoverResponseDto.fromJson(Map<String, dynamic> json) => _$DiscoverResponseDtoFromJson(json);
 
  final  List<PostDto> _posts;
@@ -3535,7 +3532,7 @@ class _DiscoverResponseDto extends DiscoverResponseDto {
 }
 
 @override@JsonKey() final  bool hasMore;
-@override final  int? nextPage;
+@override final  String? nextCursor;
 
 /// Create a copy of DiscoverResponseDto
 /// with the given fields replaced by the non-null parameter values.
@@ -3550,16 +3547,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiscoverResponseDto&&const DeepCollectionEquality().equals(other._posts, _posts)&&const DeepCollectionEquality().equals(other._suggestedPets, _suggestedPets)&&const DeepCollectionEquality().equals(other._suggestedCommunities, _suggestedCommunities)&&const DeepCollectionEquality().equals(other._alerts, _alerts)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiscoverResponseDto&&const DeepCollectionEquality().equals(other._posts, _posts)&&const DeepCollectionEquality().equals(other._suggestedPets, _suggestedPets)&&const DeepCollectionEquality().equals(other._suggestedCommunities, _suggestedCommunities)&&const DeepCollectionEquality().equals(other._alerts, _alerts)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_posts),const DeepCollectionEquality().hash(_suggestedPets),const DeepCollectionEquality().hash(_suggestedCommunities),const DeepCollectionEquality().hash(_alerts),hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_posts),const DeepCollectionEquality().hash(_suggestedPets),const DeepCollectionEquality().hash(_suggestedCommunities),const DeepCollectionEquality().hash(_alerts),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'DiscoverResponseDto(posts: $posts, suggestedPets: $suggestedPets, suggestedCommunities: $suggestedCommunities, alerts: $alerts, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'DiscoverResponseDto(posts: $posts, suggestedPets: $suggestedPets, suggestedCommunities: $suggestedCommunities, alerts: $alerts, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -3570,7 +3567,7 @@ abstract mixin class _$DiscoverResponseDtoCopyWith<$Res> implements $DiscoverRes
   factory _$DiscoverResponseDtoCopyWith(_DiscoverResponseDto value, $Res Function(_DiscoverResponseDto) _then) = __$DiscoverResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- List<PostDto> posts, List<PetSummaryDto> suggestedPets, List<CommunityDto> suggestedCommunities, List<LostFoundAlertDto> alerts, bool hasMore, int? nextPage
+ List<PostDto> posts, List<PetSummaryDto> suggestedPets, List<CommunityDto> suggestedCommunities, List<LostFoundAlertDto> alerts, bool hasMore, String? nextCursor
 });
 
 
@@ -3587,15 +3584,15 @@ class __$DiscoverResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of DiscoverResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? posts = null,Object? suggestedPets = null,Object? suggestedCommunities = null,Object? alerts = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? posts = null,Object? suggestedPets = null,Object? suggestedCommunities = null,Object? alerts = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_DiscoverResponseDto(
 posts: null == posts ? _self._posts : posts // ignore: cast_nullable_to_non_nullable
 as List<PostDto>,suggestedPets: null == suggestedPets ? _self._suggestedPets : suggestedPets // ignore: cast_nullable_to_non_nullable
 as List<PetSummaryDto>,suggestedCommunities: null == suggestedCommunities ? _self._suggestedCommunities : suggestedCommunities // ignore: cast_nullable_to_non_nullable
 as List<CommunityDto>,alerts: null == alerts ? _self._alerts : alerts // ignore: cast_nullable_to_non_nullable
 as List<LostFoundAlertDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -3606,7 +3603,7 @@ as int?,
 /// @nodoc
 mixin _$CommentsResponseDto {
 
- List<CommentDto> get comments; bool get hasMore; int? get nextPage;
+ List<CommentDto> get comments; bool get hasMore; String? get nextCursor;
 /// Create a copy of CommentsResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -3619,16 +3616,16 @@ $CommentsResponseDtoCopyWith<CommentsResponseDto> get copyWith => _$CommentsResp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommentsResponseDto&&const DeepCollectionEquality().equals(other.comments, comments)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommentsResponseDto&&const DeepCollectionEquality().equals(other.comments, comments)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(comments),hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(comments),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'CommentsResponseDto(comments: $comments, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'CommentsResponseDto(comments: $comments, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -3639,7 +3636,7 @@ abstract mixin class $CommentsResponseDtoCopyWith<$Res>  {
   factory $CommentsResponseDtoCopyWith(CommentsResponseDto value, $Res Function(CommentsResponseDto) _then) = _$CommentsResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- List<CommentDto> comments, bool hasMore, int? nextPage
+ List<CommentDto> comments, bool hasMore, String? nextCursor
 });
 
 
@@ -3656,12 +3653,12 @@ class _$CommentsResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of CommentsResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? comments = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? comments = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_self.copyWith(
 comments: null == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable
 as List<CommentDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -3746,10 +3743,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<CommentDto> comments,  bool hasMore,  int? nextPage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<CommentDto> comments,  bool hasMore,  String? nextCursor)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CommentsResponseDto() when $default != null:
-return $default(_that.comments,_that.hasMore,_that.nextPage);case _:
+return $default(_that.comments,_that.hasMore,_that.nextCursor);case _:
   return orElse();
 
 }
@@ -3767,10 +3764,10 @@ return $default(_that.comments,_that.hasMore,_that.nextPage);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<CommentDto> comments,  bool hasMore,  int? nextPage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<CommentDto> comments,  bool hasMore,  String? nextCursor)  $default,) {final _that = this;
 switch (_that) {
 case _CommentsResponseDto():
-return $default(_that.comments,_that.hasMore,_that.nextPage);case _:
+return $default(_that.comments,_that.hasMore,_that.nextCursor);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -3787,10 +3784,10 @@ return $default(_that.comments,_that.hasMore,_that.nextPage);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<CommentDto> comments,  bool hasMore,  int? nextPage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<CommentDto> comments,  bool hasMore,  String? nextCursor)?  $default,) {final _that = this;
 switch (_that) {
 case _CommentsResponseDto() when $default != null:
-return $default(_that.comments,_that.hasMore,_that.nextPage);case _:
+return $default(_that.comments,_that.hasMore,_that.nextCursor);case _:
   return null;
 
 }
@@ -3802,7 +3799,7 @@ return $default(_that.comments,_that.hasMore,_that.nextPage);case _:
 @JsonSerializable()
 
 class _CommentsResponseDto extends CommentsResponseDto {
-  const _CommentsResponseDto({final  List<CommentDto> comments = const <CommentDto>[], this.hasMore = false, this.nextPage}): _comments = comments,super._();
+  const _CommentsResponseDto({final  List<CommentDto> comments = const <CommentDto>[], this.hasMore = false, this.nextCursor}): _comments = comments,super._();
   factory _CommentsResponseDto.fromJson(Map<String, dynamic> json) => _$CommentsResponseDtoFromJson(json);
 
  final  List<CommentDto> _comments;
@@ -3813,7 +3810,7 @@ class _CommentsResponseDto extends CommentsResponseDto {
 }
 
 @override@JsonKey() final  bool hasMore;
-@override final  int? nextPage;
+@override final  String? nextCursor;
 
 /// Create a copy of CommentsResponseDto
 /// with the given fields replaced by the non-null parameter values.
@@ -3828,16 +3825,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CommentsResponseDto&&const DeepCollectionEquality().equals(other._comments, _comments)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CommentsResponseDto&&const DeepCollectionEquality().equals(other._comments, _comments)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_comments),hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_comments),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'CommentsResponseDto(comments: $comments, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'CommentsResponseDto(comments: $comments, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -3848,7 +3845,7 @@ abstract mixin class _$CommentsResponseDtoCopyWith<$Res> implements $CommentsRes
   factory _$CommentsResponseDtoCopyWith(_CommentsResponseDto value, $Res Function(_CommentsResponseDto) _then) = __$CommentsResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- List<CommentDto> comments, bool hasMore, int? nextPage
+ List<CommentDto> comments, bool hasMore, String? nextCursor
 });
 
 
@@ -3865,12 +3862,12 @@ class __$CommentsResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of CommentsResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? comments = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? comments = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_CommentsResponseDto(
 comments: null == comments ? _self._comments : comments // ignore: cast_nullable_to_non_nullable
 as List<CommentDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -3881,7 +3878,7 @@ as int?,
 /// @nodoc
 mixin _$PetPageDto {
 
- List<PetSummaryDto> get followers; List<PetSummaryDto> get following; List<PetSummaryDto> get blockedPets; int get count; bool get hasMore; int? get nextPage;
+ List<PetSummaryDto> get followers; List<PetSummaryDto> get following; List<PetSummaryDto> get blockedPets; int get count; bool get hasMore; String? get nextCursor;
 /// Create a copy of PetPageDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -3894,16 +3891,16 @@ $PetPageDtoCopyWith<PetPageDto> get copyWith => _$PetPageDtoCopyWithImpl<PetPage
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PetPageDto&&const DeepCollectionEquality().equals(other.followers, followers)&&const DeepCollectionEquality().equals(other.following, following)&&const DeepCollectionEquality().equals(other.blockedPets, blockedPets)&&(identical(other.count, count) || other.count == count)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PetPageDto&&const DeepCollectionEquality().equals(other.followers, followers)&&const DeepCollectionEquality().equals(other.following, following)&&const DeepCollectionEquality().equals(other.blockedPets, blockedPets)&&(identical(other.count, count) || other.count == count)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(followers),const DeepCollectionEquality().hash(following),const DeepCollectionEquality().hash(blockedPets),count,hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(followers),const DeepCollectionEquality().hash(following),const DeepCollectionEquality().hash(blockedPets),count,hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'PetPageDto(followers: $followers, following: $following, blockedPets: $blockedPets, count: $count, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'PetPageDto(followers: $followers, following: $following, blockedPets: $blockedPets, count: $count, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -3914,7 +3911,7 @@ abstract mixin class $PetPageDtoCopyWith<$Res>  {
   factory $PetPageDtoCopyWith(PetPageDto value, $Res Function(PetPageDto) _then) = _$PetPageDtoCopyWithImpl;
 @useResult
 $Res call({
- List<PetSummaryDto> followers, List<PetSummaryDto> following, List<PetSummaryDto> blockedPets, int count, bool hasMore, int? nextPage
+ List<PetSummaryDto> followers, List<PetSummaryDto> following, List<PetSummaryDto> blockedPets, int count, bool hasMore, String? nextCursor
 });
 
 
@@ -3931,15 +3928,15 @@ class _$PetPageDtoCopyWithImpl<$Res>
 
 /// Create a copy of PetPageDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? followers = null,Object? following = null,Object? blockedPets = null,Object? count = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? followers = null,Object? following = null,Object? blockedPets = null,Object? count = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_self.copyWith(
 followers: null == followers ? _self.followers : followers // ignore: cast_nullable_to_non_nullable
 as List<PetSummaryDto>,following: null == following ? _self.following : following // ignore: cast_nullable_to_non_nullable
 as List<PetSummaryDto>,blockedPets: null == blockedPets ? _self.blockedPets : blockedPets // ignore: cast_nullable_to_non_nullable
 as List<PetSummaryDto>,count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
 as int,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -4024,10 +4021,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<PetSummaryDto> followers,  List<PetSummaryDto> following,  List<PetSummaryDto> blockedPets,  int count,  bool hasMore,  int? nextPage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<PetSummaryDto> followers,  List<PetSummaryDto> following,  List<PetSummaryDto> blockedPets,  int count,  bool hasMore,  String? nextCursor)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PetPageDto() when $default != null:
-return $default(_that.followers,_that.following,_that.blockedPets,_that.count,_that.hasMore,_that.nextPage);case _:
+return $default(_that.followers,_that.following,_that.blockedPets,_that.count,_that.hasMore,_that.nextCursor);case _:
   return orElse();
 
 }
@@ -4045,10 +4042,10 @@ return $default(_that.followers,_that.following,_that.blockedPets,_that.count,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<PetSummaryDto> followers,  List<PetSummaryDto> following,  List<PetSummaryDto> blockedPets,  int count,  bool hasMore,  int? nextPage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<PetSummaryDto> followers,  List<PetSummaryDto> following,  List<PetSummaryDto> blockedPets,  int count,  bool hasMore,  String? nextCursor)  $default,) {final _that = this;
 switch (_that) {
 case _PetPageDto():
-return $default(_that.followers,_that.following,_that.blockedPets,_that.count,_that.hasMore,_that.nextPage);case _:
+return $default(_that.followers,_that.following,_that.blockedPets,_that.count,_that.hasMore,_that.nextCursor);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -4065,10 +4062,10 @@ return $default(_that.followers,_that.following,_that.blockedPets,_that.count,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<PetSummaryDto> followers,  List<PetSummaryDto> following,  List<PetSummaryDto> blockedPets,  int count,  bool hasMore,  int? nextPage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<PetSummaryDto> followers,  List<PetSummaryDto> following,  List<PetSummaryDto> blockedPets,  int count,  bool hasMore,  String? nextCursor)?  $default,) {final _that = this;
 switch (_that) {
 case _PetPageDto() when $default != null:
-return $default(_that.followers,_that.following,_that.blockedPets,_that.count,_that.hasMore,_that.nextPage);case _:
+return $default(_that.followers,_that.following,_that.blockedPets,_that.count,_that.hasMore,_that.nextCursor);case _:
   return null;
 
 }
@@ -4080,7 +4077,7 @@ return $default(_that.followers,_that.following,_that.blockedPets,_that.count,_t
 @JsonSerializable()
 
 class _PetPageDto extends PetPageDto {
-  const _PetPageDto({final  List<PetSummaryDto> followers = const <PetSummaryDto>[], final  List<PetSummaryDto> following = const <PetSummaryDto>[], final  List<PetSummaryDto> blockedPets = const <PetSummaryDto>[], this.count = 0, this.hasMore = false, this.nextPage}): _followers = followers,_following = following,_blockedPets = blockedPets,super._();
+  const _PetPageDto({final  List<PetSummaryDto> followers = const <PetSummaryDto>[], final  List<PetSummaryDto> following = const <PetSummaryDto>[], final  List<PetSummaryDto> blockedPets = const <PetSummaryDto>[], this.count = 0, this.hasMore = false, this.nextCursor}): _followers = followers,_following = following,_blockedPets = blockedPets,super._();
   factory _PetPageDto.fromJson(Map<String, dynamic> json) => _$PetPageDtoFromJson(json);
 
  final  List<PetSummaryDto> _followers;
@@ -4106,7 +4103,7 @@ class _PetPageDto extends PetPageDto {
 
 @override@JsonKey() final  int count;
 @override@JsonKey() final  bool hasMore;
-@override final  int? nextPage;
+@override final  String? nextCursor;
 
 /// Create a copy of PetPageDto
 /// with the given fields replaced by the non-null parameter values.
@@ -4121,16 +4118,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PetPageDto&&const DeepCollectionEquality().equals(other._followers, _followers)&&const DeepCollectionEquality().equals(other._following, _following)&&const DeepCollectionEquality().equals(other._blockedPets, _blockedPets)&&(identical(other.count, count) || other.count == count)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PetPageDto&&const DeepCollectionEquality().equals(other._followers, _followers)&&const DeepCollectionEquality().equals(other._following, _following)&&const DeepCollectionEquality().equals(other._blockedPets, _blockedPets)&&(identical(other.count, count) || other.count == count)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_followers),const DeepCollectionEquality().hash(_following),const DeepCollectionEquality().hash(_blockedPets),count,hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_followers),const DeepCollectionEquality().hash(_following),const DeepCollectionEquality().hash(_blockedPets),count,hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'PetPageDto(followers: $followers, following: $following, blockedPets: $blockedPets, count: $count, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'PetPageDto(followers: $followers, following: $following, blockedPets: $blockedPets, count: $count, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -4141,7 +4138,7 @@ abstract mixin class _$PetPageDtoCopyWith<$Res> implements $PetPageDtoCopyWith<$
   factory _$PetPageDtoCopyWith(_PetPageDto value, $Res Function(_PetPageDto) _then) = __$PetPageDtoCopyWithImpl;
 @override @useResult
 $Res call({
- List<PetSummaryDto> followers, List<PetSummaryDto> following, List<PetSummaryDto> blockedPets, int count, bool hasMore, int? nextPage
+ List<PetSummaryDto> followers, List<PetSummaryDto> following, List<PetSummaryDto> blockedPets, int count, bool hasMore, String? nextCursor
 });
 
 
@@ -4158,15 +4155,15 @@ class __$PetPageDtoCopyWithImpl<$Res>
 
 /// Create a copy of PetPageDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? followers = null,Object? following = null,Object? blockedPets = null,Object? count = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? followers = null,Object? following = null,Object? blockedPets = null,Object? count = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_PetPageDto(
 followers: null == followers ? _self._followers : followers // ignore: cast_nullable_to_non_nullable
 as List<PetSummaryDto>,following: null == following ? _self._following : following // ignore: cast_nullable_to_non_nullable
 as List<PetSummaryDto>,blockedPets: null == blockedPets ? _self._blockedPets : blockedPets // ignore: cast_nullable_to_non_nullable
 as List<PetSummaryDto>,count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
 as int,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -4446,7 +4443,7 @@ as List<PetSummaryDto>,
 /// @nodoc
 mixin _$NotificationsResponseDto {
 
- List<NotificationDto> get notifications; int get unreadCount; bool get hasMore; int? get nextPage;
+ List<NotificationDto> get notifications; int get unreadCount; bool get hasMore; String? get nextCursor;
 /// Create a copy of NotificationsResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -4459,16 +4456,16 @@ $NotificationsResponseDtoCopyWith<NotificationsResponseDto> get copyWith => _$No
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationsResponseDto&&const DeepCollectionEquality().equals(other.notifications, notifications)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationsResponseDto&&const DeepCollectionEquality().equals(other.notifications, notifications)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(notifications),unreadCount,hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(notifications),unreadCount,hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'NotificationsResponseDto(notifications: $notifications, unreadCount: $unreadCount, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'NotificationsResponseDto(notifications: $notifications, unreadCount: $unreadCount, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -4479,7 +4476,7 @@ abstract mixin class $NotificationsResponseDtoCopyWith<$Res>  {
   factory $NotificationsResponseDtoCopyWith(NotificationsResponseDto value, $Res Function(NotificationsResponseDto) _then) = _$NotificationsResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- List<NotificationDto> notifications, int unreadCount, bool hasMore, int? nextPage
+ List<NotificationDto> notifications, int unreadCount, bool hasMore, String? nextCursor
 });
 
 
@@ -4496,13 +4493,13 @@ class _$NotificationsResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of NotificationsResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? notifications = null,Object? unreadCount = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? notifications = null,Object? unreadCount = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_self.copyWith(
 notifications: null == notifications ? _self.notifications : notifications // ignore: cast_nullable_to_non_nullable
 as List<NotificationDto>,unreadCount: null == unreadCount ? _self.unreadCount : unreadCount // ignore: cast_nullable_to_non_nullable
 as int,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -4587,10 +4584,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<NotificationDto> notifications,  int unreadCount,  bool hasMore,  int? nextPage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<NotificationDto> notifications,  int unreadCount,  bool hasMore,  String? nextCursor)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _NotificationsResponseDto() when $default != null:
-return $default(_that.notifications,_that.unreadCount,_that.hasMore,_that.nextPage);case _:
+return $default(_that.notifications,_that.unreadCount,_that.hasMore,_that.nextCursor);case _:
   return orElse();
 
 }
@@ -4608,10 +4605,10 @@ return $default(_that.notifications,_that.unreadCount,_that.hasMore,_that.nextPa
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<NotificationDto> notifications,  int unreadCount,  bool hasMore,  int? nextPage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<NotificationDto> notifications,  int unreadCount,  bool hasMore,  String? nextCursor)  $default,) {final _that = this;
 switch (_that) {
 case _NotificationsResponseDto():
-return $default(_that.notifications,_that.unreadCount,_that.hasMore,_that.nextPage);case _:
+return $default(_that.notifications,_that.unreadCount,_that.hasMore,_that.nextCursor);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -4628,10 +4625,10 @@ return $default(_that.notifications,_that.unreadCount,_that.hasMore,_that.nextPa
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<NotificationDto> notifications,  int unreadCount,  bool hasMore,  int? nextPage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<NotificationDto> notifications,  int unreadCount,  bool hasMore,  String? nextCursor)?  $default,) {final _that = this;
 switch (_that) {
 case _NotificationsResponseDto() when $default != null:
-return $default(_that.notifications,_that.unreadCount,_that.hasMore,_that.nextPage);case _:
+return $default(_that.notifications,_that.unreadCount,_that.hasMore,_that.nextCursor);case _:
   return null;
 
 }
@@ -4643,7 +4640,7 @@ return $default(_that.notifications,_that.unreadCount,_that.hasMore,_that.nextPa
 @JsonSerializable()
 
 class _NotificationsResponseDto extends NotificationsResponseDto {
-  const _NotificationsResponseDto({final  List<NotificationDto> notifications = const <NotificationDto>[], this.unreadCount = 0, this.hasMore = false, this.nextPage}): _notifications = notifications,super._();
+  const _NotificationsResponseDto({final  List<NotificationDto> notifications = const <NotificationDto>[], this.unreadCount = 0, this.hasMore = false, this.nextCursor}): _notifications = notifications,super._();
   factory _NotificationsResponseDto.fromJson(Map<String, dynamic> json) => _$NotificationsResponseDtoFromJson(json);
 
  final  List<NotificationDto> _notifications;
@@ -4655,7 +4652,7 @@ class _NotificationsResponseDto extends NotificationsResponseDto {
 
 @override@JsonKey() final  int unreadCount;
 @override@JsonKey() final  bool hasMore;
-@override final  int? nextPage;
+@override final  String? nextCursor;
 
 /// Create a copy of NotificationsResponseDto
 /// with the given fields replaced by the non-null parameter values.
@@ -4670,16 +4667,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationsResponseDto&&const DeepCollectionEquality().equals(other._notifications, _notifications)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationsResponseDto&&const DeepCollectionEquality().equals(other._notifications, _notifications)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_notifications),unreadCount,hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_notifications),unreadCount,hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'NotificationsResponseDto(notifications: $notifications, unreadCount: $unreadCount, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'NotificationsResponseDto(notifications: $notifications, unreadCount: $unreadCount, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -4690,7 +4687,7 @@ abstract mixin class _$NotificationsResponseDtoCopyWith<$Res> implements $Notifi
   factory _$NotificationsResponseDtoCopyWith(_NotificationsResponseDto value, $Res Function(_NotificationsResponseDto) _then) = __$NotificationsResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- List<NotificationDto> notifications, int unreadCount, bool hasMore, int? nextPage
+ List<NotificationDto> notifications, int unreadCount, bool hasMore, String? nextCursor
 });
 
 
@@ -4707,13 +4704,13 @@ class __$NotificationsResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of NotificationsResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? notifications = null,Object? unreadCount = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? notifications = null,Object? unreadCount = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_NotificationsResponseDto(
 notifications: null == notifications ? _self._notifications : notifications // ignore: cast_nullable_to_non_nullable
 as List<NotificationDto>,unreadCount: null == unreadCount ? _self.unreadCount : unreadCount // ignore: cast_nullable_to_non_nullable
 as int,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -4724,7 +4721,7 @@ as int?,
 /// @nodoc
 mixin _$HashtagFeedResponseDto {
 
- String get hashtag; int get postCount; List<PostDto> get posts; bool get hasMore; int? get nextPage;
+ String get hashtag; int get postCount; List<PostDto> get posts; bool get hasMore; String? get nextCursor;
 /// Create a copy of HashtagFeedResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -4737,16 +4734,16 @@ $HashtagFeedResponseDtoCopyWith<HashtagFeedResponseDto> get copyWith => _$Hashta
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HashtagFeedResponseDto&&(identical(other.hashtag, hashtag) || other.hashtag == hashtag)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&const DeepCollectionEquality().equals(other.posts, posts)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HashtagFeedResponseDto&&(identical(other.hashtag, hashtag) || other.hashtag == hashtag)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&const DeepCollectionEquality().equals(other.posts, posts)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,hashtag,postCount,const DeepCollectionEquality().hash(posts),hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,hashtag,postCount,const DeepCollectionEquality().hash(posts),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'HashtagFeedResponseDto(hashtag: $hashtag, postCount: $postCount, posts: $posts, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'HashtagFeedResponseDto(hashtag: $hashtag, postCount: $postCount, posts: $posts, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -4757,7 +4754,7 @@ abstract mixin class $HashtagFeedResponseDtoCopyWith<$Res>  {
   factory $HashtagFeedResponseDtoCopyWith(HashtagFeedResponseDto value, $Res Function(HashtagFeedResponseDto) _then) = _$HashtagFeedResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- String hashtag, int postCount, List<PostDto> posts, bool hasMore, int? nextPage
+ String hashtag, int postCount, List<PostDto> posts, bool hasMore, String? nextCursor
 });
 
 
@@ -4774,14 +4771,14 @@ class _$HashtagFeedResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of HashtagFeedResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? hashtag = null,Object? postCount = null,Object? posts = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? hashtag = null,Object? postCount = null,Object? posts = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_self.copyWith(
 hashtag: null == hashtag ? _self.hashtag : hashtag // ignore: cast_nullable_to_non_nullable
 as String,postCount: null == postCount ? _self.postCount : postCount // ignore: cast_nullable_to_non_nullable
 as int,posts: null == posts ? _self.posts : posts // ignore: cast_nullable_to_non_nullable
 as List<PostDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -4866,10 +4863,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String hashtag,  int postCount,  List<PostDto> posts,  bool hasMore,  int? nextPage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String hashtag,  int postCount,  List<PostDto> posts,  bool hasMore,  String? nextCursor)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HashtagFeedResponseDto() when $default != null:
-return $default(_that.hashtag,_that.postCount,_that.posts,_that.hasMore,_that.nextPage);case _:
+return $default(_that.hashtag,_that.postCount,_that.posts,_that.hasMore,_that.nextCursor);case _:
   return orElse();
 
 }
@@ -4887,10 +4884,10 @@ return $default(_that.hashtag,_that.postCount,_that.posts,_that.hasMore,_that.ne
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String hashtag,  int postCount,  List<PostDto> posts,  bool hasMore,  int? nextPage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String hashtag,  int postCount,  List<PostDto> posts,  bool hasMore,  String? nextCursor)  $default,) {final _that = this;
 switch (_that) {
 case _HashtagFeedResponseDto():
-return $default(_that.hashtag,_that.postCount,_that.posts,_that.hasMore,_that.nextPage);case _:
+return $default(_that.hashtag,_that.postCount,_that.posts,_that.hasMore,_that.nextCursor);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -4907,10 +4904,10 @@ return $default(_that.hashtag,_that.postCount,_that.posts,_that.hasMore,_that.ne
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String hashtag,  int postCount,  List<PostDto> posts,  bool hasMore,  int? nextPage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String hashtag,  int postCount,  List<PostDto> posts,  bool hasMore,  String? nextCursor)?  $default,) {final _that = this;
 switch (_that) {
 case _HashtagFeedResponseDto() when $default != null:
-return $default(_that.hashtag,_that.postCount,_that.posts,_that.hasMore,_that.nextPage);case _:
+return $default(_that.hashtag,_that.postCount,_that.posts,_that.hasMore,_that.nextCursor);case _:
   return null;
 
 }
@@ -4922,7 +4919,7 @@ return $default(_that.hashtag,_that.postCount,_that.posts,_that.hasMore,_that.ne
 @JsonSerializable()
 
 class _HashtagFeedResponseDto extends HashtagFeedResponseDto {
-  const _HashtagFeedResponseDto({this.hashtag = '', this.postCount = 0, final  List<PostDto> posts = const <PostDto>[], this.hasMore = false, this.nextPage}): _posts = posts,super._();
+  const _HashtagFeedResponseDto({this.hashtag = '', this.postCount = 0, final  List<PostDto> posts = const <PostDto>[], this.hasMore = false, this.nextCursor}): _posts = posts,super._();
   factory _HashtagFeedResponseDto.fromJson(Map<String, dynamic> json) => _$HashtagFeedResponseDtoFromJson(json);
 
 @override@JsonKey() final  String hashtag;
@@ -4935,7 +4932,7 @@ class _HashtagFeedResponseDto extends HashtagFeedResponseDto {
 }
 
 @override@JsonKey() final  bool hasMore;
-@override final  int? nextPage;
+@override final  String? nextCursor;
 
 /// Create a copy of HashtagFeedResponseDto
 /// with the given fields replaced by the non-null parameter values.
@@ -4950,16 +4947,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HashtagFeedResponseDto&&(identical(other.hashtag, hashtag) || other.hashtag == hashtag)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&const DeepCollectionEquality().equals(other._posts, _posts)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HashtagFeedResponseDto&&(identical(other.hashtag, hashtag) || other.hashtag == hashtag)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&const DeepCollectionEquality().equals(other._posts, _posts)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,hashtag,postCount,const DeepCollectionEquality().hash(_posts),hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,hashtag,postCount,const DeepCollectionEquality().hash(_posts),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'HashtagFeedResponseDto(hashtag: $hashtag, postCount: $postCount, posts: $posts, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'HashtagFeedResponseDto(hashtag: $hashtag, postCount: $postCount, posts: $posts, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -4970,7 +4967,7 @@ abstract mixin class _$HashtagFeedResponseDtoCopyWith<$Res> implements $HashtagF
   factory _$HashtagFeedResponseDtoCopyWith(_HashtagFeedResponseDto value, $Res Function(_HashtagFeedResponseDto) _then) = __$HashtagFeedResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String hashtag, int postCount, List<PostDto> posts, bool hasMore, int? nextPage
+ String hashtag, int postCount, List<PostDto> posts, bool hasMore, String? nextCursor
 });
 
 
@@ -4987,14 +4984,14 @@ class __$HashtagFeedResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of HashtagFeedResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? hashtag = null,Object? postCount = null,Object? posts = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? hashtag = null,Object? postCount = null,Object? posts = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_HashtagFeedResponseDto(
 hashtag: null == hashtag ? _self.hashtag : hashtag // ignore: cast_nullable_to_non_nullable
 as String,postCount: null == postCount ? _self.postCount : postCount // ignore: cast_nullable_to_non_nullable
 as int,posts: null == posts ? _self._posts : posts // ignore: cast_nullable_to_non_nullable
 as List<PostDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -5005,7 +5002,7 @@ as int?,
 /// @nodoc
 mixin _$SearchResponseDto {
 
- List<SearchResultDto> get results; bool get hasMore; int? get nextPage;
+ List<SearchResultDto> get results; bool get hasMore; String? get nextCursor;
 /// Create a copy of SearchResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -5018,16 +5015,16 @@ $SearchResponseDtoCopyWith<SearchResponseDto> get copyWith => _$SearchResponseDt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchResponseDto&&const DeepCollectionEquality().equals(other.results, results)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchResponseDto&&const DeepCollectionEquality().equals(other.results, results)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(results),hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(results),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'SearchResponseDto(results: $results, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'SearchResponseDto(results: $results, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -5038,7 +5035,7 @@ abstract mixin class $SearchResponseDtoCopyWith<$Res>  {
   factory $SearchResponseDtoCopyWith(SearchResponseDto value, $Res Function(SearchResponseDto) _then) = _$SearchResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- List<SearchResultDto> results, bool hasMore, int? nextPage
+ List<SearchResultDto> results, bool hasMore, String? nextCursor
 });
 
 
@@ -5055,12 +5052,12 @@ class _$SearchResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of SearchResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? results = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? results = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_self.copyWith(
 results: null == results ? _self.results : results // ignore: cast_nullable_to_non_nullable
 as List<SearchResultDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -5145,10 +5142,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<SearchResultDto> results,  bool hasMore,  int? nextPage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<SearchResultDto> results,  bool hasMore,  String? nextCursor)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SearchResponseDto() when $default != null:
-return $default(_that.results,_that.hasMore,_that.nextPage);case _:
+return $default(_that.results,_that.hasMore,_that.nextCursor);case _:
   return orElse();
 
 }
@@ -5166,10 +5163,10 @@ return $default(_that.results,_that.hasMore,_that.nextPage);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<SearchResultDto> results,  bool hasMore,  int? nextPage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<SearchResultDto> results,  bool hasMore,  String? nextCursor)  $default,) {final _that = this;
 switch (_that) {
 case _SearchResponseDto():
-return $default(_that.results,_that.hasMore,_that.nextPage);case _:
+return $default(_that.results,_that.hasMore,_that.nextCursor);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -5186,10 +5183,10 @@ return $default(_that.results,_that.hasMore,_that.nextPage);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<SearchResultDto> results,  bool hasMore,  int? nextPage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<SearchResultDto> results,  bool hasMore,  String? nextCursor)?  $default,) {final _that = this;
 switch (_that) {
 case _SearchResponseDto() when $default != null:
-return $default(_that.results,_that.hasMore,_that.nextPage);case _:
+return $default(_that.results,_that.hasMore,_that.nextCursor);case _:
   return null;
 
 }
@@ -5201,7 +5198,7 @@ return $default(_that.results,_that.hasMore,_that.nextPage);case _:
 @JsonSerializable()
 
 class _SearchResponseDto extends SearchResponseDto {
-  const _SearchResponseDto({final  List<SearchResultDto> results = const <SearchResultDto>[], this.hasMore = false, this.nextPage}): _results = results,super._();
+  const _SearchResponseDto({final  List<SearchResultDto> results = const <SearchResultDto>[], this.hasMore = false, this.nextCursor}): _results = results,super._();
   factory _SearchResponseDto.fromJson(Map<String, dynamic> json) => _$SearchResponseDtoFromJson(json);
 
  final  List<SearchResultDto> _results;
@@ -5212,7 +5209,7 @@ class _SearchResponseDto extends SearchResponseDto {
 }
 
 @override@JsonKey() final  bool hasMore;
-@override final  int? nextPage;
+@override final  String? nextCursor;
 
 /// Create a copy of SearchResponseDto
 /// with the given fields replaced by the non-null parameter values.
@@ -5227,16 +5224,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchResponseDto&&const DeepCollectionEquality().equals(other._results, _results)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchResponseDto&&const DeepCollectionEquality().equals(other._results, _results)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_results),hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_results),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'SearchResponseDto(results: $results, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'SearchResponseDto(results: $results, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -5247,7 +5244,7 @@ abstract mixin class _$SearchResponseDtoCopyWith<$Res> implements $SearchRespons
   factory _$SearchResponseDtoCopyWith(_SearchResponseDto value, $Res Function(_SearchResponseDto) _then) = __$SearchResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- List<SearchResultDto> results, bool hasMore, int? nextPage
+ List<SearchResultDto> results, bool hasMore, String? nextCursor
 });
 
 
@@ -5264,12 +5261,12 @@ class __$SearchResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of SearchResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? results = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? results = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_SearchResponseDto(
 results: null == results ? _self._results : results // ignore: cast_nullable_to_non_nullable
 as List<SearchResultDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

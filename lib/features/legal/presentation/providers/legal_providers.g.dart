@@ -280,7 +280,7 @@ final class LegalGateNotifierProvider
   }
 }
 
-String _$legalGateNotifierHash() => r'0402b3cb4e26fde0501c021342b92212122a7ddd';
+String _$legalGateNotifierHash() => r'f547e8c352ea0ece4eaef22ff3eebf24a4d760df';
 
 /// Gate for "has the signed-in user accepted the current legal documents",
 /// driving post-auth routing.

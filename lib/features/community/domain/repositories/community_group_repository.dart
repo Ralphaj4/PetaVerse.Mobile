@@ -21,14 +21,14 @@ abstract interface class CommunityGroupRepository {
     int? actingPetId,
     CommunityCategory? category,
     CommunitySort sort = CommunitySort.popular,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 
   Future<Result<CommunityDirectoryPage>> searchCommunities({
     required String query,
     int? actingPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 
@@ -55,13 +55,13 @@ abstract interface class CommunityGroupRepository {
     required int communityId,
     int? actingPetId,
     FeedSort sort = FeedSort.latest,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 
   Future<Result<CommunityMemberPage>> getMembers({
     required int communityId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 

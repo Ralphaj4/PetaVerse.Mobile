@@ -18,7 +18,7 @@ class CommunityRemoteDataSource {
   Future<FeedResponseDto> getFollowingFeed({
     int? petId,
     required int sort,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
@@ -26,7 +26,7 @@ class CommunityRemoteDataSource {
       queryParameters: {
         'petId': ?petId,
         'sort': sort,
-        'page': page,
+        'cursor': ?cursor,
         'limit': limit,
       },
     );
@@ -36,7 +36,7 @@ class CommunityRemoteDataSource {
   Future<DiscoverResponseDto> getDiscoverFeed({
     int? petId,
     required int sort,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
@@ -44,7 +44,7 @@ class CommunityRemoteDataSource {
       queryParameters: {
         'petId': ?petId,
         'sort': sort,
-        'page': page,
+        'cursor': ?cursor,
         'limit': limit,
       },
     );
@@ -53,12 +53,12 @@ class CommunityRemoteDataSource {
 
   Future<FeedResponseDto> getSaved({
     int? petId,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
       ApiEndpoints.communitySaved,
-      queryParameters: {'petId': ?petId, 'page': page, 'limit': limit},
+      queryParameters: {'petId': ?petId, 'cursor': ?cursor, 'limit': limit},
     );
     return FeedResponseDto.fromJson(data);
   }
@@ -79,14 +79,14 @@ class CommunityRemoteDataSource {
   Future<FeedResponseDto> getPetPosts({
     required int petId,
     int? viewerPetId,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
       ApiEndpoints.communityPetPosts(petId),
       queryParameters: {
         'viewerPetId': ?viewerPetId,
-        'page': page,
+        'cursor': ?cursor,
         'limit': limit,
       },
     );
@@ -173,14 +173,14 @@ class CommunityRemoteDataSource {
   Future<CommentsResponseDto> getComments({
     required int postId,
     int? viewerPetId,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
       ApiEndpoints.communityPostComments(postId),
       queryParameters: {
         'viewerPetId': ?viewerPetId,
-        'page': page,
+        'cursor': ?cursor,
         'limit': limit,
       },
     );
@@ -252,14 +252,14 @@ class CommunityRemoteDataSource {
   Future<PetPageDto> getFollowers({
     required int petId,
     int? viewerPetId,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
       ApiEndpoints.communityFollowers(petId),
       queryParameters: {
         'viewerPetId': ?viewerPetId,
-        'page': page,
+        'cursor': ?cursor,
         'limit': limit,
       },
     );
@@ -269,14 +269,14 @@ class CommunityRemoteDataSource {
   Future<PetPageDto> getFollowing({
     required int petId,
     int? viewerPetId,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
       ApiEndpoints.communityFollowing(petId),
       queryParameters: {
         'viewerPetId': ?viewerPetId,
-        'page': page,
+        'cursor': ?cursor,
         'limit': limit,
       },
     );
@@ -299,7 +299,7 @@ class CommunityRemoteDataSource {
   Future<NotificationsResponseDto> getNotifications({
     int? petId,
     required bool unreadOnly,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
@@ -307,7 +307,7 @@ class CommunityRemoteDataSource {
       queryParameters: {
         'petId': ?petId,
         'unreadOnly': unreadOnly,
-        'page': page,
+        'cursor': ?cursor,
         'limit': limit,
       },
     );
@@ -386,12 +386,12 @@ class CommunityRemoteDataSource {
 
   Future<PetPageDto> getBlocked({
     int? petId,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
       ApiEndpoints.communityBlocked,
-      queryParameters: {'petId': ?petId, 'page': page, 'limit': limit},
+      queryParameters: {'petId': ?petId, 'cursor': ?cursor, 'limit': limit},
     );
     return PetPageDto.fromJson(data);
   }
@@ -402,7 +402,7 @@ class CommunityRemoteDataSource {
     required String query,
     int? petId,
     required int type,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
@@ -411,7 +411,7 @@ class CommunityRemoteDataSource {
         'q': query,
         'petId': ?petId,
         'type': type,
-        'page': page,
+        'cursor': ?cursor,
         'limit': limit,
       },
     );
@@ -421,12 +421,12 @@ class CommunityRemoteDataSource {
   Future<HashtagFeedResponseDto> getHashtagFeed({
     required String tag,
     int? petId,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
       ApiEndpoints.communityHashtag(tag),
-      queryParameters: {'petId': ?petId, 'page': page, 'limit': limit},
+      queryParameters: {'petId': ?petId, 'cursor': ?cursor, 'limit': limit},
     );
     return HashtagFeedResponseDto.fromJson(data);
   }

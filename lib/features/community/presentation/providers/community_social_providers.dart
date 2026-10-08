@@ -24,7 +24,7 @@ class Followers extends _$Followers {
     final result = await ref.read(communityRepositoryProvider).getFollowers(
           petId: petId,
           viewerPetId: ref.read(actingPetIdProvider),
-          page: current.cursor.nextPage ?? 0,
+          cursor: current.cursor.nextCursor,
         );
     result.when(
       success: (page) => state = AsyncData(
@@ -57,7 +57,7 @@ class Following extends _$Following {
     final result = await ref.read(communityRepositoryProvider).getFollowing(
           petId: petId,
           viewerPetId: ref.read(actingPetIdProvider),
-          page: current.cursor.nextPage ?? 0,
+          cursor: current.cursor.nextCursor,
         );
     result.when(
       success: (page) => state = AsyncData(
@@ -164,7 +164,7 @@ class CommunitySearch extends _$CommunitySearch {
           query: ref.read(searchQueryProvider).trim(),
           type: ref.read(searchScopeProvider),
           actingPetId: ref.read(actingPetIdProvider),
-          page: current.cursor.nextPage ?? 0,
+          cursor: current.cursor.nextCursor,
         );
     result.when(
       success: (page) => state = AsyncData(

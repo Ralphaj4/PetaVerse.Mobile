@@ -124,7 +124,7 @@ final class CommunityDirectoryProvider
 }
 
 String _$communityDirectoryHash() =>
-    r'e4b1b244720a53316bd018fa8bc68a46196b2ea4';
+    r'ac7935e24d11da6473a39dc3643535f99ecb94b9';
 
 /// The communities directory. Loads page 0 on build (respecting the current
 /// [CommunityDirectoryFilter]), appends further pages via [loadMore]. Rebuilds
@@ -473,7 +473,7 @@ final class CommunityFeedProvider
   }
 }
 
-String _$communityFeedHash() => r'51ab4b5b8502593d26f59cab2af37abac28fc1df';
+String _$communityFeedHash() => r'f1c19efb69cf0469b4813a4517cb892e4c4ffd69';
 
 /// A community's post feed. Reuses [PagedFeed] (same shape as every other
 /// feed), so [PostCard] and the feed-list machinery render it unchanged.

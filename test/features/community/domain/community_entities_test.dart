@@ -85,11 +85,11 @@ void main() {
   group('PageCursor', () {
     test('empty cursor has no more pages', () {
       expect(PageCursor.empty.hasMore, false);
-      expect(PageCursor.empty.nextPage, isNull);
+      expect(PageCursor.empty.nextCursor, isNull);
     });
 
-    test('cursor with nextPage has more', () {
-      const c = PageCursor(hasMore: true, nextPage: 1);
+    test('cursor with nextCursor has more', () {
+      const c = PageCursor(hasMore: true, nextCursor: 'abc123');
       expect(c.hasMore, true);
     });
   });

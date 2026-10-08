@@ -11,14 +11,14 @@ abstract interface class CommunityGroupDataSource {
     int? petId,
     int? category,
     required int sort,
-    required int page,
+    String? cursor,
     required int limit,
   });
 
   Future<CommunityDirectoryResponseDto> searchCommunities({
     required String query,
     int? petId,
-    required int page,
+    String? cursor,
     required int limit,
   });
 
@@ -32,13 +32,13 @@ abstract interface class CommunityGroupDataSource {
     required int id,
     int? petId,
     required int sort,
-    required int page,
+    String? cursor,
     required int limit,
   });
 
   Future<CommunityMembersResponseDto> getMembers({
     required int id,
-    required int page,
+    String? cursor,
     required int limit,
   });
 
@@ -70,7 +70,7 @@ class CommunityGroupRemoteDataSource implements CommunityGroupDataSource {
     int? petId,
     int? category,
     required int sort,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
@@ -79,7 +79,7 @@ class CommunityGroupRemoteDataSource implements CommunityGroupDataSource {
         'petId': ?petId,
         'category': ?category,
         'sort': sort,
-        'page': page,
+        'cursor': ?cursor,
         'limit': limit,
       },
     );
@@ -90,7 +90,7 @@ class CommunityGroupRemoteDataSource implements CommunityGroupDataSource {
   Future<CommunityDirectoryResponseDto> searchCommunities({
     required String query,
     int? petId,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
@@ -98,7 +98,7 @@ class CommunityGroupRemoteDataSource implements CommunityGroupDataSource {
       queryParameters: {
         'q': query,
         'petId': ?petId,
-        'page': page,
+        'cursor': ?cursor,
         'limit': limit,
       },
     );
@@ -140,7 +140,7 @@ class CommunityGroupRemoteDataSource implements CommunityGroupDataSource {
     required int id,
     int? petId,
     required int sort,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
@@ -148,7 +148,7 @@ class CommunityGroupRemoteDataSource implements CommunityGroupDataSource {
       queryParameters: {
         'petId': ?petId,
         'sort': sort,
-        'page': page,
+        'cursor': ?cursor,
         'limit': limit,
       },
     );
@@ -158,12 +158,12 @@ class CommunityGroupRemoteDataSource implements CommunityGroupDataSource {
   @override
   Future<CommunityMembersResponseDto> getMembers({
     required int id,
-    required int page,
+    String? cursor,
     required int limit,
   }) async {
     final data = await _client.get<Map<String, dynamic>>(
       ApiEndpoints.communityGroupMembers(id),
-      queryParameters: {'page': page, 'limit': limit},
+      queryParameters: {'cursor': ?cursor, 'limit': limit},
     );
     return CommunityMembersResponseDto.fromJson(data);
   }

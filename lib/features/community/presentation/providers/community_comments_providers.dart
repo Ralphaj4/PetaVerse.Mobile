@@ -26,7 +26,7 @@ class PostComments extends _$PostComments {
     final result = await ref.read(communityRepositoryProvider).getComments(
           postId: postId,
           viewerPetId: ref.read(actingPetIdProvider),
-          page: current.cursor.nextPage ?? 0,
+          cursor: current.cursor.nextCursor,
         );
     result.when(
       success: (page) => state = AsyncData(

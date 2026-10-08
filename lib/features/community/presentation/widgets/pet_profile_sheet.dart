@@ -314,7 +314,7 @@ class _PetProfileSheetState extends ConsumerState<PetProfileSheet> {
         final postCount = postsAsync.when(
           loading: () => '...',
           error: (_, _) => '0',
-          data: (feed) => _compact(feed.postCount ?? feed.posts.length),
+          data: (feed) => _compact(feed.posts.length),
         );
         return Padding(
           padding: const EdgeInsets.fromLTRB(

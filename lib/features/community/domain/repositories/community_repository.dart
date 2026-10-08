@@ -15,27 +15,27 @@ abstract interface class CommunityRepository {
   Future<Result<FeedPage>> getFollowingFeed({
     int? actingPetId,
     FeedSort sort = FeedSort.latest,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 
   Future<Result<DiscoverPage>> getDiscoverFeed({
     int? actingPetId,
     FeedSort sort = FeedSort.trending,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 
   Future<Result<FeedPage>> getSavedPosts({
     int? actingPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 
   Future<Result<FeedPage>> getPetPosts({
     required int petId,
     int? viewerPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 
@@ -99,7 +99,7 @@ abstract interface class CommunityRepository {
   Future<Result<CommentPage>> getComments({
     required int postId,
     int? viewerPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 
@@ -146,14 +146,14 @@ abstract interface class CommunityRepository {
   Future<Result<PetPage>> getFollowers({
     required int petId,
     int? viewerPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 
   Future<Result<PetPage>> getFollowing({
     required int petId,
     int? viewerPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 
@@ -167,7 +167,7 @@ abstract interface class CommunityRepository {
   Future<Result<NotificationPage>> getNotifications({
     int? actingPetId,
     bool unreadOnly = false,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 
@@ -212,7 +212,7 @@ abstract interface class CommunityRepository {
 
   Future<Result<PetPage>> getBlockedPets({
     int? actingPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 
@@ -222,14 +222,14 @@ abstract interface class CommunityRepository {
     required String query,
     int? actingPetId,
     SearchType type = SearchType.all,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 
   Future<Result<HashtagFeed>> getHashtagFeed({
     required String tag,
     int? actingPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 

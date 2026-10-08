@@ -26,14 +26,14 @@ class PollEventRepositoryImpl implements PollEventRepository {
   Future<Result<PollPage>> getPolls({
     required int communityId,
     int? actingPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) =>
       _guard(() async {
         final dto = await _source.getPolls(
           communityId: communityId,
           petId: actingPetId,
-          page: page,
+          cursor: cursor,
           limit: limit,
         );
         return dto.toEntity(myPetIds: _mine);
@@ -105,14 +105,14 @@ class PollEventRepositoryImpl implements PollEventRepository {
   Future<Result<EventPage>> getEvents({
     required int communityId,
     int? actingPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) =>
       _guard(() async {
         final dto = await _source.getEvents(
           communityId: communityId,
           petId: actingPetId,
-          page: page,
+          cursor: cursor,
           limit: limit,
         );
         return dto.toEntity(myPetIds: _mine);
@@ -132,14 +132,14 @@ class PollEventRepositoryImpl implements PollEventRepository {
   Future<Result<EventAttendeePage>> getAttendees({
     required int eventId,
     AttendeeStatus? status,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) =>
       _guard(() async {
         final dto = await _source.getAttendees(
           eventId: eventId,
           status: status?.wire,
-          page: page,
+          cursor: cursor,
           limit: limit,
         );
         return dto.toEntity(myPetIds: _mine);

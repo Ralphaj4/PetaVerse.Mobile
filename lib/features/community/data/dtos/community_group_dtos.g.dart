@@ -68,7 +68,7 @@ _CommunityDirectoryResponseDto _$CommunityDirectoryResponseDtoFromJson(
       const <CommunityDto>[],
   total: (json['total'] as num?)?.toInt(),
   hasMore: json['hasMore'] as bool? ?? false,
-  nextPage: (json['nextPage'] as num?)?.toInt(),
+  nextCursor: json['nextCursor'] as String?,
 );
 
 Map<String, dynamic> _$CommunityDirectoryResponseDtoToJson(
@@ -77,7 +77,7 @@ Map<String, dynamic> _$CommunityDirectoryResponseDtoToJson(
   'communities': instance.communities,
   'total': instance.total,
   'hasMore': instance.hasMore,
-  'nextPage': instance.nextPage,
+  'nextCursor': instance.nextCursor,
 };
 
 _CommunityMembersResponseDto _$CommunityMembersResponseDtoFromJson(
@@ -90,7 +90,7 @@ _CommunityMembersResponseDto _$CommunityMembersResponseDtoFromJson(
       const <CommunityMemberDto>[],
   count: (json['count'] as num?)?.toInt() ?? 0,
   hasMore: json['hasMore'] as bool? ?? false,
-  nextPage: (json['nextPage'] as num?)?.toInt(),
+  nextCursor: json['nextCursor'] as String?,
 );
 
 Map<String, dynamic> _$CommunityMembersResponseDtoToJson(
@@ -99,7 +99,7 @@ Map<String, dynamic> _$CommunityMembersResponseDtoToJson(
   'members': instance.members,
   'count': instance.count,
   'hasMore': instance.hasMore,
-  'nextPage': instance.nextPage,
+  'nextCursor': instance.nextCursor,
 };
 
 _CommunityListResponseDto _$CommunityListResponseDtoFromJson(

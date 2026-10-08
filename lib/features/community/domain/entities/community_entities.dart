@@ -335,23 +335,22 @@ class SearchResult {
 
 // ── Paged wrappers ─────────────────────────────────────────────────────────
 
-/// Common paging cursor. [nextPage] is null when there is nothing more.
+/// Common paging cursor. [nextCursor] is null when there is nothing more.
 class PageCursor {
-  const PageCursor({required this.hasMore, this.nextPage});
+  const PageCursor({required this.hasMore, this.nextCursor});
 
   final bool hasMore;
-  final int? nextPage;
+  final String? nextCursor;
 
-  static const empty = PageCursor(hasMore: false, nextPage: null);
+  static const empty = PageCursor(hasMore: false, nextCursor: null);
 }
 
 /// A page of posts (`FeedResponse`).
 class FeedPage {
-  const FeedPage({required this.posts, required this.cursor, this.postCount});
+  const FeedPage({required this.posts, required this.cursor});
 
   final List<Post> posts;
   final PageCursor cursor;
-  final int? postCount;
 }
 
 /// A page of the Discover feed (`DiscoverFeedResponse`) - posts plus the

@@ -121,7 +121,7 @@ final class CommunityPollsProvider
   }
 }
 
-String _$communityPollsHash() => r'38b843b52f8115849352ce8000fd3f779c247e70';
+String _$communityPollsHash() => r'fee5c79d22fb705a02358398afb3eafd054ee21b';
 
 /// A community's polls. Loads page 0 on build, appends via [loadMore], and
 /// exposes [replace] so a vote can update one card in place.
@@ -223,7 +223,7 @@ final class CommunityEventsProvider
   }
 }
 
-String _$communityEventsHash() => r'c320c3b885d7efcd3a0c282712a9105d983c6f0d';
+String _$communityEventsHash() => r'2fca84762816ab34be4ba05c53737e3df0c716fb';
 
 /// A community's events (ordered by startsAt ascending server-side).
 

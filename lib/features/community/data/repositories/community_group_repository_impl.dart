@@ -29,7 +29,7 @@ class CommunityGroupRepositoryImpl implements CommunityGroupRepository {
     int? actingPetId,
     CommunityCategory? category,
     CommunitySort sort = CommunitySort.popular,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) =>
       _guard(() async {
@@ -37,7 +37,7 @@ class CommunityGroupRepositoryImpl implements CommunityGroupRepository {
           petId: actingPetId,
           category: category?.wire,
           sort: sort.wire,
-          page: page,
+          cursor: cursor,
           limit: limit,
         );
         return dto.toEntity(myPetIds: _mine);
@@ -47,14 +47,14 @@ class CommunityGroupRepositoryImpl implements CommunityGroupRepository {
   Future<Result<CommunityDirectoryPage>> searchCommunities({
     required String query,
     int? actingPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) =>
       _guard(() async {
         final dto = await _source.searchCommunities(
           query: query,
           petId: actingPetId,
-          page: page,
+          cursor: cursor,
           limit: limit,
         );
         return dto.toEntity(myPetIds: _mine);
@@ -99,7 +99,7 @@ class CommunityGroupRepositoryImpl implements CommunityGroupRepository {
     required int communityId,
     int? actingPetId,
     FeedSort sort = FeedSort.latest,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) =>
       _guard(() async {
@@ -107,7 +107,7 @@ class CommunityGroupRepositoryImpl implements CommunityGroupRepository {
           id: communityId,
           petId: actingPetId,
           sort: sort.wire,
-          page: page,
+          cursor: cursor,
           limit: limit,
         );
         return dto.toEntity(myPetIds: _mine);
@@ -116,13 +116,13 @@ class CommunityGroupRepositoryImpl implements CommunityGroupRepository {
   @override
   Future<Result<CommunityMemberPage>> getMembers({
     required int communityId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   }) =>
       _guard(() async {
         final dto = await _source.getMembers(
           id: communityId,
-          page: page,
+          cursor: cursor,
           limit: limit,
         );
         return dto.toEntity(myPetIds: _mine);

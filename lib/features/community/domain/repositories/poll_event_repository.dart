@@ -14,7 +14,7 @@ abstract interface class PollEventRepository {
   Future<Result<PollPage>> getPolls({
     required int communityId,
     int? actingPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 
@@ -50,7 +50,7 @@ abstract interface class PollEventRepository {
   Future<Result<EventPage>> getEvents({
     required int communityId,
     int? actingPetId,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 
@@ -62,7 +62,7 @@ abstract interface class PollEventRepository {
   Future<Result<EventAttendeePage>> getAttendees({
     required int eventId,
     AttendeeStatus? status,
-    int page = 0,
+    String? cursor,
     int limit = 20,
   });
 

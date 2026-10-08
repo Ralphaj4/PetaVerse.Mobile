@@ -53,7 +53,7 @@ final class FollowersProvider
   }
 }
 
-String _$followersHash() => r'516ae84bfacd5d34e1511439057ef2416825961d';
+String _$followersHash() => r'bc049155fa7a319cad0810f919f15b0fbc30a2fc';
 
 /// A pet's followers list.
 
@@ -152,7 +152,7 @@ final class FollowingProvider
   }
 }
 
-String _$followingHash() => r'7267a66adbfc5ca3479466b8354a79f353c513df';
+String _$followingHash() => r'21d29c2fe649580993195fdd09a63563c546c8e7';
 
 /// A pet's following list.
 
@@ -412,7 +412,7 @@ final class CommunitySearchProvider
   CommunitySearch create() => CommunitySearch();
 }
 
-String _$communitySearchHash() => r'2b4adb752de84c589889fce086360ebeeae0a5ab';
+String _$communitySearchHash() => r'a46a204e65730b258389f1e74ccdefb0f10cee72';
 
 /// Mixed search results for the current query + scope. Loads page 0 on build
 /// (rebuilding whenever the debounced query, scope, or acting pet changes) and

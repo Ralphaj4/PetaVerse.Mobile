@@ -56,7 +56,7 @@ final class PostCommentsProvider
   }
 }
 
-String _$postCommentsHash() => r'a42b8ba861bcc06249b6d463aeadd4b54a08a94e';
+String _$postCommentsHash() => r'96f56a31068fbb62b358eaa42b093b4cf9141ec3';
 
 /// The comment thread for a post. Top-level comments carry their replies
 /// inline. Supports paginated loading and optimistic add / like / pin.

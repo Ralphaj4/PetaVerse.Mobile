@@ -90,7 +90,7 @@ abstract class CommunityDirectoryResponseDto
     @Default(<CommunityDto>[]) List<CommunityDto> communities,
     int? total,
     @Default(false) bool hasMore,
-    int? nextPage,
+    String? nextCursor,
   }) = _CommunityDirectoryResponseDto;
 
   const CommunityDirectoryResponseDto._();
@@ -104,7 +104,7 @@ abstract class CommunityDirectoryResponseDto
             .map((c) => c.toEntity(leadIsMine: myPetIds.contains(c.lead.id)))
             .toList(growable: false),
         total: total,
-        cursor: PageCursor(hasMore: hasMore, nextPage: nextPage),
+        cursor: PageCursor(hasMore: hasMore, nextCursor: nextCursor),
       );
 }
 
@@ -115,7 +115,7 @@ abstract class CommunityMembersResponseDto with _$CommunityMembersResponseDto {
     @Default(<CommunityMemberDto>[]) List<CommunityMemberDto> members,
     @Default(0) int count,
     @Default(false) bool hasMore,
-    int? nextPage,
+    String? nextCursor,
   }) = _CommunityMembersResponseDto;
 
   const CommunityMembersResponseDto._();
@@ -129,7 +129,7 @@ abstract class CommunityMembersResponseDto with _$CommunityMembersResponseDto {
             .map((m) => m.toEntity(mine: myPetIds.contains(m.pet.id)))
             .toList(growable: false),
         count: count,
-        cursor: PageCursor(hasMore: hasMore, nextPage: nextPage),
+        cursor: PageCursor(hasMore: hasMore, nextCursor: nextCursor),
       );
 }
 

@@ -29,7 +29,7 @@ class CommunityNotifications extends _$CommunityNotifications {
         .read(communityRepositoryProvider)
         .getNotifications(
           actingPetId: ref.read(actingPetIdProvider),
-          page: current.cursor.nextPage ?? 0,
+          cursor: current.cursor.nextCursor,
         );
     result.when(
       success: (page) => state = AsyncData(

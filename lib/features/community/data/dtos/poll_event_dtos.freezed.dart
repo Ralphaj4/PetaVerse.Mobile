@@ -607,7 +607,7 @@ $PetSummaryDtoCopyWith<$Res> get creator {
 /// @nodoc
 mixin _$PollListResponseDto {
 
- List<PollDto> get polls; bool get hasMore; int? get nextPage;
+ List<PollDto> get polls; bool get hasMore; String? get nextCursor;
 /// Create a copy of PollListResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -620,16 +620,16 @@ $PollListResponseDtoCopyWith<PollListResponseDto> get copyWith => _$PollListResp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollListResponseDto&&const DeepCollectionEquality().equals(other.polls, polls)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollListResponseDto&&const DeepCollectionEquality().equals(other.polls, polls)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(polls),hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(polls),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'PollListResponseDto(polls: $polls, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'PollListResponseDto(polls: $polls, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -640,7 +640,7 @@ abstract mixin class $PollListResponseDtoCopyWith<$Res>  {
   factory $PollListResponseDtoCopyWith(PollListResponseDto value, $Res Function(PollListResponseDto) _then) = _$PollListResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- List<PollDto> polls, bool hasMore, int? nextPage
+ List<PollDto> polls, bool hasMore, String? nextCursor
 });
 
 
@@ -657,12 +657,12 @@ class _$PollListResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of PollListResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? polls = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? polls = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_self.copyWith(
 polls: null == polls ? _self.polls : polls // ignore: cast_nullable_to_non_nullable
 as List<PollDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -747,10 +747,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<PollDto> polls,  bool hasMore,  int? nextPage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<PollDto> polls,  bool hasMore,  String? nextCursor)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PollListResponseDto() when $default != null:
-return $default(_that.polls,_that.hasMore,_that.nextPage);case _:
+return $default(_that.polls,_that.hasMore,_that.nextCursor);case _:
   return orElse();
 
 }
@@ -768,10 +768,10 @@ return $default(_that.polls,_that.hasMore,_that.nextPage);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<PollDto> polls,  bool hasMore,  int? nextPage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<PollDto> polls,  bool hasMore,  String? nextCursor)  $default,) {final _that = this;
 switch (_that) {
 case _PollListResponseDto():
-return $default(_that.polls,_that.hasMore,_that.nextPage);case _:
+return $default(_that.polls,_that.hasMore,_that.nextCursor);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -788,10 +788,10 @@ return $default(_that.polls,_that.hasMore,_that.nextPage);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<PollDto> polls,  bool hasMore,  int? nextPage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<PollDto> polls,  bool hasMore,  String? nextCursor)?  $default,) {final _that = this;
 switch (_that) {
 case _PollListResponseDto() when $default != null:
-return $default(_that.polls,_that.hasMore,_that.nextPage);case _:
+return $default(_that.polls,_that.hasMore,_that.nextCursor);case _:
   return null;
 
 }
@@ -803,7 +803,7 @@ return $default(_that.polls,_that.hasMore,_that.nextPage);case _:
 @JsonSerializable()
 
 class _PollListResponseDto extends PollListResponseDto {
-  const _PollListResponseDto({final  List<PollDto> polls = const <PollDto>[], this.hasMore = false, this.nextPage}): _polls = polls,super._();
+  const _PollListResponseDto({final  List<PollDto> polls = const <PollDto>[], this.hasMore = false, this.nextCursor}): _polls = polls,super._();
   factory _PollListResponseDto.fromJson(Map<String, dynamic> json) => _$PollListResponseDtoFromJson(json);
 
  final  List<PollDto> _polls;
@@ -814,7 +814,7 @@ class _PollListResponseDto extends PollListResponseDto {
 }
 
 @override@JsonKey() final  bool hasMore;
-@override final  int? nextPage;
+@override final  String? nextCursor;
 
 /// Create a copy of PollListResponseDto
 /// with the given fields replaced by the non-null parameter values.
@@ -829,16 +829,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollListResponseDto&&const DeepCollectionEquality().equals(other._polls, _polls)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollListResponseDto&&const DeepCollectionEquality().equals(other._polls, _polls)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_polls),hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_polls),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'PollListResponseDto(polls: $polls, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'PollListResponseDto(polls: $polls, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -849,7 +849,7 @@ abstract mixin class _$PollListResponseDtoCopyWith<$Res> implements $PollListRes
   factory _$PollListResponseDtoCopyWith(_PollListResponseDto value, $Res Function(_PollListResponseDto) _then) = __$PollListResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- List<PollDto> polls, bool hasMore, int? nextPage
+ List<PollDto> polls, bool hasMore, String? nextCursor
 });
 
 
@@ -866,12 +866,12 @@ class __$PollListResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of PollListResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? polls = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? polls = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_PollListResponseDto(
 polls: null == polls ? _self._polls : polls // ignore: cast_nullable_to_non_nullable
 as List<PollDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -1491,7 +1491,7 @@ $EventLocationDtoCopyWith<$Res>? get location {
 /// @nodoc
 mixin _$EventListResponseDto {
 
- List<EventDto> get events; bool get hasMore; int? get nextPage;
+ List<EventDto> get events; bool get hasMore; String? get nextCursor;
 /// Create a copy of EventListResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1504,16 +1504,16 @@ $EventListResponseDtoCopyWith<EventListResponseDto> get copyWith => _$EventListR
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is EventListResponseDto&&const DeepCollectionEquality().equals(other.events, events)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is EventListResponseDto&&const DeepCollectionEquality().equals(other.events, events)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(events),hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(events),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'EventListResponseDto(events: $events, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'EventListResponseDto(events: $events, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -1524,7 +1524,7 @@ abstract mixin class $EventListResponseDtoCopyWith<$Res>  {
   factory $EventListResponseDtoCopyWith(EventListResponseDto value, $Res Function(EventListResponseDto) _then) = _$EventListResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- List<EventDto> events, bool hasMore, int? nextPage
+ List<EventDto> events, bool hasMore, String? nextCursor
 });
 
 
@@ -1541,12 +1541,12 @@ class _$EventListResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of EventListResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? events = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? events = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_self.copyWith(
 events: null == events ? _self.events : events // ignore: cast_nullable_to_non_nullable
 as List<EventDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -1631,10 +1631,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<EventDto> events,  bool hasMore,  int? nextPage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<EventDto> events,  bool hasMore,  String? nextCursor)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _EventListResponseDto() when $default != null:
-return $default(_that.events,_that.hasMore,_that.nextPage);case _:
+return $default(_that.events,_that.hasMore,_that.nextCursor);case _:
   return orElse();
 
 }
@@ -1652,10 +1652,10 @@ return $default(_that.events,_that.hasMore,_that.nextPage);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<EventDto> events,  bool hasMore,  int? nextPage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<EventDto> events,  bool hasMore,  String? nextCursor)  $default,) {final _that = this;
 switch (_that) {
 case _EventListResponseDto():
-return $default(_that.events,_that.hasMore,_that.nextPage);case _:
+return $default(_that.events,_that.hasMore,_that.nextCursor);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1672,10 +1672,10 @@ return $default(_that.events,_that.hasMore,_that.nextPage);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<EventDto> events,  bool hasMore,  int? nextPage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<EventDto> events,  bool hasMore,  String? nextCursor)?  $default,) {final _that = this;
 switch (_that) {
 case _EventListResponseDto() when $default != null:
-return $default(_that.events,_that.hasMore,_that.nextPage);case _:
+return $default(_that.events,_that.hasMore,_that.nextCursor);case _:
   return null;
 
 }
@@ -1687,7 +1687,7 @@ return $default(_that.events,_that.hasMore,_that.nextPage);case _:
 @JsonSerializable()
 
 class _EventListResponseDto extends EventListResponseDto {
-  const _EventListResponseDto({final  List<EventDto> events = const <EventDto>[], this.hasMore = false, this.nextPage}): _events = events,super._();
+  const _EventListResponseDto({final  List<EventDto> events = const <EventDto>[], this.hasMore = false, this.nextCursor}): _events = events,super._();
   factory _EventListResponseDto.fromJson(Map<String, dynamic> json) => _$EventListResponseDtoFromJson(json);
 
  final  List<EventDto> _events;
@@ -1698,7 +1698,7 @@ class _EventListResponseDto extends EventListResponseDto {
 }
 
 @override@JsonKey() final  bool hasMore;
-@override final  int? nextPage;
+@override final  String? nextCursor;
 
 /// Create a copy of EventListResponseDto
 /// with the given fields replaced by the non-null parameter values.
@@ -1713,16 +1713,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EventListResponseDto&&const DeepCollectionEquality().equals(other._events, _events)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EventListResponseDto&&const DeepCollectionEquality().equals(other._events, _events)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_events),hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_events),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'EventListResponseDto(events: $events, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'EventListResponseDto(events: $events, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -1733,7 +1733,7 @@ abstract mixin class _$EventListResponseDtoCopyWith<$Res> implements $EventListR
   factory _$EventListResponseDtoCopyWith(_EventListResponseDto value, $Res Function(_EventListResponseDto) _then) = __$EventListResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- List<EventDto> events, bool hasMore, int? nextPage
+ List<EventDto> events, bool hasMore, String? nextCursor
 });
 
 
@@ -1750,12 +1750,12 @@ class __$EventListResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of EventListResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? events = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? events = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_EventListResponseDto(
 events: null == events ? _self._events : events // ignore: cast_nullable_to_non_nullable
 as List<EventDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -2053,7 +2053,7 @@ $PetSummaryDtoCopyWith<$Res> get pet {
 /// @nodoc
 mixin _$EventAttendeeListResponseDto {
 
- List<EventAttendeeDto> get attendees; bool get hasMore; int? get nextPage;
+ List<EventAttendeeDto> get attendees; bool get hasMore; String? get nextCursor;
 /// Create a copy of EventAttendeeListResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -2066,16 +2066,16 @@ $EventAttendeeListResponseDtoCopyWith<EventAttendeeListResponseDto> get copyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is EventAttendeeListResponseDto&&const DeepCollectionEquality().equals(other.attendees, attendees)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is EventAttendeeListResponseDto&&const DeepCollectionEquality().equals(other.attendees, attendees)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(attendees),hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(attendees),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'EventAttendeeListResponseDto(attendees: $attendees, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'EventAttendeeListResponseDto(attendees: $attendees, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -2086,7 +2086,7 @@ abstract mixin class $EventAttendeeListResponseDtoCopyWith<$Res>  {
   factory $EventAttendeeListResponseDtoCopyWith(EventAttendeeListResponseDto value, $Res Function(EventAttendeeListResponseDto) _then) = _$EventAttendeeListResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- List<EventAttendeeDto> attendees, bool hasMore, int? nextPage
+ List<EventAttendeeDto> attendees, bool hasMore, String? nextCursor
 });
 
 
@@ -2103,12 +2103,12 @@ class _$EventAttendeeListResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of EventAttendeeListResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? attendees = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? attendees = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_self.copyWith(
 attendees: null == attendees ? _self.attendees : attendees // ignore: cast_nullable_to_non_nullable
 as List<EventAttendeeDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -2193,10 +2193,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<EventAttendeeDto> attendees,  bool hasMore,  int? nextPage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<EventAttendeeDto> attendees,  bool hasMore,  String? nextCursor)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _EventAttendeeListResponseDto() when $default != null:
-return $default(_that.attendees,_that.hasMore,_that.nextPage);case _:
+return $default(_that.attendees,_that.hasMore,_that.nextCursor);case _:
   return orElse();
 
 }
@@ -2214,10 +2214,10 @@ return $default(_that.attendees,_that.hasMore,_that.nextPage);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<EventAttendeeDto> attendees,  bool hasMore,  int? nextPage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<EventAttendeeDto> attendees,  bool hasMore,  String? nextCursor)  $default,) {final _that = this;
 switch (_that) {
 case _EventAttendeeListResponseDto():
-return $default(_that.attendees,_that.hasMore,_that.nextPage);case _:
+return $default(_that.attendees,_that.hasMore,_that.nextCursor);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -2234,10 +2234,10 @@ return $default(_that.attendees,_that.hasMore,_that.nextPage);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<EventAttendeeDto> attendees,  bool hasMore,  int? nextPage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<EventAttendeeDto> attendees,  bool hasMore,  String? nextCursor)?  $default,) {final _that = this;
 switch (_that) {
 case _EventAttendeeListResponseDto() when $default != null:
-return $default(_that.attendees,_that.hasMore,_that.nextPage);case _:
+return $default(_that.attendees,_that.hasMore,_that.nextCursor);case _:
   return null;
 
 }
@@ -2249,7 +2249,7 @@ return $default(_that.attendees,_that.hasMore,_that.nextPage);case _:
 @JsonSerializable()
 
 class _EventAttendeeListResponseDto extends EventAttendeeListResponseDto {
-  const _EventAttendeeListResponseDto({final  List<EventAttendeeDto> attendees = const <EventAttendeeDto>[], this.hasMore = false, this.nextPage}): _attendees = attendees,super._();
+  const _EventAttendeeListResponseDto({final  List<EventAttendeeDto> attendees = const <EventAttendeeDto>[], this.hasMore = false, this.nextCursor}): _attendees = attendees,super._();
   factory _EventAttendeeListResponseDto.fromJson(Map<String, dynamic> json) => _$EventAttendeeListResponseDtoFromJson(json);
 
  final  List<EventAttendeeDto> _attendees;
@@ -2260,7 +2260,7 @@ class _EventAttendeeListResponseDto extends EventAttendeeListResponseDto {
 }
 
 @override@JsonKey() final  bool hasMore;
-@override final  int? nextPage;
+@override final  String? nextCursor;
 
 /// Create a copy of EventAttendeeListResponseDto
 /// with the given fields replaced by the non-null parameter values.
@@ -2275,16 +2275,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EventAttendeeListResponseDto&&const DeepCollectionEquality().equals(other._attendees, _attendees)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextPage, nextPage) || other.nextPage == nextPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EventAttendeeListResponseDto&&const DeepCollectionEquality().equals(other._attendees, _attendees)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_attendees),hasMore,nextPage);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_attendees),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'EventAttendeeListResponseDto(attendees: $attendees, hasMore: $hasMore, nextPage: $nextPage)';
+  return 'EventAttendeeListResponseDto(attendees: $attendees, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -2295,7 +2295,7 @@ abstract mixin class _$EventAttendeeListResponseDtoCopyWith<$Res> implements $Ev
   factory _$EventAttendeeListResponseDtoCopyWith(_EventAttendeeListResponseDto value, $Res Function(_EventAttendeeListResponseDto) _then) = __$EventAttendeeListResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- List<EventAttendeeDto> attendees, bool hasMore, int? nextPage
+ List<EventAttendeeDto> attendees, bool hasMore, String? nextCursor
 });
 
 
@@ -2312,12 +2312,12 @@ class __$EventAttendeeListResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of EventAttendeeListResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? attendees = null,Object? hasMore = null,Object? nextPage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? attendees = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_EventAttendeeListResponseDto(
 attendees: null == attendees ? _self._attendees : attendees // ignore: cast_nullable_to_non_nullable
 as List<EventAttendeeDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
-as bool,nextPage: freezed == nextPage ? _self.nextPage : nextPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
