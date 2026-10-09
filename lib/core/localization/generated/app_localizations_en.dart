@@ -4497,14 +4497,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteAccountConfirm => 'Yes, Delete';
 
   @override
-  String get deleteAccountTypePromptTitle => 'Confirm Deletion';
+  String get deleteAccountPasswordTitle => 'Confirm Deletion';
 
   @override
-  String get deleteAccountTypePromptMessage =>
-      'Type DELETE to permanently delete your account.';
+  String get deleteAccountPasswordMessage =>
+      'Enter your password to permanently delete your account.';
 
   @override
-  String get deleteAccountTypePlaceholder => 'Type DELETE here';
+  String get deleteAccountPasswordPlaceholder => 'Enter your password';
 
   @override
   String get deleteAccountSuccess => 'Your account has been deleted.';

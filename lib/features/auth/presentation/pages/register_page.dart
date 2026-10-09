@@ -132,6 +132,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final isLoading = ref.watch(authProvider).isLoading;
+    // Pre-fetch legal docs so the version is ready when the user taps a link.
+    ref.watch(legalCurrentProvider);
 
     return AuthLayout(
       showBack: true,

@@ -7894,23 +7894,23 @@ abstract class AppLocalizations {
   /// **'Yes, Delete'**
   String get deleteAccountConfirm;
 
-  /// No description provided for @deleteAccountTypePromptTitle.
+  /// No description provided for @deleteAccountPasswordTitle.
   ///
   /// In en, this message translates to:
   /// **'Confirm Deletion'**
-  String get deleteAccountTypePromptTitle;
+  String get deleteAccountPasswordTitle;
 
-  /// No description provided for @deleteAccountTypePromptMessage.
+  /// No description provided for @deleteAccountPasswordMessage.
   ///
   /// In en, this message translates to:
-  /// **'Type DELETE to permanently delete your account.'**
-  String get deleteAccountTypePromptMessage;
+  /// **'Enter your password to permanently delete your account.'**
+  String get deleteAccountPasswordMessage;
 
-  /// No description provided for @deleteAccountTypePlaceholder.
+  /// No description provided for @deleteAccountPasswordPlaceholder.
   ///
   /// In en, this message translates to:
-  /// **'Type DELETE here'**
-  String get deleteAccountTypePlaceholder;
+  /// **'Enter your password'**
+  String get deleteAccountPasswordPlaceholder;
 
   /// No description provided for @deleteAccountSuccess.
   ///

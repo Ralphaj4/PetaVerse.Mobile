@@ -4513,14 +4513,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String get deleteAccountConfirm => 'نعم، احذف';
 
   @override
-  String get deleteAccountTypePromptTitle => 'تأكيد الحذف';
+  String get deleteAccountPasswordTitle => 'تأكيد الحذف';
 
   @override
-  String get deleteAccountTypePromptMessage =>
-      'اكتب DELETE لحذف حسابك بشكل دائم.';
+  String get deleteAccountPasswordMessage =>
+      'أدخل كلمة المرور لحذف حسابك بشكل دائم.';
 
   @override
-  String get deleteAccountTypePlaceholder => 'اكتب DELETE هنا';
+  String get deleteAccountPasswordPlaceholder => 'أدخل كلمة المرور';
 
   @override
   String get deleteAccountSuccess => 'تم حذف حسابك.';

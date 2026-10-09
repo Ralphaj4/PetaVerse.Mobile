@@ -1875,9 +1875,9 @@
   "deleteAccountConfirmTitle": "Supprimer le compte ?",
   "deleteAccountConfirmMessage": "Cela supprimera définitivement votre compte et toutes les données associées. Cette action est irréversible.",
   "deleteAccountConfirm": "Oui, supprimer",
-  "deleteAccountTypePromptTitle": "Confirmer la suppression",
-  "deleteAccountTypePromptMessage": "Tapez DELETE pour supprimer définitivement votre compte.",
-  "deleteAccountTypePlaceholder": "Tapez DELETE ici",
+  "deleteAccountPasswordTitle": "Confirmer la suppression",
+  "deleteAccountPasswordMessage": "Entrez votre mot de passe pour supprimer définitivement votre compte.",
+  "deleteAccountPasswordPlaceholder": "Entrez votre mot de passe",
   "deleteAccountSuccess": "Votre compte a été supprimé.",
 
   "pawHubPreparingShare": "Préparation du partage…",

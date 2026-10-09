@@ -2035,9 +2035,9 @@
   "deleteAccountConfirmTitle": "Delete Account?",
   "deleteAccountConfirmMessage": "This will permanently delete your account and all associated data. This action cannot be undone.",
   "deleteAccountConfirm": "Yes, Delete",
-  "deleteAccountTypePromptTitle": "Confirm Deletion",
-  "deleteAccountTypePromptMessage": "Type DELETE to permanently delete your account.",
-  "deleteAccountTypePlaceholder": "Type DELETE here",
+  "deleteAccountPasswordTitle": "Confirm Deletion",
+  "deleteAccountPasswordMessage": "Enter your password to permanently delete your account.",
+  "deleteAccountPasswordPlaceholder": "Enter your password",
   "deleteAccountSuccess": "Your account has been deleted.",
 
   "pawHubPreparingShare": "Preparing share…",

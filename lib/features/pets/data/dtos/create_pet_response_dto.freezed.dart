@@ -17,7 +17,7 @@ mixin _$CreatePetResponseDto {
 
  int get id; String get name; String get imagePath;// Parsed if the backend includes it so a just-created activity pet shows
 // the walk banner immediately; otherwise the next reconcile fills it in.
- bool get speciesSupportsActivityTracking;
+ bool get speciesSupportsActivityTracking; bool get speciesSupportsGrooming;
 /// Create a copy of CreatePetResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,16 +30,16 @@ $CreatePetResponseDtoCopyWith<CreatePetResponseDto> get copyWith => _$CreatePetR
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreatePetResponseDto&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.imagePath, imagePath) || other.imagePath == imagePath)&&(identical(other.speciesSupportsActivityTracking, speciesSupportsActivityTracking) || other.speciesSupportsActivityTracking == speciesSupportsActivityTracking));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CreatePetResponseDto&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.imagePath, imagePath) || other.imagePath == imagePath)&&(identical(other.speciesSupportsActivityTracking, speciesSupportsActivityTracking) || other.speciesSupportsActivityTracking == speciesSupportsActivityTracking)&&(identical(other.speciesSupportsGrooming, speciesSupportsGrooming) || other.speciesSupportsGrooming == speciesSupportsGrooming));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,imagePath,speciesSupportsActivityTracking);
+int get hashCode => Object.hash(runtimeType,id,name,imagePath,speciesSupportsActivityTracking,speciesSupportsGrooming);
 
 @override
 String toString() {
-  return 'CreatePetResponseDto(id: $id, name: $name, imagePath: $imagePath, speciesSupportsActivityTracking: $speciesSupportsActivityTracking)';
+  return 'CreatePetResponseDto(id: $id, name: $name, imagePath: $imagePath, speciesSupportsActivityTracking: $speciesSupportsActivityTracking, speciesSupportsGrooming: $speciesSupportsGrooming)';
 }
 
 
@@ -50,7 +50,7 @@ abstract mixin class $CreatePetResponseDtoCopyWith<$Res>  {
   factory $CreatePetResponseDtoCopyWith(CreatePetResponseDto value, $Res Function(CreatePetResponseDto) _then) = _$CreatePetResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- int id, String name, String imagePath, bool speciesSupportsActivityTracking
+ int id, String name, String imagePath, bool speciesSupportsActivityTracking, bool speciesSupportsGrooming
 });
 
 
@@ -67,12 +67,13 @@ class _$CreatePetResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of CreatePetResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? imagePath = null,Object? speciesSupportsActivityTracking = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? imagePath = null,Object? speciesSupportsActivityTracking = null,Object? speciesSupportsGrooming = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,imagePath: null == imagePath ? _self.imagePath : imagePath // ignore: cast_nullable_to_non_nullable
 as String,speciesSupportsActivityTracking: null == speciesSupportsActivityTracking ? _self.speciesSupportsActivityTracking : speciesSupportsActivityTracking // ignore: cast_nullable_to_non_nullable
+as bool,speciesSupportsGrooming: null == speciesSupportsGrooming ? _self.speciesSupportsGrooming : speciesSupportsGrooming // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -158,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String imagePath,  bool speciesSupportsActivityTracking)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String imagePath,  bool speciesSupportsActivityTracking,  bool speciesSupportsGrooming)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CreatePetResponseDto() when $default != null:
-return $default(_that.id,_that.name,_that.imagePath,_that.speciesSupportsActivityTracking);case _:
+return $default(_that.id,_that.name,_that.imagePath,_that.speciesSupportsActivityTracking,_that.speciesSupportsGrooming);case _:
   return orElse();
 
 }
@@ -179,10 +180,10 @@ return $default(_that.id,_that.name,_that.imagePath,_that.speciesSupportsActivit
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String imagePath,  bool speciesSupportsActivityTracking)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String imagePath,  bool speciesSupportsActivityTracking,  bool speciesSupportsGrooming)  $default,) {final _that = this;
 switch (_that) {
 case _CreatePetResponseDto():
-return $default(_that.id,_that.name,_that.imagePath,_that.speciesSupportsActivityTracking);case _:
+return $default(_that.id,_that.name,_that.imagePath,_that.speciesSupportsActivityTracking,_that.speciesSupportsGrooming);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -199,10 +200,10 @@ return $default(_that.id,_that.name,_that.imagePath,_that.speciesSupportsActivit
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String imagePath,  bool speciesSupportsActivityTracking)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String imagePath,  bool speciesSupportsActivityTracking,  bool speciesSupportsGrooming)?  $default,) {final _that = this;
 switch (_that) {
 case _CreatePetResponseDto() when $default != null:
-return $default(_that.id,_that.name,_that.imagePath,_that.speciesSupportsActivityTracking);case _:
+return $default(_that.id,_that.name,_that.imagePath,_that.speciesSupportsActivityTracking,_that.speciesSupportsGrooming);case _:
   return null;
 
 }
@@ -214,7 +215,7 @@ return $default(_that.id,_that.name,_that.imagePath,_that.speciesSupportsActivit
 @JsonSerializable()
 
 class _CreatePetResponseDto extends CreatePetResponseDto {
-  const _CreatePetResponseDto({required this.id, this.name = '', this.imagePath = '', this.speciesSupportsActivityTracking = false}): super._();
+  const _CreatePetResponseDto({required this.id, this.name = '', this.imagePath = '', this.speciesSupportsActivityTracking = false, this.speciesSupportsGrooming = false}): super._();
   factory _CreatePetResponseDto.fromJson(Map<String, dynamic> json) => _$CreatePetResponseDtoFromJson(json);
 
 @override final  int id;
@@ -223,6 +224,7 @@ class _CreatePetResponseDto extends CreatePetResponseDto {
 // Parsed if the backend includes it so a just-created activity pet shows
 // the walk banner immediately; otherwise the next reconcile fills it in.
 @override@JsonKey() final  bool speciesSupportsActivityTracking;
+@override@JsonKey() final  bool speciesSupportsGrooming;
 
 /// Create a copy of CreatePetResponseDto
 /// with the given fields replaced by the non-null parameter values.
@@ -237,16 +239,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreatePetResponseDto&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.imagePath, imagePath) || other.imagePath == imagePath)&&(identical(other.speciesSupportsActivityTracking, speciesSupportsActivityTracking) || other.speciesSupportsActivityTracking == speciesSupportsActivityTracking));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CreatePetResponseDto&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.imagePath, imagePath) || other.imagePath == imagePath)&&(identical(other.speciesSupportsActivityTracking, speciesSupportsActivityTracking) || other.speciesSupportsActivityTracking == speciesSupportsActivityTracking)&&(identical(other.speciesSupportsGrooming, speciesSupportsGrooming) || other.speciesSupportsGrooming == speciesSupportsGrooming));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,imagePath,speciesSupportsActivityTracking);
+int get hashCode => Object.hash(runtimeType,id,name,imagePath,speciesSupportsActivityTracking,speciesSupportsGrooming);
 
 @override
 String toString() {
-  return 'CreatePetResponseDto(id: $id, name: $name, imagePath: $imagePath, speciesSupportsActivityTracking: $speciesSupportsActivityTracking)';
+  return 'CreatePetResponseDto(id: $id, name: $name, imagePath: $imagePath, speciesSupportsActivityTracking: $speciesSupportsActivityTracking, speciesSupportsGrooming: $speciesSupportsGrooming)';
 }
 
 
@@ -257,7 +259,7 @@ abstract mixin class _$CreatePetResponseDtoCopyWith<$Res> implements $CreatePetR
   factory _$CreatePetResponseDtoCopyWith(_CreatePetResponseDto value, $Res Function(_CreatePetResponseDto) _then) = __$CreatePetResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String name, String imagePath, bool speciesSupportsActivityTracking
+ int id, String name, String imagePath, bool speciesSupportsActivityTracking, bool speciesSupportsGrooming
 });
 
 
@@ -274,12 +276,13 @@ class __$CreatePetResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of CreatePetResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? imagePath = null,Object? speciesSupportsActivityTracking = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? imagePath = null,Object? speciesSupportsActivityTracking = null,Object? speciesSupportsGrooming = null,}) {
   return _then(_CreatePetResponseDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,imagePath: null == imagePath ? _self.imagePath : imagePath // ignore: cast_nullable_to_non_nullable
 as String,speciesSupportsActivityTracking: null == speciesSupportsActivityTracking ? _self.speciesSupportsActivityTracking : speciesSupportsActivityTracking // ignore: cast_nullable_to_non_nullable
+as bool,speciesSupportsGrooming: null == speciesSupportsGrooming ? _self.speciesSupportsGrooming : speciesSupportsGrooming // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

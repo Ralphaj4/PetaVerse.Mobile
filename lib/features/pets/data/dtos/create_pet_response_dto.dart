@@ -17,6 +17,7 @@ abstract class CreatePetResponseDto with _$CreatePetResponseDto {
     // Parsed if the backend includes it so a just-created activity pet shows
     // the walk banner immediately; otherwise the next reconcile fills it in.
     @Default(false) bool speciesSupportsActivityTracking,
+    @Default(false) bool speciesSupportsGrooming,
   }) = _CreatePetResponseDto;
 
   const CreatePetResponseDto._();
@@ -29,5 +30,6 @@ abstract class CreatePetResponseDto with _$CreatePetResponseDto {
         name: name,
         imagePath: imagePath.isEmpty ? null : imagePath,
         supportsActivityTracking: speciesSupportsActivityTracking,
+        supportsGrooming: speciesSupportsGrooming,
       );
 }

@@ -192,7 +192,10 @@ class AuthRemoteDataSource {
   }
 
   /// Permanently deletes the authenticated user's account (204 No Content).
-  Future<void> deleteAccount() async {
-    await _client.delete<void>(ApiEndpoints.deleteAccount);
+  Future<void> deleteAccount({required String password}) async {
+    await _client.deleteWithBody<void>(
+      ApiEndpoints.deleteAccount,
+      data: {'password': password},
+    );
   }
 }

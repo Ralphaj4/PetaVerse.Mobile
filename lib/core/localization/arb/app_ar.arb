@@ -1875,9 +1875,9 @@
   "deleteAccountConfirmTitle": "حذف الحساب؟",
   "deleteAccountConfirmMessage": "سيؤدي هذا إلى حذف حسابك وجميع البيانات المرتبطة به بشكل دائم. لا يمكن التراجع عن هذا الإجراء.",
   "deleteAccountConfirm": "نعم، احذف",
-  "deleteAccountTypePromptTitle": "تأكيد الحذف",
-  "deleteAccountTypePromptMessage": "اكتب DELETE لحذف حسابك بشكل دائم.",
-  "deleteAccountTypePlaceholder": "اكتب DELETE هنا",
+  "deleteAccountPasswordTitle": "تأكيد الحذف",
+  "deleteAccountPasswordMessage": "أدخل كلمة المرور لحذف حسابك بشكل دائم.",
+  "deleteAccountPasswordPlaceholder": "أدخل كلمة المرور",
   "deleteAccountSuccess": "تم حذف حسابك.",
 
   "pawHubPreparingShare": "جارٍ التحضير…",

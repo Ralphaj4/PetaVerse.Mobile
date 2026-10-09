@@ -4547,14 +4547,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get deleteAccountConfirm => 'Oui, supprimer';
 
   @override
-  String get deleteAccountTypePromptTitle => 'Confirmer la suppression';
+  String get deleteAccountPasswordTitle => 'Confirmer la suppression';
 
   @override
-  String get deleteAccountTypePromptMessage =>
-      'Tapez DELETE pour supprimer définitivement votre compte.';
+  String get deleteAccountPasswordMessage =>
+      'Entrez votre mot de passe pour supprimer définitivement votre compte.';
 
   @override
-  String get deleteAccountTypePlaceholder => 'Tapez DELETE ici';
+  String get deleteAccountPasswordPlaceholder => 'Entrez votre mot de passe';
 
   @override
   String get deleteAccountSuccess => 'Votre compte a été supprimé.';

@@ -37,6 +37,8 @@ abstract class PetDto with _$PetDto {
     // True when the pet's species supports activity (walk) tracking.
     // Gates the home-screen walk banner.
     @Default(false) bool speciesSupportsActivityTracking,
+    // True when the pet's species supports grooming schedules.
+    @Default(false) bool speciesSupportsGrooming,
   }) = _PetDto;
 
   const PetDto._();
@@ -67,6 +69,7 @@ abstract class PetDto with _$PetDto {
         avatarUrl: avatarUrl,
         isPrimaryOwner: isPrimaryOwner,
         supportsActivityTracking: speciesSupportsActivityTracking,
+        supportsGrooming: speciesSupportsGrooming,
       );
 
   /// Slim identity for the routing gate / current-pet pointer, carrying the
@@ -78,5 +81,6 @@ abstract class PetDto with _$PetDto {
             ? avatarUrl
             : null,
         supportsActivityTracking: speciesSupportsActivityTracking,
+        supportsGrooming: speciesSupportsGrooming,
       );
 }

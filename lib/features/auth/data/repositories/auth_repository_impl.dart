@@ -224,9 +224,9 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Result<void>> deleteAccount() async {
+  Future<Result<void>> deleteAccount({required String password}) async {
     try {
-      await _remote.deleteAccount();
+      await _remote.deleteAccount(password: password);
       await _secureStorage.clearTokens();
       return const Result.success(null);
     } on AppException catch (e) {

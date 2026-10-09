@@ -33,6 +33,7 @@ _PetDto _$PetDtoFromJson(Map<String, dynamic> json) => _PetDto(
   isPrimaryOwner: json['isPrimaryOwner'] as bool? ?? true,
   speciesSupportsActivityTracking:
       json['speciesSupportsActivityTracking'] as bool? ?? false,
+  speciesSupportsGrooming: json['speciesSupportsGrooming'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$PetDtoToJson(_PetDto instance) => <String, dynamic>{
@@ -55,4 +56,5 @@ Map<String, dynamic> _$PetDtoToJson(_PetDto instance) => <String, dynamic>{
   'avatarUrl': instance.avatarUrl,
   'isPrimaryOwner': instance.isPrimaryOwner,
   'speciesSupportsActivityTracking': instance.speciesSupportsActivityTracking,
+  'speciesSupportsGrooming': instance.speciesSupportsGrooming,
 };

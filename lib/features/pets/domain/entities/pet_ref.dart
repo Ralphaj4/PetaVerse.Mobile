@@ -10,6 +10,7 @@ class PetRef {
     required this.name,
     this.imagePath,
     this.supportsActivityTracking = false,
+    this.supportsGrooming = false,
   });
 
   final int id;
@@ -22,4 +23,8 @@ class PetRef {
   /// the home-screen walk banner. Mirrors PetResponse's
   /// `speciesSupportsActivityTracking`.
   final bool supportsActivityTracking;
+
+  /// True when the pet's species supports grooming schedules. Mirrors
+  /// PetResponse's `speciesSupportsGrooming`.
+  final bool supportsGrooming;
 }

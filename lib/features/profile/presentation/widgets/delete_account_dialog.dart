@@ -10,22 +10,21 @@ import '../../../../core/theme/app_text_styles.dart';
 /// Two-step account deletion dialog.
 ///
 /// Step 1 - [_ConfirmStep]: warns the user and asks them to confirm intent.
-/// Step 2 - [_TypeStep]: requires typing "DELETE" verbatim before the
+/// Step 2 - [_PasswordStep]: requires entering the account password before the
 ///           destructive button becomes active.
 ///
-/// Returns true only when the user completes the type step and taps the
-/// final confirm button.
+/// Returns the entered password string when the user completes step 2, or null
+/// when cancelled at any step.
 class DeleteAccountDialog extends StatefulWidget {
   const DeleteAccountDialog({super.key});
 
-  static Future<bool> show(BuildContext context) async {
-    final result = await showDialog<bool>(
+  static Future<String?> show(BuildContext context) async {
+    return showDialog<String>(
       context: context,
       barrierColor: AppColors.textPrimary.withValues(alpha: 0.45),
       barrierDismissible: false,
       builder: (_) => const DeleteAccountDialog(),
     );
-    return result ?? false;
   }
 
   @override
@@ -33,7 +32,7 @@ class DeleteAccountDialog extends StatefulWidget {
 }
 
 class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
-  bool _onTypeStep = false;
+  bool _onPasswordStep = false;
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +46,11 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
           opacity: animation,
           child: child,
         ),
-        child: _onTypeStep
-            ? const _TypeStep(key: ValueKey('type'))
+        child: _onPasswordStep
+            ? const _PasswordStep(key: ValueKey('password'))
             : _ConfirmStep(
                 key: const ValueKey('confirm'),
-                onConfirm: () => setState(() => _onTypeStep = true),
+                onConfirm: () => setState(() => _onPasswordStep = true),
               ),
       ),
     );
@@ -124,7 +123,7 @@ class _ConfirmStep extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
+              onPressed: () => Navigator.of(context).pop(null),
               style: TextButton.styleFrom(
                 foregroundColor: AppColors.textSecondary,
                 padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
@@ -143,24 +142,25 @@ class _ConfirmStep extends StatelessWidget {
   }
 }
 
-/// Step 2: type "DELETE" to unlock the final destructive action.
-class _TypeStep extends StatefulWidget {
-  const _TypeStep({super.key});
+/// Step 2: enter account password to unlock the final destructive action.
+class _PasswordStep extends StatefulWidget {
+  const _PasswordStep({super.key});
 
   @override
-  State<_TypeStep> createState() => _TypeStepState();
+  State<_PasswordStep> createState() => _PasswordStepState();
 }
 
-class _TypeStepState extends State<_TypeStep> {
+class _PasswordStepState extends State<_PasswordStep> {
   final _controller = TextEditingController();
-  bool _confirmed = false;
+  bool _obscure = true;
+  bool _hasInput = false;
 
   @override
   void initState() {
     super.initState();
     _controller.addListener(() {
-      final matches = _controller.text == 'DELETE';
-      if (matches != _confirmed) setState(() => _confirmed = matches);
+      final nonEmpty = _controller.text.isNotEmpty;
+      if (nonEmpty != _hasInput) setState(() => _hasInput = nonEmpty);
     });
   }
 
@@ -193,13 +193,13 @@ class _TypeStepState extends State<_TypeStep> {
           ),
           const SizedBox(height: AppSpacing.lg),
           Text(
-            l10n.deleteAccountTypePromptTitle,
+            l10n.deleteAccountPasswordTitle,
             style: AppTextStyles.titleLarge,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
-            l10n.deleteAccountTypePromptMessage,
+            l10n.deleteAccountPasswordMessage,
             style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.textSecondary,
             ),
@@ -209,11 +209,11 @@ class _TypeStepState extends State<_TypeStep> {
           TextField(
             controller: _controller,
             autofocus: true,
+            obscureText: _obscure,
             autocorrect: false,
             enableSuggestions: false,
-            textCapitalization: TextCapitalization.characters,
             decoration: InputDecoration(
-              hintText: l10n.deleteAccountTypePlaceholder,
+              hintText: l10n.deleteAccountPasswordPlaceholder,
               hintStyle: AppTextStyles.bodyMedium.copyWith(
                 color: AppColors.textTertiary,
               ),
@@ -235,6 +235,16 @@ class _TypeStepState extends State<_TypeStep> {
                 horizontal: AppSpacing.md,
                 vertical: AppSpacing.md,
               ),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _obscure
+                      ? FluentIcons.eye_24_regular
+                      : FluentIcons.eye_off_24_regular,
+                  color: AppColors.textSecondary,
+                  size: 20,
+                ),
+                onPressed: () => setState(() => _obscure = !_obscure),
+              ),
             ),
             style: AppTextStyles.bodyMedium,
           ),
@@ -242,8 +252,8 @@ class _TypeStepState extends State<_TypeStep> {
           SizedBox(
             width: double.infinity,
             child: FilledButton(
-              onPressed: _confirmed
-                  ? () => Navigator.of(context).pop(true)
+              onPressed: _hasInput
+                  ? () => Navigator.of(context).pop(_controller.text)
                   : null,
               style: FilledButton.styleFrom(
                 backgroundColor: AppColors.error,
@@ -268,7 +278,7 @@ class _TypeStepState extends State<_TypeStep> {
           SizedBox(
             width: double.infinity,
             child: TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
+              onPressed: () => Navigator.of(context).pop(null),
               style: TextButton.styleFrom(
                 foregroundColor: AppColors.textSecondary,
                 padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),

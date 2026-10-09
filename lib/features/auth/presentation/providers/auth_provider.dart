@@ -241,13 +241,13 @@ class AuthNotifier extends _$AuthNotifier {
   /// becomes invalid as soon as the session gate is flipped by the caller.
   /// Returns the [Result] directly so the caller can handle errors and drive
   /// the gate flip from a stable ref.
-  Future<Result<void>> deleteAccount() async {
+  Future<Result<void>> deleteAccount({required String password}) async {
     final authRepository = ref.read(authRepositoryProvider);
     final userRepository = ref.read(userRepositoryProvider);
     final reminderCache = ref.read(healthReminderCacheProvider);
     final homeCache = ref.read(homeSummaryCacheProvider);
     final notifications = ref.read(notificationServiceProvider);
-    final result = await authRepository.deleteAccount();
+    final result = await authRepository.deleteAccount(password: password);
     if (result.isFailure) return result;
     await Future.wait([
       userRepository.clearCache(),

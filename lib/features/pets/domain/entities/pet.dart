@@ -23,6 +23,7 @@ class Pet {
     this.avatarUrl,
     this.isPrimaryOwner = true,
     this.supportsActivityTracking = false,
+    this.supportsGrooming = false,
   });
 
   final int id;
@@ -63,6 +64,10 @@ class Pet {
   /// True when the pet's species supports activity (walk) tracking. Gates the
   /// walk banner / activity UI.
   final bool supportsActivityTracking;
+
+  /// True when the pet's species supports grooming schedules. Gates the
+  /// grooming UI.
+  final bool supportsGrooming;
 
   /// Whole years since [dateOfBirth], floored, never negative.
   int get ageInYears {

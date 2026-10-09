@@ -34,6 +34,7 @@ class PetLocalDataSource {
             imagePath: m['imagePath'] as String?,
             supportsActivityTracking:
                 (m['supportsActivityTracking'] as bool?) ?? false,
+            supportsGrooming: (m['supportsGrooming'] as bool?) ?? false,
           ),
         )
         .toList(growable: false);
@@ -49,6 +50,7 @@ class PetLocalDataSource {
             'name': r.name,
             'imagePath': r.imagePath,
             'supportsActivityTracking': r.supportsActivityTracking,
+            'supportsGrooming': r.supportsGrooming,
           },
       ],
     });

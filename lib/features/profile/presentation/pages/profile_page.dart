@@ -66,8 +66,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   }
 
   Future<void> _onDeleteAccount(BuildContext context) async {
-    final confirmed = await DeleteAccountDialog.show(context);
-    if (!confirmed || !context.mounted) return;
+    final password = await DeleteAccountDialog.show(context);
+    if (password == null || !context.mounted) return;
 
     // Read all stable refs before any await - the providers we touch
     // (authProvider in particular) are auto-disposed and their refs become
@@ -76,7 +76,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     final authNotifier = ref.read(authProvider.notifier);
     final sessionNotifier = ref.read(sessionProvider.notifier);
 
-    final result = await authNotifier.deleteAccount();
+    final result = await authNotifier.deleteAccount(password: password);
 
     if (result.isFailure) {
       if (!context.mounted) return;

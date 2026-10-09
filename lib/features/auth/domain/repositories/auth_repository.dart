@@ -91,5 +91,5 @@ abstract interface class AuthRepository {
 
   /// Permanently deletes the authenticated user's account and clears all local
   /// credentials. Returns a failure if the server call fails.
-  Future<Result<void>> deleteAccount();
+  Future<Result<void>> deleteAccount({required String password});
 }
