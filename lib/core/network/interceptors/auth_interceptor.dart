@@ -120,6 +120,10 @@ class AuthInterceptor extends Interceptor {
       // CultureInterceptor and handles HTTPS redirects correctly — the bare
       // _refreshDio would strip the Authorization header on any redirect.
       final options = err.requestOptions..extra['auth_retried'] = true;
+      // Clear the old Authorization header so onRequest reads and sets the
+      // freshly-persisted token. If we don't clear it, the options object may
+      // retain a stale header from the original request.
+      options.headers.remove('Authorization');
       final response = await _mainDio.fetch<dynamic>(options);
       handler.resolve(response);
     } on DioException catch (retryError) {
@@ -128,6 +132,10 @@ class AuthInterceptor extends Interceptor {
       // the server, keep the tokens (consistent with the inconclusive path) and
       // just surface the error - the refresh itself had just succeeded.
       if (retryError.response?.statusCode == 401) {
+        _logger.error(
+          'Retry failed with 401 even after token refresh. Session is dead.',
+          tag: _tag,
+        );
         await _endSession('retry after refresh still unauthorized');
       }
       handler.next(retryError);

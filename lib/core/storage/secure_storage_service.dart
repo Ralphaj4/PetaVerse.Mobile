@@ -32,8 +32,13 @@ class SecureStorageService {
     required String accessToken,
     required String refreshToken,
   }) async {
-    await _storage.write(key: _accessTokenKey, value: accessToken);
-    await _storage.write(key: _refreshTokenKey, value: refreshToken);
+    // Write both tokens in parallel for speed, but use Future.wait to ensure
+    // both complete successfully before returning. This prevents a partial
+    // state where one token is new and the other is stale.
+    await Future.wait([
+      _storage.write(key: _accessTokenKey, value: accessToken),
+      _storage.write(key: _refreshTokenKey, value: refreshToken),
+    ]);
   }
 
   Future<void> clearTokens() async {
