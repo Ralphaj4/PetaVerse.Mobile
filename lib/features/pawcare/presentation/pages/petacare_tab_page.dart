@@ -498,15 +498,13 @@ class _FindCareSection extends StatelessWidget {
           onSeeAll: () => context.push(AppRoutes.careMap),
         ),
         const SizedBox(height: AppSpacing.sm),
-        GestureDetector(
-          onTap: () => context.push(AppRoutes.careMap),
-          child: Hero(
-            tag: 'care-provider-map',
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(AppRadius.lg),
-              child: SizedBox(
-                height: 220,
-                child: Stack(
+        Hero(
+          tag: 'care-provider-map',
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(AppRadius.lg),
+            child: SizedBox(
+              height: 220,
+              child: Stack(
                 fit: StackFit.expand,
                 children: [
                   // Live map teaser - non-interactive, no controls, pure visual.
@@ -518,6 +516,16 @@ class _FindCareSection extends StatelessWidget {
                     showMyLocation: false,
                     showRecenterButton: false,
                     cluster: false,
+                  ),
+
+                  // Transparent overlay so the whole card is tappable.
+                  // GoogleMap absorbs all pointer events, so a GestureDetector
+                  // outside the stack never fires — this overlay sits on top.
+                  Positioned.fill(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => context.push(AppRoutes.careMap),
+                    ),
                   ),
 
                   // Bottom gradient so the CTA reads over tiles
@@ -647,8 +655,7 @@ class _FindCareSection extends StatelessWidget {
               ),
             ),
           ),
-          ),  // Hero
-        ),
+        ),  // Hero
       ],
     );
   }

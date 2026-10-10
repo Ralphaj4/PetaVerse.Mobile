@@ -8,39 +8,53 @@ import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_spacing.dart';
 import '../../core/theme/app_text_styles.dart';
 
-/// Shows the shared "Change Photo" bottom sheet and returns the chosen
+/// Shows the shared media-source bottom sheet and returns the chosen
 /// [ImageSource] (or null if dismissed).
 ///
-/// Single source of truth for the camera/gallery picker drawer - every screen
-/// that lets the user attach a photo uses it so they all look identical.
-Future<ImageSource?> showPhotoSourceSheet(BuildContext context) {
+/// [title] and [subtitle] customise the header text; both fall back to the
+/// generic "Add Photo" copy when omitted.
+///
+/// Single source of truth for the camera/gallery picker drawer — every screen
+/// that lets the user attach a photo uses this so they all look identical.
+Future<ImageSource?> showPhotoSourceSheet(
+  BuildContext context, {
+  String? title,
+  String? subtitle,
+}) {
   return showModalBottomSheet<ImageSource>(
     context: context,
+    useRootNavigator: true,
     backgroundColor: AppColors.surface,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
     ),
-    builder: (_) => const PhotoSourceSheet(),
+    builder: (sheetContext) => _PhotoSourceSheet(
+      title: title,
+      subtitle: subtitle,
+    ),
   );
 }
 
-// ── Photo source sheet ──────────────────────────────────────────────────
+class _PhotoSourceSheet extends StatelessWidget {
+  const _PhotoSourceSheet({this.title, this.subtitle});
 
-/// Bottom sheet that lets the user pick a photo source, returning the
-/// chosen [ImageSource] (or null if dismissed). Prefer [showPhotoSourceSheet].
-class PhotoSourceSheet extends StatelessWidget {
-  const PhotoSourceSheet({super.key});
+  final String? title;
+  final String? subtitle;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final resolvedTitle = title ?? l10n.changePhoto;
+    final resolvedSubtitle = subtitle ?? l10n.pawhubComposerAddToPostSubtitle;
+
     return SafeArea(
+      top: false,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(
           AppSpacing.lg,
+          AppSpacing.md,
           AppSpacing.lg,
           AppSpacing.lg,
-          AppSpacing.xl,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -50,34 +64,49 @@ class PhotoSourceSheet extends StatelessWidget {
               child: Container(
                 width: 40,
                 height: 4,
-                margin: const EdgeInsets.only(bottom: AppSpacing.lg),
                 decoration: BoxDecoration(
                   color: AppColors.divider,
-                  borderRadius: BorderRadius.circular(AppRadius.sm),
+                  borderRadius: BorderRadius.circular(2),
                 ),
               ),
             ),
-            Text(l10n.changePhoto, style: AppTextStyles.titleMedium),
+            const SizedBox(height: AppSpacing.lg),
+            Text(resolvedTitle, style: AppTextStyles.titleMedium),
+            const SizedBox(height: AppSpacing.xs),
+            Text(
+              resolvedSubtitle,
+              style: AppTextStyles.bodySmall
+                  .copyWith(color: AppColors.textSecondary),
+            ),
             const SizedBox(height: AppSpacing.lg),
             Row(
               children: [
                 Expanded(
-                  child: _SourceButton(
+                  child: MediaSourceCard(
                     icon: FluentIcons.camera_24_regular,
                     label: l10n.camera,
-                    onTap: () => Navigator.pop(context, ImageSource.camera),
+                    subtitle: l10n.pawhubComposerCameraSubtitle,
+                    accent: AppColors.secondary,
+                    accentSoft: AppColors.secondarySoft,
+                    onTap: () =>
+                        Navigator.pop(context, ImageSource.camera),
                   ),
                 ),
                 const SizedBox(width: AppSpacing.md),
                 Expanded(
-                  child: _SourceButton(
-                    icon: FluentIcons.image_24_regular,
+                  child: MediaSourceCard(
+                    icon: FluentIcons.image_multiple_24_regular,
                     label: l10n.gallery,
-                    onTap: () => Navigator.pop(context, ImageSource.gallery),
+                    subtitle: l10n.pawhubComposerGallerySubtitle,
+                    accent: AppColors.primaryDark,
+                    accentSoft: AppColors.primarySoft,
+                    onTap: () =>
+                        Navigator.pop(context, ImageSource.gallery),
                   ),
                 ),
               ],
             ),
+            const SizedBox(height: AppSpacing.xxl),
           ],
         ),
       ),
@@ -85,46 +114,63 @@ class PhotoSourceSheet extends StatelessWidget {
   }
 }
 
-class _SourceButton extends StatelessWidget {
-  const _SourceButton({
+/// Large tappable source-option card (Camera / Gallery).
+///
+/// Extracted so the post composer can reuse it for its own multi-media sheet
+/// (which also needs camera → single pick, gallery → multi-pick).
+class MediaSourceCard extends StatelessWidget {
+  const MediaSourceCard({
     required this.icon,
     required this.label,
+    required this.subtitle,
+    required this.accent,
+    required this.accentSoft,
     required this.onTap,
+    super.key,
   });
 
   final IconData icon;
   final String label;
+  final String subtitle;
+  final Color accent;
+  final Color accentSoft;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: AppRadius.mdAll,
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
-        decoration: BoxDecoration(
-          color: AppColors.background,
-          borderRadius: AppRadius.mdAll,
-          border: Border.all(color: AppColors.divider),
-        ),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(AppSpacing.md),
-              decoration: const BoxDecoration(
-                color: AppColors.primarySoft,
-                shape: BoxShape.circle,
+    return Material(
+      color: AppColors.background,
+      borderRadius: AppRadius.lgAll,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: AppRadius.lgAll,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            vertical: AppSpacing.lg,
+            horizontal: AppSpacing.md,
+          ),
+          child: Column(
+            children: [
+              Container(
+                width: 52,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: accentSoft,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, color: accent, size: 26),
               ),
-              child: Icon(icon, color: AppColors.primaryDark, size: 24),
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              label,
-              style: AppTextStyles.bodyMedium
-                  .copyWith(fontWeight: FontWeight.w600),
-            ),
-          ],
+              const SizedBox(height: AppSpacing.md),
+              Text(label, style: AppTextStyles.titleSmall),
+              const SizedBox(height: 2),
+              Text(
+                subtitle,
+                style: AppTextStyles.labelSmall
+                    .copyWith(color: AppColors.textSecondary),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );

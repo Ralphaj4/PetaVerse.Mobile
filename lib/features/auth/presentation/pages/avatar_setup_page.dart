@@ -14,6 +14,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../shared/widgets/photo_source_sheet.dart';
 
 class AvatarSetupPage extends ConsumerStatefulWidget {
   const AvatarSetupPage({super.key});
@@ -27,81 +28,13 @@ class _AvatarSetupPageState extends ConsumerState<AvatarSetupPage> {
   bool _isUploading = false;
 
   Future<void> _showAvatarPicker() async {
-    await showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(AppRadius.lg),
-        ),
-      ),
-      backgroundColor: Colors.transparent,
-      builder: (ctx) => Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(AppRadius.lg),
-          ),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: AppSpacing.lg,
-                right: AppSpacing.lg,
-                top: AppSpacing.lg,
-                bottom: AppSpacing.md,
-              ),
-              child: Text(
-                'Choose Photo Source',
-                style: AppTextStyles.titleSmall,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: AppSpacing.lg),
-                      child: _AvatarSourceButton(
-                        icon: FluentIcons.camera_24_regular,
-                        label: 'Camera',
-                        onTap: () async {
-                          Navigator.pop(ctx);
-                          await _pickFromSource(ImageSource.camera);
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: AppSpacing.lg),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: AppSpacing.lg),
-                      child: _AvatarSourceButton(
-                        icon: FluentIcons.image_24_regular,
-                        label: 'Gallery',
-                        onTap: () async {
-                          Navigator.pop(ctx);
-                          await _pickFromSource(ImageSource.gallery);
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: AppSpacing.xl),
-          ],
-        ),
-      ),
-    );
+    final source = await showPhotoSourceSheet(context);
+    if (source == null || !mounted) return;
+    await _pickFromSource(source);
   }
 
   Future<void> _pickFromSource(ImageSource source) async {
-    final picker = ImagePicker();
-    final image = await picker.pickImage(
+    final image = await ImagePicker().pickImage(
       source: source,
       imageQuality: 90,
     );
@@ -319,49 +252,6 @@ class _AvatarSetupPageState extends ConsumerState<AvatarSetupPage> {
   }
 }
 
-class _AvatarSourceButton extends StatelessWidget {
-  const _AvatarSourceButton({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(AppRadius.md),
-          border: Border.all(color: AppColors.primary, width: 2),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: AppColors.primary,
-              size: 32,
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              label,
-              style: AppTextStyles.bodySmall.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class _BenefitItem extends StatelessWidget {
   const _BenefitItem({

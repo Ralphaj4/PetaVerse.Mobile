@@ -46,6 +46,7 @@ class ServiceProvider {
     required this.name,
     required this.categoryIds,
     required this.primaryCategory,
+    required this.resolvedCategories,
     required this.location,
     required this.address,
     required this.rating,
@@ -79,6 +80,11 @@ class ServiceProvider {
   /// "kind" label. Resolved from `primaryCategoryId` via the categories lookup;
   /// falls back to [ProviderCategory.all] when the id is unknown.
   final ProviderCategory primaryCategory;
+
+  /// All resolved categories for this provider (excluding the synthetic [ProviderCategory.all]).
+  /// Used by the map pin to render a multi-color arc ring when a provider offers
+  /// more than one service. Always contains at least [primaryCategory].
+  final List<ProviderCategory> resolvedCategories;
 
   /// Service ids offered (detail chips); opaque to the map list.
   final List<int> serviceIds;

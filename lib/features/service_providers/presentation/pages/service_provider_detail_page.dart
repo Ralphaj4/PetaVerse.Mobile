@@ -723,6 +723,19 @@ class _LocationCardState extends State<_LocationCard> {
                   rotateGesturesEnabled: false,
                   tiltGesturesEnabled: false,
                   myLocationButtonEnabled: false,
+                  style: '''
+[
+  {
+    "featureType": "poi",
+    "elementType": "all",
+    "stylers": [{ "visibility": "off" }]
+  },
+  {
+    "featureType": "transit",
+    "elementType": "all",
+    "stylers": [{ "visibility": "off" }]
+  }
+]''',
                 ),
               ),
             ),

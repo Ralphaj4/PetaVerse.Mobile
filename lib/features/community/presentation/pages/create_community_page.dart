@@ -20,6 +20,7 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_dropdown_field.dart';
+import '../../../../shared/widgets/photo_source_sheet.dart';
 import '../../domain/entities/community_group_enums.dart';
 import '../providers/community_group_actions_providers.dart';
 import '../providers/community_group_providers.dart';
@@ -121,7 +122,9 @@ class _CreateCommunityPageState extends ConsumerState<CreateCommunityPage> {
 
   Future<void> _pickImage({required bool isBanner}) async {
     try {
-      final picked = await _picker.pickImage(source: ImageSource.gallery);
+      final source = await showPhotoSourceSheet(context);
+      if (source == null || !mounted) return;
+      final picked = await _picker.pickImage(source: source);
       if (picked == null || !mounted) return;
       setState(() {
         if (isBanner) {

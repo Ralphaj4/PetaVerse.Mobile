@@ -18,6 +18,7 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_avatar.dart';
+import '../../../../shared/widgets/photo_source_sheet.dart';
 import '../../../../shared/widgets/app_cached_image.dart';
 import '../../../../shared/widgets/shimmer.dart';
 import '../../../../shared/widgets/app_confirm_dialog.dart';
@@ -335,7 +336,9 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
     );
     if (choice == null || !mounted) return;
 
-    final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final source = await showPhotoSourceSheet(context);
+    if (source == null || !mounted) return;
+    final picked = await ImagePicker().pickImage(source: source);
     if (picked == null || !mounted) return;
 
     _snack(l10n.communityImagesUpdating);

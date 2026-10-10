@@ -17,6 +17,7 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_cached_image.dart';
+import '../../../../shared/widgets/photo_source_sheet.dart';
 import '../../domain/entities/community_enums.dart' show PostFeeling;
 import '../models/pawhub_models.dart';
 import '../providers/create_post_provider.dart';
@@ -98,79 +99,17 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
     if (_pickerActive) return;
     _pickerActive = true;
     try {
-      unawaited(showModalBottomSheet(
-        context: context,
-        useRootNavigator: true,
-        backgroundColor: AppColors.surface,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
-        ),
-        builder: (sheetContext) => SafeArea(
-          top: false,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(
-                AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.lg),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Container(
-                    width: 40,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: AppColors.divider,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.lg),
-                Text(context.l10n.pawhubComposerAddToPost,
-                    style: AppTextStyles.titleMedium),
-                const SizedBox(height: AppSpacing.xs),
-                Text(
-                  context.l10n.pawhubComposerAddToPostSubtitle,
-                  style: AppTextStyles.bodySmall
-                      .copyWith(color: AppColors.textSecondary),
-                ),
-                const SizedBox(height: AppSpacing.lg),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _MediaSourceCard(
-                        icon: FluentIcons.camera_24_regular,
-                        label: context.l10n.camera,
-                        subtitle: context.l10n.pawhubComposerCameraSubtitle,
-                        accent: AppColors.secondary,
-                        accentSoft: AppColors.secondarySoft,
-                        onTap: () {
-                          Navigator.pop(sheetContext);
-                          _pickImage(ImageSource.camera);
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: AppSpacing.md),
-                    Expanded(
-                      child: _MediaSourceCard(
-                        icon: FluentIcons.image_multiple_24_regular,
-                        label: context.l10n.gallery,
-                        subtitle: context.l10n.pawhubComposerGallerySubtitle,
-                        accent: AppColors.primaryDark,
-                        accentSoft: AppColors.primarySoft,
-                        onTap: () {
-                          Navigator.pop(sheetContext);
-                          _pickMedia();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppSpacing.xxl),
-              ],
-            ),
-          ),
-        ),
-      ));
+      final source = await showPhotoSourceSheet(
+        context,
+        title: context.l10n.pawhubComposerAddToPost,
+        subtitle: context.l10n.pawhubComposerAddToPostSubtitle,
+      );
+      if (source == null || !mounted) return;
+      if (source == ImageSource.camera) {
+        await _pickImage(ImageSource.camera);
+      } else {
+        await _pickMedia();
+      }
     } finally {
       _pickerActive = false;
     }
@@ -987,62 +926,6 @@ class _DashedBorderPainter extends CustomPainter {
       old.color != color || old.radius != radius;
 }
 
-/// A large, tappable source option (Camera / Gallery) for the add-media sheet.
-class _MediaSourceCard extends StatelessWidget {
-  const _MediaSourceCard({
-    required this.icon,
-    required this.label,
-    required this.subtitle,
-    required this.accent,
-    required this.accentSoft,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String label;
-  final String subtitle;
-  final Color accent;
-  final Color accentSoft;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.background,
-      borderRadius: AppRadius.lgAll,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: AppRadius.lgAll,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-              vertical: AppSpacing.lg, horizontal: AppSpacing.md),
-          child: Column(
-            children: [
-              Container(
-                width: 52,
-                height: 52,
-                decoration: BoxDecoration(
-                  color: accentSoft,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(icon, color: accent, size: 26),
-              ),
-              const SizedBox(height: AppSpacing.md),
-              Text(label, style: AppTextStyles.titleSmall),
-              const SizedBox(height: 2),
-              Text(
-                subtitle,
-                style: AppTextStyles.labelSmall
-                    .copyWith(color: AppColors.textSecondary),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class _MediaThumb extends StatelessWidget {
   const _MediaThumb({

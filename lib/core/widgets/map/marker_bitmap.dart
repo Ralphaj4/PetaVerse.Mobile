@@ -20,23 +20,40 @@ class MarkerBitmap {
   ///
   /// [cacheKey] must fully capture the visual inputs (color, selected state,
   /// count, dpr) so distinct-looking pins don't collide.
+  ///
+  /// [glowPadding] adds transparent space around the canvas so blur/glow
+  /// effects don't get hard-clipped at the image boundary (which makes Google
+  /// Maps show a colored square around the pin). The painter receives the same
+  /// [size] but the rasterised image is inflated by [glowPadding] on all sides;
+  /// the content is translated inward so it stays centred within the larger
+  /// canvas. The marker anchor remains correct because `imagePixelRatio` is used
+  /// (not explicit width/height), so the SDK derives physical size from DPR.
   static Future<BitmapDescriptor> fromPainter({
     required String cacheKey,
     required CustomPainter painter,
     required Size size,
     required double devicePixelRatio,
+    double glowPadding = 0,
   }) async {
     final cached = _cache[cacheKey];
     if (cached != null) return cached;
 
+    final padded = Size(
+      size.width + glowPadding * 2,
+      size.height + glowPadding * 2,
+    );
+
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
     canvas.scale(devicePixelRatio);
+    // Translate so the painter's coordinate origin is inset by [glowPadding],
+    // giving the blur room to bleed into the transparent padding zone.
+    if (glowPadding > 0) canvas.translate(glowPadding, glowPadding);
     painter.paint(canvas, size);
 
     final image = await recorder.endRecording().toImage(
-          (size.width * devicePixelRatio).ceil(),
-          (size.height * devicePixelRatio).ceil(),
+          (padded.width * devicePixelRatio).ceil(),
+          (padded.height * devicePixelRatio).ceil(),
         );
     final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
     image.dispose();
@@ -44,8 +61,7 @@ class MarkerBitmap {
 
     final descriptor = BitmapDescriptor.bytes(
       bytes.buffer.asUint8List(),
-      width: size.width,
-      height: size.height,
+      imagePixelRatio: devicePixelRatio,
     );
     _cache[cacheKey] = descriptor;
     return descriptor;

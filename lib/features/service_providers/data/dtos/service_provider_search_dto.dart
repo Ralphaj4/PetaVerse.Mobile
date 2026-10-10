@@ -66,6 +66,23 @@ abstract class ServiceProviderItemDto with _$ServiceProviderItemDto {
   factory ServiceProviderItemDto.fromJson(Map<String, dynamic> json) =>
       _$ServiceProviderItemDtoFromJson(json);
 
+  /// Resolves all category ids to distinct [ProviderCategory] values, with the
+  /// primary category first. [ProviderCategory.all] is excluded (client-only).
+  static List<ProviderCategory> _resolveAll(
+    List<int> ids,
+    int primaryId,
+    ProviderCategory Function(int id) resolve,
+  ) {
+    final primary = resolve(primaryId);
+    final seen = <ProviderCategory>{primary};
+    final result = <ProviderCategory>[primary];
+    for (final id in ids) {
+      final cat = resolve(id);
+      if (cat != ProviderCategory.all && seen.add(cat)) result.add(cat);
+    }
+    return result;
+  }
+
   ServiceProvider toEntity(
     ProviderCategory Function(int id) resolveCategory,
   ) =>
@@ -75,6 +92,7 @@ abstract class ServiceProviderItemDto with _$ServiceProviderItemDto {
         name: name,
         categoryIds: categoryIds,
         primaryCategory: resolveCategory(primaryCategoryId),
+        resolvedCategories: _resolveAll(categoryIds, primaryCategoryId, resolveCategory),
         serviceIds: serviceIds,
         location: LatLng(latitude, longitude),
         address: address,

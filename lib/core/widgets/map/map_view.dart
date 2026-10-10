@@ -69,6 +69,20 @@ class _MarkerItem with cm.ClusterItem {
   gmaps.LatLng get location => data.point.toGoogle;
 }
 
+const String _kMapStyle = '''
+[
+  {
+    "featureType": "poi",
+    "elementType": "all",
+    "stylers": [{ "visibility": "off" }]
+  },
+  {
+    "featureType": "transit",
+    "elementType": "all",
+    "stylers": [{ "visibility": "off" }]
+  }
+]''';
+
 class _MapViewState extends State<MapView> {
   gmaps.GoogleMapController? _controller;
   cm.ClusterManager<_MarkerItem>? _clusterManager;
@@ -285,6 +299,7 @@ class _MapViewState extends State<MapView> {
           scrollGesturesEnabled: _interactive,
           zoomGesturesEnabled: _interactive,
           tiltGesturesEnabled: _interactive,
+          style: _kMapStyle,
         ),
         if (_interactive && widget.showRecenterButton)
           PositionedDirectional(

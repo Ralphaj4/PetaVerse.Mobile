@@ -257,14 +257,16 @@ class _ServiceProviderMapState extends State<ServiceProviderMap> {
 
   Future<gmaps.Marker> _providerMarker(ServiceProvider p) async {
     final selected = p.branchId == widget.selectedId;
+    final catKey = p.resolvedCategories.map((c) => c.name).join('+');
     final icon = await MarkerBitmap.fromPainter(
-      cacheKey: 'sp-pin-${p.primaryCategory.name}-$selected-$_devicePixelRatio',
+      cacheKey: 'sp-pin-$catKey-$selected-$_devicePixelRatio',
       painter: ProviderPinPainter(
-        category: p.primaryCategory,
+        categories: p.resolvedCategories,
         selected: selected,
       ),
       size: selected ? const Size(60, 70) : const Size(52, 60),
       devicePixelRatio: _devicePixelRatio,
+      glowPadding: selected ? 24 : 0,
     );
     return gmaps.Marker(
       markerId: gmaps.MarkerId('branch-${p.branchId}'),
@@ -276,6 +278,22 @@ class _ServiceProviderMapState extends State<ServiceProviderMap> {
       infoWindow: const gmaps.InfoWindow(),
     );
   }
+
+  // Hides all Google Maps POI markers and labels (pharmacies, hotels,
+  // supermarkets, etc.) so only our own provider pins are visible.
+  static const String _mapStyle = '''
+[
+  {
+    "featureType": "poi",
+    "elementType": "all",
+    "stylers": [{ "visibility": "off" }]
+  },
+  {
+    "featureType": "transit",
+    "elementType": "all",
+    "stylers": [{ "visibility": "off" }]
+  }
+]''';
 
   @override
   Widget build(BuildContext context) {
@@ -298,6 +316,7 @@ class _ServiceProviderMapState extends State<ServiceProviderMap> {
       mapToolbarEnabled: false,
       rotateGesturesEnabled: false,
       indoorViewEnabled: false,
+      style: _mapStyle,
     );
   }
 
