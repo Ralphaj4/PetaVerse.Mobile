@@ -498,6 +498,12 @@
   "healthMedicationsAdd": "Add medication",
   "healthMedicationsEmpty": "No active medications. Add reminders to stay on schedule.",
   "healthMedicationsMarkGiven": "Mark as given",
+  "healthMedicationsMarkGivenTitle": "When was it given?",
+  "@healthMedicationsMarkGivenTitle": {},
+  "healthMedicationsMarkGivenToday": "Today",
+  "@healthMedicationsMarkGivenToday": {},
+  "healthMedicationsMarkGivenPastDate": "A past date",
+  "@healthMedicationsMarkGivenPastDate": {},
   "healthMedicationsGivenConfirmed": "Marked {name} as given",
   "@healthMedicationsGivenConfirmed": {
     "placeholders": { "name": { "type": "String" } }
@@ -791,6 +797,8 @@
   "providerHours": "Opening hours",
   "providerWhatsApp": "WhatsApp",
   "providerEmergencyCall": "Emergency",
+  "providerEmergencyBannerTitle": "Emergency line available",
+  "providerEmergencyBannerSubtitle": "Tap to call immediately",
   "providerWebsite": "Website",
   "providerInstagram": "Instagram",
   "providerEmail": "Email",
@@ -802,6 +810,11 @@
   "providerNotFoundTitle": "Provider not found",
   "providerAbout": "About",
   "providerServices": "Services",
+  "providerShowAll": "Show all ({count})",
+  "@providerShowAll": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "providerShowLess": "Show less",
   "providerSupportedSpecies": "Supported Species",
   "providerLocationContact": "Location & Contact",
   "providerLocationsContact": "{count} Locations & Contact",

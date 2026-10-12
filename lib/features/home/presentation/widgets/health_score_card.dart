@@ -16,13 +16,13 @@ class HealthScoreCard extends StatelessWidget {
     super.key,
   });
 
-  final int score;
+  final int? score;
   final String statusLabel;
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: '${context.l10n.healthScore}: $score, $statusLabel',
+      label: '${context.l10n.healthScore}: ${score ?? '-'}, $statusLabel',
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -49,7 +49,7 @@ class HealthScoreCard extends StatelessWidget {
                   style: AppTextStyles.labelMedium,
                 ),
                 Text(
-                  '$score',
+                  score != null ? '$score' : '-',
                   style: AppTextStyles.displayLarge.copyWith(fontSize: 40),
                 ),
                 Text(

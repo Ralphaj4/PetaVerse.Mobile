@@ -29,7 +29,7 @@ class HomeHeroBanner extends StatelessWidget {
 
   final String userName;
   final String petName;
-  final int healthScore;
+  final int? healthScore;
   final String healthStatusLabel;
   final String nextVisitLabel;
   final String? avatarUrl;

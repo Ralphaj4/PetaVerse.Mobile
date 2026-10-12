@@ -24,14 +24,8 @@ import '../widgets/adoption_species_filter_row.dart';
 /// The adoption board: a browsable list of pets up for adoption, with species
 /// filters and search. The server filters (speciesId + q), so changing a filter
 /// re-runs the board query. Layout + state wiring only.
-///
-/// When [embedded] (inside the Community hub) it renders without its own AppBar
-/// - the hub supplies the shared header - and surfaces the count + "List a pet"
-/// action as an inline header row instead.
 class AdoptionBoardPage extends ConsumerWidget {
-  const AdoptionBoardPage({this.embedded = false, super.key});
-
-  final bool embedded;
+  const AdoptionBoardPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,16 +37,12 @@ class AdoptionBoardPage extends ConsumerWidget {
 
     final content = Column(
           children: [
-            if (embedded)
-              _EmbeddedHeader(
-                subtitle: l10n.adoptionSubtitle(listingsAsync.value?.length ?? 0),
-              ),
             // ── "My adoptions" entry: a full-width tappable row (not AppBar
             // chrome) so it's discoverable without crowding the header. ──
             Padding(
-              padding: EdgeInsets.fromLTRB(
+              padding: const EdgeInsets.fromLTRB(
                 AppSpacing.lg,
-                embedded ? AppSpacing.sm : AppSpacing.md,
+                AppSpacing.md,
                 AppSpacing.lg,
                 0,
               ),
@@ -95,10 +85,6 @@ class AdoptionBoardPage extends ConsumerWidget {
             ),
           ],
         );
-
-    // Embedded in the Community hub: the hub owns the Scaffold + header, so
-    // return the bare content (its own header row is added above).
-    if (embedded) return content;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
@@ -146,36 +132,6 @@ class AdoptionBoardPage extends ConsumerWidget {
           ],
         ),
         body: content,
-      ),
-    );
-  }
-}
-
-/// Inline count subtitle shown in embedded (hub) mode, standing in for the
-/// standalone AppBar's subtitle line. The "My adoptions" entry and the create
-/// action live below (a body row + a search-adjacent button).
-class _EmbeddedHeader extends StatelessWidget {
-  const _EmbeddedHeader({required this.subtitle});
-
-  final String subtitle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(
-        AppSpacing.lg,
-        AppSpacing.md,
-        AppSpacing.lg,
-        0,
-      ),
-      child: Align(
-        alignment: AlignmentDirectional.centerStart,
-        child: Text(
-          subtitle,
-          style: AppTextStyles.bodySmall,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
       ),
     );
   }
@@ -318,9 +274,6 @@ class _Body extends ConsumerWidget {
               ref.read(adoptionListingsProvider.notifier).refresh(),
           color: AppColors.primary,
           child: ListView.separated(
-            // Adopt the ambient PrimaryScrollController (set by
-            // CommunityHubPage) so re-tapping the Community tab can scroll this
-            // surface to the top.
             primary: true,
             padding: const EdgeInsets.fromLTRB(
               AppSpacing.lg,

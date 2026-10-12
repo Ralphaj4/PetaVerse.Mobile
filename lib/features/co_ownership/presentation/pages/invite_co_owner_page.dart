@@ -214,8 +214,9 @@ class _InviteCoOwnerPageState extends ConsumerState<InviteCoOwnerPage> {
         ),
         title: Text(l10n.inviteCoOwnerTitle, style: AppTextStyles.titleLarge),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.lg),
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -256,14 +257,12 @@ class _InviteCoOwnerPageState extends ConsumerState<InviteCoOwnerPage> {
             ),
             const SizedBox(height: AppSpacing.xl),
 
-            // ── Sent invitations fill the rest, so the empty state can be
-            // vertically centered in the space below the header ──────────
-            Expanded(
-              child: _SentInvitesSection(
-                petId: widget.petId,
-                cancellingId: _cancellingId,
-                onCancel: _cancel,
-              ),
+            // ── Sent invitations (shrink-wrapped so the outer scroll view
+            // handles keyboard avoidance without overflow) ────────────────
+            _SentInvitesSection(
+              petId: widget.petId,
+              cancellingId: _cancellingId,
+              onCancel: _cancel,
             ),
           ],
         ),
@@ -686,36 +685,34 @@ class _SentInvitesSection extends ConsumerWidget {
       children: [
         Text(l10n.inviteCoOwnerSentTitle, style: AppTextStyles.titleMedium),
         const SizedBox(height: AppSpacing.md),
-        // Take the remaining height so the empty state centers vertically and
-        // a populated list can scroll independently.
-        Expanded(
-          child: sentAsync.when(
-            loading: () => const _OwnerListSkeleton(rows: 2),
-            error: (e, _) => Text(
-              (e is Failure ? e : const UnknownFailure())
-                  .localizedMessage(l10n),
-              style: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
-            ),
-            data: (sent) {
-              if (sent.isEmpty) {
-                return _SentEmptyState(message: l10n.inviteCoOwnerNoneSent);
-              }
-              return ListView.separated(
-                padding: EdgeInsets.zero,
-                itemCount: sent.length,
-                separatorBuilder: (_, _) =>
-                    const SizedBox(height: AppSpacing.sm),
-                itemBuilder: (_, i) {
-                  final invite = sent[i];
-                  return _SentInviteTile(
-                    invite: invite,
-                    cancelling: cancellingId == invite.id,
-                    onCancel: () => onCancel(invite),
-                  );
-                },
-              );
-            },
+        sentAsync.when(
+          loading: () => const _OwnerListSkeleton(rows: 2),
+          error: (e, _) => Text(
+            (e is Failure ? e : const UnknownFailure())
+                .localizedMessage(l10n),
+            style: AppTextStyles.bodySmall.copyWith(color: AppColors.error),
           ),
+          data: (sent) {
+            if (sent.isEmpty) {
+              return _SentEmptyState(message: l10n.inviteCoOwnerNoneSent);
+            }
+            return ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
+              itemCount: sent.length,
+              separatorBuilder: (_, _) =>
+                  const SizedBox(height: AppSpacing.sm),
+              itemBuilder: (_, i) {
+                final invite = sent[i];
+                return _SentInviteTile(
+                  invite: invite,
+                  cancelling: cancellingId == invite.id,
+                  onCancel: () => onCancel(invite),
+                );
+              },
+            );
+          },
         ),
       ],
     );

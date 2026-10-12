@@ -498,6 +498,12 @@
   "healthMedicationsAdd": "إضافة دواء",
   "healthMedicationsEmpty": "لا توجد أدوية فعّالة. أضِف تذكيرات للبقاء على الموعد.",
   "healthMedicationsMarkGiven": "تحديد كمُعطى",
+  "healthMedicationsMarkGivenTitle": "متى أُعطي؟",
+  "@healthMedicationsMarkGivenTitle": {},
+  "healthMedicationsMarkGivenToday": "اليوم",
+  "@healthMedicationsMarkGivenToday": {},
+  "healthMedicationsMarkGivenPastDate": "تاريخ سابق",
+  "@healthMedicationsMarkGivenPastDate": {},
   "healthMedicationsGivenConfirmed": "تم تحديد {name} كمُعطى",
   "@healthMedicationsGivenConfirmed": {
     "placeholders": { "name": { "type": "String" } }
@@ -776,6 +782,8 @@
   "providerHours": "ساعات العمل",
   "providerWhatsApp": "واتساب",
   "providerEmergencyCall": "طوارئ",
+  "providerEmergencyBannerTitle": "خط الطوارئ متاح",
+  "providerEmergencyBannerSubtitle": "اضغط للاتصال فوراً",
   "providerWebsite": "الموقع الإلكتروني",
   "providerInstagram": "إنستغرام",
   "providerEmail": "البريد الإلكتروني",
@@ -787,6 +795,11 @@
   "providerNotFoundTitle": "المزوّد غير موجود",
   "providerAbout": "عن المزوّد",
   "providerServices": "الخدمات",
+  "providerShowAll": "عرض الكل ({count})",
+  "@providerShowAll": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "providerShowLess": "عرض أقل",
   "providerSupportedSpecies": "الأنواع المدعومة",
   "providerLocationContact": "الموقع والتواصل",
   "providerLocationsContact": "{count} مواقع وتواصل",

@@ -1238,6 +1238,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get healthMedicationsMarkGiven => 'Marquer comme administré';
 
   @override
+  String get healthMedicationsMarkGivenTitle => 'Quand a-t-il été administré ?';
+
+  @override
+  String get healthMedicationsMarkGivenToday => 'Aujourd\'hui';
+
+  @override
+  String get healthMedicationsMarkGivenPastDate => 'Une date passée';
+
+  @override
   String healthMedicationsGivenConfirmed(String name) {
     return '$name marqué comme administré';
   }
@@ -1965,6 +1974,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get providerEmergencyCall => 'Urgence';
 
   @override
+  String get providerEmergencyBannerTitle => 'Ligne d\'urgence disponible';
+
+  @override
+  String get providerEmergencyBannerSubtitle =>
+      'Appuyez pour appeler immédiatement';
+
+  @override
   String get providerWebsite => 'Site web';
 
   @override
@@ -1996,6 +2012,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get providerServices => 'Services';
+
+  @override
+  String providerShowAll(int count) {
+    return 'Tout afficher ($count)';
+  }
+
+  @override
+  String get providerShowLess => 'Afficher moins';
 
   @override
   String get providerSupportedSpecies => 'Espèces prises en charge';

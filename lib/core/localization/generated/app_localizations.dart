@@ -2254,6 +2254,24 @@ abstract class AppLocalizations {
   /// **'Mark as given'**
   String get healthMedicationsMarkGiven;
 
+  /// No description provided for @healthMedicationsMarkGivenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'When was it given?'**
+  String get healthMedicationsMarkGivenTitle;
+
+  /// No description provided for @healthMedicationsMarkGivenToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get healthMedicationsMarkGivenToday;
+
+  /// No description provided for @healthMedicationsMarkGivenPastDate.
+  ///
+  /// In en, this message translates to:
+  /// **'A past date'**
+  String get healthMedicationsMarkGivenPastDate;
+
   /// No description provided for @healthMedicationsGivenConfirmed.
   ///
   /// In en, this message translates to:
@@ -3508,6 +3526,18 @@ abstract class AppLocalizations {
   /// **'Emergency'**
   String get providerEmergencyCall;
 
+  /// No description provided for @providerEmergencyBannerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency line available'**
+  String get providerEmergencyBannerTitle;
+
+  /// No description provided for @providerEmergencyBannerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to call immediately'**
+  String get providerEmergencyBannerSubtitle;
+
   /// No description provided for @providerWebsite.
   ///
   /// In en, this message translates to:
@@ -3573,6 +3603,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Services'**
   String get providerServices;
+
+  /// No description provided for @providerShowAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all ({count})'**
+  String providerShowAll(int count);
+
+  /// No description provided for @providerShowLess.
+  ///
+  /// In en, this message translates to:
+  /// **'Show less'**
+  String get providerShowLess;
 
   /// No description provided for @providerSupportedSpecies.
   ///

@@ -265,6 +265,21 @@ class _ProviderContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Resolve the emergency number: prefer the selected branch, fall back to
+    // the first branch that has one.
+    final emergencyNumber = () {
+      if (branchId != null) {
+        final selected = detail.branches
+            .where((b) => b.id == branchId)
+            .firstOrNull;
+        if (selected?.emergency?.isNotEmpty == true) return selected!.emergency!;
+      }
+      for (final b in detail.branches) {
+        if (b.emergency?.isNotEmpty == true) return b.emergency!;
+      }
+      return null;
+    }();
+
     return Container(
       decoration: const BoxDecoration(
         color: AppColors.surface,
@@ -277,49 +292,31 @@ class _ProviderContent extends ConsumerWidget {
         // Top padding: corner radius overlap + avatar overhang (60px radius)
         // + gap so the name clears the avatar bottom edge.
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg)
-            .copyWith(top: AppRadius.lg + 60 + AppSpacing.md),
+            .copyWith(top: AppRadius.lg + 38 + AppSpacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Verified badge
-            if (detail.isVerified) ...[
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.sm,
-                  vertical: AppSpacing.xs,
+            // Name + verified tick
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: Text(
+                    detail.name,
+                    style: AppTextStyles.headlineLarge,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                decoration: BoxDecoration(
-                  color: AppColors.primarySoft,
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      FluentIcons.checkmark_circle_24_filled,
-                      color: AppColors.primary,
-                      size: 16,
-                    ),
-                    const SizedBox(width: AppSpacing.xs),
-                    Text(
-                      context.l10n.badgeVerified,
-                      style: AppTextStyles.labelMedium.copyWith(
-                        color: AppColors.primary,
-                        letterSpacing: 0,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: AppSpacing.sm),
-            ],
-
-            // Name
-            Text(
-              detail.name,
-              style: AppTextStyles.headlineLarge,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+                if (detail.isVerified) ...[
+                  const SizedBox(width: AppSpacing.xs),
+                  const Icon(
+                    FluentIcons.checkmark_circle_24_filled,
+                    color: AppColors.primary,
+                    size: 22,
+                  ),
+                ],
+              ],
             ),
 
             const SizedBox(height: AppSpacing.md),
@@ -376,6 +373,12 @@ class _ProviderContent extends ConsumerWidget {
               ],
             ),
 
+            // Emergency
+            if (emergencyNumber != null) ...[
+              const SizedBox(height: AppSpacing.xl),
+              _EmergencyBanner(phoneNumber: emergencyNumber),
+            ],
+
             // Description section
             if (detail.description != null &&
                 detail.description!.isNotEmpty) ...[
@@ -394,18 +397,17 @@ class _ProviderContent extends ConsumerWidget {
             // Services section
             if (detail.services.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.xl),
-              _SectionHeader(
+              _ExpandableServiceList(
                 icon: FluentIcons.checkmark_circle_24_regular,
                 title: context.l10n.providerServices,
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              Wrap(
-                spacing: AppSpacing.sm,
-                runSpacing: AppSpacing.sm,
-                children: [
-                  for (final service in detail.services)
-                    _ServiceChip(service: service),
-                ],
+                items: detail.services
+                    .map((s) => _ListItem(
+                          icon: getServiceIcon(s.name),
+                          label: s.name,
+                          accent: AppColors.primary,
+                          soft: AppColors.primarySoft,
+                        ))
+                    .toList(),
               ),
             ],
 
@@ -501,19 +503,58 @@ class _LocationCard extends StatefulWidget {
 class _LocationCardState extends State<_LocationCard> {
   GoogleMapController? _mapController;
 
+  Future<void> _launch(Uri uri, {LaunchMode mode = LaunchMode.platformDefault}) async {
+    if (await canLaunchUrl(uri)) await launchUrl(uri, mode: mode);
+  }
+
   Future<void> _call() async {
-    final phone = widget.branch.phone;
-    if (phone == null || phone.isEmpty) return;
-    final uri = Uri(scheme: 'tel', path: phone);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
+    final p = widget.branch.phone;
+    if (p == null || p.isEmpty) return;
+    await _launch(Uri(scheme: 'tel', path: p));
+  }
+
+  Future<void> _whatsApp() async {
+    final w = widget.branch.whatsApp;
+    if (w == null || w.isEmpty) return;
+    await _launch(
+      Uri(scheme: 'https', host: 'wa.me', path: '/$w', queryParameters: {'text': ''}),
+      mode: LaunchMode.externalApplication,
+    );
+  }
+
+  Future<void> _openWebsite() async {
+    final raw = widget.branch.website;
+    if (raw == null || raw.isEmpty) return;
+    final uri = Uri.tryParse(raw.startsWith('http') ? raw : 'https://$raw');
+    if (uri == null) return;
+    await _launch(uri, mode: LaunchMode.externalApplication);
+  }
+
+  Future<void> _openInstagram() async {
+    final ig = widget.branch.instagram;
+    if (ig == null || ig.isEmpty) return;
+    final handle = ig.replaceAll('@', '');
+    final appUri = Uri.parse('instagram://user?username=$handle');
+    final webUri = Uri.parse('https://instagram.com/$handle');
+    if (await canLaunchUrl(appUri)) {
+      await launchUrl(appUri);
+    } else {
+      await _launch(webUri, mode: LaunchMode.externalApplication);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final lat = widget.branch.location.latitude;
-    final lng = widget.branch.location.longitude;
+    final branch = widget.branch;
+    final lat = branch.location.latitude;
+    final lng = branch.location.longitude;
+    final l10n = context.l10n;
+
+    final hasPhone = branch.phone?.isNotEmpty == true;
+    final hasWhatsApp = branch.whatsApp?.isNotEmpty == true;
+    final hasWebsite = branch.website?.isNotEmpty == true;
+    final hasInstagram = branch.instagram?.isNotEmpty == true;
+    final hasOnlinePresence = hasWebsite || hasInstagram;
 
     return Container(
       decoration: BoxDecoration(
@@ -521,226 +562,186 @@ class _LocationCardState extends State<_LocationCard> {
         borderRadius: AppRadius.smAll,
         border: Border.all(color: AppColors.divider),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.md),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Left: Address + distance + Buttons (stacked)
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.branch.address,
-                    style: AppTextStyles.bodyMedium,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // ── Map thumbnail ────────────────────────────────────────────────
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(
+              top: Radius.circular(AppRadius.sm),
+            ),
+            child: SizedBox(
+              height: 140,
+              child: GoogleMap(
+                onMapCreated: (c) => _mapController = c,
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(lat, lng),
+                  zoom: 16,
+                ),
+                markers: {
+                  Marker(
+                    markerId: const MarkerId('provider'),
+                    position: LatLng(lat, lng),
                   ),
-                  if (widget.branch.distanceKm != null) ...[
-                    const SizedBox(height: AppSpacing.xs),
-                    Text(
-                      context.l10n.providerKmAway(widget.branch.distanceKm!.toStringAsFixed(1)),
-                      style: AppTextStyles.bodySmall,
-                    ),
-                  ],
-                  const SizedBox(height: AppSpacing.lg),
-                  // Stacked buttons
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      if (widget.branch.phone != null &&
-                          widget.branch.phone!.isNotEmpty) ...[
-                        Material(
-                          color: AppColors.primary,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: AppRadius.smAll,
-                          ),
-                          child: InkWell(
-                            onTap: _call,
-                            borderRadius: AppRadius.smAll,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: AppSpacing.sm,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    FluentIcons.call_24_regular,
-                                    color: AppColors.onPrimary,
-                                    size: 18,
-                                  ),
-                                  const SizedBox(width: AppSpacing.xs),
-                                  Text(
-                                    context.l10n.providerCall,
-                                    style: AppTextStyles.labelMedium.copyWith(
-                                      color: AppColors.onPrimary,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: AppSpacing.sm),
-                      ],
-                      Material(
-                        color: AppColors.secondarySoft,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: AppRadius.smAll,
-                          side: const BorderSide(color: AppColors.secondary),
-                        ),
-                        child: InkWell(
-                          onTap: () async {
-                            final ok = await ProviderActions.navigateTo(
-                              widget.branch.location,
-                              widget.providerName,
-                            );
-                            if (!ok && context.mounted) {
-                              context.showErrorSnackBar(
-                                context.l10n.providerDirectionsFailed,
-                              );
-                            }
-                          },
-                          borderRadius: AppRadius.smAll,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: AppSpacing.sm,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  FluentIcons.location_24_regular,
-                                  color: AppColors.secondary,
-                                  size: 18,
-                                ),
-                                const SizedBox(width: AppSpacing.xs),
-                                Text(
-                                  context.l10n.providerDirections,
-                                  style: AppTextStyles.labelMedium.copyWith(
-                                    color: AppColors.secondary,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      if (widget.branch.whatsApp != null &&
-                          widget.branch.whatsApp!.isNotEmpty) ...[
-                        const SizedBox(height: AppSpacing.sm),
-                        Material(
-                          color: const Color(0xFF25D366),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: AppRadius.smAll,
-                          ),
-                          child: InkWell(
-                            onTap: () async {
-                              final whatsapp = widget.branch.whatsApp;
-                              if (whatsapp == null || whatsapp.isEmpty) return;
-                              final uri = Uri(
-                                scheme: 'https',
-                                host: 'wa.me',
-                                path: '/$whatsapp',
-                                queryParameters: {'text': ''},
-                              );
-                              if (await canLaunchUrl(uri)) {
-                                await launchUrl(uri,
-                                    mode: LaunchMode.externalApplication);
-                              }
-                            },
-                            borderRadius: AppRadius.smAll,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: AppSpacing.sm,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: SvgPicture.asset(
-                                      'assets/icons/whatsapp.svg',
-                                      semanticsLabel: context.l10n.providerWhatsApp,
-                                    ),
-                                  ),
-                                  const SizedBox(width: AppSpacing.xs),
-                                  Text(
-                                    context.l10n.providerWhatsApp,
-                                    style: AppTextStyles.labelMedium.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ],
+                },
+                zoomControlsEnabled: false,
+                scrollGesturesEnabled: false,
+                zoomGesturesEnabled: false,
+                rotateGesturesEnabled: false,
+                tiltGesturesEnabled: false,
+                myLocationButtonEnabled: false,
+                style: '''
+[
+  { "featureType": "poi", "elementType": "all", "stylers": [{ "visibility": "off" }] },
+  { "featureType": "transit", "elementType": "all", "stylers": [{ "visibility": "off" }] }
+]''',
               ),
             ),
-            const SizedBox(width: AppSpacing.md),
-            // Right: Google Map
-            Container(
-              width: 150,
-              height: widget.branch.whatsApp != null &&
-                      widget.branch.whatsApp!.isNotEmpty
-                  ? 175
-                  : 135,
-              decoration: BoxDecoration(
-                borderRadius: AppRadius.smAll,
-                border: Border.all(color: AppColors.divider),
-                color: AppColors.surface,
-              ),
-              child: ClipRRect(
-                borderRadius: AppRadius.smAll,
-                child: GoogleMap(
-                  onMapCreated: (controller) {
-                    _mapController = controller;
-                  },
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(lat, lng),
-                    zoom: 16,
-                  ),
-                  markers: {
-                    Marker(
-                      markerId: const MarkerId('provider'),
-                      position: LatLng(lat, lng),
+          ),
+
+          // ── Address + distance ───────────────────────────────────────────
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.md, AppSpacing.md, AppSpacing.md, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(
+                      FluentIcons.location_24_regular,
+                      size: 16,
+                      color: AppColors.textSecondary,
                     ),
-                  },
-                  zoomControlsEnabled: false,
-                  scrollGesturesEnabled: false,
-                  zoomGesturesEnabled: false,
-                  rotateGesturesEnabled: false,
-                  tiltGesturesEnabled: false,
-                  myLocationButtonEnabled: false,
-                  style: '''
-[
-  {
-    "featureType": "poi",
-    "elementType": "all",
-    "stylers": [{ "visibility": "off" }]
-  },
-  {
-    "featureType": "transit",
-    "elementType": "all",
-    "stylers": [{ "visibility": "off" }]
-  }
-]''',
+                    const SizedBox(width: AppSpacing.xs),
+                    Expanded(
+                      child: Text(
+                        branch.address,
+                        style: AppTextStyles.bodyMedium,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    if (branch.distanceKm != null) ...[
+                      const SizedBox(width: AppSpacing.sm),
+                      Text(
+                        l10n.providerKmAway(branch.distanceKm!.toStringAsFixed(1)),
+                        style: AppTextStyles.labelSmall.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          // ── Directions button ────────────────────────────────────────────
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.md, AppSpacing.sm, AppSpacing.md, 0),
+            child: Material(
+              color: AppColors.secondarySoft,
+              shape: RoundedRectangleBorder(
+                borderRadius: AppRadius.smAll,
+                side: const BorderSide(color: AppColors.secondary),
+              ),
+              child: InkWell(
+                onTap: () async {
+                  final ok = await ProviderActions.navigateTo(
+                    branch.location, widget.providerName);
+                  if (!ok && context.mounted) {
+                    context.showErrorSnackBar(l10n.providerDirectionsFailed);
+                  }
+                },
+                borderRadius: AppRadius.smAll,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(FluentIcons.location_24_regular,
+                          color: AppColors.secondary, size: 18),
+                      const SizedBox(width: AppSpacing.xs),
+                      Text(
+                        l10n.providerDirections,
+                        style: AppTextStyles.labelMedium.copyWith(
+                          color: AppColors.secondary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
+          ),
+
+          // ── Contact actions (Call / WhatsApp) ────────────────────────────
+          if (hasPhone || hasWhatsApp) ...[
+            const Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+              child: Divider(height: 1),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+              child: Row(
+                children: [
+                  if (hasPhone)
+                    Expanded(
+                      child: _ContactButton(
+                        icon: FluentIcons.call_24_regular,
+                        label: l10n.providerCall,
+                        color: AppColors.primary,
+                        onTap: _call,
+                      ),
+                    ),
+                  if (hasPhone && hasWhatsApp)
+                    const SizedBox(width: AppSpacing.sm),
+                  if (hasWhatsApp)
+                    Expanded(
+                      child: _WhatsAppButton(onTap: _whatsApp, label: l10n.providerWhatsApp),
+                    ),
+                ],
+              ),
+            ),
           ],
-        ),
+
+          // ── Online presence (Website / Instagram) ────────────────────────
+          if (hasOnlinePresence) ...[
+            const Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: AppSpacing.md, vertical: AppSpacing.sm),
+              child: Divider(height: 1),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+              child: Row(
+                children: [
+                  if (hasWebsite)
+                    _OnlinePill(
+                      icon: FluentIcons.globe_24_regular,
+                      label: l10n.providerWebsite,
+                      onTap: _openWebsite,
+                    ),
+                  if (hasWebsite && hasInstagram)
+                    const SizedBox(width: AppSpacing.sm),
+                  if (hasInstagram)
+                    _OnlinePill.svg(
+                      svgPath: 'assets/icons/instagram.svg',
+                      label: l10n.providerInstagram,
+                      onTap: _openInstagram,
+                    ),
+                ],
+              ),
+            ),
+          ],
+
+          const SizedBox(height: AppSpacing.md),
+        ],
       ),
     );
   }
@@ -749,6 +750,245 @@ class _LocationCardState extends State<_LocationCard> {
   void dispose() {
     _mapController?.dispose();
     super.dispose();
+  }
+}
+
+/// WhatsApp button: green background, white logo SVG rendered without any color
+/// filter so the SVG's own white paths show cleanly on the green surface.
+class _WhatsAppButton extends StatelessWidget {
+  const _WhatsAppButton({required this.onTap, required this.label});
+
+  final VoidCallback onTap;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: const Color(0xFF25D366),
+      borderRadius: AppRadius.smAll,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: AppRadius.smAll,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: SvgPicture.asset(
+                  'assets/icons/whatsapp.svg',
+                  width: 20,
+                  height: 20,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: AppTextStyles.labelSmall.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Filled action button used in the contact row (Call / WhatsApp / Emergency).
+class _ContactButton extends StatelessWidget {
+  const _ContactButton({
+    required this.label,
+    required this.color,
+    required this.onTap,
+    required this.icon,
+  });
+
+  final IconData icon;
+  final String label;
+  final Color color;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: color,
+      borderRadius: AppRadius.smAll,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: AppRadius.smAll,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+                Icon(icon, color: Colors.white, size: 20),
+              const SizedBox(height: 2),
+              Text(
+                label,
+                style: AppTextStyles.labelSmall.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Small outlined pill for online presence links (Website / Instagram).
+class _OnlinePill extends StatelessWidget {
+  const _OnlinePill({
+    required this.label,
+    required this.onTap,
+    this.icon,
+    this.svgPath,
+  });
+
+  factory _OnlinePill.svg({
+    required String svgPath,
+    required String label,
+    required VoidCallback onTap,
+  }) => _OnlinePill(label: label, onTap: onTap, svgPath: svgPath);
+
+  final IconData? icon;
+  final String? svgPath;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.background,
+      borderRadius: AppRadius.smAll,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: AppRadius.smAll,
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.sm,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: AppRadius.smAll,
+            border: Border.all(color: AppColors.divider),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (svgPath != null)
+                SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: SvgPicture.asset(
+                    svgPath!,
+                    colorFilter: const ColorFilter.mode(
+                        AppColors.textSecondary, BlendMode.srcIn),
+                  ),
+                )
+              else
+                Icon(icon, size: 16, color: AppColors.textSecondary),
+              const SizedBox(width: AppSpacing.xs),
+              Text(
+                label,
+                style: AppTextStyles.labelMedium.copyWith(
+                  color: AppColors.textSecondary,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Emergency call card — styled as a section card consistent with the rest of
+/// the detail page, with a red accent to signal urgency.
+class _EmergencyBanner extends StatelessWidget {
+  const _EmergencyBanner({required this.phoneNumber});
+
+  final String phoneNumber;
+
+  Future<void> _call() async {
+    final uri = Uri(scheme: 'tel', path: phoneNumber);
+    if (await canLaunchUrl(uri)) await launchUrl(uri);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.background,
+      borderRadius: AppRadius.smAll,
+      child: InkWell(
+        onTap: _call,
+        borderRadius: AppRadius.smAll,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: AppRadius.smAll,
+            border: Border.all(color: AppColors.error.withValues(alpha: 0.4)),
+          ),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.md,
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: AppColors.error.withValues(alpha: 0.1),
+                  borderRadius: AppRadius.smAll,
+                ),
+                child: const Icon(
+                  FluentIcons.call_24_filled,
+                  color: AppColors.error,
+                  size: 22,
+                ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      phoneNumber,
+                      style: AppTextStyles.titleMedium.copyWith(
+                        color: AppColors.error,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      context.l10n.providerEmergencyBannerSubtitle,
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(
+                FluentIcons.arrow_forward_24_regular,
+                color: AppColors.error,
+                size: 20,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -884,34 +1124,135 @@ class _CollapsibleHoursState extends State<_CollapsibleHours>
   }
 }
 
-class _ServiceChip extends StatelessWidget {
-  const _ServiceChip({required this.service});
+/// Data holder for a single row in [_ExpandableServiceList].
+class _ListItem {
+  const _ListItem({
+    required this.icon,
+    required this.label,
+    required this.accent,
+    required this.soft,
+  });
+  final IconData icon;
+  final String label;
+  final Color accent;
+  final Color soft;
+}
 
-  final ProviderService service;
+/// Shows a section header + a list of items, collapsing to [_kPreviewCount]
+/// rows by default with an animated expand/collapse toggle.
+class _ExpandableServiceList extends StatefulWidget {
+  const _ExpandableServiceList({
+    required this.icon,
+    required this.title,
+    required this.items,
+  });
+
+  final IconData icon;
+  final String title;
+  final List<_ListItem> items;
+
+  @override
+  State<_ExpandableServiceList> createState() => _ExpandableServiceListState();
+}
+
+class _ExpandableServiceListState extends State<_ExpandableServiceList> {
+  static const int _kPreviewCount = 3;
+  bool _expanded = false;
 
   @override
   Widget build(BuildContext context) {
-    final icon = getServiceIcon(service.name);
-    return Container(
+    final l10n = context.l10n;
+    final items = widget.items;
+    final canExpand = items.length > _kPreviewCount;
+    final visible = _expanded || !canExpand ? items : items.take(_kPreviewCount).toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Section header row — title on left, toggle on right.
+        Row(
+          children: [
+            Icon(widget.icon, size: 20, color: AppColors.primary),
+            const SizedBox(width: AppSpacing.sm),
+            Text(widget.title, style: AppTextStyles.titleMedium),
+            const Spacer(),
+            if (canExpand)
+              GestureDetector(
+                onTap: () => setState(() => _expanded = !_expanded),
+                child: Text(
+                  _expanded
+                      ? l10n.providerShowLess
+                      : l10n.providerShowAll(items.length),
+                  style: AppTextStyles.labelMedium.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        // Animated list container.
+        AnimatedSize(
+          duration: const Duration(milliseconds: 250),
+          curve: Curves.easeOut,
+          alignment: Alignment.topCenter,
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: AppRadius.smAll,
+              border: Border.all(color: AppColors.divider),
+            ),
+            child: Column(
+              children: [
+                for (int i = 0; i < visible.length; i++) ...[
+                  _ServiceRow(item: visible[i]),
+                  if (i < visible.length - 1)
+                    const Divider(height: 1, indent: 48),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _ServiceRow extends StatelessWidget {
+  const _ServiceRow({required this.item});
+
+  final _ListItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
-        vertical: AppSpacing.sm,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.primarySoft,
-        borderRadius: AppRadius.smAll,
+        vertical: AppSpacing.sm + 2,
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 16, color: AppColors.primary),
-          const SizedBox(width: AppSpacing.xs),
-          Text(
-            service.name,
-            style: AppTextStyles.labelMedium.copyWith(
-              color: AppColors.primary,
-              letterSpacing: 0,
+          Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              color: item.soft,
+              borderRadius: BorderRadius.circular(8),
             ),
+            child: Icon(item.icon, size: 16, color: item.accent),
+          ),
+          const SizedBox(width: AppSpacing.md),
+          Expanded(
+            child: Text(
+              item.label,
+              style: AppTextStyles.bodyMedium,
+            ),
+          ),
+          Icon(
+            FluentIcons.checkmark_24_regular,
+            size: 16,
+            color: item.accent,
           ),
         ],
       ),

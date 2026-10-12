@@ -498,6 +498,12 @@
   "healthMedicationsAdd": "Ajouter un médicament",
   "healthMedicationsEmpty": "Aucun médicament actif. Ajoutez des rappels pour rester à jour.",
   "healthMedicationsMarkGiven": "Marquer comme administré",
+  "healthMedicationsMarkGivenTitle": "Quand a-t-il été administré ?",
+  "@healthMedicationsMarkGivenTitle": {},
+  "healthMedicationsMarkGivenToday": "Aujourd'hui",
+  "@healthMedicationsMarkGivenToday": {},
+  "healthMedicationsMarkGivenPastDate": "Une date passée",
+  "@healthMedicationsMarkGivenPastDate": {},
   "healthMedicationsGivenConfirmed": "{name} marqué comme administré",
   "@healthMedicationsGivenConfirmed": {
     "placeholders": { "name": { "type": "String" } }
@@ -776,6 +782,8 @@
   "providerHours": "Heures d'ouverture",
   "providerWhatsApp": "WhatsApp",
   "providerEmergencyCall": "Urgence",
+  "providerEmergencyBannerTitle": "Ligne d'urgence disponible",
+  "providerEmergencyBannerSubtitle": "Appuyez pour appeler immédiatement",
   "providerWebsite": "Site web",
   "providerInstagram": "Instagram",
   "providerEmail": "E-mail",
@@ -787,6 +795,11 @@
   "providerNotFoundTitle": "Prestataire introuvable",
   "providerAbout": "À propos",
   "providerServices": "Services",
+  "providerShowAll": "Tout afficher ({count})",
+  "@providerShowAll": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "providerShowLess": "Afficher moins",
   "providerSupportedSpecies": "Espèces prises en charge",
   "providerLocationContact": "Lieu & Contact",
   "providerLocationsContact": "{count} lieux & Contact",

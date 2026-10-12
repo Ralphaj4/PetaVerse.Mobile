@@ -81,7 +81,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     // Hero fields: real when the summary has loaded, neutral placeholders
     // while it's in flight or errored (the sheet carries the error state).
-    final healthScore = summary?.healthScore ?? 0;
+    final healthScore = summary?.healthScore;
     final healthStatusLabel = summary == null
         ? ' - '
         : healthBandLabel(l10n, summary.healthBand);

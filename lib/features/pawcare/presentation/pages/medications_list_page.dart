@@ -18,6 +18,7 @@ import '../../../../shared/widgets/error_state_widget.dart';
 import '../../domain/entities/medication.dart';
 import '../../../home/presentation/providers/home_providers.dart';
 import '../providers/pawcare_providers.dart';
+import '../widgets/mark_given_sheet.dart';
 import '../widgets/medication_frequency.dart';
 
 /// Full list of a pet's active medications, with a due badge, a "mark given"
@@ -45,11 +46,14 @@ class _MedicationsListPageState extends ConsumerState<MedicationsListPage> {
   }
 
   Future<void> _markGiven(Medication med) async {
+    final givenDate = await showMarkGivenSheet(context);
+    if (givenDate == null || !mounted) return;
+
     final l10n = context.l10n;
     setState(() => _busyId = med.id);
     final result = await ref
         .read(pawCareRepositoryProvider)
-        .markMedicationGiven(widget.petId, med.id);
+        .markMedicationGiven(widget.petId, med.id, givenDate: givenDate);
     if (!mounted) return;
     setState(() => _busyId = null);
     result.when(

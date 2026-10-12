@@ -133,7 +133,6 @@ class _Body extends StatelessWidget {
         if (supportPhone.trim().isNotEmpty) ...[
           const SizedBox(height: AppSpacing.md),
           _EmailCard(
-            // The SVG already carries the green rounded background + glyph.
             leading: ClipRRect(
               borderRadius: AppRadius.mdAll,
               child: SvgPicture.asset(

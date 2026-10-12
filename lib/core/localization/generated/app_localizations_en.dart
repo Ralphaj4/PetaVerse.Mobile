@@ -1225,6 +1225,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get healthMedicationsMarkGiven => 'Mark as given';
 
   @override
+  String get healthMedicationsMarkGivenTitle => 'When was it given?';
+
+  @override
+  String get healthMedicationsMarkGivenToday => 'Today';
+
+  @override
+  String get healthMedicationsMarkGivenPastDate => 'A past date';
+
+  @override
   String healthMedicationsGivenConfirmed(String name) {
     return 'Marked $name as given';
   }
@@ -1944,6 +1953,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get providerEmergencyCall => 'Emergency';
 
   @override
+  String get providerEmergencyBannerTitle => 'Emergency line available';
+
+  @override
+  String get providerEmergencyBannerSubtitle => 'Tap to call immediately';
+
+  @override
   String get providerWebsite => 'Website';
 
   @override
@@ -1975,6 +1990,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get providerServices => 'Services';
+
+  @override
+  String providerShowAll(int count) {
+    return 'Show all ($count)';
+  }
+
+  @override
+  String get providerShowLess => 'Show less';
 
   @override
   String get providerSupportedSpecies => 'Supported Species';

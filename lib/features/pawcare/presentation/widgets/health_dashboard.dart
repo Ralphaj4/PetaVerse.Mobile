@@ -15,6 +15,7 @@ import 'appointments_card.dart';
 import 'feeding_card.dart';
 import 'grooming_card.dart';
 import 'health_section_skeleton.dart';
+import 'mark_given_sheet.dart';
 import 'medications_card.dart';
 import 'vaccinations_card.dart';
 import 'weight_card.dart';
@@ -36,10 +37,13 @@ class HealthDashboard extends ConsumerWidget {
     WidgetRef ref,
     Medication med,
   ) async {
+    final givenDate = await showMarkGivenSheet(context);
+    if (givenDate == null || !context.mounted) return;
+
     final l10n = context.l10n;
     final result = await ref
         .read(pawCareRepositoryProvider)
-        .markMedicationGiven(petId, med.id);
+        .markMedicationGiven(petId, med.id, givenDate: givenDate);
     if (!context.mounted) return;
     result.when(
       success: (_) {

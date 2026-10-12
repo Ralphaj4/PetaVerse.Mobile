@@ -1227,6 +1227,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get healthMedicationsMarkGiven => 'تحديد كمُعطى';
 
   @override
+  String get healthMedicationsMarkGivenTitle => 'متى أُعطي؟';
+
+  @override
+  String get healthMedicationsMarkGivenToday => 'اليوم';
+
+  @override
+  String get healthMedicationsMarkGivenPastDate => 'تاريخ سابق';
+
+  @override
   String healthMedicationsGivenConfirmed(String name) {
     return 'تم تحديد $name كمُعطى';
   }
@@ -1946,6 +1955,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get providerEmergencyCall => 'طوارئ';
 
   @override
+  String get providerEmergencyBannerTitle => 'خط الطوارئ متاح';
+
+  @override
+  String get providerEmergencyBannerSubtitle => 'اضغط للاتصال فوراً';
+
+  @override
   String get providerWebsite => 'الموقع الإلكتروني';
 
   @override
@@ -1977,6 +1992,14 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get providerServices => 'الخدمات';
+
+  @override
+  String providerShowAll(int count) {
+    return 'عرض الكل ($count)';
+  }
+
+  @override
+  String get providerShowLess => 'عرض أقل';
 
   @override
   String get providerSupportedSpecies => 'الأنواع المدعومة';
