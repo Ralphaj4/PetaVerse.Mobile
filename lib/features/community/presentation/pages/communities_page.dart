@@ -1,4 +1,4 @@
-﻿import 'dart:async';
+import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -14,23 +14,17 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/error_state_widget.dart';
 import '../../domain/entities/community_group_entities.dart';
-import '../../domain/entities/community_group_enums.dart';
 import '../providers/community_group_feed_providers.dart';
 import '../widgets/community_card.dart';
-import '../widgets/community_common.dart';
 
-/// Which directory tab is showing: browse all (Discover) vs the acting pet's
-/// joined communities (Mine).
-enum _CommunitiesTab { discover, mine }
-
-/// The communities directory: a Discover / My-communities tab bar, search,
-/// category chips (Discover only), and lists of community cards. Reached via
+/// The communities directory: search and a list of community cards. Reached via
 /// `/community/communities`.
 ///
-/// The search field and tab bar stay mounted at all times - only the list area
-/// below them swaps between loading / data / empty.
+/// The search field stays mounted at all times - only the list area below it
+/// swaps between loading / data / empty.
 class CommunitiesPage extends ConsumerStatefulWidget {
-  /// When [embedded] (inside the PetaHub) it renders without its own AppBar - /// the hub supplies the shared header. Standalone (`/community/communities`)
+  /// When [embedded] (inside the PetaHub) it renders without its own AppBar -
+  /// the hub supplies the shared header. Standalone (`/community/communities`)
   /// keeps its own AppBar with the create-community action.
   const CommunitiesPage({this.embedded = false, super.key});
 
@@ -45,7 +39,6 @@ class _CommunitiesPageState extends ConsumerState<CommunitiesPage> {
   final _searchController = TextEditingController();
   Timer? _debounce;
   String _query = '';
-  _CommunitiesTab _tab = _CommunitiesTab.discover;
 
   @override
   void initState() {
@@ -62,7 +55,7 @@ class _CommunitiesPageState extends ConsumerState<CommunitiesPage> {
   }
 
   void _onScroll() {
-    if (_query.isNotEmpty) return; // search results aren't paginated here
+    if (_query.isNotEmpty) return;
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 300) {
       ref.read(communityDirectoryProvider.notifier).loadMore();
@@ -85,29 +78,13 @@ class _CommunitiesPageState extends ConsumerState<CommunitiesPage> {
 
     final body = Column(
       children: [
-        // Standalone puts the create-community action in the AppBar. Embedded
-        // in the hub there's no AppBar, so pair the create button with the
-        // search field so the action is always reachable.
         _searchBar(l10n),
-        if (!searching) ...[
-          _CommunitiesTabBar(
-            tab: _tab,
-            onChanged: (t) => setState(() => _tab = t),
-          ),
-          // Category chips only make sense while browsing (Discover tab).
-          if (_tab == _CommunitiesTab.discover) _CategoryBar(l10n: l10n),
-        ],
         Expanded(
-          child: searching
-              ? _searchResults()
-              : _tab == _CommunitiesTab.mine
-                  ? _mine()
-                  : _directory(),
+          child: searching ? _searchResults() : _directory(),
         ),
       ],
     );
 
-    // Embedded: no Scaffold/AppBar - the PetaHub supplies the chrome.
     if (widget.embedded) return body;
 
     return Scaffold(
@@ -129,110 +106,55 @@ class _CommunitiesPageState extends ConsumerState<CommunitiesPage> {
     );
   }
 
-  // ── "My communities" tab ────────────────────────────────────────────────────
-
-  Widget _mine() {
-    final l10n = context.l10n;
-    final state = ref.watch(myCommunitiesProvider);
-    return state.when(
-      loading: () => const _CenteredLoader(),
-      error: (e, _) => ErrorStateWidget(
-        failure: e is Failure ? e : null,
-        onRetry: () => ref.invalidate(myCommunitiesProvider),
-      ),
-      data: (communities) {
-        if (communities.isEmpty) {
-          return _MineEmpty(
-            l10n: l10n,
-            onDiscover: () => setState(() => _tab = _CommunitiesTab.discover),
-          );
-        }
-        return RefreshIndicator(
-          color: AppColors.primary,
-          onRefresh: () async => ref.invalidate(myCommunitiesProvider),
-          child: ListView.separated(
-            padding: const EdgeInsets.fromLTRB(
-                AppSpacing.lg, AppSpacing.sm, AppSpacing.lg, AppSpacing.xl * 3),
-            itemCount: communities.length,
-            separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.md),
-            itemBuilder: (context, i) {
-              final c = communities[i];
-              return CommunityCard(community: c, onOpen: () => _open(c));
-            },
-          ),
-        );
-      },
-    );
-  }
-
   Widget _searchBar(AppLocalizations l10n) {
-    final field = Container(
-      height: 44,
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: AppRadius.lgAll,
-        border: Border.all(color: AppColors.divider),
-      ),
-      child: Row(
-        children: [
-          const Icon(FluentIcons.search_24_regular,
-              size: 20, color: AppColors.textSecondary),
-          const SizedBox(width: AppSpacing.sm),
-          Expanded(
-            child: TextField(
-              controller: _searchController,
-              onChanged: _onSearchChanged,
-              textInputAction: TextInputAction.search,
-              decoration: InputDecoration(
-                hintText: l10n.communitiesSearchHint,
-                border: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                isDense: true,
-                contentPadding: const EdgeInsets.symmetric(vertical: 10),
-              ),
-            ),
-          ),
-          if (_query.isNotEmpty)
-            IconButton(
-              constraints: const BoxConstraints(minHeight: 0, minWidth: 0),
-              padding: EdgeInsets.zero,
-              icon: const Icon(FluentIcons.dismiss_24_regular),
-              onPressed: () {
-                _searchController.clear();
-                setState(() => _query = '');
-              },
-            ),
-        ],
-      ),
-    );
-
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md, AppSpacing.sm, AppSpacing.xs, AppSpacing.md),
-      // Embedded has no AppBar to host the create action, so surface it here
-      // beside the search field. Standalone keeps its AppBar action instead.
-      child: widget.embedded
-          ? Row(
-              children: [
-                Expanded(child: field),
-                const SizedBox(width: AppSpacing.sm),
-                IconButton(
-                  onPressed: () =>
-                      context.push('/community/communities/create'),
-                  icon: const Icon(FluentIcons.add_24_regular),
-                  tooltip: l10n.communityCreateTitle,
+          AppSpacing.md, AppSpacing.sm, AppSpacing.md, AppSpacing.md),
+      child: Container(
+        height: 44,
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: AppRadius.lgAll,
+          border: Border.all(color: AppColors.divider),
+        ),
+        child: Row(
+          children: [
+            const Icon(FluentIcons.search_24_regular,
+                size: 20, color: AppColors.textSecondary),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(
+              child: TextField(
+                controller: _searchController,
+                onChanged: _onSearchChanged,
+                textInputAction: TextInputAction.search,
+                decoration: InputDecoration(
+                  hintText: l10n.communitiesSearchHint,
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  isDense: true,
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 10),
                 ),
-              ],
-            )
-          : field,
+              ),
+            ),
+            if (_query.isNotEmpty)
+              IconButton(
+                constraints: const BoxConstraints(minHeight: 0, minWidth: 0),
+                padding: EdgeInsets.zero,
+                icon: const Icon(FluentIcons.dismiss_24_regular),
+                onPressed: () {
+                  _searchController.clear();
+                  setState(() => _query = '');
+                },
+              ),
+          ],
+        ),
+      ),
     );
   }
 
-  // ── Directory (browse) ──────────────────────────────────────────────────────
-
-  /// Only the list area reacts to loading/error - the controls above stay put.
   Widget _directory() {
     final state = ref.watch(communityDirectoryProvider);
     return state.when(
@@ -270,8 +192,6 @@ class _CommunitiesPageState extends ConsumerState<CommunitiesPage> {
       },
     );
   }
-
-  // ── Search results ──────────────────────────────────────────────────────────
 
   Widget _searchResults() {
     final l10n = context.l10n;
@@ -318,196 +238,6 @@ class _CenteredLoader extends StatelessWidget {
           child: CircularProgressIndicator(),
         ),
       );
-}
-
-/// The Discover / My-communities segmented tab bar.
-class _CommunitiesTabBar extends StatelessWidget {
-  const _CommunitiesTabBar({required this.tab, required this.onChanged});
-
-  final _CommunitiesTab tab;
-  final ValueChanged<_CommunitiesTab> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(
-          AppSpacing.lg, 0, AppSpacing.lg, AppSpacing.sm),
-      child: Container(
-        padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: AppRadius.lgAll,
-          border: Border.all(color: AppColors.divider),
-        ),
-        child: Row(
-          children: [
-            _TabSegment(
-              label: l10n.communitiesTabDiscover,
-              selected: tab == _CommunitiesTab.discover,
-              onTap: () => onChanged(_CommunitiesTab.discover),
-            ),
-            _TabSegment(
-              label: l10n.communitiesTabMine,
-              selected: tab == _CommunitiesTab.mine,
-              onTap: () => onChanged(_CommunitiesTab.mine),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _TabSegment extends StatelessWidget {
-  const _TabSegment({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: onTap,
-        behavior: HitTestBehavior.opaque,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 180),
-          padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-          decoration: BoxDecoration(
-            color: selected ? AppColors.primary : Colors.transparent,
-            borderRadius: AppRadius.mdAll,
-          ),
-          alignment: Alignment.center,
-          child: Text(
-            label,
-            style: AppTextStyles.labelMedium.copyWith(
-              color: selected ? AppColors.onPrimary : AppColors.textSecondary,
-              fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Empty state for the "My communities" tab.
-class _MineEmpty extends StatelessWidget {
-  const _MineEmpty({required this.l10n, required this.onDiscover});
-
-  final AppLocalizations l10n;
-  final VoidCallback onDiscover;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.xl),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(FluentIcons.people_community_24_regular,
-                size: 56, color: AppColors.textTertiary),
-            const SizedBox(height: AppSpacing.md),
-            Text(l10n.communitiesMineEmptyTitle,
-                style: AppTextStyles.titleMedium, textAlign: TextAlign.center),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              l10n.communitiesMineEmptyDescription,
-              style: AppTextStyles.bodyMedium
-                  .copyWith(color: AppColors.textSecondary),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            FilledButton(
-              onPressed: onDiscover,
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: AppColors.onPrimary,
-                shape: RoundedRectangleBorder(borderRadius: AppRadius.mdAll),
-              ),
-              child: Text(l10n.communitiesTabDiscover),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Persistent category filter bar (no sort). Always visible; selecting a chip
-/// updates the filter and only the list below reloads.
-class _CategoryBar extends ConsumerWidget {
-  const _CategoryBar({required this.l10n});
-
-  final AppLocalizations l10n;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final filter = ref.watch(communityDirectoryFilterProvider);
-    final notifier = ref.read(communityDirectoryFilterProvider.notifier);
-
-    return SizedBox(
-      height: 44,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-        children: [
-          _CategoryChip(
-            label: l10n.communityCategoryAll,
-            selected: filter.category == null,
-            onTap: () => notifier.setCategory(null),
-          ),
-          for (final c in CommunityCategory.values) ...[
-            const SizedBox(width: AppSpacing.sm),
-            _CategoryChip(
-              label: c.label(l10n),
-              selected: filter.category == c,
-              onTap: () => notifier.setCategory(c),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-}
-
-class _CategoryChip extends StatelessWidget {
-  const _CategoryChip({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: ChoiceChip(
-        label: Text(label),
-        selected: selected,
-        onSelected: (_) => onTap(),
-        showCheckmark: false,
-        selectedColor: AppColors.primary,
-        backgroundColor: AppColors.surface,
-        labelStyle: AppTextStyles.labelMedium.copyWith(
-          color: selected ? AppColors.onPrimary : AppColors.textSecondary,
-        ),
-        shape: RoundedRectangleBorder(borderRadius: AppRadius.lgAll),
-        side:
-            BorderSide(color: selected ? AppColors.primary : AppColors.divider),
-      ),
-    );
-  }
 }
 
 class _EmptyDirectory extends StatelessWidget {

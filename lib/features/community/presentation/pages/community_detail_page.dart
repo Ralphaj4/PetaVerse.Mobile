@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/errors/failure.dart';
+import '../../../pets/presentation/providers/species_provider.dart';
 import '../../../../core/errors/failure_l10n.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/network/dtos/media_dtos.dart';
@@ -34,7 +35,6 @@ import '../providers/community_providers.dart';
 import '../providers/community_social_providers.dart';
 import '../providers/poll_event_providers.dart';
 import '../widgets/community_card.dart';
-import '../widgets/community_common.dart';
 import '../widgets/community_sheet.dart';
 import '../widgets/create_choice_sheet.dart';
 import '../widgets/event_card.dart';
@@ -75,9 +75,12 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
     ]);
   }
 
-  /// The community FAB: pick Post / Poll / Event, then route accordingly.
+  /// The community FAB: pick Post / Poll / (lead-only) Event, then route accordingly.
   Future<void> _onCreate(CommunityGroup community) async {
-    final choice = await showCreateChoiceSheet(context);
+    final choice = await showCreateChoiceSheet(
+      context,
+      showEvent: community.isLead,
+    );
     if (choice == null || !mounted) return;
     switch (choice) {
       case CreateChoice.post:
@@ -398,12 +401,13 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
           _snack('Reported. Thank you.');
         }
       case PostAction.block:
+        final authorName = post.author?.name ?? post.pageAuthor?.name ?? '';
         final confirmed = await showBlockConfirmDialog(
           context,
-          authorName: post.author.name,
+          authorName: authorName,
         );
         if (!confirmed || !mounted) break;
-        final authorId = post.author.backendId;
+        final authorId = post.author?.backendId ?? 0;
         if (authorId > 0) await actions.block(authorId);
         // Blocking hides the author's posts - refresh this feed.
         await ref.read(communityFeedProvider(_id).notifier).refresh();
@@ -423,11 +427,13 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
   /// Minimal domain Post for the cross-cutting actions that need it.
   domain.Post _toDomainPost(PawPost p) => domain.Post(
         id: p.backendId,
-        author: domain.CommunityPet(
-          id: p.author.backendId,
-          name: p.author.name,
-          avatarUrl: p.author.avatarUrl,
-        ),
+        author: p.author != null
+            ? domain.CommunityPet(
+                id: p.author!.backendId,
+                name: p.author!.name,
+                avatarUrl: p.author!.avatarUrl,
+              )
+            : null,
         media: const [],
         hashtags: p.hashtags,
         taggedPets: const [],
@@ -446,6 +452,16 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
+      floatingActionButton: () {
+        final c = detail.value;
+        if (c == null || (!c.isMember && !c.isLead)) return null;
+        return FloatingActionButton(
+          backgroundColor: AppColors.primary,
+          foregroundColor: AppColors.onPrimary,
+          onPressed: () => _onCreate(c),
+          child: const Icon(FluentIcons.add_24_filled),
+        );
+      }(),
       body: detail.when(
         loading: () => const _CommunityDetailSkeleton(),
         error: (e, _) {
@@ -463,15 +479,6 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
           );
         },
       ),
-      floatingActionButton: detail.value?.isMember == true
-          ? FloatingActionButton(
-              heroTag: 'community_compose_fab',
-              onPressed: () => _onCreate(detail.value!),
-              backgroundColor: AppColors.primary,
-              child: const Icon(FluentIcons.add_24_filled,
-                  color: AppColors.onPrimary),
-            )
-          : null,
     );
   }
 
@@ -509,6 +516,10 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
           ),
         ),
         SliverToBoxAdapter(child: _StatsCard(community: community)),
+        if (!community.isMember && !community.isLead && community.isSystem)
+          SliverToBoxAdapter(
+            child: _GuestBanner(community: community),
+          ),
         SliverToBoxAdapter(child: _MembersCard(communityId: _id)),
         if (items.isEmpty && anyLoading)
           const SliverToBoxAdapter(
@@ -581,6 +592,7 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
               context.push('/community/post/${paw.backendId}'),
           onOpenOptions: () => _openPostOptions(paw),
           onOpenProfile: _openProfile,
+          onOpenPage: (id) => context.push('/community/page/$id'),
           onShare: () => _sharePost(paw),
         );
       case _PollItem(:final poll):
@@ -759,14 +771,6 @@ class _Header extends StatelessWidget {
                       child: Text(community.name,
                           style: AppTextStyles.headlineMedium),
                     ),
-                    const SizedBox(width: AppSpacing.sm),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: _MetaPill(
-                        icon: FluentIcons.tag_24_regular,
-                        label: community.category.label(l10n),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -788,23 +792,25 @@ class _Header extends StatelessWidget {
                       .copyWith(color: AppColors.textSecondary),
                 ),
               ],
-              const SizedBox(height: AppSpacing.md),
-              // "Led by" with the lead pet's avatar.
-              Row(
-                children: [
-                  AppAvatar(
-                    name: community.lead.name,
-                    imageUrl: community.lead.avatarUrl,
-                    radius: 12,
-                  ),
-                  const SizedBox(width: AppSpacing.xs),
-                  Text(
-                    l10n.communityLedBy(community.lead.name),
-                    style: AppTextStyles.labelMedium
-                        .copyWith(color: AppColors.textSecondary),
-                  ),
-                ],
-              ),
+              if (community.lead != null) ...[
+                const SizedBox(height: AppSpacing.md),
+                // "Led by" with the lead pet's avatar.
+                Row(
+                  children: [
+                    AppAvatar(
+                      name: community.lead!.name,
+                      imageUrl: community.lead!.avatarUrl,
+                      radius: 12,
+                    ),
+                    const SizedBox(width: AppSpacing.xs),
+                    Text(
+                      l10n.communityLedBy(community.lead!.name),
+                      style: AppTextStyles.labelMedium
+                          .copyWith(color: AppColors.textSecondary),
+                    ),
+                  ],
+                ),
+              ],
             ],
           ),
         ),
@@ -856,34 +862,76 @@ class _EditGlyph extends StatelessWidget {
   }
 }
 
-/// A subtle icon+label pill for the header metadata row.
-class _MetaPill extends StatelessWidget {
-  const _MetaPill({required this.icon, required this.label});
+/// Shown below the stats card for guests of a system (species) community.
+/// Explains that ownership of that species is required and links to adoption.
+class _GuestBanner extends ConsumerWidget {
+  const _GuestBanner({required this.community});
 
-  final IconData icon;
-  final String label;
+  final CommunityGroup community;
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.sm, vertical: 4),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: AppRadius.smAll,
-        border: Border.all(color: AppColors.divider),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 13, color: AppColors.textSecondary),
-          const SizedBox(width: 4),
-          Text(
-            label,
-            style: AppTextStyles.labelSmall
-                .copyWith(color: AppColors.textSecondary),
-          ),
-        ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    // Resolve the species name from the shared lookup; fall back to the
+    // community name only if the list hasn't loaded yet.
+    final speciesList = ref.watch(speciesListProvider).value ?? const [];
+    final speciesName = community.speciesId != null
+        ? (speciesList
+                .where((s) => s.id == community.speciesId)
+                .firstOrNull
+                ?.name ??
+            community.name)
+        : community.name;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+          AppSpacing.lg, AppSpacing.sm, AppSpacing.lg, AppSpacing.xs),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(AppSpacing.md),
+        decoration: BoxDecoration(
+          color: AppColors.secondarySoft,
+          borderRadius: AppRadius.lgAll,
+          border: Border.all(color: AppColors.secondary.withValues(alpha: 0.3)),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Icon(FluentIcons.info_24_regular,
+                size: 18, color: AppColors.secondary),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(
+              child: Text.rich(
+                TextSpan(
+                  style: AppTextStyles.bodySmall
+                      .copyWith(color: AppColors.textPrimary),
+                  children: [
+                    TextSpan(text: l10n.communityGuestBannerText(speciesName)),
+                    WidgetSpan(
+                      baseline: TextBaseline.alphabetic,
+                      alignment: PlaceholderAlignment.baseline,
+                      child: GestureDetector(
+                        onTap: () => context.push(
+                          '/adoption',
+                          extra: community.speciesId,
+                        ),
+                        child: Text(
+                          l10n.communityGuestBannerAdopt,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: AppColors.secondary,
+                            decoration: TextDecoration.underline,
+                            decorationColor: AppColors.secondary,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TextSpan(text: l10n.communityGuestBannerSuffix),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -909,7 +957,8 @@ class _PawBadge extends StatelessWidget {
 }
 
 /// The primary action beside the community name: Manage (lead), Leave (member),
-/// or Join (visitor). Compact so it fits on the name row.
+/// Join (visitor of user-created community), or nothing (visitor of a system
+/// species community — the guest banner below the stats explains eligibility).
 class _HeaderAction extends StatelessWidget {
   const _HeaderAction({
     required this.community,
@@ -940,6 +989,9 @@ class _HeaderAction extends StatelessWidget {
         onTap: onLeave,
       );
     }
+    // System (species) communities are auto-joined when the user owns that
+    // species — show no button; _GuestBanner explains how to gain access.
+    if (community.isSystem) return const SizedBox.shrink();
     return CommunityJoinButton(community: community);
   }
 }

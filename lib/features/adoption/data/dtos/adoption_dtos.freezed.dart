@@ -571,9 +571,286 @@ as String?,
 
 
 /// @nodoc
+mixin _$AdoptionPageDto {
+
+ int get id; String get name; String get handle; String? get avatarUrl; bool get isVerified;
+/// Create a copy of AdoptionPageDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AdoptionPageDtoCopyWith<AdoptionPageDto> get copyWith => _$AdoptionPageDtoCopyWithImpl<AdoptionPageDto>(this as AdoptionPageDto, _$identity);
+
+  /// Serializes this AdoptionPageDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AdoptionPageDto&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.handle, handle) || other.handle == handle)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,name,handle,avatarUrl,isVerified);
+
+@override
+String toString() {
+  return 'AdoptionPageDto(id: $id, name: $name, handle: $handle, avatarUrl: $avatarUrl, isVerified: $isVerified)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AdoptionPageDtoCopyWith<$Res>  {
+  factory $AdoptionPageDtoCopyWith(AdoptionPageDto value, $Res Function(AdoptionPageDto) _then) = _$AdoptionPageDtoCopyWithImpl;
+@useResult
+$Res call({
+ int id, String name, String handle, String? avatarUrl, bool isVerified
+});
+
+
+
+
+}
+/// @nodoc
+class _$AdoptionPageDtoCopyWithImpl<$Res>
+    implements $AdoptionPageDtoCopyWith<$Res> {
+  _$AdoptionPageDtoCopyWithImpl(this._self, this._then);
+
+  final AdoptionPageDto _self;
+  final $Res Function(AdoptionPageDto) _then;
+
+/// Create a copy of AdoptionPageDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? handle = null,Object? avatarUrl = freezed,Object? isVerified = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,handle: null == handle ? _self.handle : handle // ignore: cast_nullable_to_non_nullable
+as String,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
+as String?,isVerified: null == isVerified ? _self.isVerified : isVerified // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [AdoptionPageDto].
+extension AdoptionPageDtoPatterns on AdoptionPageDto {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AdoptionPageDto value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _AdoptionPageDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AdoptionPageDto value)  $default,){
+final _that = this;
+switch (_that) {
+case _AdoptionPageDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AdoptionPageDto value)?  $default,){
+final _that = this;
+switch (_that) {
+case _AdoptionPageDto() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String handle,  String? avatarUrl,  bool isVerified)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _AdoptionPageDto() when $default != null:
+return $default(_that.id,_that.name,_that.handle,_that.avatarUrl,_that.isVerified);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String handle,  String? avatarUrl,  bool isVerified)  $default,) {final _that = this;
+switch (_that) {
+case _AdoptionPageDto():
+return $default(_that.id,_that.name,_that.handle,_that.avatarUrl,_that.isVerified);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String handle,  String? avatarUrl,  bool isVerified)?  $default,) {final _that = this;
+switch (_that) {
+case _AdoptionPageDto() when $default != null:
+return $default(_that.id,_that.name,_that.handle,_that.avatarUrl,_that.isVerified);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _AdoptionPageDto extends AdoptionPageDto {
+  const _AdoptionPageDto({required this.id, this.name = '', this.handle = '', this.avatarUrl, this.isVerified = false}): super._();
+  factory _AdoptionPageDto.fromJson(Map<String, dynamic> json) => _$AdoptionPageDtoFromJson(json);
+
+@override final  int id;
+@override@JsonKey() final  String name;
+@override@JsonKey() final  String handle;
+@override final  String? avatarUrl;
+@override@JsonKey() final  bool isVerified;
+
+/// Create a copy of AdoptionPageDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AdoptionPageDtoCopyWith<_AdoptionPageDto> get copyWith => __$AdoptionPageDtoCopyWithImpl<_AdoptionPageDto>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$AdoptionPageDtoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AdoptionPageDto&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.handle, handle) || other.handle == handle)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,name,handle,avatarUrl,isVerified);
+
+@override
+String toString() {
+  return 'AdoptionPageDto(id: $id, name: $name, handle: $handle, avatarUrl: $avatarUrl, isVerified: $isVerified)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AdoptionPageDtoCopyWith<$Res> implements $AdoptionPageDtoCopyWith<$Res> {
+  factory _$AdoptionPageDtoCopyWith(_AdoptionPageDto value, $Res Function(_AdoptionPageDto) _then) = __$AdoptionPageDtoCopyWithImpl;
+@override @useResult
+$Res call({
+ int id, String name, String handle, String? avatarUrl, bool isVerified
+});
+
+
+
+
+}
+/// @nodoc
+class __$AdoptionPageDtoCopyWithImpl<$Res>
+    implements _$AdoptionPageDtoCopyWith<$Res> {
+  __$AdoptionPageDtoCopyWithImpl(this._self, this._then);
+
+  final _AdoptionPageDto _self;
+  final $Res Function(_AdoptionPageDto) _then;
+
+/// Create a copy of AdoptionPageDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? handle = null,Object? avatarUrl = freezed,Object? isVerified = null,}) {
+  return _then(_AdoptionPageDto(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,handle: null == handle ? _self.handle : handle // ignore: cast_nullable_to_non_nullable
+as String,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
+as String?,isVerified: null == isVerified ? _self.isVerified : isVerified // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
 mixin _$AdoptionListingDto {
 
- int get id; int? get statusId; AdoptionPetDto get pet; AdoptionUserDto get lister; String? get description; String? get locationLabel; double? get latitude; double? get longitude; bool get vaccinated; bool get neutered; bool get goodWithKids; int get applicantCount; bool get isOwnListing; bool get hasApplied; bool get isShelter; DateTime? get createdAt;
+ int get id; int? get statusId; AdoptionPetDto get pet;// Nullable: null when the listing was created by a page.
+ AdoptionUserDto? get lister;// Nullable: null when the listing was created by an individual user.
+ AdoptionPageDto? get page; String? get description; String? get locationLabel; double? get latitude; double? get longitude; bool get vaccinated; bool get neutered; bool get goodWithKids; int get applicantCount; bool get isOwnListing; bool get hasApplied; bool get isShelter; DateTime? get createdAt;
 /// Create a copy of AdoptionListingDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -586,16 +863,16 @@ $AdoptionListingDtoCopyWith<AdoptionListingDto> get copyWith => _$AdoptionListin
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AdoptionListingDto&&(identical(other.id, id) || other.id == id)&&(identical(other.statusId, statusId) || other.statusId == statusId)&&(identical(other.pet, pet) || other.pet == pet)&&(identical(other.lister, lister) || other.lister == lister)&&(identical(other.description, description) || other.description == description)&&(identical(other.locationLabel, locationLabel) || other.locationLabel == locationLabel)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.vaccinated, vaccinated) || other.vaccinated == vaccinated)&&(identical(other.neutered, neutered) || other.neutered == neutered)&&(identical(other.goodWithKids, goodWithKids) || other.goodWithKids == goodWithKids)&&(identical(other.applicantCount, applicantCount) || other.applicantCount == applicantCount)&&(identical(other.isOwnListing, isOwnListing) || other.isOwnListing == isOwnListing)&&(identical(other.hasApplied, hasApplied) || other.hasApplied == hasApplied)&&(identical(other.isShelter, isShelter) || other.isShelter == isShelter)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AdoptionListingDto&&(identical(other.id, id) || other.id == id)&&(identical(other.statusId, statusId) || other.statusId == statusId)&&(identical(other.pet, pet) || other.pet == pet)&&(identical(other.lister, lister) || other.lister == lister)&&(identical(other.page, page) || other.page == page)&&(identical(other.description, description) || other.description == description)&&(identical(other.locationLabel, locationLabel) || other.locationLabel == locationLabel)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.vaccinated, vaccinated) || other.vaccinated == vaccinated)&&(identical(other.neutered, neutered) || other.neutered == neutered)&&(identical(other.goodWithKids, goodWithKids) || other.goodWithKids == goodWithKids)&&(identical(other.applicantCount, applicantCount) || other.applicantCount == applicantCount)&&(identical(other.isOwnListing, isOwnListing) || other.isOwnListing == isOwnListing)&&(identical(other.hasApplied, hasApplied) || other.hasApplied == hasApplied)&&(identical(other.isShelter, isShelter) || other.isShelter == isShelter)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,statusId,pet,lister,description,locationLabel,latitude,longitude,vaccinated,neutered,goodWithKids,applicantCount,isOwnListing,hasApplied,isShelter,createdAt);
+int get hashCode => Object.hash(runtimeType,id,statusId,pet,lister,page,description,locationLabel,latitude,longitude,vaccinated,neutered,goodWithKids,applicantCount,isOwnListing,hasApplied,isShelter,createdAt);
 
 @override
 String toString() {
-  return 'AdoptionListingDto(id: $id, statusId: $statusId, pet: $pet, lister: $lister, description: $description, locationLabel: $locationLabel, latitude: $latitude, longitude: $longitude, vaccinated: $vaccinated, neutered: $neutered, goodWithKids: $goodWithKids, applicantCount: $applicantCount, isOwnListing: $isOwnListing, hasApplied: $hasApplied, isShelter: $isShelter, createdAt: $createdAt)';
+  return 'AdoptionListingDto(id: $id, statusId: $statusId, pet: $pet, lister: $lister, page: $page, description: $description, locationLabel: $locationLabel, latitude: $latitude, longitude: $longitude, vaccinated: $vaccinated, neutered: $neutered, goodWithKids: $goodWithKids, applicantCount: $applicantCount, isOwnListing: $isOwnListing, hasApplied: $hasApplied, isShelter: $isShelter, createdAt: $createdAt)';
 }
 
 
@@ -606,11 +883,11 @@ abstract mixin class $AdoptionListingDtoCopyWith<$Res>  {
   factory $AdoptionListingDtoCopyWith(AdoptionListingDto value, $Res Function(AdoptionListingDto) _then) = _$AdoptionListingDtoCopyWithImpl;
 @useResult
 $Res call({
- int id, int? statusId, AdoptionPetDto pet, AdoptionUserDto lister, String? description, String? locationLabel, double? latitude, double? longitude, bool vaccinated, bool neutered, bool goodWithKids, int applicantCount, bool isOwnListing, bool hasApplied, bool isShelter, DateTime? createdAt
+ int id, int? statusId, AdoptionPetDto pet, AdoptionUserDto? lister, AdoptionPageDto? page, String? description, String? locationLabel, double? latitude, double? longitude, bool vaccinated, bool neutered, bool goodWithKids, int applicantCount, bool isOwnListing, bool hasApplied, bool isShelter, DateTime? createdAt
 });
 
 
-$AdoptionPetDtoCopyWith<$Res> get pet;$AdoptionUserDtoCopyWith<$Res> get lister;
+$AdoptionPetDtoCopyWith<$Res> get pet;$AdoptionUserDtoCopyWith<$Res>? get lister;$AdoptionPageDtoCopyWith<$Res>? get page;
 
 }
 /// @nodoc
@@ -623,13 +900,14 @@ class _$AdoptionListingDtoCopyWithImpl<$Res>
 
 /// Create a copy of AdoptionListingDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? statusId = freezed,Object? pet = null,Object? lister = null,Object? description = freezed,Object? locationLabel = freezed,Object? latitude = freezed,Object? longitude = freezed,Object? vaccinated = null,Object? neutered = null,Object? goodWithKids = null,Object? applicantCount = null,Object? isOwnListing = null,Object? hasApplied = null,Object? isShelter = null,Object? createdAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? statusId = freezed,Object? pet = null,Object? lister = freezed,Object? page = freezed,Object? description = freezed,Object? locationLabel = freezed,Object? latitude = freezed,Object? longitude = freezed,Object? vaccinated = null,Object? neutered = null,Object? goodWithKids = null,Object? applicantCount = null,Object? isOwnListing = null,Object? hasApplied = null,Object? isShelter = null,Object? createdAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,statusId: freezed == statusId ? _self.statusId : statusId // ignore: cast_nullable_to_non_nullable
 as int?,pet: null == pet ? _self.pet : pet // ignore: cast_nullable_to_non_nullable
-as AdoptionPetDto,lister: null == lister ? _self.lister : lister // ignore: cast_nullable_to_non_nullable
-as AdoptionUserDto,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as AdoptionPetDto,lister: freezed == lister ? _self.lister : lister // ignore: cast_nullable_to_non_nullable
+as AdoptionUserDto?,page: freezed == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
+as AdoptionPageDto?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,locationLabel: freezed == locationLabel ? _self.locationLabel : locationLabel // ignore: cast_nullable_to_non_nullable
 as String?,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
 as double?,longitude: freezed == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
@@ -657,10 +935,25 @@ $AdoptionPetDtoCopyWith<$Res> get pet {
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$AdoptionUserDtoCopyWith<$Res> get lister {
-  
-  return $AdoptionUserDtoCopyWith<$Res>(_self.lister, (value) {
+$AdoptionUserDtoCopyWith<$Res>? get lister {
+    if (_self.lister == null) {
+    return null;
+  }
+
+  return $AdoptionUserDtoCopyWith<$Res>(_self.lister!, (value) {
     return _then(_self.copyWith(lister: value));
+  });
+}/// Create a copy of AdoptionListingDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AdoptionPageDtoCopyWith<$Res>? get page {
+    if (_self.page == null) {
+    return null;
+  }
+
+  return $AdoptionPageDtoCopyWith<$Res>(_self.page!, (value) {
+    return _then(_self.copyWith(page: value));
   });
 }
 }
@@ -744,10 +1037,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int? statusId,  AdoptionPetDto pet,  AdoptionUserDto lister,  String? description,  String? locationLabel,  double? latitude,  double? longitude,  bool vaccinated,  bool neutered,  bool goodWithKids,  int applicantCount,  bool isOwnListing,  bool hasApplied,  bool isShelter,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int? statusId,  AdoptionPetDto pet,  AdoptionUserDto? lister,  AdoptionPageDto? page,  String? description,  String? locationLabel,  double? latitude,  double? longitude,  bool vaccinated,  bool neutered,  bool goodWithKids,  int applicantCount,  bool isOwnListing,  bool hasApplied,  bool isShelter,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AdoptionListingDto() when $default != null:
-return $default(_that.id,_that.statusId,_that.pet,_that.lister,_that.description,_that.locationLabel,_that.latitude,_that.longitude,_that.vaccinated,_that.neutered,_that.goodWithKids,_that.applicantCount,_that.isOwnListing,_that.hasApplied,_that.isShelter,_that.createdAt);case _:
+return $default(_that.id,_that.statusId,_that.pet,_that.lister,_that.page,_that.description,_that.locationLabel,_that.latitude,_that.longitude,_that.vaccinated,_that.neutered,_that.goodWithKids,_that.applicantCount,_that.isOwnListing,_that.hasApplied,_that.isShelter,_that.createdAt);case _:
   return orElse();
 
 }
@@ -765,10 +1058,10 @@ return $default(_that.id,_that.statusId,_that.pet,_that.lister,_that.description
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int? statusId,  AdoptionPetDto pet,  AdoptionUserDto lister,  String? description,  String? locationLabel,  double? latitude,  double? longitude,  bool vaccinated,  bool neutered,  bool goodWithKids,  int applicantCount,  bool isOwnListing,  bool hasApplied,  bool isShelter,  DateTime? createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int? statusId,  AdoptionPetDto pet,  AdoptionUserDto? lister,  AdoptionPageDto? page,  String? description,  String? locationLabel,  double? latitude,  double? longitude,  bool vaccinated,  bool neutered,  bool goodWithKids,  int applicantCount,  bool isOwnListing,  bool hasApplied,  bool isShelter,  DateTime? createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _AdoptionListingDto():
-return $default(_that.id,_that.statusId,_that.pet,_that.lister,_that.description,_that.locationLabel,_that.latitude,_that.longitude,_that.vaccinated,_that.neutered,_that.goodWithKids,_that.applicantCount,_that.isOwnListing,_that.hasApplied,_that.isShelter,_that.createdAt);case _:
+return $default(_that.id,_that.statusId,_that.pet,_that.lister,_that.page,_that.description,_that.locationLabel,_that.latitude,_that.longitude,_that.vaccinated,_that.neutered,_that.goodWithKids,_that.applicantCount,_that.isOwnListing,_that.hasApplied,_that.isShelter,_that.createdAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -785,10 +1078,10 @@ return $default(_that.id,_that.statusId,_that.pet,_that.lister,_that.description
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int? statusId,  AdoptionPetDto pet,  AdoptionUserDto lister,  String? description,  String? locationLabel,  double? latitude,  double? longitude,  bool vaccinated,  bool neutered,  bool goodWithKids,  int applicantCount,  bool isOwnListing,  bool hasApplied,  bool isShelter,  DateTime? createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int? statusId,  AdoptionPetDto pet,  AdoptionUserDto? lister,  AdoptionPageDto? page,  String? description,  String? locationLabel,  double? latitude,  double? longitude,  bool vaccinated,  bool neutered,  bool goodWithKids,  int applicantCount,  bool isOwnListing,  bool hasApplied,  bool isShelter,  DateTime? createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _AdoptionListingDto() when $default != null:
-return $default(_that.id,_that.statusId,_that.pet,_that.lister,_that.description,_that.locationLabel,_that.latitude,_that.longitude,_that.vaccinated,_that.neutered,_that.goodWithKids,_that.applicantCount,_that.isOwnListing,_that.hasApplied,_that.isShelter,_that.createdAt);case _:
+return $default(_that.id,_that.statusId,_that.pet,_that.lister,_that.page,_that.description,_that.locationLabel,_that.latitude,_that.longitude,_that.vaccinated,_that.neutered,_that.goodWithKids,_that.applicantCount,_that.isOwnListing,_that.hasApplied,_that.isShelter,_that.createdAt);case _:
   return null;
 
 }
@@ -800,13 +1093,16 @@ return $default(_that.id,_that.statusId,_that.pet,_that.lister,_that.description
 @JsonSerializable()
 
 class _AdoptionListingDto extends AdoptionListingDto {
-  const _AdoptionListingDto({required this.id, this.statusId, required this.pet, required this.lister, this.description, this.locationLabel, this.latitude, this.longitude, this.vaccinated = false, this.neutered = false, this.goodWithKids = false, this.applicantCount = 0, this.isOwnListing = false, this.hasApplied = false, this.isShelter = false, this.createdAt}): super._();
+  const _AdoptionListingDto({required this.id, this.statusId, required this.pet, this.lister, this.page, this.description, this.locationLabel, this.latitude, this.longitude, this.vaccinated = false, this.neutered = false, this.goodWithKids = false, this.applicantCount = 0, this.isOwnListing = false, this.hasApplied = false, this.isShelter = false, this.createdAt}): super._();
   factory _AdoptionListingDto.fromJson(Map<String, dynamic> json) => _$AdoptionListingDtoFromJson(json);
 
 @override final  int id;
 @override final  int? statusId;
 @override final  AdoptionPetDto pet;
-@override final  AdoptionUserDto lister;
+// Nullable: null when the listing was created by a page.
+@override final  AdoptionUserDto? lister;
+// Nullable: null when the listing was created by an individual user.
+@override final  AdoptionPageDto? page;
 @override final  String? description;
 @override final  String? locationLabel;
 @override final  double? latitude;
@@ -833,16 +1129,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AdoptionListingDto&&(identical(other.id, id) || other.id == id)&&(identical(other.statusId, statusId) || other.statusId == statusId)&&(identical(other.pet, pet) || other.pet == pet)&&(identical(other.lister, lister) || other.lister == lister)&&(identical(other.description, description) || other.description == description)&&(identical(other.locationLabel, locationLabel) || other.locationLabel == locationLabel)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.vaccinated, vaccinated) || other.vaccinated == vaccinated)&&(identical(other.neutered, neutered) || other.neutered == neutered)&&(identical(other.goodWithKids, goodWithKids) || other.goodWithKids == goodWithKids)&&(identical(other.applicantCount, applicantCount) || other.applicantCount == applicantCount)&&(identical(other.isOwnListing, isOwnListing) || other.isOwnListing == isOwnListing)&&(identical(other.hasApplied, hasApplied) || other.hasApplied == hasApplied)&&(identical(other.isShelter, isShelter) || other.isShelter == isShelter)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AdoptionListingDto&&(identical(other.id, id) || other.id == id)&&(identical(other.statusId, statusId) || other.statusId == statusId)&&(identical(other.pet, pet) || other.pet == pet)&&(identical(other.lister, lister) || other.lister == lister)&&(identical(other.page, page) || other.page == page)&&(identical(other.description, description) || other.description == description)&&(identical(other.locationLabel, locationLabel) || other.locationLabel == locationLabel)&&(identical(other.latitude, latitude) || other.latitude == latitude)&&(identical(other.longitude, longitude) || other.longitude == longitude)&&(identical(other.vaccinated, vaccinated) || other.vaccinated == vaccinated)&&(identical(other.neutered, neutered) || other.neutered == neutered)&&(identical(other.goodWithKids, goodWithKids) || other.goodWithKids == goodWithKids)&&(identical(other.applicantCount, applicantCount) || other.applicantCount == applicantCount)&&(identical(other.isOwnListing, isOwnListing) || other.isOwnListing == isOwnListing)&&(identical(other.hasApplied, hasApplied) || other.hasApplied == hasApplied)&&(identical(other.isShelter, isShelter) || other.isShelter == isShelter)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,statusId,pet,lister,description,locationLabel,latitude,longitude,vaccinated,neutered,goodWithKids,applicantCount,isOwnListing,hasApplied,isShelter,createdAt);
+int get hashCode => Object.hash(runtimeType,id,statusId,pet,lister,page,description,locationLabel,latitude,longitude,vaccinated,neutered,goodWithKids,applicantCount,isOwnListing,hasApplied,isShelter,createdAt);
 
 @override
 String toString() {
-  return 'AdoptionListingDto(id: $id, statusId: $statusId, pet: $pet, lister: $lister, description: $description, locationLabel: $locationLabel, latitude: $latitude, longitude: $longitude, vaccinated: $vaccinated, neutered: $neutered, goodWithKids: $goodWithKids, applicantCount: $applicantCount, isOwnListing: $isOwnListing, hasApplied: $hasApplied, isShelter: $isShelter, createdAt: $createdAt)';
+  return 'AdoptionListingDto(id: $id, statusId: $statusId, pet: $pet, lister: $lister, page: $page, description: $description, locationLabel: $locationLabel, latitude: $latitude, longitude: $longitude, vaccinated: $vaccinated, neutered: $neutered, goodWithKids: $goodWithKids, applicantCount: $applicantCount, isOwnListing: $isOwnListing, hasApplied: $hasApplied, isShelter: $isShelter, createdAt: $createdAt)';
 }
 
 
@@ -853,11 +1149,11 @@ abstract mixin class _$AdoptionListingDtoCopyWith<$Res> implements $AdoptionList
   factory _$AdoptionListingDtoCopyWith(_AdoptionListingDto value, $Res Function(_AdoptionListingDto) _then) = __$AdoptionListingDtoCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int? statusId, AdoptionPetDto pet, AdoptionUserDto lister, String? description, String? locationLabel, double? latitude, double? longitude, bool vaccinated, bool neutered, bool goodWithKids, int applicantCount, bool isOwnListing, bool hasApplied, bool isShelter, DateTime? createdAt
+ int id, int? statusId, AdoptionPetDto pet, AdoptionUserDto? lister, AdoptionPageDto? page, String? description, String? locationLabel, double? latitude, double? longitude, bool vaccinated, bool neutered, bool goodWithKids, int applicantCount, bool isOwnListing, bool hasApplied, bool isShelter, DateTime? createdAt
 });
 
 
-@override $AdoptionPetDtoCopyWith<$Res> get pet;@override $AdoptionUserDtoCopyWith<$Res> get lister;
+@override $AdoptionPetDtoCopyWith<$Res> get pet;@override $AdoptionUserDtoCopyWith<$Res>? get lister;@override $AdoptionPageDtoCopyWith<$Res>? get page;
 
 }
 /// @nodoc
@@ -870,13 +1166,14 @@ class __$AdoptionListingDtoCopyWithImpl<$Res>
 
 /// Create a copy of AdoptionListingDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? statusId = freezed,Object? pet = null,Object? lister = null,Object? description = freezed,Object? locationLabel = freezed,Object? latitude = freezed,Object? longitude = freezed,Object? vaccinated = null,Object? neutered = null,Object? goodWithKids = null,Object? applicantCount = null,Object? isOwnListing = null,Object? hasApplied = null,Object? isShelter = null,Object? createdAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? statusId = freezed,Object? pet = null,Object? lister = freezed,Object? page = freezed,Object? description = freezed,Object? locationLabel = freezed,Object? latitude = freezed,Object? longitude = freezed,Object? vaccinated = null,Object? neutered = null,Object? goodWithKids = null,Object? applicantCount = null,Object? isOwnListing = null,Object? hasApplied = null,Object? isShelter = null,Object? createdAt = freezed,}) {
   return _then(_AdoptionListingDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,statusId: freezed == statusId ? _self.statusId : statusId // ignore: cast_nullable_to_non_nullable
 as int?,pet: null == pet ? _self.pet : pet // ignore: cast_nullable_to_non_nullable
-as AdoptionPetDto,lister: null == lister ? _self.lister : lister // ignore: cast_nullable_to_non_nullable
-as AdoptionUserDto,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as AdoptionPetDto,lister: freezed == lister ? _self.lister : lister // ignore: cast_nullable_to_non_nullable
+as AdoptionUserDto?,page: freezed == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
+as AdoptionPageDto?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,locationLabel: freezed == locationLabel ? _self.locationLabel : locationLabel // ignore: cast_nullable_to_non_nullable
 as String?,latitude: freezed == latitude ? _self.latitude : latitude // ignore: cast_nullable_to_non_nullable
 as double?,longitude: freezed == longitude ? _self.longitude : longitude // ignore: cast_nullable_to_non_nullable
@@ -905,10 +1202,25 @@ $AdoptionPetDtoCopyWith<$Res> get pet {
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$AdoptionUserDtoCopyWith<$Res> get lister {
-  
-  return $AdoptionUserDtoCopyWith<$Res>(_self.lister, (value) {
+$AdoptionUserDtoCopyWith<$Res>? get lister {
+    if (_self.lister == null) {
+    return null;
+  }
+
+  return $AdoptionUserDtoCopyWith<$Res>(_self.lister!, (value) {
     return _then(_self.copyWith(lister: value));
+  });
+}/// Create a copy of AdoptionListingDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AdoptionPageDtoCopyWith<$Res>? get page {
+    if (_self.page == null) {
+    return null;
+  }
+
+  return $AdoptionPageDtoCopyWith<$Res>(_self.page!, (value) {
+    return _then(_self.copyWith(page: value));
   });
 }
 }

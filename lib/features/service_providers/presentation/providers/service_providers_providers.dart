@@ -199,21 +199,28 @@ class ServiceProvidersNotifier extends _$ServiceProvidersNotifier {
 class ProviderPinCache extends _$ProviderPinCache {
   @override
   Map<int, ServiceProvider> build() {
-    // Merge each new search result into the union as it lands. The listener
-    // fires after this build completes, so mutating state from it is safe.
+    // Clear the cache whenever any filter changes so stale pins from the
+    // previous filter don't bleed into the new results.
+    ref.watch(providerCategoryFilterProvider);
+    ref.watch(providerSearchQueryProvider);
+    ref.watch(providerOpenNowFilterProvider);
+    ref.watch(providerTailoringPetIdProvider);
+    ref.watch(providerSortOrderProvider);
+
+    // Merge each new search result into the union as it lands. Only act on
+    // fresh data (isLoading guard) — AsyncLoading preserves the previous value
+    // in next.value, which would repopulate the cache with stale pins.
     ref.listen(serviceProvidersProvider, (_, next) {
+      if (next.isLoading) return;
       final items = next.value?.items;
       if (items != null && items.isNotEmpty) _reconcile(items);
     });
 
-    // Seed from whatever the search already holds (e.g. a cached result on a
-    // rebuild) so the first frame isn't empty.
-    return {
-      for (final p
-          in ref.read(serviceProvidersProvider).value?.items ??
-              const <ServiceProvider>[])
-        p.branchId: p,
-    };
+    // Start empty — the listener populates as fresh results arrive.
+    // Never seed from serviceProvidersProvider here: on a filter-triggered
+    // rebuild it may still expose its previous value (AsyncLoading with
+    // preserved data), which would immediately repopulate with stale pins.
+    return {};
   }
 
   /// Merges new API results with cached pins.

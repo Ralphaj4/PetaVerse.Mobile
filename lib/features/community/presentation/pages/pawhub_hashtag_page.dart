@@ -16,6 +16,7 @@ import '../widgets/pawhub_comments.dart';
 import '../widgets/pawhub_feed_widgets.dart';
 import '../widgets/pawhub_sheets.dart';
 import '../widgets/post_card.dart';
+import '../../../pages/presentation/pages/page_detail_page.dart';
 import '../widgets/post_share.dart';
 import 'pawhub_pet_profile_page.dart';
 
@@ -151,6 +152,7 @@ class _PawHubHashtagPageState extends ConsumerState<PawHubHashtagPage> {
             onOpenOptions: () =>
                 _showOptions(post, feed.posts[i], actingPet),
             onOpenProfile: (pet) => openPawHubPetProfile(context, pet),
+            onOpenPage: (id) => openPageDetail(context, id),
             onShare: () => _share(feed.posts[i]),
           );
         },
@@ -200,12 +202,14 @@ class _PawHubHashtagPageState extends ConsumerState<PawHubHashtagPage> {
           await actions.reportPost(post.backendId, reason);
         }
       case PostAction.block:
+        final authorName = post.author?.name ?? post.pageAuthor?.name ?? '';
         final confirmed = await showBlockConfirmDialog(
           context,
-          authorName: post.author.name,
+          authorName: authorName,
         );
         if (!confirmed || !mounted) break;
-        await actions.block(post.author.backendId);
+        final authorId = post.author?.backendId ?? 0;
+        if (authorId > 0) await actions.block(authorId);
       case PostAction.delete:
         await actions.deletePost(post.backendId);
     }

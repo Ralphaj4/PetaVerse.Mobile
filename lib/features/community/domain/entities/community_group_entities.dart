@@ -14,16 +14,18 @@ class CommunityGroup {
     required this.id,
     required this.name,
     required this.category,
-    required this.lead,
     required this.memberCount,
     required this.postCount,
     required this.createdAt,
+    this.lead,
     this.handle,
     this.description,
     this.avatarUrl,
     this.bannerUrl,
     this.isMember = false,
     this.isLead = false,
+    this.isSystem = false,
+    this.speciesId,
   });
 
   final int id;
@@ -36,9 +38,9 @@ class CommunityGroup {
   final String? bannerUrl;
   final CommunityCategory category;
 
-  /// The lead pet (creator). Its `isMine` flag says whether the acting user
-  /// controls it - but leadership is per-pet, so [isLead] below is the gate.
-  final CommunityPet lead;
+  /// The lead pet (creator). Null for system communities (the 12 predefined
+  /// species communities which have no pet lead).
+  final CommunityPet? lead;
   final int memberCount;
   final int postCount;
 
@@ -47,6 +49,12 @@ class CommunityGroup {
 
   /// Whether the *acting* pet is the lead (may manage/delete the community).
   final bool isLead;
+
+  /// True for the 12 predefined species communities (auto-created by the server).
+  final bool isSystem;
+
+  /// Species this community is scoped to (non-null for system communities).
+  final int? speciesId;
 
   final DateTime createdAt;
 
@@ -77,6 +85,8 @@ class CommunityGroup {
         bannerUrl: bannerUrl ?? this.bannerUrl,
         isMember: isMember ?? this.isMember,
         isLead: isLead ?? this.isLead,
+        isSystem: isSystem,
+        speciesId: speciesId,
       );
 }
 

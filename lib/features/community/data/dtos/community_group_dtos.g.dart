@@ -14,8 +14,12 @@ _CommunityDto _$CommunityDtoFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String?,
       avatarUrl: json['avatarUrl'] as String?,
       bannerUrl: json['bannerUrl'] as String?,
-      category: (json['category'] as num?)?.toInt() ?? 0,
-      lead: PetSummaryDto.fromJson(json['lead'] as Map<String, dynamic>),
+      category: json['category'] as String?,
+      lead: json['lead'] == null
+          ? null
+          : PetSummaryDto.fromJson(json['lead'] as Map<String, dynamic>),
+      isSystem: json['isSystem'] as bool? ?? false,
+      speciesId: (json['speciesId'] as num?)?.toInt(),
       memberCount: (json['memberCount'] as num?)?.toInt() ?? 0,
       postCount: (json['postCount'] as num?)?.toInt() ?? 0,
       isMember: json['isMember'] as bool?,
@@ -35,6 +39,8 @@ Map<String, dynamic> _$CommunityDtoToJson(_CommunityDto instance) =>
       'bannerUrl': instance.bannerUrl,
       'category': instance.category,
       'lead': instance.lead,
+      'isSystem': instance.isSystem,
+      'speciesId': instance.speciesId,
       'memberCount': instance.memberCount,
       'postCount': instance.postCount,
       'isMember': instance.isMember,

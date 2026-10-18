@@ -14,6 +14,7 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/shimmer.dart';
+import '../../../pages/presentation/pages/page_detail_page.dart';
 import '../../domain/entities/community_entities.dart';
 import '../../domain/entities/community_enums.dart';
 import '../models/pawhub_models.dart';
@@ -200,6 +201,8 @@ class _PawHubSearchPageState extends ConsumerState<PawHubSearchPage> {
 
   void _openPost(Post post) => context.push('/community/post/${post.id}');
 
+  void _openPage(PageAuthor page) => openPageDetail(context, page.id);
+
   Widget _body(String query, AsyncValue<PagedSearch> async) {
     if (query.isEmpty) return _IdleState(onSuggestion: _applySuggestion);
     return async.when(
@@ -229,6 +232,7 @@ class _PawHubSearchPageState extends ConsumerState<PawHubSearchPage> {
             onOpenPet: _openPet,
             onOpenHashtag: _openHashtag,
             onOpenPost: _openPost,
+            onOpenPage: _openPage,
           ),
         );
       },
@@ -246,6 +250,7 @@ class _ScopePicker extends StatelessWidget {
     (SearchType.posts, FluentIcons.image_24_regular),
     (SearchType.hashtags, FluentIcons.number_symbol_24_regular),
     (SearchType.pets, FluentIcons.animal_paw_print_24_regular),
+    (SearchType.pages, FluentIcons.document_mention_24_regular),
   ];
 
   String _labelFor(BuildContext context, SearchType type) => switch (type) {
@@ -253,6 +258,7 @@ class _ScopePicker extends StatelessWidget {
         SearchType.posts => context.l10n.pawhubSearchScopePosts,
         SearchType.hashtags => context.l10n.pawhubSearchScopeHashtags,
         SearchType.pets => context.l10n.pawhubSearchScopePets,
+        SearchType.pages => context.l10n.pawhubSearchScopePages,
       };
 
   @override
@@ -528,6 +534,7 @@ class _ResultsList extends StatelessWidget {
     required this.onOpenPet,
     required this.onOpenHashtag,
     required this.onOpenPost,
+    required this.onOpenPage,
     this.loadingMore = false,
   });
 
@@ -538,12 +545,14 @@ class _ResultsList extends StatelessWidget {
   final void Function(CommunityPet) onOpenPet;
   final void Function(TrendingHashtag) onOpenHashtag;
   final void Function(Post) onOpenPost;
+  final void Function(PageAuthor) onOpenPage;
 
   Widget _tileFor(SearchResult r) => switch (r.kind) {
         SearchResultKind.pet => _PetTile(pet: r.pet!, onTap: onOpenPet),
         SearchResultKind.hashtag =>
           _HashtagTile(tag: r.hashtag!, onTap: onOpenHashtag),
         SearchResultKind.post => _PostTile(post: r.post!, onTap: onOpenPost),
+        SearchResultKind.page => _PageTile(page: r.page!, onTap: onOpenPage),
       };
 
   @override
@@ -553,11 +562,13 @@ class _ResultsList extends StatelessWidget {
         results.where((r) => r.kind == SearchResultKind.hashtag).toList();
     final posts =
         results.where((r) => r.kind == SearchResultKind.post).toList();
+    final pages =
+        results.where((r) => r.kind == SearchResultKind.page).toList();
 
     // Grouped ("All"): more than one type present → labeled sections. Otherwise
     // a single-type filter → flat list.
     final grouped =
-        [pets.isNotEmpty, tags.isNotEmpty, posts.isNotEmpty]
+        [pets.isNotEmpty, tags.isNotEmpty, posts.isNotEmpty, pages.isNotEmpty]
             .where((e) => e)
             .length >
         1;
@@ -582,6 +593,12 @@ class _ResultsList extends StatelessWidget {
             icon: FluentIcons.animal_paw_print_24_regular,
             label: context.l10n.pawhubSearchSectionPets,
             children: [for (final r in pets) _tileFor(r)],
+          ),
+        if (pages.isNotEmpty)
+          _ResultSection(
+            icon: FluentIcons.building_24_regular,
+            label: context.l10n.pawhubSearchSectionPages,
+            children: [for (final r in pages) _tileFor(r)],
           ),
         if (tags.isNotEmpty)
           _ResultSection(
@@ -707,6 +724,53 @@ class _HashtagTile extends StatelessWidget {
   }
 }
 
+class _PageTile extends StatelessWidget {
+  const _PageTile({required this.page, required this.onTap});
+  final PageAuthor page;
+  final void Function(PageAuthor) onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final categoryLabel = switch (page.category) {
+      PageCategory.shelter => context.l10n.pageCategoryShelter,
+      PageCategory.rescue => context.l10n.pageCategoryRescue,
+      PageCategory.vet => context.l10n.pageCategoryVet,
+      PageCategory.brand => context.l10n.pageCategoryBrand,
+      PageCategory.other => context.l10n.pageCategoryOther,
+    };
+    return ListTile(
+      leading: AppAvatar(name: page.name, imageUrl: page.avatarUrl, radius: 22),
+      title: Row(
+        children: [
+          Flexible(
+            child: Text(page.name, style: AppTextStyles.labelLarge),
+          ),
+          if (page.isVerified) ...[
+            const SizedBox(width: 4),
+            Container(
+              width: 14,
+              height: 14,
+              decoration: const BoxDecoration(
+                color: AppColors.secondary,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(FluentIcons.checkmark_16_filled,
+                  size: 9, color: AppColors.onSecondary),
+            ),
+          ],
+        ],
+      ),
+      subtitle: Text(
+        categoryLabel,
+        style: AppTextStyles.bodySmall.copyWith(color: AppColors.secondaryDark),
+      ),
+      trailing: const Icon(FluentIcons.chevron_right_24_regular,
+          size: 18, color: AppColors.textTertiary),
+      onTap: () => onTap(page),
+    );
+  }
+}
+
 class _PostTile extends StatelessWidget {
   const _PostTile({required this.post, required this.onTap});
   final Post post;
@@ -728,12 +792,16 @@ class _PostTile extends StatelessWidget {
         ),
       ),
       title: Text(
-        post.caption?.isNotEmpty == true ? post.caption! : post.author.name,
+        post.caption?.isNotEmpty == true
+            ? post.caption!
+            : (post.author?.name ?? post.pageAuthor?.name ?? ''),
         style: AppTextStyles.labelLarge,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      subtitle: Text(context.l10n.pawhubSearchPostBy(post.author.name),
+      subtitle: Text(
+          context.l10n.pawhubSearchPostBy(
+              post.author?.name ?? post.pageAuthor?.name ?? ''),
           style: AppTextStyles.bodySmall
               .copyWith(color: AppColors.textSecondary)),
       trailing: const Icon(FluentIcons.chevron_right_24_regular,

@@ -61,14 +61,46 @@ abstract class AdoptionUserDto with _$AdoptionUserDto {
       );
 }
 
+/// Wire shape of the page (shelter/rescue) that posted a listing.
+/// Exactly one of [AdoptionListingDto.lister] / [AdoptionListingDto.page] is
+/// non-null per the API contract.
+@freezed
+abstract class AdoptionPageDto with _$AdoptionPageDto {
+  const factory AdoptionPageDto({
+    required int id,
+    @Default('') String name,
+    @Default('') String handle,
+    String? avatarUrl,
+    @Default(false) bool isVerified,
+  }) = _AdoptionPageDto;
+
+  const AdoptionPageDto._();
+
+  factory AdoptionPageDto.fromJson(Map<String, dynamic> json) =>
+      _$AdoptionPageDtoFromJson(json);
+
+  AdoptionListingPage toEntity() => AdoptionListingPage(
+        id: id,
+        name: name,
+        handle: handle,
+        avatarUrl: avatarUrl,
+        isVerified: isVerified,
+      );
+}
+
 /// Wire shape of AdoptionListingSummary / Detail (currently identical).
+///
+/// Exactly one of [lister] / [page] is non-null per the API contract.
 @freezed
 abstract class AdoptionListingDto with _$AdoptionListingDto {
   const factory AdoptionListingDto({
     required int id,
     int? statusId,
     required AdoptionPetDto pet,
-    required AdoptionUserDto lister,
+    // Nullable: null when the listing was created by a page.
+    AdoptionUserDto? lister,
+    // Nullable: null when the listing was created by an individual user.
+    AdoptionPageDto? page,
     String? description,
     String? locationLabel,
     double? latitude,
@@ -92,7 +124,8 @@ abstract class AdoptionListingDto with _$AdoptionListingDto {
         id: id,
         status: adoptionListingStatusFromId(statusId),
         pet: pet.toEntity(),
-        lister: lister.toEntity(),
+        lister: lister?.toEntity(),
+        page: page?.toEntity(),
         description: description,
         locationLabel: locationLabel,
         location: (latitude != null && longitude != null)

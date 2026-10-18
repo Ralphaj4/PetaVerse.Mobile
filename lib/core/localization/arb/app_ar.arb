@@ -235,6 +235,7 @@
   "notifications": "الإشعارات",
   "premiumMember": "عضو مميّز",
   "petProfiles": "ملفات الحيوانات",
+  "petViewProfile": "عرض الملف الشخصي",
   "addPet": "إضافة حيوان",
   "petActive": "نشط",
   "petAgeYears": "{years, plural, =1{سنة} =2{سنتان} few{{years} سنوات} other{{years} سنة}}",
@@ -967,6 +968,10 @@
   "adoptionWelcomeMessage": "مرحبًا بـ {petName} في العائلة. ملفه الكامل وسجلاته موجودة بالفعل في حسابك.",
   "adoptionWelcomeViewPet": "عرض ملف {petName}",
   "adoptionWelcomeDone": "تم",
+  "adoptionPostBannerTitle": "متاح للتبني",
+  "adoptionPostCtaAvailable": "عرض الإعلان",
+  "adoptionPostCtaAdopted": "تم التبني",
+  "adoptionPostCtaPending": "قيد الانتظار",
   "onboardingAdoptPrompt": "هل تبحث عن التبنّي؟",
 
   "walkStartTitle": "ابدأ نزهة",
@@ -1071,6 +1076,8 @@
   "@pawHubDiscoverPets": {},
   "pawHubSuggestedPets": "حيوانات قد تعجبك",
   "@pawHubSuggestedPets": {},
+  "pawHubSuggestedPages": "الصفحات للمتابعة",
+  "@pawHubSuggestedPages": {},
   "pawHubLostPetNearby": "حيوان ضائع قريب",
   "@pawHubLostPetNearby": {},
   "pawHubViewOnMap": "عرض على الخريطة",
@@ -1433,10 +1440,6 @@
   "communitiesEntryButton": "المجتمعات",
   "communitiesSearchHint": "ابحث عن المجتمعات",
   "communitiesMyCommunities": "مجتمعاتي",
-  "communitiesTabDiscover": "استكشاف",
-  "communitiesTabMine": "مجتمعاتي",
-  "communitiesMineEmptyTitle": "لم تنضم إلى أي مجتمع",
-  "communitiesMineEmptyDescription": "استكشف المجتمعات وانضم إلى ما يناسب حيوانك الأليف 🐾",
   "communitiesDiscoverRailTitle": "مجتمعات للانضمام",
   "communitiesSeeAll": "عرض الكل",
   "communitiesEmptyTitle": "لا توجد مجتمعات بعد",
@@ -1449,16 +1452,58 @@
   "communitySortPopular": "الأكثر شيوعًا",
   "communitySortNewest": "الأحدث",
   "communitySortMostActive": "الأكثر نشاطًا",
-  "communityCategoryAll": "الكل",
   "communityCategoryBreedClub": "نادي السلالة",
-  "communityCategoryShelterRescues": "الملاجئ والإنقاذ",
-  "communityCategoryBreeding": "التربية",
-  "communityCategorySpecialNeeds": "الاحتياجات الخاصة",
-  "communityCategoryActivity": "النشاط",
-  "communityCategoryHealth": "الصحة",
+  "communityCategorySpecies": "الأنواع",
   "communityCategoryOther": "أخرى",
-
   "communityJoin": "انضمام",
+
+  "communityGuestBannerText": "للانضمام إلى مجتمع {speciesName}، يجب أن تمتلك واحداً. أنشئ ملفاً شخصياً إذا كان لديك بالفعل، أو يمكنك أيضاً ",
+  "@communityGuestBannerText": {
+    "placeholders": {
+      "speciesName": { "type": "String" }
+    }
+  },
+  "communityGuestBannerAdopt": "تبني واحداً",
+  "communityGuestBannerSuffix": " :)",
+
+  "pageFollowers": "المتابعون",
+  "pagePosts": "المنشورات",
+  "pageFollow": "متابعة",
+  "pageFollowing": "تتابع",
+  "pageUnfollow": "إلغاء المتابعة",
+  "pageUnfollowTitle": "إلغاء متابعة {name}؟",
+  "@pageUnfollowTitle": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "pageUnfollowMessage": "لن تظهر لك منشوراتهم في خلاصتك.",
+  "pageInfo": "معلومات",
+  "pageInfoTitle": "تفاصيل الصفحة",
+  "pageInfoPhone": "الهاتف",
+  "pageInfoWebsite": "الموقع الإلكتروني",
+  "pageInfoAddress": "العنوان",
+  "pageContact": "التواصل",
+  "pageCategoryShelter": "ملجأ",
+  "pageCategoryRescue": "إنقاذ",
+  "pageCategoryVet": "بيطري",
+  "pageCategoryBrand": "علامة تجارية",
+  "pageCategoryOther": "منظمة",
+  "discoverPageCategoryShelterAndRescue": "ملجأ وإنقاذ",
+  "@discoverPageCategoryShelterAndRescue": {},
+  "discoverPageCategoryVetClinic": "عيادة بيطرية",
+  "@discoverPageCategoryVetClinic": {},
+  "discoverPageCategoryBrand": "علامة تجارية",
+  "@discoverPageCategoryBrand": {},
+  "discoverPageCategoryServiceProvider": "مزود خدمة",
+  "@discoverPageCategoryServiceProvider": {},
+  "discoverPageCategoryOther": "منظمة",
+  "@discoverPageCategoryOther": {},
+  "pageNoPostsYet": "لا توجد منشورات بعد",
+  "pageNoPostsMessage": "لم يشارك {name} أي شيء بعد.",
+  "@pageNoPostsMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
   "communityJoined": "منضم",
   "communityLeave": "مغادرة",
   "communityManage": "إدارة",
@@ -1710,6 +1755,7 @@
   "pawhubSearchScopePosts": "المنشورات",
   "pawhubSearchScopeHashtags": "الوسوم",
   "pawhubSearchScopePets": "الحيوانات",
+  "pawhubSearchScopePages": "الصفحات",
   "pawhubSearchNoResults": "لا نتائج لـ \"{query}\"",
   "@pawhubSearchNoResults": {
     "placeholders": { "query": { "type": "String" } }
@@ -1718,6 +1764,7 @@
   "pawhubSearchSectionPets": "الحيوانات",
   "pawhubSearchSectionHashtags": "الوسوم",
   "pawhubSearchSectionPosts": "المنشورات",
+  "pawhubSearchSectionPages": "الصفحات",
   "pawhubSearchPostBy": "بواسطة {name}",
   "@pawhubSearchPostBy": {
     "placeholders": { "name": { "type": "String" } }

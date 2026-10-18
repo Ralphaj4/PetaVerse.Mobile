@@ -235,6 +235,7 @@
   "notifications": "Notifications",
   "premiumMember": "Membre Premium",
   "petProfiles": "Profils des Animaux",
+  "petViewProfile": "Voir le profil",
   "addPet": "Ajouter",
   "petActive": "ACTIF",
   "petAgeYears": "{years, plural, =1{{years} an} other{{years} ans}}",
@@ -967,6 +968,10 @@
   "adoptionWelcomeMessage": "Bienvenue à {petName} dans la famille. Son profil complet et ses dossiers sont déjà dans votre compte.",
   "adoptionWelcomeViewPet": "Voir le profil de {petName}",
   "adoptionWelcomeDone": "Terminé",
+  "adoptionPostBannerTitle": "Disponible à l'adoption",
+  "adoptionPostCtaAvailable": "Voir l'annonce",
+  "adoptionPostCtaAdopted": "Déjà adopté",
+  "adoptionPostCtaPending": "En attente",
   "onboardingAdoptPrompt": "Vous cherchez à adopter ?",
 
   "walkStartTitle": "Commencer une promenade",
@@ -1071,6 +1076,8 @@
   "@pawHubDiscoverPets": {},
   "pawHubSuggestedPets": "Animaux que vous pourriez aimer",
   "@pawHubSuggestedPets": {},
+  "pawHubSuggestedPages": "Pages à suivre",
+  "@pawHubSuggestedPages": {},
   "pawHubLostPetNearby": "ANIMAL PERDU À PROXIMITÉ",
   "@pawHubLostPetNearby": {},
   "pawHubViewOnMap": "Voir sur la carte",
@@ -1433,10 +1440,6 @@
   "communitiesEntryButton": "Communautés",
   "communitiesSearchHint": "Rechercher des communautés",
   "communitiesMyCommunities": "Mes communautés",
-  "communitiesTabDiscover": "Découvrir",
-  "communitiesTabMine": "Mes communautés",
-  "communitiesMineEmptyTitle": "Vous n'avez rejoint aucune communauté",
-  "communitiesMineEmptyDescription": "Explorez les communautés et rejoignez celles qui correspondent à votre animal 🐾",
   "communitiesDiscoverRailTitle": "Communautés à rejoindre",
   "communitiesSeeAll": "Voir tout",
   "communitiesEmptyTitle": "Aucune communauté pour l’instant",
@@ -1449,16 +1452,58 @@
   "communitySortPopular": "Populaires",
   "communitySortNewest": "Récentes",
   "communitySortMostActive": "Les plus actives",
-  "communityCategoryAll": "Toutes",
   "communityCategoryBreedClub": "Club de race",
-  "communityCategoryShelterRescues": "Refuges et sauvetages",
-  "communityCategoryBreeding": "Élevage",
-  "communityCategorySpecialNeeds": "Besoins spéciaux",
-  "communityCategoryActivity": "Activité",
-  "communityCategoryHealth": "Santé",
+  "communityCategorySpecies": "Espèces",
   "communityCategoryOther": "Autre",
-
   "communityJoin": "Rejoindre",
+
+  "communityGuestBannerText": "Pour rejoindre la communauté {speciesName}, vous devez en posséder un. Créez un profil si vous en avez déjà un, ou vous pouvez aussi ",
+  "@communityGuestBannerText": {
+    "placeholders": {
+      "speciesName": { "type": "String" }
+    }
+  },
+  "communityGuestBannerAdopt": "en adopter un",
+  "communityGuestBannerSuffix": " :)",
+
+  "pageFollowers": "Abonnés",
+  "pagePosts": "Publications",
+  "pageFollow": "Suivre",
+  "pageFollowing": "Suivi(e)",
+  "pageUnfollow": "Ne plus suivre",
+  "pageUnfollowTitle": "Ne plus suivre {name} ?",
+  "@pageUnfollowTitle": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "pageUnfollowMessage": "Vous ne verrez plus leurs publications dans votre fil.",
+  "pageInfo": "Infos",
+  "pageInfoTitle": "Détails de la page",
+  "pageInfoPhone": "Téléphone",
+  "pageInfoWebsite": "Site web",
+  "pageInfoAddress": "Adresse",
+  "pageContact": "Contact",
+  "pageCategoryShelter": "Refuge",
+  "pageCategoryRescue": "Sauvetage",
+  "pageCategoryVet": "Vétérinaire",
+  "pageCategoryBrand": "Marque",
+  "pageCategoryOther": "Organisation",
+  "discoverPageCategoryShelterAndRescue": "Refuge & Sauvetage",
+  "@discoverPageCategoryShelterAndRescue": {},
+  "discoverPageCategoryVetClinic": "Clinique Vétérinaire",
+  "@discoverPageCategoryVetClinic": {},
+  "discoverPageCategoryBrand": "Marque",
+  "@discoverPageCategoryBrand": {},
+  "discoverPageCategoryServiceProvider": "Prestataire de Services",
+  "@discoverPageCategoryServiceProvider": {},
+  "discoverPageCategoryOther": "Organisation",
+  "@discoverPageCategoryOther": {},
+  "pageNoPostsYet": "Aucune publication",
+  "pageNoPostsMessage": "{name} n'a encore rien partagé.",
+  "@pageNoPostsMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
   "communityJoined": "Rejoint",
   "communityLeave": "Quitter",
   "communityManage": "Gérer",
@@ -1710,6 +1755,7 @@
   "pawhubSearchScopePosts": "Publications",
   "pawhubSearchScopeHashtags": "Hashtags",
   "pawhubSearchScopePets": "Animaux",
+  "pawhubSearchScopePages": "Pages",
   "pawhubSearchNoResults": "Aucun résultat pour « {query} »",
   "@pawhubSearchNoResults": {
     "placeholders": { "query": { "type": "String" } }
@@ -1718,6 +1764,7 @@
   "pawhubSearchSectionPets": "Animaux",
   "pawhubSearchSectionHashtags": "Hashtags",
   "pawhubSearchSectionPosts": "Publications",
+  "pawhubSearchSectionPages": "Pages",
   "pawhubSearchPostBy": "par {name}",
   "@pawhubSearchPostBy": {
     "placeholders": { "name": { "type": "String" } }

@@ -24,11 +24,36 @@ import '../widgets/adoption_species_filter_row.dart';
 /// The adoption board: a browsable list of pets up for adoption, with species
 /// filters and search. The server filters (speciesId + q), so changing a filter
 /// re-runs the board query. Layout + state wiring only.
-class AdoptionBoardPage extends ConsumerWidget {
-  const AdoptionBoardPage({super.key});
+///
+/// [initialSpeciesId] pre-selects a species filter on first open (e.g. when
+/// deep-linking from a species community's guest banner).
+class AdoptionBoardPage extends ConsumerStatefulWidget {
+  const AdoptionBoardPage({this.initialSpeciesId, super.key});
+
+  final int? initialSpeciesId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AdoptionBoardPage> createState() => _AdoptionBoardPageState();
+}
+
+class _AdoptionBoardPageState extends ConsumerState<AdoptionBoardPage> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialSpeciesId != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          ref
+              .read(adoptionSpeciesFilterProvider.notifier)
+              .select(widget.initialSpeciesId);
+        }
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ref = this.ref;
     final l10n = context.l10n;
     final listingsAsync = ref.watch(adoptionListingsProvider);
     final speciesAsync = ref.watch(speciesListProvider);
@@ -39,14 +64,14 @@ class AdoptionBoardPage extends ConsumerWidget {
           children: [
             // ── "My adoptions" entry: a full-width tappable row (not AppBar
             // chrome) so it's discoverable without crowding the header. ──
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
+            const Padding(
+              padding: EdgeInsets.fromLTRB(
                 AppSpacing.lg,
                 AppSpacing.md,
                 AppSpacing.lg,
                 0,
               ),
-              child: const _MyAdoptionsRow(),
+              child: _MyAdoptionsRow(),
             ),
             // ── Search + species filters (pinned above the scrolling list) ──
             Padding(

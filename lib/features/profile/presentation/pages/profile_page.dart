@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../core/app/fcm_handler.dart';
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/app/tab_scroll_to_top_provider.dart';
 import '../../../../core/network/app_config_datasource.dart';
@@ -75,6 +76,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     final petsNotifier = ref.read(petsProvider.notifier);
     final authNotifier = ref.read(authProvider.notifier);
     final sessionNotifier = ref.read(sessionProvider.notifier);
+
+    // Unregister FCM token before the account is gone so the backend can
+    // accept the DELETE /users/me/fcm-token call while the session is still valid.
+    await FcmHandler.unregister(ref);
 
     final result = await authNotifier.deleteAccount(password: password);
 
@@ -278,6 +283,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   final petsNotifier = ref.read(petsProvider.notifier);
                   final authNotifier = ref.read(authProvider.notifier);
                   final sessionNotifier = ref.read(sessionProvider.notifier);
+                  // 0) Unregister FCM token BEFORE flipping the session gate so
+                  // the backend stops delivering push notifications to this
+                  // device for the outgoing user. Skipping this lets the old
+                  // token linger on the server, meaning notifications meant for
+                  // account 1 arrive on a device now logged in as account 2.
+                  await FcmHandler.unregister(ref);
                   // 1) Flip the session gate FIRST - this is synchronous and
                   // sends the router straight to /login (the auth gate wins
                   // regardless of pet-gate readiness). Clearing pets first

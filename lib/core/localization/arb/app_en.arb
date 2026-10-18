@@ -235,6 +235,7 @@
   "notifications": "Notifications",
   "premiumMember": "Premium Member",
   "petProfiles": "Pet Profiles",
+  "petViewProfile": "View Profile",
   "addPet": "Add Pet",
   "petActive": "ACTIVE",
   "petAgeYears": "{years, plural, =1{{years}y} other{{years}y}}",
@@ -1078,6 +1079,10 @@
     "placeholders": { "petName": { "type": "String" } }
   },
   "adoptionWelcomeDone": "Done",
+  "adoptionPostBannerTitle": "Available for adoption",
+  "adoptionPostCtaAvailable": "View listing",
+  "adoptionPostCtaAdopted": "Already adopted",
+  "adoptionPostCtaPending": "Pending",
   "onboardingAdoptPrompt": "Looking to adopt a pet?",
 
   "walkStartTitle": "Start a walk",
@@ -1182,6 +1187,8 @@
   "@pawHubDiscoverPets": {},
   "pawHubSuggestedPets": "Pets you might like",
   "@pawHubSuggestedPets": {},
+  "pawHubSuggestedPages": "Pages to follow",
+  "@pawHubSuggestedPages": {},
   "pawHubLostPetNearby": "LOST PET NEARBY",
   "@pawHubLostPetNearby": {},
   "pawHubViewOnMap": "View on map",
@@ -1573,10 +1580,6 @@
   "communitiesEntryButton": "Communities",
   "communitiesSearchHint": "Search communities",
   "communitiesMyCommunities": "My communities",
-  "communitiesTabDiscover": "Discover",
-  "communitiesTabMine": "My communities",
-  "communitiesMineEmptyTitle": "You haven't joined any communities",
-  "communitiesMineEmptyDescription": "Explore communities and join the ones your pet belongs in 🐾",
   "communitiesDiscoverRailTitle": "Communities to join",
   "communitiesSeeAll": "See all",
   "communitiesEmptyTitle": "No communities yet",
@@ -1591,16 +1594,58 @@
   "communitySortPopular": "Popular",
   "communitySortNewest": "Newest",
   "communitySortMostActive": "Most active",
-  "communityCategoryAll": "All",
   "communityCategoryBreedClub": "Breed club",
-  "communityCategoryShelterRescues": "Shelters & rescues",
-  "communityCategoryBreeding": "Breeding",
-  "communityCategorySpecialNeeds": "Special needs",
-  "communityCategoryActivity": "Activity",
-  "communityCategoryHealth": "Health",
+  "communityCategorySpecies": "Species",
   "communityCategoryOther": "Other",
-
   "communityJoin": "Join",
+
+  "communityGuestBannerText": "To join the {speciesName} community, you need to own one. Create a profile if you already have one, or you can also ",
+  "@communityGuestBannerText": {
+    "placeholders": {
+      "speciesName": { "type": "String" }
+    }
+  },
+  "communityGuestBannerAdopt": "adopt one",
+  "communityGuestBannerSuffix": " :)",
+
+  "pageFollowers": "Followers",
+  "pagePosts": "Posts",
+  "pageFollow": "Follow",
+  "pageFollowing": "Following",
+  "pageUnfollow": "Unfollow",
+  "pageUnfollowTitle": "Unfollow {name}?",
+  "@pageUnfollowTitle": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "pageUnfollowMessage": "You will stop seeing their posts in your feed.",
+  "pageInfo": "Info",
+  "pageInfoTitle": "Page Details",
+  "pageInfoPhone": "Phone",
+  "pageInfoWebsite": "Website",
+  "pageInfoAddress": "Address",
+  "pageContact": "Contact",
+  "pageCategoryShelter": "Shelter",
+  "pageCategoryRescue": "Rescue",
+  "pageCategoryVet": "Vet",
+  "pageCategoryBrand": "Brand",
+  "pageCategoryOther": "Organization",
+  "discoverPageCategoryShelterAndRescue": "Shelter & Rescue",
+  "@discoverPageCategoryShelterAndRescue": {},
+  "discoverPageCategoryVetClinic": "Vet Clinic",
+  "@discoverPageCategoryVetClinic": {},
+  "discoverPageCategoryBrand": "Brand",
+  "@discoverPageCategoryBrand": {},
+  "discoverPageCategoryServiceProvider": "Service Provider",
+  "@discoverPageCategoryServiceProvider": {},
+  "discoverPageCategoryOther": "Organization",
+  "@discoverPageCategoryOther": {},
+  "pageNoPostsYet": "No posts yet",
+  "pageNoPostsMessage": "{name} hasn't shared anything yet.",
+  "@pageNoPostsMessage": {
+    "placeholders": { "name": { "type": "String" } }
+  },
   "communityJoined": "Joined",
   "communityLeave": "Leave",
   "communityManage": "Manage",
@@ -1870,6 +1915,7 @@
   "pawhubSearchScopePosts": "Posts",
   "pawhubSearchScopeHashtags": "Hashtags",
   "pawhubSearchScopePets": "Pets",
+  "pawhubSearchScopePages": "Pages",
   "pawhubSearchNoResults": "No results for \"{query}\"",
   "@pawhubSearchNoResults": {
     "placeholders": { "query": { "type": "String" } }
@@ -1878,6 +1924,7 @@
   "pawhubSearchSectionPets": "Pets",
   "pawhubSearchSectionHashtags": "Hashtags",
   "pawhubSearchSectionPosts": "Posts",
+  "pawhubSearchSectionPages": "Pages",
   "pawhubSearchPostBy": "by {name}",
   "@pawhubSearchPostBy": {
     "placeholders": { "name": { "type": "String" } }

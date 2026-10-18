@@ -178,6 +178,7 @@ class _PawHubTrendingPageState extends ConsumerState<PawHubTrendingPage> {
                     onOpenOptions: () =>
                         _showOptions(post, trending.posts[i], actingPet),
                     onOpenProfile: (pet) => openPawHubPetProfile(context, pet),
+                    onOpenPage: (id) => context.push('/community/page/$id'),
                     onShare: () => _share(trending.posts[i]),
                   ),
                 );
@@ -231,12 +232,14 @@ class _PawHubTrendingPageState extends ConsumerState<PawHubTrendingPage> {
           await actions.reportPost(post.backendId, reason);
         }
       case PostAction.block:
+        final authorName = post.author?.name ?? post.pageAuthor?.name ?? '';
         final confirmed = await showBlockConfirmDialog(
           context,
-          authorName: post.author.name,
+          authorName: authorName,
         );
         if (!confirmed || !mounted) break;
-        await actions.block(post.author.backendId);
+        final authorId = post.author?.backendId ?? 0;
+        if (authorId > 0) await actions.block(authorId);
       case PostAction.delete:
         await actions.deletePost(post.backendId);
     }

@@ -14,14 +14,9 @@ part 'community_group_feed_providers.g.dart';
 @riverpod
 class CommunityDirectoryFilter extends _$CommunityDirectoryFilter {
   @override
-  ({CommunityCategory? category, CommunitySort sort}) build() =>
-      (category: null, sort: CommunitySort.popular);
+  CommunitySort build() => CommunitySort.popular;
 
-  void setCategory(CommunityCategory? category) =>
-      state = (category: category, sort: state.sort);
-
-  void setSort(CommunitySort sort) =>
-      state = (category: state.category, sort: sort);
+  void setSort(CommunitySort sort) => state = sort;
 }
 
 /// Accumulated directory state: communities loaded so far + paging cursor +
@@ -62,12 +57,11 @@ class PagedCommunities {
 class CommunityDirectory extends _$CommunityDirectory {
   @override
   Future<PagedCommunities> build() async {
-    final filter = ref.watch(communityDirectoryFilterProvider);
+    final sort = ref.watch(communityDirectoryFilterProvider);
     final actingPetId = ref.watch(actingPetIdProvider);
     final result = await ref.read(communityGroupRepositoryProvider).getCommunities(
           actingPetId: actingPetId,
-          category: filter.category,
-          sort: filter.sort,
+          sort: sort,
         );
     final page = result.when(success: (p) => p, failure: (f) => throw f);
     return PagedCommunities(
@@ -86,11 +80,10 @@ class CommunityDirectory extends _$CommunityDirectory {
     final current = state.value;
     if (current == null || !current.hasMore || current.loadingMore) return;
     state = AsyncData(current.copyWith(loadingMore: true));
-    final filter = ref.read(communityDirectoryFilterProvider);
+    final sort = ref.read(communityDirectoryFilterProvider);
     final result = await ref.read(communityGroupRepositoryProvider).getCommunities(
           actingPetId: ref.read(actingPetIdProvider),
-          category: filter.category,
-          sort: filter.sort,
+          sort: sort,
           cursor: current.cursor.nextCursor,
         );
     result.when(

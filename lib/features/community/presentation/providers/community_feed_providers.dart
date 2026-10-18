@@ -117,6 +117,7 @@ class DiscoverFeed extends _$DiscoverFeed {
       posts: page.posts,
       suggestedPets: page.suggestedPets,
       suggestedCommunities: page.suggestedCommunities,
+      suggestedPages: page.suggestedPages,
       alerts: page.alerts,
       cursor: page.cursor,
     );
@@ -168,6 +169,7 @@ class DiscoverState {
     required this.posts,
     required this.suggestedPets,
     required this.suggestedCommunities,
+    required this.suggestedPages,
     required this.alerts,
     required this.cursor,
     this.loadingMore = false,
@@ -176,6 +178,7 @@ class DiscoverState {
   final List<Post> posts;
   final List<CommunityPet> suggestedPets;
   final List<CommunityGroup> suggestedCommunities;
+  final List<SuggestedPage> suggestedPages;
   final List<LostFoundAlert> alerts;
   final PageCursor cursor;
   final bool loadingMore;
@@ -184,6 +187,7 @@ class DiscoverState {
     List<Post>? posts,
     List<CommunityPet>? suggestedPets,
     List<CommunityGroup>? suggestedCommunities,
+    List<SuggestedPage>? suggestedPages,
     List<LostFoundAlert>? alerts,
     PageCursor? cursor,
     bool? loadingMore,
@@ -192,6 +196,7 @@ class DiscoverState {
         posts: posts ?? this.posts,
         suggestedPets: suggestedPets ?? this.suggestedPets,
         suggestedCommunities: suggestedCommunities ?? this.suggestedCommunities,
+        suggestedPages: suggestedPages ?? this.suggestedPages,
         alerts: alerts ?? this.alerts,
         cursor: cursor ?? this.cursor,
         loadingMore: loadingMore ?? this.loadingMore,

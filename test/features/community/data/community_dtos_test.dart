@@ -82,7 +82,7 @@ void main() {
       likedByMe: true,
       saved: false,
       isEdited: false,
-      visibility: 0,
+      visibility: 'Public',
       createdAt: DateTime(2025, 6, 1),
       timeAgo: '2h',
     );
@@ -99,24 +99,24 @@ void main() {
       expect(e.visibility, PostVisibility.public);
     });
 
-    test('visibility wire 1 → followers', () {
-      final e = dto.copyWith(visibility: 1).toEntity();
+    test('visibility wire "Followers" → followers', () {
+      final e = dto.copyWith(visibility: 'Followers').toEntity();
       expect(e.visibility, PostVisibility.followers);
     });
 
-    test('visibility wire 2 → private', () {
-      final e = dto.copyWith(visibility: 2).toEntity();
+    test('visibility wire "Private" → private', () {
+      final e = dto.copyWith(visibility: 'Private').toEntity();
       expect(e.visibility, PostVisibility.private);
     });
 
     test('isMine set via myPetIds callback', () {
       final e = dto.toEntity(myPetIds: {7});
-      expect(e.author.isMine, true);
+      expect(e.author?.isMine, true);
     });
 
     test('isMine false when not in myPetIds', () {
       final e = dto.toEntity(myPetIds: {99});
-      expect(e.author.isMine, false);
+      expect(e.author?.isMine, false);
     });
   });
 
@@ -180,10 +180,11 @@ void main() {
   });
 
   group('postVisibilityFromWire', () {
-    test('0 → public', () => expect(postVisibilityFromWire(0), PostVisibility.public));
-    test('1 → followers', () => expect(postVisibilityFromWire(1), PostVisibility.followers));
-    test('2 → private', () => expect(postVisibilityFromWire(2), PostVisibility.private));
-    test('unknown → public', () => expect(postVisibilityFromWire(99), PostVisibility.public));
+    test('"Public" → public', () => expect(postVisibilityFromWire('Public'), PostVisibility.public));
+    test('"Followers" → followers', () => expect(postVisibilityFromWire('Followers'), PostVisibility.followers));
+    test('"Private" → private', () => expect(postVisibilityFromWire('Private'), PostVisibility.private));
+    test('unknown → public', () => expect(postVisibilityFromWire('unknown'), PostVisibility.public));
+    test('null → public', () => expect(postVisibilityFromWire(null), PostVisibility.public));
   });
 
   group('notificationTypeFromWire', () {

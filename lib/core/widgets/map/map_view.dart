@@ -104,7 +104,7 @@ class _MapViewState extends State<MapView> {
         markerBuilder: _clusterMarkerBuilder,
       );
     }
-    if (widget.showMyLocation && _interactive) {
+    if (widget.showMyLocation) {
       _initLocation();
     }
   }
@@ -154,7 +154,15 @@ class _MapViewState extends State<MapView> {
       return;
     }
 
-    // Live updates so the location dot tracks the user.
+    // Fetch immediately so the dot shows without waiting for movement.
+    try {
+      final pos = await Geolocator.getCurrentPosition();
+      if (!mounted) return;
+      setState(() => _myLocation = LatLng(pos.latitude, pos.longitude));
+      _refreshMarkers();
+    } catch (_) {}
+
+    // Then keep tracking as the user moves.
     _positionSub = Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
@@ -286,9 +294,7 @@ class _MapViewState extends State<MapView> {
           onTap: widget.onTap == null
               ? null
               : (pos) => widget.onTap!(pos.toLatLng2),
-          onCameraMove: _clusterManager == null
-              ? null
-              : (_) => _clusterManager!.onCameraMove,
+          onCameraMove: _clusterManager?.onCameraMove,
           onCameraIdle: _clusterManager?.updateMap,
           myLocationEnabled: false,
           myLocationButtonEnabled: false,

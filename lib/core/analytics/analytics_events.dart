@@ -21,4 +21,5 @@ abstract final class AnalyticsEvents {
   static const String pollVoted = 'PollVoted';
   static const String eventCreated = 'EventCreated';
   static const String eventRsvp = 'EventRsvp';
+  static const String pageViewed = 'PageViewed';
 }

@@ -26,8 +26,11 @@ abstract class CommunityDto with _$CommunityDto {
     String? description,
     String? avatarUrl,
     String? bannerUrl,
-    @Default(0) int category,
-    required PetSummaryDto lead,
+    String? category,
+    // null for system communities (the 12 predefined species communities).
+    PetSummaryDto? lead,
+    @Default(false) bool isSystem,
+    int? speciesId,
     @Default(0) int memberCount,
     @Default(0) int postCount,
     // Nullable so an explicit `null` from anonymous-viewer responses can't crash
@@ -52,7 +55,9 @@ abstract class CommunityDto with _$CommunityDto {
         avatarUrl: avatarUrl,
         bannerUrl: bannerUrl,
         category: communityCategoryFromWire(category),
-        lead: lead.toEntity(mine: leadIsMine),
+        lead: lead?.toEntity(mine: leadIsMine),
+        isSystem: isSystem,
+        speciesId: speciesId,
         memberCount: memberCount,
         postCount: postCount,
         isMember: isMember ?? false,
@@ -101,7 +106,7 @@ abstract class CommunityDirectoryResponseDto
   CommunityDirectoryPage toEntity({Set<int> myPetIds = const {}}) =>
       CommunityDirectoryPage(
         communities: communities
-            .map((c) => c.toEntity(leadIsMine: myPetIds.contains(c.lead.id)))
+            .map((c) => c.toEntity(leadIsMine: c.lead != null && myPetIds.contains(c.lead!.id)))
             .toList(growable: false),
         total: total,
         cursor: PageCursor(hasMore: hasMore, nextCursor: nextCursor),
@@ -146,7 +151,7 @@ abstract class CommunityListResponseDto with _$CommunityListResponseDto {
       _$CommunityListResponseDtoFromJson(json);
 
   List<CommunityGroup> toEntities({Set<int> myPetIds = const {}}) => communities
-      .map((c) => c.toEntity(leadIsMine: myPetIds.contains(c.lead.id)))
+      .map((c) => c.toEntity(leadIsMine: c.lead != null && myPetIds.contains(c.lead!.id)))
       .toList(growable: false);
 }
 

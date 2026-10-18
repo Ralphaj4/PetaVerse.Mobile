@@ -11,9 +11,10 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_avatar.dart';
+import '../../../../core/localization/generated/app_localizations.dart';
 import '../../domain/entities/community_group_entities.dart';
+import '../../domain/entities/community_group_enums.dart';
 import '../providers/community_group_actions_providers.dart';
-import 'community_common.dart';
 
 /// A directory row for one [CommunityGroup]: avatar, name, category + member
 /// count, and a Join / Joined pill. Tapping the body opens the community.
@@ -31,7 +32,7 @@ class CommunityCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final subtitle =
-        '${community.category.label(l10n)} · ${l10n.communityMembersCount(community.memberCount)}';
+        '${categoryLabel(community.category, l10n)} · ${l10n.communityMembersCount(community.memberCount)}';
 
     return Semantics(
       button: true,
@@ -74,8 +75,10 @@ class CommunityCard extends ConsumerWidget {
                     ],
                   ),
                 ),
-                const SizedBox(width: AppSpacing.sm),
-                CommunityJoinButton(community: community),
+                if (!community.isSystem) ...[
+                  const SizedBox(width: AppSpacing.sm),
+                  CommunityJoinButton(community: community),
+                ],
               ],
             ),
           ),
@@ -192,3 +195,10 @@ class _LeadBadge extends StatelessWidget {
     );
   }
 }
+
+String categoryLabel(CommunityCategory c, AppLocalizations l10n) =>
+    switch (c) {
+      CommunityCategory.breedClub => l10n.communityCategoryBreedClub,
+      CommunityCategory.species => l10n.communityCategorySpecies,
+      CommunityCategory.other => l10n.communityCategoryOther,
+    };

@@ -47,6 +47,7 @@ import '../../../features/community/presentation/pages/pawhub_blocked_page.dart'
 import '../../../features/community/presentation/pages/pawhub_trending_page.dart';
 import '../../../features/community/presentation/pages/pawhub_pet_profile_page.dart';
 import '../../../features/community/presentation/pages/tag_pets_page.dart';
+import '../../../features/pages/presentation/pages/page_detail_page.dart';
 import '../../../features/legal/presentation/pages/legal_acceptance_page.dart';
 import '../../../features/legal/presentation/providers/legal_providers.dart';
 import '../../../features/onboarding/presentation/pages/onboarding_page.dart';
@@ -156,6 +157,8 @@ abstract final class AppRoutes {
   static const String petVision = '/pet-vision';
   static const String sandbox = '/sandbox';
   static const String tagPets = '/community/tag-pets';
+  static const String pageDetail = '/community/page/:id';
+  static String pageDetailPath(int id) => '/community/page/$id';
 
   // PawCare - appointments (under a pet)
   static String addAppointmentPath(int petId) => '/pet/$petId/appointments/add';
@@ -919,6 +922,18 @@ GoRouter appRouter(Ref ref) {
                         ),
                   ),
                   GoRoute(
+                    path: 'page/:id',
+                    name: 'page_detail',
+                    pageBuilder: (context, state) => AppTransitionPage(
+                          key: state.pageKey,
+                          child: PageDetailPage(
+                            pageId: int.tryParse(
+                                    state.pathParameters['id'] ?? '') ??
+                                0,
+                          ),
+                        ),
+                  ),
+                  GoRoute(
                     path: 'pet/:petId',
                     name: 'community_pet_profile',
                     pageBuilder: (context, state) => AppTransitionPage(
@@ -1159,7 +1174,9 @@ GoRouter appRouter(Ref ref) {
         parentNavigatorKey: _rootNavigatorKey,
         pageBuilder: (context, state) => AppTransitionPage(
               key: state.pageKey,
-              child: const AdoptionBoardPage(),
+              child: AdoptionBoardPage(
+                initialSpeciesId: state.extra as int?,
+              ),
             ),
       ),
       GoRoute(

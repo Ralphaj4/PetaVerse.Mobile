@@ -562,6 +562,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get petProfiles => 'ملفات الحيوانات';
 
   @override
+  String get petViewProfile => 'عرض الملف الشخصي';
+
+  @override
   String get addPet => 'إضافة حيوان';
 
   @override
@@ -2609,6 +2612,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get adoptionWelcomeDone => 'تم';
 
   @override
+  String get adoptionPostBannerTitle => 'متاح للتبني';
+
+  @override
+  String get adoptionPostCtaAvailable => 'عرض الإعلان';
+
+  @override
+  String get adoptionPostCtaAdopted => 'تم التبني';
+
+  @override
+  String get adoptionPostCtaPending => 'قيد الانتظار';
+
+  @override
   String get onboardingAdoptPrompt => 'هل تبحث عن التبنّي؟';
 
   @override
@@ -2785,6 +2800,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pawHubSuggestedPets => 'حيوانات قد تعجبك';
+
+  @override
+  String get pawHubSuggestedPages => 'الصفحات للمتابعة';
 
   @override
   String get pawHubLostPetNearby => 'حيوان ضائع قريب';
@@ -3383,19 +3401,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get communitiesMyCommunities => 'مجتمعاتي';
 
   @override
-  String get communitiesTabDiscover => 'استكشاف';
-
-  @override
-  String get communitiesTabMine => 'مجتمعاتي';
-
-  @override
-  String get communitiesMineEmptyTitle => 'لم تنضم إلى أي مجتمع';
-
-  @override
-  String get communitiesMineEmptyDescription =>
-      'استكشف المجتمعات وانضم إلى ما يناسب حيوانك الأليف 🐾';
-
-  @override
   String get communitiesDiscoverRailTitle => 'مجتمعات للانضمام';
 
   @override
@@ -3428,31 +3433,106 @@ class AppLocalizationsAr extends AppLocalizations {
   String get communitySortMostActive => 'الأكثر نشاطًا';
 
   @override
-  String get communityCategoryAll => 'الكل';
-
-  @override
   String get communityCategoryBreedClub => 'نادي السلالة';
 
   @override
-  String get communityCategoryShelterRescues => 'الملاجئ والإنقاذ';
-
-  @override
-  String get communityCategoryBreeding => 'التربية';
-
-  @override
-  String get communityCategorySpecialNeeds => 'الاحتياجات الخاصة';
-
-  @override
-  String get communityCategoryActivity => 'النشاط';
-
-  @override
-  String get communityCategoryHealth => 'الصحة';
+  String get communityCategorySpecies => 'الأنواع';
 
   @override
   String get communityCategoryOther => 'أخرى';
 
   @override
   String get communityJoin => 'انضمام';
+
+  @override
+  String communityGuestBannerText(String speciesName) {
+    return 'للانضمام إلى مجتمع $speciesName، يجب أن تمتلك واحداً. أنشئ ملفاً شخصياً إذا كان لديك بالفعل، أو يمكنك أيضاً ';
+  }
+
+  @override
+  String get communityGuestBannerAdopt => 'تبني واحداً';
+
+  @override
+  String get communityGuestBannerSuffix => ' :)';
+
+  @override
+  String get pageFollowers => 'المتابعون';
+
+  @override
+  String get pagePosts => 'المنشورات';
+
+  @override
+  String get pageFollow => 'متابعة';
+
+  @override
+  String get pageFollowing => 'تتابع';
+
+  @override
+  String get pageUnfollow => 'إلغاء المتابعة';
+
+  @override
+  String pageUnfollowTitle(String name) {
+    return 'إلغاء متابعة $name؟';
+  }
+
+  @override
+  String get pageUnfollowMessage => 'لن تظهر لك منشوراتهم في خلاصتك.';
+
+  @override
+  String get pageInfo => 'معلومات';
+
+  @override
+  String get pageInfoTitle => 'تفاصيل الصفحة';
+
+  @override
+  String get pageInfoPhone => 'الهاتف';
+
+  @override
+  String get pageInfoWebsite => 'الموقع الإلكتروني';
+
+  @override
+  String get pageInfoAddress => 'العنوان';
+
+  @override
+  String get pageContact => 'التواصل';
+
+  @override
+  String get pageCategoryShelter => 'ملجأ';
+
+  @override
+  String get pageCategoryRescue => 'إنقاذ';
+
+  @override
+  String get pageCategoryVet => 'بيطري';
+
+  @override
+  String get pageCategoryBrand => 'علامة تجارية';
+
+  @override
+  String get pageCategoryOther => 'منظمة';
+
+  @override
+  String get discoverPageCategoryShelterAndRescue => 'ملجأ وإنقاذ';
+
+  @override
+  String get discoverPageCategoryVetClinic => 'عيادة بيطرية';
+
+  @override
+  String get discoverPageCategoryBrand => 'علامة تجارية';
+
+  @override
+  String get discoverPageCategoryServiceProvider => 'مزود خدمة';
+
+  @override
+  String get discoverPageCategoryOther => 'منظمة';
+
+  @override
+  String get pageNoPostsYet => 'لا توجد منشورات بعد';
+
+  @override
+  String pageNoPostsMessage(String name) {
+    return 'لم يشارك $name أي شيء بعد.';
+  }
 
   @override
   String get communityJoined => 'منضم';
@@ -4126,6 +4206,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get pawhubSearchScopePets => 'الحيوانات';
 
   @override
+  String get pawhubSearchScopePages => 'الصفحات';
+
+  @override
   String pawhubSearchNoResults(String query) {
     return 'لا نتائج لـ \"$query\"';
   }
@@ -4141,6 +4224,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pawhubSearchSectionPosts => 'المنشورات';
+
+  @override
+  String get pawhubSearchSectionPages => 'الصفحات';
 
   @override
   String pawhubSearchPostBy(String name) {

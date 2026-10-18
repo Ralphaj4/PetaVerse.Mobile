@@ -382,8 +382,9 @@ class _AssistantPageState extends ConsumerState<AssistantPage> {
             onPressed: _openHistory,
           ),
           // Pet-switcher pill at the far right (for a new chat). Hidden while
-          // viewing an existing conversation opened from history.
-          if (!_isOpenedSession && pillPet != null)
+          // viewing an existing conversation opened from history, or when the
+          // user only has one pet (nothing to switch to).
+          if (!_isOpenedSession && pillPet != null && _pawPets().length > 1)
             Padding(
               padding: const EdgeInsetsDirectional.only(end: AppSpacing.md),
               child: Center(

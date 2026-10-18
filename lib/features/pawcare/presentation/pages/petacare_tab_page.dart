@@ -498,33 +498,23 @@ class _FindCareSection extends StatelessWidget {
           onSeeAll: () => context.push(AppRoutes.careMap),
         ),
         const SizedBox(height: AppSpacing.sm),
-        Hero(
-          tag: 'care-provider-map',
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(AppRadius.lg),
-            child: SizedBox(
-              height: 220,
-              child: Stack(
+        ClipRRect(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          child: SizedBox(
+            height: 220,
+            child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  // Live map teaser - non-interactive, no controls, pure visual.
-                  MapView(
-                    center: center,
-                    zoom: 14,
-                    markers: const [],
-                    interactive: false,
-                    showMyLocation: false,
-                    showRecenterButton: false,
-                    cluster: false,
-                  ),
-
-                  // Transparent overlay so the whole card is tappable.
-                  // GoogleMap absorbs all pointer events, so a GestureDetector
-                  // outside the stack never fires — this overlay sits on top.
-                  Positioned.fill(
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTap: () => context.push(AppRoutes.careMap),
+                  // Live map teaser - purely visual, all gestures absorbed.
+                  AbsorbPointer(
+                    child: MapView(
+                      center: center,
+                      zoom: 14,
+                      markers: const [],
+                      interactive: false,
+                      showMyLocation: true,
+                      showRecenterButton: false,
+                      cluster: false,
                     ),
                   ),
 
@@ -618,44 +608,46 @@ class _FindCareSection extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: AppSpacing.sm),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.md,
-                            vertical: AppSpacing.sm,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.secondary,
-                            borderRadius: BorderRadius.circular(AppRadius.md),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                l10n.petaCareOpenMap,
-                                style: AppTextStyles.labelMedium.copyWith(
-                                  color: AppColors.onSecondary,
-                                  letterSpacing: 0,
+                        GestureDetector(
+                          onTap: () => context.push(AppRoutes.careMap),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.md,
+                              vertical: AppSpacing.sm,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.secondary,
+                              borderRadius: BorderRadius.circular(AppRadius.md),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  l10n.petaCareOpenMap,
+                                  style: AppTextStyles.labelMedium.copyWith(
+                                    color: AppColors.onSecondary,
+                                    letterSpacing: 0,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: AppSpacing.xs),
-                              Icon(
-                                Directionality.of(context) == TextDirection.rtl
-                                    ? FluentIcons.arrow_left_16_regular
-                                    : FluentIcons.arrow_right_16_regular,
-                                size: 14,
-                                color: AppColors.onSecondary,
-                              ),
-                            ],
+                                const SizedBox(width: AppSpacing.xs),
+                                Icon(
+                                  Directionality.of(context) == TextDirection.rtl
+                                      ? FluentIcons.arrow_left_16_regular
+                                      : FluentIcons.arrow_right_16_regular,
+                                  size: 14,
+                                  color: AppColors.onSecondary,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
                 ],
-              ),
             ),
           ),
-        ),  // Hero
+        ),
       ],
     );
   }

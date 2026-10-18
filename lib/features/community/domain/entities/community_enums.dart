@@ -29,13 +29,14 @@ extension PostVisibilityX on PostVisibility {
       };
 }
 
-/// Maps a server visibility int → [PostVisibility]. Unknown values fall back
+/// Maps a server visibility string → [PostVisibility]. Unknown values fall back
 /// to [PostVisibility.public] (the safest default for display - it never
 /// over-exposes because the server already filtered what we can see).
-PostVisibility postVisibilityFromWire(int? value) => switch (value) {
-      0 => PostVisibility.public,
-      1 => PostVisibility.followers,
-      2 => PostVisibility.private,
+PostVisibility postVisibilityFromWire(String? value) =>
+    switch (value?.toLowerCase()) {
+      'public' => PostVisibility.public,
+      'followers' => PostVisibility.followers,
+      'private' => PostVisibility.private,
       _ => PostVisibility.public,
     };
 
@@ -88,8 +89,28 @@ PostFeeling? postFeelingFromWire(int? value) => switch (value) {
       _ => null,
     };
 
+/// Category for a page surfaced in the Discover feed (`suggestedPages`).
+/// Coarser than [PageCategory] — groups shelter + rescue together.
+enum DiscoverPageCategory {
+  shelterAndRescue,
+  vetClinic,
+  brand,
+  serviceProvider,
+  other,
+}
+
+DiscoverPageCategory discoverPageCategoryFromWire(String? value) =>
+    switch (value?.toLowerCase()) {
+      'shelterandrescue' || 'shelter' || 'rescue' =>
+        DiscoverPageCategory.shelterAndRescue,
+      'vetclinic' || 'vet' => DiscoverPageCategory.vetClinic,
+      'brand' => DiscoverPageCategory.brand,
+      'serviceprovider' => DiscoverPageCategory.serviceProvider,
+      _ => DiscoverPageCategory.other,
+    };
+
 /// Search scope (`SearchType` query param). Integer wire values.
-enum SearchType { all, posts, hashtags, pets }
+enum SearchType { all, posts, hashtags, pets, pages }
 
 extension SearchTypeX on SearchType {
   int get wire => switch (this) {
@@ -97,6 +118,7 @@ extension SearchTypeX on SearchType {
         SearchType.posts => 1,
         SearchType.hashtags => 2,
         SearchType.pets => 3,
+        SearchType.pages => 4,
       };
 }
 
@@ -117,6 +139,31 @@ NotificationType notificationTypeFromWire(int? value) => switch (value) {
       5 => NotificationType.tagged,
       6 => NotificationType.alert,
       _ => NotificationType.alert,
+    };
+
+/// Category of a Page (shelter, rescue, vet, brand, or other).
+/// Integer wire values. [Shelter]=1 … [Other]=5.
+enum PageCategory { shelter, rescue, vet, brand, other }
+
+extension PageCategoryX on PageCategory {
+  int get wire => switch (this) {
+        PageCategory.shelter => 1,
+        PageCategory.rescue => 2,
+        PageCategory.vet => 3,
+        PageCategory.brand => 4,
+        PageCategory.other => 5,
+      };
+}
+
+/// Maps a server page-category string → [PageCategory]. Unknown values fall
+/// back to [PageCategory.other].
+PageCategory pageCategoryFromWire(String? value) => switch (value?.toLowerCase()) {
+      'shelter' || 'shelterandrescue' => PageCategory.shelter,
+      'rescue' => PageCategory.rescue,
+      'vet' || 'vetclinic' => PageCategory.vet,
+      'brand' => PageCategory.brand,
+      'other' || 'organization' => PageCategory.other,
+      _ => PageCategory.other,
     };
 
 /// Reason a post/comment/pet is reported (`ReportReason`, request).

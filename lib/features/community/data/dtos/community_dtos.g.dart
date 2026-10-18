@@ -61,9 +61,66 @@ _PostFeelingDto _$PostFeelingDtoFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$PostFeelingDtoToJson(_PostFeelingDto instance) =>
     <String, dynamic>{'value': instance.value, 'name': instance.name};
 
+_PageAuthorDto _$PageAuthorDtoFromJson(Map<String, dynamic> json) =>
+    _PageAuthorDto(
+      id: (json['id'] as num).toInt(),
+      name: json['name'] as String? ?? '',
+      handle: json['handle'] as String? ?? '',
+      avatarUrl: json['avatarUrl'] as String?,
+      category: json['category'] as String?,
+      isVerified: json['isVerified'] as bool? ?? false,
+      followerCount: (json['followerCount'] as num?)?.toInt() ?? 0,
+      isFollowing: json['isFollowing'] as bool? ?? false,
+    );
+
+Map<String, dynamic> _$PageAuthorDtoToJson(_PageAuthorDto instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'handle': instance.handle,
+      'avatarUrl': instance.avatarUrl,
+      'category': instance.category,
+      'isVerified': instance.isVerified,
+      'followerCount': instance.followerCount,
+      'isFollowing': instance.isFollowing,
+    };
+
+_PostAdoptionListingDto _$PostAdoptionListingDtoFromJson(
+  Map<String, dynamic> json,
+) => _PostAdoptionListingDto(
+  id: (json['id'] as num).toInt(),
+  statusId: (json['statusId'] as num?)?.toInt() ?? 0,
+  petName: json['petName'] as String? ?? '',
+  speciesName: json['speciesName'] as String? ?? '',
+  photoUrl: json['photoUrl'] as String?,
+  locationLabel: json['locationLabel'] as String?,
+  vaccinated: json['vaccinated'] as bool? ?? false,
+  neutered: json['neutered'] as bool? ?? false,
+  goodWithKids: json['goodWithKids'] as bool? ?? false,
+);
+
+Map<String, dynamic> _$PostAdoptionListingDtoToJson(
+  _PostAdoptionListingDto instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'statusId': instance.statusId,
+  'petName': instance.petName,
+  'speciesName': instance.speciesName,
+  'photoUrl': instance.photoUrl,
+  'locationLabel': instance.locationLabel,
+  'vaccinated': instance.vaccinated,
+  'neutered': instance.neutered,
+  'goodWithKids': instance.goodWithKids,
+};
+
 _PostDto _$PostDtoFromJson(Map<String, dynamic> json) => _PostDto(
   id: (json['id'] as num).toInt(),
-  author: PetSummaryDto.fromJson(json['author'] as Map<String, dynamic>),
+  author: json['author'] == null
+      ? null
+      : PetSummaryDto.fromJson(json['author'] as Map<String, dynamic>),
+  pageAuthor: json['pageAuthor'] == null
+      ? null
+      : PageAuthorDto.fromJson(json['pageAuthor'] as Map<String, dynamic>),
   media:
       (json['media'] as List<dynamic>?)
           ?.map((e) => PostMediaDto.fromJson(e as Map<String, dynamic>))
@@ -71,7 +128,7 @@ _PostDto _$PostDtoFromJson(Map<String, dynamic> json) => _PostDto(
       const <PostMediaDto>[],
   caption: json['caption'] as String?,
   locationName: json['locationName'] as String?,
-  visibility: (json['visibility'] as num?)?.toInt() ?? 0,
+  visibility: json['visibility'] as String?,
   hashtags:
       (json['hashtags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
       const <String>[],
@@ -99,11 +156,17 @@ _PostDto _$PostDtoFromJson(Map<String, dynamic> json) => _PostDto(
   timeAgo: json['timeAgo'] as String?,
   communityId: (json['communityId'] as num?)?.toInt(),
   communityName: json['communityName'] as String?,
+  adoptionListing: json['adoptionListing'] == null
+      ? null
+      : PostAdoptionListingDto.fromJson(
+          json['adoptionListing'] as Map<String, dynamic>,
+        ),
 );
 
 Map<String, dynamic> _$PostDtoToJson(_PostDto instance) => <String, dynamic>{
   'id': instance.id,
   'author': instance.author,
+  'pageAuthor': instance.pageAuthor,
   'media': instance.media,
   'caption': instance.caption,
   'locationName': instance.locationName,
@@ -121,6 +184,7 @@ Map<String, dynamic> _$PostDtoToJson(_PostDto instance) => <String, dynamic>{
   'timeAgo': instance.timeAgo,
   'communityId': instance.communityId,
   'communityName': instance.communityName,
+  'adoptionListing': instance.adoptionListing,
 };
 
 _CommentDto _$CommentDtoFromJson(Map<String, dynamic> json) => _CommentDto(
@@ -238,6 +302,9 @@ _SearchResultDto _$SearchResultDtoFromJson(Map<String, dynamic> json) =>
       pet: json['pet'] == null
           ? null
           : PetSummaryDto.fromJson(json['pet'] as Map<String, dynamic>),
+      page: json['page'] == null
+          ? null
+          : PageAuthorDto.fromJson(json['page'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SearchResultDtoToJson(_SearchResultDto instance) =>
@@ -247,6 +314,7 @@ Map<String, dynamic> _$SearchResultDtoToJson(_SearchResultDto instance) =>
       'hashtag': instance.hashtag,
       'postCount': instance.postCount,
       'pet': instance.pet,
+      'page': instance.page,
     };
 
 _TrendingHashtagDto _$TrendingHashtagDtoFromJson(Map<String, dynamic> json) =>
@@ -276,6 +344,30 @@ Map<String, dynamic> _$FeedResponseDtoToJson(_FeedResponseDto instance) =>
       'nextCursor': instance.nextCursor,
     };
 
+_SuggestedPageDto _$SuggestedPageDtoFromJson(Map<String, dynamic> json) =>
+    _SuggestedPageDto(
+      id: (json['id'] as num).toInt(),
+      name: json['name'] as String? ?? '',
+      handle: json['handle'] as String? ?? '',
+      avatarUrl: json['avatarUrl'] as String?,
+      category: json['category'] as String?,
+      isVerified: json['isVerified'] as bool? ?? false,
+      followerCount: (json['followerCount'] as num?)?.toInt() ?? 0,
+      isFollowing: json['isFollowing'] as bool? ?? false,
+    );
+
+Map<String, dynamic> _$SuggestedPageDtoToJson(_SuggestedPageDto instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'handle': instance.handle,
+      'avatarUrl': instance.avatarUrl,
+      'category': instance.category,
+      'isVerified': instance.isVerified,
+      'followerCount': instance.followerCount,
+      'isFollowing': instance.isFollowing,
+    };
+
 _DiscoverResponseDto _$DiscoverResponseDtoFromJson(Map<String, dynamic> json) =>
     _DiscoverResponseDto(
       posts:
@@ -293,6 +385,11 @@ _DiscoverResponseDto _$DiscoverResponseDtoFromJson(Map<String, dynamic> json) =>
               ?.map((e) => CommunityDto.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const <CommunityDto>[],
+      suggestedPages:
+          (json['suggestedPages'] as List<dynamic>?)
+              ?.map((e) => SuggestedPageDto.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const <SuggestedPageDto>[],
       alerts:
           (json['alerts'] as List<dynamic>?)
               ?.map(
@@ -310,6 +407,7 @@ Map<String, dynamic> _$DiscoverResponseDtoToJson(
   'posts': instance.posts,
   'suggestedPets': instance.suggestedPets,
   'suggestedCommunities': instance.suggestedCommunities,
+  'suggestedPages': instance.suggestedPages,
   'alerts': instance.alerts,
   'hasMore': instance.hasMore,
   'nextCursor': instance.nextCursor,

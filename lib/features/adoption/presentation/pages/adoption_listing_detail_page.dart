@@ -592,7 +592,7 @@ class _Body extends StatelessWidget {
           ],
 
           // ── Lister card ──────────────────────────────────────────────────
-          _ListerCard(lister: listing.lister),
+          _ListerCard(lister: listing.lister, page: listing.page),
           const SizedBox(height: AppSpacing.xl),
 
           // ── Action strip ─────────────────────────────────────────────────
@@ -1194,13 +1194,17 @@ class _TraitPill extends StatelessWidget {
 }
 
 class _ListerCard extends StatelessWidget {
-  const _ListerCard({required this.lister});
+  const _ListerCard({this.lister, this.page});
 
-  final AdoptionUser lister;
+  final AdoptionUser? lister;
+  final AdoptionListingPage? page;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final p = page;
+    final u = lister;
+
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
@@ -1211,8 +1215,8 @@ class _ListerCard extends StatelessWidget {
       child: Row(
         children: [
           AppAvatar(
-            imageUrl: lister.avatarUrl,
-            name: lister.fullName,
+            imageUrl: p?.avatarUrl ?? u?.avatarUrl,
+            name: p?.name ?? u?.fullName ?? '',
             radius: 22,
           ),
           const SizedBox(width: AppSpacing.md),
@@ -1222,17 +1226,40 @@ class _ListerCard extends StatelessWidget {
               children: [
                 Text(l10n.adoptionPostedBy, style: AppTextStyles.labelSmall),
                 const SizedBox(height: 2),
-                Text(
-                  lister.fullName,
-                  style: AppTextStyles.titleSmall,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        p?.name ?? u?.fullName ?? '',
+                        style: AppTextStyles.titleSmall,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    if (p != null && p.isVerified) ...[
+                      const SizedBox(width: AppSpacing.xs),
+                      const Icon(
+                        FluentIcons.shield_checkmark_24_filled,
+                        size: 14,
+                        color: AppColors.secondary,
+                      ),
+                    ],
+                  ],
                 ),
+                if (p != null)
+                  Text(
+                    '@${p.handle}',
+                    style: AppTextStyles.bodySmall
+                        .copyWith(color: AppColors.textTertiary),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
               ],
             ),
           ),
-          const Icon(FluentIcons.shield_checkmark_24_filled,
-              size: 18, color: AppColors.secondary),
+          if (p == null)
+            const Icon(FluentIcons.shield_checkmark_24_filled,
+                size: 18, color: AppColors.secondary),
         ],
       ),
     );

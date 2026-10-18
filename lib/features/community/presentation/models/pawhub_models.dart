@@ -1,6 +1,43 @@
 ﻿import '../../domain/entities/community_entities.dart' as domain;
 import '../../domain/entities/community_enums.dart' as domain_enums;
 
+// Re-export so widgets can use the type without importing the domain layer directly.
+typedef PostAdoptionListing = domain.PostAdoptionListing;
+
+/// A page (shelter/rescue/vet/brand) that authored a post.
+class PawPage {
+  PawPage({
+    required this.id,
+    required this.name,
+    required this.handle,
+    required this.category,
+    this.avatarUrl,
+    this.isVerified = false,
+    this.followerCount = 0,
+    this.isFollowing = false,
+  });
+
+  factory PawPage.fromEntity(domain.PageAuthor e) => PawPage(
+        id: e.id,
+        name: e.name,
+        handle: e.handle,
+        avatarUrl: e.avatarUrl,
+        category: e.category,
+        isVerified: e.isVerified,
+        followerCount: e.followerCount,
+        isFollowing: e.isFollowing,
+      );
+
+  final int id;
+  final String name;
+  final String handle;
+  final String? avatarUrl;
+  final domain_enums.PageCategory category;
+  final bool isVerified;
+  final int followerCount;
+  bool isFollowing;
+}
+
 /// Post visibility. Public = everyone, followers = only followers, private =
 /// only the owner's account.
 enum PostVisibility { public, followers, private }
@@ -164,16 +201,17 @@ class PawComment {
   final List<PawComment> replies;
 }
 
-/// A feed post authored by a pet.
+/// A feed post authored by a pet or a page.
 class PawPost {
   PawPost({
     required this.id,
-    required this.author,
     required this.media,
     required this.caption,
     required this.timeAgo,
     required this.hashtags,
     required this.taggedPets,
+    this.author,
+    this.pageAuthor,
     this.locationName,
     this.visibility = PostVisibility.public,
     this.feeling,
@@ -186,6 +224,7 @@ class PawPost {
     this.commentCount = 0,
     this.communityId,
     this.communityName,
+    this.adoptionListing,
     List<PawComment>? comments,
   }) : comments = comments ?? [];
 
@@ -194,7 +233,8 @@ class PawPost {
   factory PawPost.fromEntity(domain.Post e) => PawPost(
         id: e.id.toString(),
         backendId: e.id,
-        author: PawPet.fromEntity(e.author),
+        author: e.author != null ? PawPet.fromEntity(e.author!) : null,
+        pageAuthor: e.pageAuthor != null ? PawPage.fromEntity(e.pageAuthor!) : null,
         media: e.media.map(PawMedia.fromEntity).toList(),
         caption: e.caption ?? '',
         timeAgo: e.timeAgo ?? '',
@@ -211,6 +251,7 @@ class PawPost {
         commentCount: e.comments,
         communityId: e.communityId,
         communityName: e.communityName,
+        adoptionListing: e.adoptionListing,
       );
 
   static PostVisibility _domainVisibility(domain_enums.PostVisibility v) =>
@@ -225,7 +266,12 @@ class PawPost {
   /// Real backend integer id for API calls (like/save/share/delete/edit).
   final int backendId;
 
-  final PawPet author;
+  /// The pet that authored this post. Null for page posts — check [pageAuthor].
+  final PawPet? author;
+
+  /// The page that authored this post. Null for pet posts — check [author].
+  final PawPage? pageAuthor;
+
   final List<PawMedia> media;
   String caption;
   final String timeAgo;
@@ -253,6 +299,9 @@ class PawPost {
   /// Community this post belongs to, or null for a personal post.
   final int? communityId;
   final String? communityName;
+
+  /// Adoption listing stub — only non-null on page posts linked to a listing.
+  final PostAdoptionListing? adoptionListing;
 
   int get totalCommentCount => commentCount > 0
       ? commentCount
@@ -299,4 +348,39 @@ class PawNotif {
   final String timeAgo;
   final String? thumbnailUrl;
   bool isRead;
+}
+
+/// A suggested page surfaced in the Discover feed rail.
+class PawSuggestedPage {
+  PawSuggestedPage({
+    required this.id,
+    required this.name,
+    required this.handle,
+    required this.category,
+    this.avatarUrl,
+    this.isVerified = false,
+    this.followerCount = 0,
+    this.isFollowing = false,
+  });
+
+  factory PawSuggestedPage.fromEntity(domain.SuggestedPage e) =>
+      PawSuggestedPage(
+        id: e.id,
+        name: e.name,
+        handle: e.handle,
+        avatarUrl: e.avatarUrl,
+        category: e.category,
+        isVerified: e.isVerified,
+        followerCount: e.followerCount,
+        isFollowing: e.isFollowing,
+      );
+
+  final int id;
+  final String name;
+  final String handle;
+  final String? avatarUrl;
+  final domain_enums.DiscoverPageCategory category;
+  final bool isVerified;
+  final int followerCount;
+  bool isFollowing;
 }

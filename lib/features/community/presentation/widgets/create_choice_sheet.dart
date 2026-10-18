@@ -10,9 +10,13 @@ import '../../../../core/theme/app_text_styles.dart';
 /// What the community FAB can create.
 enum CreateChoice { post, poll, event }
 
-/// Shows the "Create" bottom sheet with Post / Poll / Event options and returns
-/// the chosen type (null if dismissed). Mirrors the add-media sheet styling.
-Future<CreateChoice?> showCreateChoiceSheet(BuildContext context) {
+/// Shows the "Create" bottom sheet with Post / Poll / (optionally) Event options
+/// and returns the chosen type (null if dismissed). Pass [showEvent] = true only
+/// for the community lead — regular members only see Post + Poll.
+Future<CreateChoice?> showCreateChoiceSheet(
+  BuildContext context, {
+  bool showEvent = true,
+}) {
   return showModalBottomSheet<CreateChoice>(
     context: context,
     useRootNavigator: true,
@@ -20,12 +24,14 @@ Future<CreateChoice?> showCreateChoiceSheet(BuildContext context) {
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
     ),
-    builder: (ctx) => const _CreateChoiceSheet(),
+    builder: (ctx) => _CreateChoiceSheet(showEvent: showEvent),
   );
 }
 
 class _CreateChoiceSheet extends StatelessWidget {
-  const _CreateChoiceSheet();
+  const _CreateChoiceSheet({required this.showEvent});
+
+  final bool showEvent;
 
   @override
   Widget build(BuildContext context) {
@@ -74,15 +80,17 @@ class _CreateChoiceSheet extends StatelessWidget {
               subtitle: l10n.composeNewPollSubtitle,
               onTap: () => Navigator.pop(context, CreateChoice.poll),
             ),
-            const SizedBox(height: AppSpacing.sm),
-            _ChoiceTile(
-              icon: FluentIcons.calendar_ltr_24_regular,
-              accent: AppColors.primary,
-              accentSoft: AppColors.primarySoft,
-              title: l10n.composeNewEvent,
-              subtitle: l10n.composeNewEventSubtitle,
-              onTap: () => Navigator.pop(context, CreateChoice.event),
-            ),
+            if (showEvent) ...[
+              const SizedBox(height: AppSpacing.sm),
+              _ChoiceTile(
+                icon: FluentIcons.calendar_ltr_24_regular,
+                accent: AppColors.primary,
+                accentSoft: AppColors.primarySoft,
+                title: l10n.composeNewEvent,
+                subtitle: l10n.composeNewEventSubtitle,
+                onTap: () => Navigator.pop(context, CreateChoice.event),
+              ),
+            ],
             const SizedBox(height: AppSpacing.md),
           ],
         ),

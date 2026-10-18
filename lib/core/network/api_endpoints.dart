@@ -246,6 +246,11 @@ abstract final class ApiEndpoints {
   static String communityEventRsvp(int eventId) =>
       '/community/events/$eventId/rsvp';
 
+  // Pages (shelters, rescues, vets, brands, etc.)
+  static String page(int id) => '/pages/$id';
+  static String pageFeed(int id) => '/pages/$id/feed';
+  static String pageFollow(int id) => '/pages/$id/follow';
+
   // App config (support email, etc.)
   static const String appConfig = '/config';
 

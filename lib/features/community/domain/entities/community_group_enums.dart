@@ -8,38 +8,29 @@ library;
 
 /// The theme of a community (`CommunityCategory`, request & response). Wire
 /// values are fixed by the backend contract - do not renumber.
+/// As of the Pages update: 0 = BreedClub (reserved), 1 = Species (the 12
+/// predefined species communities). Old values 2–6 no longer exist server-side;
+/// unknown values fall back to [other].
 enum CommunityCategory {
   breedClub,
-  shelterAndRescues,
-  breeding,
-  specialNeeds,
-  activity,
-  health,
+  species,
   other,
 }
 
 extension CommunityCategoryX on CommunityCategory {
   int get wire => switch (this) {
         CommunityCategory.breedClub => 0,
-        CommunityCategory.shelterAndRescues => 1,
-        CommunityCategory.breeding => 2,
-        CommunityCategory.specialNeeds => 3,
-        CommunityCategory.activity => 4,
-        CommunityCategory.health => 5,
+        CommunityCategory.species => 1,
         CommunityCategory.other => 6,
       };
 }
 
-/// Maps a server category int → [CommunityCategory]. Unknown values fall back
-/// to [CommunityCategory.other].
-CommunityCategory communityCategoryFromWire(int? value) => switch (value) {
-      0 => CommunityCategory.breedClub,
-      1 => CommunityCategory.shelterAndRescues,
-      2 => CommunityCategory.breeding,
-      3 => CommunityCategory.specialNeeds,
-      4 => CommunityCategory.activity,
-      5 => CommunityCategory.health,
-      6 => CommunityCategory.other,
+/// Maps a server category string → [CommunityCategory]. Unknown values fall
+/// back to [CommunityCategory.other].
+CommunityCategory communityCategoryFromWire(String? value) =>
+    switch (value?.toLowerCase()) {
+      'breedclub' => CommunityCategory.breedClub,
+      'species' => CommunityCategory.species,
       _ => CommunityCategory.other,
     };
 

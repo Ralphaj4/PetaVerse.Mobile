@@ -25,7 +25,7 @@ import '../../domain/entities/community_group_enums.dart';
 import '../providers/community_group_actions_providers.dart';
 import '../providers/community_group_providers.dart';
 import '../providers/community_providers.dart';
-import '../widgets/community_common.dart';
+import '../widgets/community_card.dart';
 
 /// Live availability state of the handle field.
 enum _HandleStatus { idle, checking, available, taken, invalid }
@@ -271,7 +271,7 @@ class _CreateCommunityPageState extends ConsumerState<CreateCommunityPage> {
                   searchable: false,
                   items: [
                     for (final c in CommunityCategory.values)
-                      DropdownMenuItem(value: c, child: Text(c.label(l10n))),
+                      DropdownMenuItem(value: c, child: Text(categoryLabel(c, l10n))),
                   ],
                   validator: FormBuilderValidators.required(
                     errorText: l10n.communityCreateCategoryRequired,

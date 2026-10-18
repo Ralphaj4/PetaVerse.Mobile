@@ -170,6 +170,14 @@ class _ServiceProviderMapState extends State<ServiceProviderMap> {
         permission == LocationPermission.deniedForever) {
       return;
     }
+    // Fetch immediately so the dot shows without waiting for movement.
+    try {
+      final pos = await Geolocator.getCurrentPosition();
+      if (!mounted) return;
+      setState(() => _myLocation = LatLng(pos.latitude, pos.longitude));
+    } catch (_) {}
+
+    // Then keep tracking as the user moves.
     _positionSub = Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
@@ -306,7 +314,7 @@ class _ServiceProviderMapState extends State<ServiceProviderMap> {
       markers: _markers,
       circles: _myLocationCircle(),
       onTap: (_) => widget.onMapTap(),
-      onCameraMove: (_) => _clusterManager.onCameraMove,
+      onCameraMove: _clusterManager.onCameraMove,
       onCameraIdle: _onCameraIdle,
       minMaxZoomPreference: const gmaps.MinMaxZoomPreference(3, 18),
       myLocationEnabled: false,

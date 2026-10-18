@@ -17,11 +17,7 @@ final communityDirectoryFilterProvider = CommunityDirectoryFilterProvider._();
 /// The active filter for the communities directory. Changing it rebuilds
 /// [CommunityDirectory] (which watches these).
 final class CommunityDirectoryFilterProvider
-    extends
-        $NotifierProvider<
-          CommunityDirectoryFilter,
-          ({CommunityCategory? category, CommunitySort sort})
-        > {
+    extends $NotifierProvider<CommunityDirectoryFilter, CommunitySort> {
   /// The active filter for the communities directory. Changing it rebuilds
   /// [CommunityDirectory] (which watches these).
   CommunityDirectoryFilterProvider._()
@@ -43,45 +39,31 @@ final class CommunityDirectoryFilterProvider
   CommunityDirectoryFilter create() => CommunityDirectoryFilter();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(
-    ({CommunityCategory? category, CommunitySort sort}) value,
-  ) {
+  Override overrideWithValue(CommunitySort value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride:
-          $SyncValueProvider<
-            ({CommunityCategory? category, CommunitySort sort})
-          >(value),
+      providerOverride: $SyncValueProvider<CommunitySort>(value),
     );
   }
 }
 
 String _$communityDirectoryFilterHash() =>
-    r'0cf29bbc74fefecc5f17cfa22f502194860ec709';
+    r'71dbcd750e7fb1b9c7b8151cdab80f8842ee103a';
 
 /// The active filter for the communities directory. Changing it rebuilds
 /// [CommunityDirectory] (which watches these).
 
-abstract class _$CommunityDirectoryFilter
-    extends $Notifier<({CommunityCategory? category, CommunitySort sort})> {
-  ({CommunityCategory? category, CommunitySort sort}) build();
+abstract class _$CommunityDirectoryFilter extends $Notifier<CommunitySort> {
+  CommunitySort build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref =
-        this.ref
-            as $Ref<
-              ({CommunityCategory? category, CommunitySort sort}),
-              ({CommunityCategory? category, CommunitySort sort})
-            >;
+    final ref = this.ref as $Ref<CommunitySort, CommunitySort>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<
-                ({CommunityCategory? category, CommunitySort sort}),
-                ({CommunityCategory? category, CommunitySort sort})
-              >,
-              ({CommunityCategory? category, CommunitySort sort}),
+              AnyNotifier<CommunitySort, CommunitySort>,
+              CommunitySort,
               Object?,
               Object?
             >;
@@ -124,7 +106,7 @@ final class CommunityDirectoryProvider
 }
 
 String _$communityDirectoryHash() =>
-    r'ac7935e24d11da6473a39dc3643535f99ecb94b9';
+    r'8377613168bd5f6d92f48234a915c36edc2a4428';
 
 /// The communities directory. Loads page 0 on build (respecting the current
 /// [CommunityDirectoryFilter]), appends further pages via [loadMore]. Rebuilds

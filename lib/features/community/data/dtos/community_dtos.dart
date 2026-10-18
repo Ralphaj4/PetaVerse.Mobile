@@ -94,16 +94,84 @@ abstract class PostFeelingDto with _$PostFeelingDto {
   PostFeeling? toEntity() => postFeelingFromWire(value);
 }
 
+/// `PageAuthorResponse` — a page (shelter/rescue/vet/brand) that authored a
+/// post. Exactly one of [PostDto.author] / [PostDto.pageAuthor] is non-null.
+@freezed
+abstract class PageAuthorDto with _$PageAuthorDto {
+  const factory PageAuthorDto({
+    required int id,
+    @Default('') String name,
+    @Default('') String handle,
+    String? avatarUrl,
+    String? category,
+    @Default(false) bool isVerified,
+    @Default(0) int followerCount,
+    @Default(false) bool isFollowing,
+  }) = _PageAuthorDto;
+
+  const PageAuthorDto._();
+
+  factory PageAuthorDto.fromJson(Map<String, dynamic> json) =>
+      _$PageAuthorDtoFromJson(json);
+
+  PageAuthor toEntity() => PageAuthor(
+        id: id,
+        name: name,
+        handle: handle,
+        avatarUrl: avatarUrl,
+        category: pageCategoryFromWire(category),
+        isVerified: isVerified,
+        followerCount: followerCount,
+        isFollowing: isFollowing,
+      );
+}
+
+/// Adoption listing stub embedded in a page post (`PostResponse.adoptionListing`).
+/// Null on all regular posts; only set on page posts linked to a listing.
+@freezed
+abstract class PostAdoptionListingDto with _$PostAdoptionListingDto {
+  const factory PostAdoptionListingDto({
+    required int id,
+    @Default(0) int statusId,
+    @Default('') String petName,
+    @Default('') String speciesName,
+    String? photoUrl,
+    String? locationLabel,
+    @Default(false) bool vaccinated,
+    @Default(false) bool neutered,
+    @Default(false) bool goodWithKids,
+  }) = _PostAdoptionListingDto;
+
+  const PostAdoptionListingDto._();
+
+  factory PostAdoptionListingDto.fromJson(Map<String, dynamic> json) =>
+      _$PostAdoptionListingDtoFromJson(json);
+
+  PostAdoptionListing toEntity() => PostAdoptionListing(
+        id: id,
+        statusId: statusId,
+        petName: petName,
+        speciesName: speciesName,
+        photoUrl: photoUrl,
+        locationLabel: locationLabel,
+        vaccinated: vaccinated,
+        neutered: neutered,
+        goodWithKids: goodWithKids,
+      );
+}
+
 /// `PostResponse`.
 @freezed
 abstract class PostDto with _$PostDto {
   const factory PostDto({
     required int id,
-    required PetSummaryDto author,
+    // Exactly one of author / pageAuthor is non-null per the API contract.
+    PetSummaryDto? author,
+    PageAuthorDto? pageAuthor,
     @Default(<PostMediaDto>[]) List<PostMediaDto> media,
     String? caption,
     String? locationName,
-    @Default(0) int visibility,
+    String? visibility,
     @Default(<String>[]) List<String> hashtags,
     // Tagged pets now arrive as full pet objects (id/name/avatarUrl/breed),
     // not bare ids.
@@ -119,6 +187,7 @@ abstract class PostDto with _$PostDto {
     String? timeAgo,
     int? communityId,
     String? communityName,
+    PostAdoptionListingDto? adoptionListing,
   }) = _PostDto;
 
   const PostDto._();
@@ -128,7 +197,8 @@ abstract class PostDto with _$PostDto {
 
   Post toEntity({Set<int> myPetIds = const {}}) => Post(
         id: id,
-        author: author.toEntity(mine: myPetIds.contains(author.id)),
+        author: author?.toEntity(mine: myPetIds.contains(author!.id)),
+        pageAuthor: pageAuthor?.toEntity(),
         media: media.map((m) => m.toEntity()).toList(growable: false),
         hashtags: hashtags,
         taggedPets: taggedPets
@@ -148,6 +218,7 @@ abstract class PostDto with _$PostDto {
         timeAgo: timeAgo,
         communityId: communityId,
         communityName: communityName,
+        adoptionListing: adoptionListing?.toEntity(),
       );
 }
 
@@ -283,6 +354,7 @@ abstract class SearchResultDto with _$SearchResultDto {
     String? hashtag,
     int? postCount,
     PetSummaryDto? pet,
+    PageAuthorDto? page,
   }) = _SearchResultDto;
 
   const SearchResultDto._();
@@ -294,6 +366,7 @@ abstract class SearchResultDto with _$SearchResultDto {
     final kind = switch (type) {
       'hashtag' => SearchResultKind.hashtag,
       'pet' => SearchResultKind.pet,
+      'page' => SearchResultKind.page,
       _ => SearchResultKind.post,
     };
     return SearchResult(
@@ -303,6 +376,7 @@ abstract class SearchResultDto with _$SearchResultDto {
           ? null
           : TrendingHashtag(tag: hashtag!, postCount: postCount ?? 0),
       pet: pet?.toEntity(mine: pet == null ? false : myPetIds.contains(pet!.id)),
+      page: page?.toEntity(),
     );
   }
 }
@@ -346,6 +420,37 @@ abstract class FeedResponseDto with _$FeedResponseDto {
       );
 }
 
+/// One entry in `DiscoverFeedResponse.suggestedPages`.
+@freezed
+abstract class SuggestedPageDto with _$SuggestedPageDto {
+  const factory SuggestedPageDto({
+    required int id,
+    @Default('') String name,
+    @Default('') String handle,
+    String? avatarUrl,
+    String? category,
+    @Default(false) bool isVerified,
+    @Default(0) int followerCount,
+    @Default(false) bool isFollowing,
+  }) = _SuggestedPageDto;
+
+  const SuggestedPageDto._();
+
+  factory SuggestedPageDto.fromJson(Map<String, dynamic> json) =>
+      _$SuggestedPageDtoFromJson(json);
+
+  SuggestedPage toEntity() => SuggestedPage(
+        id: id,
+        name: name,
+        handle: handle,
+        avatarUrl: avatarUrl,
+        category: discoverPageCategoryFromWire(category),
+        isVerified: isVerified,
+        followerCount: followerCount,
+        isFollowing: isFollowing,
+      );
+}
+
 /// `DiscoverFeedResponse`.
 @freezed
 abstract class DiscoverResponseDto with _$DiscoverResponseDto {
@@ -353,6 +458,7 @@ abstract class DiscoverResponseDto with _$DiscoverResponseDto {
     @Default(<PostDto>[]) List<PostDto> posts,
     @Default(<PetSummaryDto>[]) List<PetSummaryDto> suggestedPets,
     @Default(<CommunityDto>[]) List<CommunityDto> suggestedCommunities,
+    @Default(<SuggestedPageDto>[]) List<SuggestedPageDto> suggestedPages,
     @Default(<LostFoundAlertDto>[]) List<LostFoundAlertDto> alerts,
     @Default(false) bool hasMore,
     String? nextCursor,
@@ -370,7 +476,10 @@ abstract class DiscoverResponseDto with _$DiscoverResponseDto {
             .map((p) => p.toEntity(mine: myPetIds.contains(p.id)))
             .toList(growable: false),
         suggestedCommunities: suggestedCommunities
-            .map((c) => c.toEntity(leadIsMine: myPetIds.contains(c.lead.id)))
+            .map((c) => c.toEntity(leadIsMine: c.lead != null && myPetIds.contains(c.lead!.id)))
+            .toList(growable: false),
+        suggestedPages: suggestedPages
+            .map((p) => p.toEntity())
             .toList(growable: false),
         alerts: alerts.map((a) => a.toEntity()).toList(growable: false),
         cursor: PageCursor(hasMore: hasMore, nextCursor: nextCursor),

@@ -86,10 +86,11 @@ Future<void> copyPostLink(WidgetRef ref, BuildContext context, Post post) async 
 /// caption when present, then the URL on its own line so chat apps render it as
 /// a tappable link (and, once the web OG tags exist, a rich preview).
 String _shareText(Post post, String url) {
+  final authorName = post.author?.name ?? post.pageAuthor?.name ?? '';
   final caption = post.caption?.trim();
   final lead = (caption != null && caption.isNotEmpty)
-      ? '${post.author.name}: ${_trim(caption, 140)}'
-      : "Check out ${post.author.name}'s post on PetaVerse";
+      ? '$authorName: ${_trim(caption, 140)}'
+      : "Check out $authorName's post on PetaVerse";
   return '$lead\n$url';
 }
 

@@ -23,7 +23,7 @@ Future<PostAction?> showPostOptionsSheet(
   required PawPost post,
   bool forceMine = false,
 }) {
-  final isMine = forceMine || post.author.isMine;
+  final isMine = forceMine || (post.author?.isMine ?? false);
   return showModalBottomSheet<PostAction>(
     context: context,
     backgroundColor: AppColors.surface,
@@ -74,7 +74,8 @@ Future<PostAction?> showPostOptionsSheet(
             ),
             _OptionTile(
               icon: FluentIcons.person_prohibited_24_regular,
-              label: context.l10n.pawHubPostOptionBlock(post.author.name),
+              label: context.l10n.pawHubPostOptionBlock(
+                  post.author?.name ?? post.pageAuthor?.name ?? ''),
               destructive: true,
               onTap: () => Navigator.pop(context, PostAction.block),
             ),

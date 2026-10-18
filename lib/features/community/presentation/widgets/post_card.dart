@@ -4,12 +4,14 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/app/router/app_router.dart';
 import '../../domain/entities/community_entities.dart' as domain;
 import '../../domain/entities/community_enums.dart' show PostFeeling;
 import '../models/pawhub_models.dart';
@@ -32,6 +34,7 @@ class PostCard extends ConsumerStatefulWidget {
     required this.onOpenOptions,
     required this.onOpenProfile,
     required this.onShare,
+    this.onOpenPage,
     this.showCommunityBadge = true,
     super.key,
   });
@@ -41,6 +44,10 @@ class PostCard extends ConsumerStatefulWidget {
   final VoidCallback onOpenOptions;
   final void Function(PawPet pet) onOpenProfile;
   final Future<void> Function() onShare;
+
+  /// Called when the user taps a page author's identity chip. Receives the
+  /// page id. May be null if page navigation isn't wired on this screen yet.
+  final void Function(int pageId)? onOpenPage;
 
   /// Whether to show the "posted in `<community>`" badge. Suppressed inside a
   /// community's own feed, where the tag would be redundant.
@@ -109,18 +116,20 @@ class _PostCardState extends ConsumerState<PostCard>
 
   domain.Post _toDomainPost() => domain.Post(
         id: post.backendId,
-        author: domain.CommunityPet(
-          id: post.author.backendId,
-          name: post.author.name,
-          breed: post.author.breed,
-          species: post.author.species,
-          avatarUrl: post.author.avatarUrl,
-          ownerName: post.author.ownerName,
-          isVerified: post.author.isVerified,
-          followers: post.author.followers,
-          isFollowing: post.author.isFollowing,
-          isMine: post.author.isMine,
-        ),
+        author: post.author != null
+            ? domain.CommunityPet(
+                id: post.author!.backendId,
+                name: post.author!.name,
+                breed: post.author!.breed,
+                species: post.author!.species,
+                avatarUrl: post.author!.avatarUrl,
+                ownerName: post.author!.ownerName,
+                isVerified: post.author!.isVerified,
+                followers: post.author!.followers,
+                isFollowing: post.author!.isFollowing,
+                isMine: post.author!.isMine,
+              )
+            : null,
         media: post.media
             .map((m) => domain.PostMedia(
                   url: m.url,
@@ -205,6 +214,8 @@ class _PostCardState extends ConsumerState<PostCard>
           _followedBy(),
           _caption(),
           _commentPreview(),
+          if (post.adoptionListing != null)
+            _AdoptionListingBanner(listing: post.adoptionListing!),
           const SizedBox(height: AppSpacing.md),
         ],
       ),
@@ -212,10 +223,6 @@ class _PostCardState extends ConsumerState<PostCard>
   }
 
   Widget _header() {
-    final subtitleParts = <String>[
-      post.author.breedOrSpecies,
-      if (post.locationName != null) post.locationName!,
-    ];
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         AppSpacing.md,
@@ -226,11 +233,20 @@ class _PostCardState extends ConsumerState<PostCard>
       child: Row(
         children: [
           Expanded(
-            child: PetIdentity(
-              pet: post.author,
-              subtitle: subtitleParts.join(' · '),
-              onTap: () => widget.onOpenProfile(post.author),
-            ),
+            child: post.pageAuthor != null
+                ? PageIdentity(
+                    page: post.pageAuthor!,
+                    subtitle: post.locationName,
+                    onTap: () => widget.onOpenPage?.call(post.pageAuthor!.id),
+                  )
+                : PetIdentity(
+                    pet: post.author!,
+                    subtitle: [
+                      post.author!.breedOrSpecies,
+                      if (post.locationName != null) post.locationName!,
+                    ].join(' · '),
+                    onTap: () => widget.onOpenProfile(post.author!),
+                  ),
           ),
           if (post.feeling != null) ...[
             _FeelingChip(feeling: post.feeling!),
@@ -414,10 +430,13 @@ class _PostCardState extends ConsumerState<PostCard>
             GestureDetector(
               onTap: () => setState(() => _captionExpanded = !_captionExpanded),
               child: RichCaption(
-                // Instagram-style: bold author name leads the caption; tapping
-                // it opens the author's profile.
-                leadingName: post.author.name,
-                onLeadingTap: () => widget.onOpenProfile(post.author),
+                // Bold author name leads the caption; tapping opens the profile.
+                leadingName: post.author?.name ?? post.pageAuthor?.name ?? '',
+                onLeadingTap: post.author != null
+                    ? () => widget.onOpenProfile(post.author!)
+                    : post.pageAuthor != null
+                        ? () => widget.onOpenPage?.call(post.pageAuthor!.id)
+                        : null,
                 text: captionText,
                 style: AppTextStyles.bodyMedium,
                 maxLines: _captionExpanded ? null : 2,
@@ -522,6 +541,144 @@ class _FeelingChip extends StatelessWidget {
               style: AppTextStyles.labelSmall
                   .copyWith(color: AppColors.primaryDark)),
         ],
+      ),
+    );
+  }
+}
+
+/// "Available for adoption" banner shown at the bottom of a feed card when
+/// the post is linked to an adoption listing ([PawPost.adoptionListing] != null).
+class _AdoptionListingBanner extends StatelessWidget {
+  const _AdoptionListingBanner({required this.listing});
+
+  final PostAdoptionListing listing;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final available = listing.isAvailable;
+
+    final ctaLabel = available
+        ? l10n.adoptionPostCtaAvailable
+        : listing.statusId == 18
+            ? l10n.adoptionPostCtaAdopted
+            : l10n.adoptionPostCtaPending;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.md,
+        AppSpacing.xs,
+        AppSpacing.md,
+        0,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.secondarySoft,
+          borderRadius: AppRadius.mdAll,
+          border: Border.all(color: AppColors.secondary.withValues(alpha: 0.35)),
+        ),
+        padding: const EdgeInsets.all(AppSpacing.md),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(FluentIcons.heart_24_filled,
+                    size: 16, color: AppColors.secondaryDark),
+                const SizedBox(width: AppSpacing.xs),
+                Text(
+                  l10n.adoptionPostBannerTitle,
+                  style: AppTextStyles.labelMedium
+                      .copyWith(color: AppColors.secondaryDark, letterSpacing: 0),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.xs),
+            Text(
+              '${listing.petName} · ${listing.speciesName}',
+              style: AppTextStyles.titleSmall,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            if (listing.locationLabel != null &&
+                listing.locationLabel!.isNotEmpty) ...[
+              const SizedBox(height: 2),
+              Row(
+                children: [
+                  const Icon(FluentIcons.location_24_regular,
+                      size: 12, color: AppColors.textTertiary),
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      listing.locationLabel!,
+                      style: AppTextStyles.bodySmall,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+            if (listing.vaccinated || listing.neutered || listing.goodWithKids) ...[
+              const SizedBox(height: AppSpacing.xs),
+              Wrap(
+                spacing: AppSpacing.xs,
+                children: [
+                  if (listing.vaccinated)
+                    _TraitPill(label: l10n.adoptionTraitVaccinated),
+                  if (listing.neutered)
+                    _TraitPill(label: l10n.adoptionTraitNeutered),
+                  if (listing.goodWithKids)
+                    _TraitPill(label: l10n.adoptionTraitGoodWithKids),
+                ],
+              ),
+            ],
+            const SizedBox(height: AppSpacing.md),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: available
+                    ? () => context.push(
+                          AppRoutes.adoptionDetailPath(listing.id),
+                        )
+                    : null,
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.secondary,
+                  foregroundColor: AppColors.onSecondary,
+                  disabledBackgroundColor: AppColors.divider,
+                  disabledForegroundColor: AppColors.textTertiary,
+                  textStyle: AppTextStyles.labelMedium,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: AppRadius.smAll),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                ),
+                child: Text(ctaLabel),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TraitPill extends StatelessWidget {
+  const _TraitPill({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 3),
+      decoration: BoxDecoration(
+        color: AppColors.secondary.withValues(alpha: 0.15),
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: Text(
+        label,
+        style: AppTextStyles.labelSmall.copyWith(color: AppColors.secondaryDark),
       ),
     );
   }

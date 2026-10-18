@@ -568,6 +568,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get petProfiles => 'Profils des Animaux';
 
   @override
+  String get petViewProfile => 'Voir le profil';
+
+  @override
   String get addPet => 'Ajouter';
 
   @override
@@ -2613,6 +2616,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adoptionWelcomeDone => 'Terminé';
 
   @override
+  String get adoptionPostBannerTitle => 'Disponible à l\'adoption';
+
+  @override
+  String get adoptionPostCtaAvailable => 'Voir l\'annonce';
+
+  @override
+  String get adoptionPostCtaAdopted => 'Déjà adopté';
+
+  @override
+  String get adoptionPostCtaPending => 'En attente';
+
+  @override
   String get onboardingAdoptPrompt => 'Vous cherchez à adopter ?';
 
   @override
@@ -2794,6 +2809,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get pawHubSuggestedPets => 'Animaux que vous pourriez aimer';
+
+  @override
+  String get pawHubSuggestedPages => 'Pages à suivre';
 
   @override
   String get pawHubLostPetNearby => 'ANIMAL PERDU À PROXIMITÉ';
@@ -3398,20 +3416,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get communitiesMyCommunities => 'Mes communautés';
 
   @override
-  String get communitiesTabDiscover => 'Découvrir';
-
-  @override
-  String get communitiesTabMine => 'Mes communautés';
-
-  @override
-  String get communitiesMineEmptyTitle =>
-      'Vous n\'avez rejoint aucune communauté';
-
-  @override
-  String get communitiesMineEmptyDescription =>
-      'Explorez les communautés et rejoignez celles qui correspondent à votre animal 🐾';
-
-  @override
   String get communitiesDiscoverRailTitle => 'Communautés à rejoindre';
 
   @override
@@ -3445,31 +3449,107 @@ class AppLocalizationsFr extends AppLocalizations {
   String get communitySortMostActive => 'Les plus actives';
 
   @override
-  String get communityCategoryAll => 'Toutes';
-
-  @override
   String get communityCategoryBreedClub => 'Club de race';
 
   @override
-  String get communityCategoryShelterRescues => 'Refuges et sauvetages';
-
-  @override
-  String get communityCategoryBreeding => 'Élevage';
-
-  @override
-  String get communityCategorySpecialNeeds => 'Besoins spéciaux';
-
-  @override
-  String get communityCategoryActivity => 'Activité';
-
-  @override
-  String get communityCategoryHealth => 'Santé';
+  String get communityCategorySpecies => 'Espèces';
 
   @override
   String get communityCategoryOther => 'Autre';
 
   @override
   String get communityJoin => 'Rejoindre';
+
+  @override
+  String communityGuestBannerText(String speciesName) {
+    return 'Pour rejoindre la communauté $speciesName, vous devez en posséder un. Créez un profil si vous en avez déjà un, ou vous pouvez aussi ';
+  }
+
+  @override
+  String get communityGuestBannerAdopt => 'en adopter un';
+
+  @override
+  String get communityGuestBannerSuffix => ' :)';
+
+  @override
+  String get pageFollowers => 'Abonnés';
+
+  @override
+  String get pagePosts => 'Publications';
+
+  @override
+  String get pageFollow => 'Suivre';
+
+  @override
+  String get pageFollowing => 'Suivi(e)';
+
+  @override
+  String get pageUnfollow => 'Ne plus suivre';
+
+  @override
+  String pageUnfollowTitle(String name) {
+    return 'Ne plus suivre $name ?';
+  }
+
+  @override
+  String get pageUnfollowMessage =>
+      'Vous ne verrez plus leurs publications dans votre fil.';
+
+  @override
+  String get pageInfo => 'Infos';
+
+  @override
+  String get pageInfoTitle => 'Détails de la page';
+
+  @override
+  String get pageInfoPhone => 'Téléphone';
+
+  @override
+  String get pageInfoWebsite => 'Site web';
+
+  @override
+  String get pageInfoAddress => 'Adresse';
+
+  @override
+  String get pageContact => 'Contact';
+
+  @override
+  String get pageCategoryShelter => 'Refuge';
+
+  @override
+  String get pageCategoryRescue => 'Sauvetage';
+
+  @override
+  String get pageCategoryVet => 'Vétérinaire';
+
+  @override
+  String get pageCategoryBrand => 'Marque';
+
+  @override
+  String get pageCategoryOther => 'Organisation';
+
+  @override
+  String get discoverPageCategoryShelterAndRescue => 'Refuge & Sauvetage';
+
+  @override
+  String get discoverPageCategoryVetClinic => 'Clinique Vétérinaire';
+
+  @override
+  String get discoverPageCategoryBrand => 'Marque';
+
+  @override
+  String get discoverPageCategoryServiceProvider => 'Prestataire de Services';
+
+  @override
+  String get discoverPageCategoryOther => 'Organisation';
+
+  @override
+  String get pageNoPostsYet => 'Aucune publication';
+
+  @override
+  String pageNoPostsMessage(String name) {
+    return '$name n\'a encore rien partagé.';
+  }
 
   @override
   String get communityJoined => 'Rejoint';
@@ -4155,6 +4235,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get pawhubSearchScopePets => 'Animaux';
 
   @override
+  String get pawhubSearchScopePages => 'Pages';
+
+  @override
   String pawhubSearchNoResults(String query) {
     return 'Aucun résultat pour « $query »';
   }
@@ -4170,6 +4253,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get pawhubSearchSectionPosts => 'Publications';
+
+  @override
+  String get pawhubSearchSectionPages => 'Pages';
 
   @override
   String pawhubSearchPostBy(String name) {

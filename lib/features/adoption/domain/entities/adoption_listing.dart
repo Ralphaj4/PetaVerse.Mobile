@@ -87,6 +87,24 @@ class AdoptionUser {
   String get fullName => '$firstName $lastName'.trim();
 }
 
+/// Identity card for a page (shelter/rescue) that posted a listing.
+/// Exactly one of [AdoptionListing.lister] / [AdoptionListing.page] is non-null.
+class AdoptionListingPage {
+  const AdoptionListingPage({
+    required this.id,
+    required this.name,
+    required this.handle,
+    this.avatarUrl,
+    this.isVerified = false,
+  });
+
+  final int id;
+  final String name;
+  final String handle;
+  final String? avatarUrl;
+  final bool isVerified;
+}
+
 /// A single pet offered for adoption on the board.
 ///
 /// Domain entity: pure Dart, no Flutter/JSON imports. Mirrors the API's
@@ -97,11 +115,12 @@ class AdoptionListing {
     required this.id,
     required this.status,
     required this.pet,
-    required this.lister,
     required this.applicantCount,
     required this.isOwnListing,
     required this.hasApplied,
     required this.createdAt,
+    this.lister,
+    this.page,
     this.isShelter = false,
     this.description,
     this.locationLabel,
@@ -115,7 +134,15 @@ class AdoptionListing {
   final int id;
   final AdoptionListingStatus status;
   final AdoptionPet pet;
-  final AdoptionUser lister;
+
+  /// The individual user who posted this listing. Null for page-posted listings
+  /// — check [page] instead. Exactly one of [lister] / [page] is non-null.
+  final AdoptionUser? lister;
+
+  /// The page (shelter/rescue) that posted this listing. Null for user-posted
+  /// listings — check [lister] instead.
+  final AdoptionListingPage? page;
+
   final int applicantCount;
 
   /// True when this is a shelter/stray listing (no backing pet; a new pet is
@@ -152,6 +179,7 @@ class AdoptionListing {
         status: status,
         pet: pet,
         lister: lister,
+        page: page,
         applicantCount: applicantCount,
         isOwnListing: isOwnListing,
         hasApplied: hasApplied,

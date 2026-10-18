@@ -1072,6 +1072,12 @@ abstract class AppLocalizations {
   /// **'Pet Profiles'**
   String get petProfiles;
 
+  /// No description provided for @petViewProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'View Profile'**
+  String get petViewProfile;
+
   /// No description provided for @addPet.
   ///
   /// In en, this message translates to:
@@ -4522,6 +4528,30 @@ abstract class AppLocalizations {
   /// **'Done'**
   String get adoptionWelcomeDone;
 
+  /// No description provided for @adoptionPostBannerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Available for adoption'**
+  String get adoptionPostBannerTitle;
+
+  /// No description provided for @adoptionPostCtaAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'View listing'**
+  String get adoptionPostCtaAvailable;
+
+  /// No description provided for @adoptionPostCtaAdopted.
+  ///
+  /// In en, this message translates to:
+  /// **'Already adopted'**
+  String get adoptionPostCtaAdopted;
+
+  /// No description provided for @adoptionPostCtaPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get adoptionPostCtaPending;
+
   /// No description provided for @onboardingAdoptPrompt.
   ///
   /// In en, this message translates to:
@@ -4839,6 +4869,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pets you might like'**
   String get pawHubSuggestedPets;
+
+  /// No description provided for @pawHubSuggestedPages.
+  ///
+  /// In en, this message translates to:
+  /// **'Pages to follow'**
+  String get pawHubSuggestedPages;
 
   /// No description provided for @pawHubLostPetNearby.
   ///
@@ -5896,30 +5932,6 @@ abstract class AppLocalizations {
   /// **'My communities'**
   String get communitiesMyCommunities;
 
-  /// No description provided for @communitiesTabDiscover.
-  ///
-  /// In en, this message translates to:
-  /// **'Discover'**
-  String get communitiesTabDiscover;
-
-  /// No description provided for @communitiesTabMine.
-  ///
-  /// In en, this message translates to:
-  /// **'My communities'**
-  String get communitiesTabMine;
-
-  /// No description provided for @communitiesMineEmptyTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'You haven\'t joined any communities'**
-  String get communitiesMineEmptyTitle;
-
-  /// No description provided for @communitiesMineEmptyDescription.
-  ///
-  /// In en, this message translates to:
-  /// **'Explore communities and join the ones your pet belongs in 🐾'**
-  String get communitiesMineEmptyDescription;
-
   /// No description provided for @communitiesDiscoverRailTitle.
   ///
   /// In en, this message translates to:
@@ -5980,47 +5992,17 @@ abstract class AppLocalizations {
   /// **'Most active'**
   String get communitySortMostActive;
 
-  /// No description provided for @communityCategoryAll.
-  ///
-  /// In en, this message translates to:
-  /// **'All'**
-  String get communityCategoryAll;
-
   /// No description provided for @communityCategoryBreedClub.
   ///
   /// In en, this message translates to:
   /// **'Breed club'**
   String get communityCategoryBreedClub;
 
-  /// No description provided for @communityCategoryShelterRescues.
+  /// No description provided for @communityCategorySpecies.
   ///
   /// In en, this message translates to:
-  /// **'Shelters & rescues'**
-  String get communityCategoryShelterRescues;
-
-  /// No description provided for @communityCategoryBreeding.
-  ///
-  /// In en, this message translates to:
-  /// **'Breeding'**
-  String get communityCategoryBreeding;
-
-  /// No description provided for @communityCategorySpecialNeeds.
-  ///
-  /// In en, this message translates to:
-  /// **'Special needs'**
-  String get communityCategorySpecialNeeds;
-
-  /// No description provided for @communityCategoryActivity.
-  ///
-  /// In en, this message translates to:
-  /// **'Activity'**
-  String get communityCategoryActivity;
-
-  /// No description provided for @communityCategoryHealth.
-  ///
-  /// In en, this message translates to:
-  /// **'Health'**
-  String get communityCategoryHealth;
+  /// **'Species'**
+  String get communityCategorySpecies;
 
   /// No description provided for @communityCategoryOther.
   ///
@@ -6033,6 +6015,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Join'**
   String get communityJoin;
+
+  /// No description provided for @communityGuestBannerText.
+  ///
+  /// In en, this message translates to:
+  /// **'To join the {speciesName} community, you need to own one. Create a profile if you already have one, or you can also '**
+  String communityGuestBannerText(String speciesName);
+
+  /// No description provided for @communityGuestBannerAdopt.
+  ///
+  /// In en, this message translates to:
+  /// **'adopt one'**
+  String get communityGuestBannerAdopt;
+
+  /// No description provided for @communityGuestBannerSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **' :)'**
+  String get communityGuestBannerSuffix;
+
+  /// No description provided for @pageFollowers.
+  ///
+  /// In en, this message translates to:
+  /// **'Followers'**
+  String get pageFollowers;
+
+  /// No description provided for @pagePosts.
+  ///
+  /// In en, this message translates to:
+  /// **'Posts'**
+  String get pagePosts;
+
+  /// No description provided for @pageFollow.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow'**
+  String get pageFollow;
+
+  /// No description provided for @pageFollowing.
+  ///
+  /// In en, this message translates to:
+  /// **'Following'**
+  String get pageFollowing;
+
+  /// No description provided for @pageUnfollow.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfollow'**
+  String get pageUnfollow;
+
+  /// No description provided for @pageUnfollowTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfollow {name}?'**
+  String pageUnfollowTitle(String name);
+
+  /// No description provided for @pageUnfollowMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You will stop seeing their posts in your feed.'**
+  String get pageUnfollowMessage;
+
+  /// No description provided for @pageInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Info'**
+  String get pageInfo;
+
+  /// No description provided for @pageInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Page Details'**
+  String get pageInfoTitle;
+
+  /// No description provided for @pageInfoPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get pageInfoPhone;
+
+  /// No description provided for @pageInfoWebsite.
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get pageInfoWebsite;
+
+  /// No description provided for @pageInfoAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get pageInfoAddress;
+
+  /// No description provided for @pageContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get pageContact;
+
+  /// No description provided for @pageCategoryShelter.
+  ///
+  /// In en, this message translates to:
+  /// **'Shelter'**
+  String get pageCategoryShelter;
+
+  /// No description provided for @pageCategoryRescue.
+  ///
+  /// In en, this message translates to:
+  /// **'Rescue'**
+  String get pageCategoryRescue;
+
+  /// No description provided for @pageCategoryVet.
+  ///
+  /// In en, this message translates to:
+  /// **'Vet'**
+  String get pageCategoryVet;
+
+  /// No description provided for @pageCategoryBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get pageCategoryBrand;
+
+  /// No description provided for @pageCategoryOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Organization'**
+  String get pageCategoryOther;
+
+  /// No description provided for @discoverPageCategoryShelterAndRescue.
+  ///
+  /// In en, this message translates to:
+  /// **'Shelter & Rescue'**
+  String get discoverPageCategoryShelterAndRescue;
+
+  /// No description provided for @discoverPageCategoryVetClinic.
+  ///
+  /// In en, this message translates to:
+  /// **'Vet Clinic'**
+  String get discoverPageCategoryVetClinic;
+
+  /// No description provided for @discoverPageCategoryBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand'**
+  String get discoverPageCategoryBrand;
+
+  /// No description provided for @discoverPageCategoryServiceProvider.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Provider'**
+  String get discoverPageCategoryServiceProvider;
+
+  /// No description provided for @discoverPageCategoryOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Organization'**
+  String get discoverPageCategoryOther;
+
+  /// No description provided for @pageNoPostsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No posts yet'**
+  String get pageNoPostsYet;
+
+  /// No description provided for @pageNoPostsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} hasn\'t shared anything yet.'**
+  String pageNoPostsMessage(String name);
 
   /// No description provided for @communityJoined.
   ///
@@ -7204,6 +7354,12 @@ abstract class AppLocalizations {
   /// **'Pets'**
   String get pawhubSearchScopePets;
 
+  /// No description provided for @pawhubSearchScopePages.
+  ///
+  /// In en, this message translates to:
+  /// **'Pages'**
+  String get pawhubSearchScopePages;
+
   /// No description provided for @pawhubSearchNoResults.
   ///
   /// In en, this message translates to:
@@ -7233,6 +7389,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Posts'**
   String get pawhubSearchSectionPosts;
+
+  /// No description provided for @pawhubSearchSectionPages.
+  ///
+  /// In en, this message translates to:
+  /// **'Pages'**
+  String get pawhubSearchSectionPages;
 
   /// No description provided for @pawhubSearchPostBy.
   ///

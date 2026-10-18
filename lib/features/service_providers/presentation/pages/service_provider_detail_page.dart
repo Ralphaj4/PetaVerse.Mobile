@@ -15,6 +15,7 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_cached_image.dart';
+import '../../../../shared/widgets/shimmer.dart';
 import '../../domain/entities/service_provider_detail.dart';
 import '../providers/provider_detail_providers.dart';
 import '../widgets/provider_actions.dart';
@@ -39,7 +40,7 @@ class ServiceProviderDetailPage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: detailAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const _ProviderLoadingView(),
         error: (error, _) => _ErrorView(
           failure: error is Failure ? error : const UnknownFailure(),
           onRetry: () => ref.invalidate(providerDetailProvider(providerId)),
@@ -1287,6 +1288,219 @@ class _SpeciesChip extends StatelessWidget {
             style: AppTextStyles.labelMedium.copyWith(
               color: AppColors.secondary,
               letterSpacing: 0,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Skeleton loading ──────────────────────────────────────────────────────────
+
+class _ProviderLoadingView extends StatelessWidget {
+  const _ProviderLoadingView();
+
+  static const double _avatarRadius = 60.0;
+  static const double _heroHeight = 280.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final topPadding = MediaQuery.paddingOf(context).top;
+    final heroHeight = _heroHeight + topPadding;
+    final avatarTop = heroHeight - _avatarRadius - AppRadius.lg;
+
+    return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Column(
+            children: [
+              // Hero banner — tinted gradient, not shimmer
+              Container(
+                height: heroHeight,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [AppColors.secondarySoft, AppColors.primarySoft],
+                  ),
+                ),
+              ),
+              // White content sheet — Shimmer wraps only this
+              Transform.translate(
+                offset: const Offset(0, -AppRadius.lg),
+                child: Container(
+                  color: AppColors.surface,
+                  padding: const EdgeInsets.fromLTRB(
+                      AppSpacing.lg, 0, AppSpacing.lg, AppSpacing.xxl),
+                  child: Shimmer(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Avatar overhang zone
+                        const SizedBox(height: _avatarRadius + AppSpacing.lg),
+
+                        // Name
+                        const SkeletonLine(width: 200, height: 24),
+                        const SizedBox(height: AppSpacing.md),
+
+                        // Rating pill + Open status pill + Rate button
+                        Row(children: [
+                          SkeletonBox(
+                              width: 88,
+                              height: 28,
+                              borderRadius: BorderRadius.circular(14)),
+                          const SizedBox(width: AppSpacing.sm),
+                          SkeletonBox(
+                              width: 72,
+                              height: 28,
+                              borderRadius: BorderRadius.circular(14)),
+                          const Spacer(),
+                          SkeletonBox(
+                              width: 72,
+                              height: 34,
+                              borderRadius: AppRadius.smAll),
+                        ]),
+                        const SizedBox(height: AppSpacing.xl),
+
+                        // Action buttons (Call, Directions, Website)
+                        Row(children: [
+                          for (int i = 0; i < 3; i++) ...[
+                            Expanded(
+                              child: SkeletonBox(
+                                  height: 44, borderRadius: AppRadius.smAll),
+                            ),
+                            if (i < 2) const SizedBox(width: AppSpacing.sm),
+                          ],
+                        ]),
+                        const SizedBox(height: AppSpacing.xl),
+
+                        // "About" section header + lines
+                        const SkeletonLine(width: 80, height: 13),
+                        const SizedBox(height: AppSpacing.sm),
+                        const SkeletonLine(width: double.infinity, height: 13),
+                        const SizedBox(height: AppSpacing.xs),
+                        const SkeletonLine(width: 240, height: 13),
+                        const SizedBox(height: AppSpacing.xl),
+
+                        // "Services" section header + chips
+                        const SkeletonLine(width: 80, height: 13),
+                        const SizedBox(height: AppSpacing.sm),
+                        Row(children: [
+                          for (final w in [72.0, 88.0, 64.0]) ...[
+                            SkeletonBox(
+                                width: w,
+                                height: 30,
+                                borderRadius: BorderRadius.circular(15)),
+                            const SizedBox(width: AppSpacing.sm),
+                          ],
+                        ]),
+                        const SizedBox(height: AppSpacing.xl),
+
+                        // "Location & Contact" section header
+                        const SkeletonLine(width: 140, height: 13),
+                        const SizedBox(height: AppSpacing.md),
+
+                        // Location card skeleton
+                        Container(
+                          padding: const EdgeInsets.all(AppSpacing.md),
+                          decoration: BoxDecoration(
+                            color: AppColors.surface,
+                            borderRadius: AppRadius.mdAll,
+                            border: Border.all(
+                                color: const Color(0xFFE9ECEF)),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Address row
+                              Row(children: [
+                                SkeletonBox(
+                                    width: 36,
+                                    height: 36,
+                                    borderRadius: AppRadius.smAll),
+                                const SizedBox(width: AppSpacing.md),
+                                const Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    SkeletonLine(width: 60, height: 11),
+                                    SizedBox(height: 4),
+                                    SkeletonLine(width: 180, height: 13),
+                                  ],
+                                ),
+                              ]),
+                              const SizedBox(height: AppSpacing.md),
+                              // Phone row
+                              Row(children: [
+                                SkeletonBox(
+                                    width: 36,
+                                    height: 36,
+                                    borderRadius: AppRadius.smAll),
+                                const SizedBox(width: AppSpacing.md),
+                                const Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    SkeletonLine(width: 48, height: 11),
+                                    SizedBox(height: 4),
+                                    SkeletonLine(width: 120, height: 13),
+                                  ],
+                                ),
+                              ]),
+                              const SizedBox(height: AppSpacing.md),
+                              // Map placeholder
+                              SkeletonBox(
+                                width: double.infinity,
+                                height: 160,
+                                borderRadius: AppRadius.smAll,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          // Floating avatar circle
+          PositionedDirectional(
+            start: AppSpacing.xl,
+            top: avatarTop,
+            child: Container(
+              width: _avatarRadius * 2,
+              height: _avatarRadius * 2,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFFE9ECEF),
+                border: Border.all(color: AppColors.surface, width: 4),
+              ),
+            ),
+          ),
+
+          // Back button — always usable
+          PositionedDirectional(
+            start: AppSpacing.lg,
+            top: topPadding + AppSpacing.sm,
+            child: Material(
+              color: AppColors.surface,
+              shape: const CircleBorder(),
+              elevation: 2,
+              child: InkWell(
+                onTap: () => Navigator.of(context).pop(),
+                customBorder: const CircleBorder(),
+                child: const SizedBox(
+                  width: 40,
+                  height: 40,
+                  child: Icon(FluentIcons.arrow_left_24_regular,
+                      size: 20, color: AppColors.textPrimary),
+                ),
+              ),
             ),
           ),
         ],

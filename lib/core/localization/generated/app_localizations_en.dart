@@ -561,6 +561,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get petProfiles => 'Pet Profiles';
 
   @override
+  String get petViewProfile => 'View Profile';
+
+  @override
   String get addPet => 'Add Pet';
 
   @override
@@ -2586,6 +2589,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adoptionWelcomeDone => 'Done';
 
   @override
+  String get adoptionPostBannerTitle => 'Available for adoption';
+
+  @override
+  String get adoptionPostCtaAvailable => 'View listing';
+
+  @override
+  String get adoptionPostCtaAdopted => 'Already adopted';
+
+  @override
+  String get adoptionPostCtaPending => 'Pending';
+
+  @override
   String get onboardingAdoptPrompt => 'Looking to adopt a pet?';
 
   @override
@@ -2764,6 +2779,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pawHubSuggestedPets => 'Pets you might like';
+
+  @override
+  String get pawHubSuggestedPages => 'Pages to follow';
 
   @override
   String get pawHubLostPetNearby => 'LOST PET NEARBY';
@@ -3366,19 +3384,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get communitiesMyCommunities => 'My communities';
 
   @override
-  String get communitiesTabDiscover => 'Discover';
-
-  @override
-  String get communitiesTabMine => 'My communities';
-
-  @override
-  String get communitiesMineEmptyTitle => 'You haven\'t joined any communities';
-
-  @override
-  String get communitiesMineEmptyDescription =>
-      'Explore communities and join the ones your pet belongs in 🐾';
-
-  @override
   String get communitiesDiscoverRailTitle => 'Communities to join';
 
   @override
@@ -3412,31 +3417,107 @@ class AppLocalizationsEn extends AppLocalizations {
   String get communitySortMostActive => 'Most active';
 
   @override
-  String get communityCategoryAll => 'All';
-
-  @override
   String get communityCategoryBreedClub => 'Breed club';
 
   @override
-  String get communityCategoryShelterRescues => 'Shelters & rescues';
-
-  @override
-  String get communityCategoryBreeding => 'Breeding';
-
-  @override
-  String get communityCategorySpecialNeeds => 'Special needs';
-
-  @override
-  String get communityCategoryActivity => 'Activity';
-
-  @override
-  String get communityCategoryHealth => 'Health';
+  String get communityCategorySpecies => 'Species';
 
   @override
   String get communityCategoryOther => 'Other';
 
   @override
   String get communityJoin => 'Join';
+
+  @override
+  String communityGuestBannerText(String speciesName) {
+    return 'To join the $speciesName community, you need to own one. Create a profile if you already have one, or you can also ';
+  }
+
+  @override
+  String get communityGuestBannerAdopt => 'adopt one';
+
+  @override
+  String get communityGuestBannerSuffix => ' :)';
+
+  @override
+  String get pageFollowers => 'Followers';
+
+  @override
+  String get pagePosts => 'Posts';
+
+  @override
+  String get pageFollow => 'Follow';
+
+  @override
+  String get pageFollowing => 'Following';
+
+  @override
+  String get pageUnfollow => 'Unfollow';
+
+  @override
+  String pageUnfollowTitle(String name) {
+    return 'Unfollow $name?';
+  }
+
+  @override
+  String get pageUnfollowMessage =>
+      'You will stop seeing their posts in your feed.';
+
+  @override
+  String get pageInfo => 'Info';
+
+  @override
+  String get pageInfoTitle => 'Page Details';
+
+  @override
+  String get pageInfoPhone => 'Phone';
+
+  @override
+  String get pageInfoWebsite => 'Website';
+
+  @override
+  String get pageInfoAddress => 'Address';
+
+  @override
+  String get pageContact => 'Contact';
+
+  @override
+  String get pageCategoryShelter => 'Shelter';
+
+  @override
+  String get pageCategoryRescue => 'Rescue';
+
+  @override
+  String get pageCategoryVet => 'Vet';
+
+  @override
+  String get pageCategoryBrand => 'Brand';
+
+  @override
+  String get pageCategoryOther => 'Organization';
+
+  @override
+  String get discoverPageCategoryShelterAndRescue => 'Shelter & Rescue';
+
+  @override
+  String get discoverPageCategoryVetClinic => 'Vet Clinic';
+
+  @override
+  String get discoverPageCategoryBrand => 'Brand';
+
+  @override
+  String get discoverPageCategoryServiceProvider => 'Service Provider';
+
+  @override
+  String get discoverPageCategoryOther => 'Organization';
+
+  @override
+  String get pageNoPostsYet => 'No posts yet';
+
+  @override
+  String pageNoPostsMessage(String name) {
+    return '$name hasn\'t shared anything yet.';
+  }
 
   @override
   String get communityJoined => 'Joined';
@@ -4108,6 +4189,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pawhubSearchScopePets => 'Pets';
 
   @override
+  String get pawhubSearchScopePages => 'Pages';
+
+  @override
   String pawhubSearchNoResults(String query) {
     return 'No results for \"$query\"';
   }
@@ -4123,6 +4207,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pawhubSearchSectionPosts => 'Posts';
+
+  @override
+  String get pawhubSearchSectionPages => 'Pages';
 
   @override
   String pawhubSearchPostBy(String name) {

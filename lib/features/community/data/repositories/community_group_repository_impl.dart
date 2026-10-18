@@ -91,7 +91,7 @@ class CommunityGroupRepositoryImpl implements CommunityGroupRepository {
           id: communityId,
           viewerPetId: viewerPetId,
         );
-        return dto.toEntity(leadIsMine: _mine.contains(dto.lead.id));
+        return dto.toEntity(leadIsMine: dto.lead != null && _mine.contains(dto.lead!.id));
       });
 
   @override
@@ -150,7 +150,7 @@ class CommunityGroupRepositoryImpl implements CommunityGroupRepository {
           'avatarAssetId': ?avatarAssetId,
           'bannerAssetId': ?bannerAssetId,
         });
-        return dto.toEntity(leadIsMine: _mine.contains(dto.lead.id));
+        return dto.toEntity(leadIsMine: dto.lead != null && _mine.contains(dto.lead!.id));
       });
 
   @override
@@ -172,7 +172,7 @@ class CommunityGroupRepositoryImpl implements CommunityGroupRepository {
           'avatarAssetId': ?avatarAssetId,
           'bannerAssetId': ?bannerAssetId,
         });
-        return dto.toEntity(leadIsMine: _mine.contains(dto.lead.id));
+        return dto.toEntity(leadIsMine: dto.lead != null && _mine.contains(dto.lead!.id));
       });
 
   @override

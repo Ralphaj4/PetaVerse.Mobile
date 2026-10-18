@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
+import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
@@ -17,6 +18,8 @@ import '../providers/community_actions_providers.dart';
 import '../providers/community_feed_providers.dart';
 import '../providers/community_providers.dart';
 import '../providers/community_social_providers.dart';
+import '../../../pages/presentation/pages/page_detail_page.dart';
+import '../../../pages/presentation/providers/page_providers.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
 import '../widgets/pawhub_comments.dart';
 import '../widgets/pawhub_common.dart';
@@ -52,6 +55,9 @@ class _PawHubPageState extends ConsumerState<PawHubPage> {
   /// Cleared on feed refresh so stale overrides don't persist.
   final Map<int, bool> _followingOverrides = {};
 
+  /// Optimistic follow-state overrides for suggested pages. Keyed by page id.
+  final Map<int, bool> _pageFollowingOverrides = {};
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -84,6 +90,7 @@ class _PawHubPageState extends ConsumerState<PawHubPage> {
       context,
       pets: pawPets,
       current: current,
+      onViewProfile: _openProfile,
     );
     if (chosen != null) {
       unawaited(HapticFeedback.selectionClick());
@@ -100,6 +107,7 @@ class _PawHubPageState extends ConsumerState<PawHubPage> {
     setState(() {
       _showNewPill = false;
       _followingOverrides.clear();
+      _pageFollowingOverrides.clear();
     });
     if (_tab == FeedTab.following) {
       await ref.read(followingFeedProvider.notifier).refresh();
@@ -167,14 +175,15 @@ class _PawHubPageState extends ConsumerState<PawHubPage> {
           if (mounted) _snack(context.l10n.pawHubPostReported);
         }
       case PostAction.block:
+        final authorName = post.author?.name ?? post.pageAuthor?.name ?? '';
         final confirmed = await showBlockConfirmDialog(
           context,
-          authorName: post.author.name,
+          authorName: authorName,
         );
         if (!confirmed || !mounted) break;
-        final authorId = post.author.backendId;
+        final authorId = post.author?.backendId ?? 0;
         if (authorId > 0) await actions.block(authorId);
-        if (mounted) _snack(context.l10n.pawHubBlockedUser(post.author.name));
+        if (mounted) _snack(context.l10n.pawHubBlockedUser(authorName));
       case PostAction.delete:
         await actions.deletePost(post.backendId);
         if (mounted) _snack(context.l10n.pawHubPostDeleted);
@@ -218,6 +227,17 @@ void _openProfile(PawPet pet) {
     });
   }
 
+  Future<void> _togglePageFollow(PawSuggestedPage page) async {
+    final currentlyFollowing =
+        _pageFollowingOverrides[page.id] ?? page.isFollowing;
+    setState(() => _pageFollowingOverrides[page.id] = !currentlyFollowing);
+    await ref.read(pageFollowActionsProvider).toggleFollowById(
+          page.id,
+          currentlyFollowing: currentlyFollowing,
+        );
+    if (mounted) setState(() {});
+  }
+
   Future<void> _openComposer() async {
     final myPets = _myPawPets();
     final actingPet = _currentActingPawPet();
@@ -255,7 +275,7 @@ void _openProfile(PawPet pet) {
     if (post != null && mounted) {
       // The real post comes from the provider (createPost calls refresh).
       setState(() {});
-      _snack(context.l10n.pawHubPostedAs(post.author.name));
+      _snack(context.l10n.pawHubPostedAs(post.author?.name ?? ''));
     }
   }
 
@@ -303,11 +323,13 @@ void _openProfile(PawPet pet) {
   /// Reconstruct a minimal domain Post for actions that need it.
   domain.Post _toDomainPost(PawPost p) => domain.Post(
         id: p.backendId,
-        author: domain.CommunityPet(
-          id: p.author.backendId,
-          name: p.author.name,
-          avatarUrl: p.author.avatarUrl,
-        ),
+        author: p.author != null
+            ? domain.CommunityPet(
+                id: p.author!.backendId,
+                name: p.author!.name,
+                avatarUrl: p.author!.avatarUrl,
+              )
+            : null,
         media: const [],
         hashtags: p.hashtags,
         taggedPets: const [],
@@ -391,15 +413,44 @@ void _openProfile(PawPet pet) {
     );
   }
 
-  /// The search row: a tap-to-search bar (opens the full PawHub search screen,
-  /// sharing a [Hero] with the search page's field) plus the saved-posts
-  /// shortcut beside it.
+  /// The search row: pet avatar/switcher on the left, tap-to-search bar in the
+  /// middle, saved-posts shortcut on the right.
   Widget _searchBar() {
+    final myPets = ref.watch(switchablePetsProvider);
+    final actingPet = ref.watch(actingPetProvider);
+    final actingPawPet = actingPet != null
+        ? PawPet(
+            id: actingPet.id.toString(),
+            backendId: actingPet.id,
+            name: actingPet.name,
+            breed: '',
+            species: '',
+            avatarUrl: actingPet.imagePath,
+            ownerName: 'You',
+            isMine: true,
+          )
+        : _fallbackPet();
+
+    final petWidget = myPets.length <= 1
+        // Single pet: plain avatar circle → tap opens profile.
+        ? GestureDetector(
+            onTap: () => _openProfile(actingPawPet),
+            child: AppAvatar(
+              name: actingPawPet.name,
+              imageUrl: actingPawPet.avatarUrl,
+              radius: 18,
+            ),
+          )
+        // Multiple pets: switcher pill → tap opens sheet.
+        : PetSwitcherPill(pet: actingPawPet, onTap: _switchActingPet);
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md, AppSpacing.sm, AppSpacing.xs, AppSpacing.xs),
+          AppSpacing.md, AppSpacing.sm, AppSpacing.xs, AppSpacing.md),
       child: Row(
         children: [
+          petWidget,
+          const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Hero(
               tag: kPawHubSearchHeroTag,
@@ -439,12 +490,6 @@ void _openProfile(PawPet pet) {
             ),
           ),
           IconButton(
-            onPressed: () => _openProfile(_currentActingPawPet()),
-            icon: const Icon(FluentIcons.animal_paw_print_24_regular,
-                color: AppColors.textPrimary),
-            tooltip: context.l10n.petProfiles,
-          ),
-          IconButton(
             onPressed: () => context.push('/community/saved'),
             icon: const Icon(FluentIcons.bookmark_24_regular,
                 color: AppColors.textPrimary),
@@ -458,19 +503,11 @@ void _openProfile(PawPet pet) {
   Widget _topBar(PawPet actingPawPet) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-          AppSpacing.md, AppSpacing.sm, AppSpacing.md, AppSpacing.sm),
-      child: Row(
-        children: [
-          PetSwitcherPill(pet: actingPawPet, onTap: _switchActingPet),
-          const SizedBox(width: AppSpacing.sm),
-          Expanded(
-            child: FeedTabToggle(
-              tab: _tab,
-              onChanged: (t) => setState(() => _tab = t),
-              followingHasUpdates: _showNewPill,
-            ),
-          ),
-        ],
+          AppSpacing.md, 0, AppSpacing.md, AppSpacing.sm),
+      child: FeedTabToggle(
+        tab: _tab,
+        onChanged: (t) => setState(() => _tab = t),
+        followingHasUpdates: _showNewPill,
       ),
     );
   }
@@ -519,6 +556,13 @@ void _openProfile(PawPet pet) {
           }
           return pet;
         }).toList();
+        final suggestedPages = discover.suggestedPages.map((e) {
+          final p = PawSuggestedPage.fromEntity(e);
+          if (_pageFollowingOverrides.containsKey(p.id)) {
+            p.isFollowing = _pageFollowingOverrides[p.id]!;
+          }
+          return p;
+        }).toList();
         // Community suggestions now live in the dedicated Communities tab, so
         // Discover is pure post discovery - no communities rail here.
         if (posts.isEmpty) {
@@ -532,6 +576,7 @@ void _openProfile(PawPet pet) {
           hasMore: discover.cursor.hasMore,
           loadingMore: discover.loadingMore,
           suggestedPets: suggestedPets,
+          suggestedPages: suggestedPages,
         );
       },
     );
@@ -565,9 +610,12 @@ void _openProfile(PawPet pet) {
     required bool hasMore,
     required bool loadingMore,
     required List<PawPet> suggestedPets,
+    List<PawSuggestedPage> suggestedPages = const [],
     Widget? header,
   }) {
     final hasHeader = header != null;
+    final hasPetsRail = suggestedPets.isNotEmpty;
+    final hasPagesRail = suggestedPages.isNotEmpty;
     return RefreshIndicator(
       onRefresh: _refresh,
       color: AppColors.primary,
@@ -579,10 +627,10 @@ void _openProfile(PawPet pet) {
           AppSpacing.lg,
           AppSpacing.xl * 2,
         ),
-        // +1 for optional header, +1 slot for suggested rail, +1 for load-more.
         itemCount: posts.length +
             (hasHeader ? 1 : 0) +
-            (suggestedPets.isNotEmpty ? 1 : 0) +
+            (hasPetsRail ? 1 : 0) +
+            (hasPagesRail ? 1 : 0) +
             (hasMore ? 1 : 0),
         separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.lg),
         itemBuilder: (context, rawIndex) {
@@ -590,15 +638,27 @@ void _openProfile(PawPet pet) {
           if (hasHeader && rawIndex == 0) return header;
           final index = hasHeader ? rawIndex - 1 : rawIndex;
           // Insert suggested-pets rail after the 3rd post.
-          if (index == 3 && suggestedPets.isNotEmpty) {
+          if (index == 3 && hasPetsRail) {
             return SuggestedPetsRail(
               pets: suggestedPets,
               onToggleFollow: _toggleFollow,
               onOpenProfile: _openProfile,
             );
           }
-          final postIndex =
-              suggestedPets.isNotEmpty && index > 3 ? index - 1 : index;
+          // Insert suggested-pages rail after the 6th post (index 7 when pets
+          // rail is present, index 6 otherwise).
+          final pagesSlot = hasPetsRail ? 7 : 6;
+          if (index == pagesSlot && hasPagesRail) {
+            return SuggestedPagesRail(
+              pages: suggestedPages,
+              onToggleFollow: _togglePageFollow,
+              onOpenPage: (id) => openPageDetail(context, id),
+            );
+          }
+          // Adjust postIndex for injected rails.
+          var postIndex = index;
+          if (hasPetsRail && index > 3) postIndex--;
+          if (hasPagesRail && index > pagesSlot) postIndex--;
 
           if (postIndex >= posts.length) {
             WidgetsBinding.instance.addPostFrameCallback((_) => _loadMore());
@@ -616,6 +676,7 @@ void _openProfile(PawPet pet) {
             onOpenComments: () => _openComments(post),
             onOpenOptions: () => _openOptions(post),
             onOpenProfile: _openProfile,
+            onOpenPage: (id) => context.push('/community/page/$id'),
             onShare: () => sharePostToSheet(ref, _toDomainPost(post), context: context),
           );
         },

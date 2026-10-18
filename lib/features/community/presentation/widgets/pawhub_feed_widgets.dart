@@ -9,6 +9,7 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_cached_image.dart';
 import '../../../../shared/widgets/shimmer.dart';
+import '../../domain/entities/community_enums.dart';
 import '../models/pawhub_models.dart';
 import 'pawhub_common.dart';
 
@@ -505,6 +506,191 @@ class PostCardSkeleton extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Horizontal "Pages to follow" carousel, injected into the Discover feed.
+class SuggestedPagesRail extends StatelessWidget {
+  const SuggestedPagesRail({
+    required this.pages,
+    required this.onToggleFollow,
+    required this.onOpenPage,
+    super.key,
+  });
+
+  final List<PawSuggestedPage> pages;
+  final void Function(PawSuggestedPage page) onToggleFollow;
+  final void Function(int pageId) onOpenPage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: AppRadius.lgAll,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.textPrimary.withValues(alpha: 0.05),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+            child: Row(
+              children: [
+                const Icon(FluentIcons.building_24_filled,
+                    size: 18, color: AppColors.secondary),
+                const SizedBox(width: AppSpacing.sm),
+                Text(context.l10n.pawHubSuggestedPages,
+                    style: AppTextStyles.titleSmall),
+              ],
+            ),
+          ),
+          const SizedBox(height: AppSpacing.md),
+          SizedBox(
+            height: 184,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding:
+                  const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+              itemCount: pages.length,
+              separatorBuilder: (_, _) =>
+                  const SizedBox(width: AppSpacing.sm),
+              itemBuilder: (_, i) => _SuggestedPageCard(
+                page: pages[i],
+                onToggleFollow: () => onToggleFollow(pages[i]),
+                onOpenPage: () => onOpenPage(pages[i].id),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SuggestedPageCard extends StatelessWidget {
+  const _SuggestedPageCard({
+    required this.page,
+    required this.onToggleFollow,
+    required this.onOpenPage,
+  });
+
+  final PawSuggestedPage page;
+  final VoidCallback onToggleFollow;
+  final VoidCallback onOpenPage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 136,
+      padding: const EdgeInsets.all(AppSpacing.md),
+      decoration: BoxDecoration(
+        color: AppColors.background,
+        borderRadius: AppRadius.mdAll,
+      ),
+      child: Column(
+        children: [
+          Semantics(
+            button: true,
+            label: context.l10n.pawhubViewProfile,
+            child: GestureDetector(
+              onTap: onOpenPage,
+              child: AppAvatar(
+                name: page.name,
+                imageUrl: page.avatarUrl,
+                radius: 30,
+              ),
+            ),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
+                child: Text(page.name,
+                    style: AppTextStyles.titleSmall,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis),
+              ),
+              if (page.isVerified) ...[
+                const SizedBox(width: 3),
+                const VerifiedBadge(size: 12),
+              ],
+            ],
+          ),
+          Text(
+            _categoryLabel(context, page.category),
+            style: AppTextStyles.bodySmall
+                .copyWith(color: AppColors.secondaryDark),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          SizedBox(
+            width: double.infinity,
+            height: 30,
+            child: _PageFollowButton(
+              following: page.isFollowing,
+              onTap: onToggleFollow,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _categoryLabel(BuildContext context, DiscoverPageCategory cat) =>
+      switch (cat) {
+        DiscoverPageCategory.shelterAndRescue =>
+          context.l10n.discoverPageCategoryShelterAndRescue,
+        DiscoverPageCategory.vetClinic =>
+          context.l10n.discoverPageCategoryVetClinic,
+        DiscoverPageCategory.brand =>
+          context.l10n.discoverPageCategoryBrand,
+        DiscoverPageCategory.serviceProvider =>
+          context.l10n.discoverPageCategoryServiceProvider,
+        DiscoverPageCategory.other =>
+          context.l10n.discoverPageCategoryOther,
+      };
+}
+
+class _PageFollowButton extends StatelessWidget {
+  const _PageFollowButton({required this.following, required this.onTap});
+
+  final bool following;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: following ? AppColors.background : AppColors.secondary,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(50),
+        side: following
+            ? const BorderSide(color: AppColors.divider)
+            : BorderSide.none,
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(50),
+        child: Center(
+          child: Text(
+            following ? context.l10n.pawHubFollowing : context.l10n.pawHubFollow,
+            style: AppTextStyles.labelMedium.copyWith(
+              color: following ? AppColors.textSecondary : AppColors.onSecondary,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
         ),
       ),
     );

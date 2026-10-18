@@ -129,7 +129,7 @@ void main() {
     });
 
     test('maps author isMine flag', () {
-      expect(models.PawPost.fromEntity(entity).author.isMine, true);
+      expect(models.PawPost.fromEntity(entity).author?.isMine, true);
     });
 
     test('maps media correctly', () {

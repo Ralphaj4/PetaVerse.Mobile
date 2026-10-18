@@ -595,8 +595,8 @@ class _PostCarouselState extends State<_PostCarousel> {
                     Row(
                       children: [
                         AppAvatar(
-                          name: post.author.name,
-                          imageUrl: post.author.avatarUrl ?? '',
+                          name: post.author?.name ?? post.pageAuthor?.name ?? '',
+                          imageUrl: post.author?.avatarUrl ?? post.pageAuthor?.avatarUrl ?? '',
                           radius: 20,
                         ),
                         const SizedBox(width: AppSpacing.md),
@@ -604,10 +604,11 @@ class _PostCarouselState extends State<_PostCarousel> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(post.author.name,
+                              Text(
+                                  post.author?.name ?? post.pageAuthor?.name ?? '',
                                   style: AppTextStyles.labelLarge),
-                              if (post.author.ownerName != null)
-                                Text(post.author.ownerName!,
+                              if (post.author?.ownerName != null)
+                                Text(post.author!.ownerName!,
                                     style: AppTextStyles.bodySmall
                                         .copyWith(
                                             color: AppColors.textSecondary)),

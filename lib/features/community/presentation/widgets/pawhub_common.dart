@@ -129,6 +129,74 @@ class PetIdentity extends StatelessWidget {
   }
 }
 
+/// Page identity chip — the equivalent of [PetIdentity] for a social Page
+/// (shelter, rescue, vet, brand, etc.). Shows avatar, name, verified badge,
+/// and an optional subtitle line.
+class PageIdentity extends StatelessWidget {
+  const PageIdentity({
+    required this.page,
+    this.subtitle,
+    this.avatarRadius = 20,
+    this.onTap,
+    super.key,
+  });
+
+  final PawPage page;
+  final String? subtitle;
+  final double avatarRadius;
+  final VoidCallback? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(avatarRadius + 8),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AppAvatar(
+            name: page.name,
+            imageUrl: page.avatarUrl,
+            radius: avatarRadius,
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(
+                    child: Text(
+                      page.name,
+                      style: AppTextStyles.titleSmall,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  if (page.isVerified) ...[
+                    const SizedBox(width: AppSpacing.xs),
+                    const VerifiedBadge(),
+                  ],
+                ],
+              ),
+              if (subtitle != null && subtitle!.isNotEmpty)
+                Text(
+                  subtitle!,
+                  style: AppTextStyles.bodySmall
+                      .copyWith(color: AppColors.textSecondary),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 /// Renders caption/comment text with #hashtags and @mentions tinted in the
 /// brand secondary color. Prototype: taps are surfaced via [onToken].
 class RichCaption extends StatelessWidget {
@@ -226,6 +294,7 @@ Future<PawPet?> showPetSwitcherSheet(
   required List<PawPet> pets,
   required PawPet current,
   String? title,
+  void Function(PawPet)? onViewProfile,
 }) {
   final resolvedTitle = title ?? context.l10n.pawHubActingAs;
   return showModalBottomSheet<PawPet>(
@@ -234,7 +303,7 @@ Future<PawPet?> showPetSwitcherSheet(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
     ),
-    builder: (_) => SafeArea(
+    builder: (ctx) => SafeArea(
       top: false,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(
@@ -264,7 +333,13 @@ Future<PawPet?> showPetSwitcherSheet(
               _PetSwitcherRow(
                 pet: pet,
                 selected: pet.id == current.id,
-                onTap: () => Navigator.of(context).pop(pet),
+                onTap: () => Navigator.of(ctx).pop(pet),
+                onViewProfile: onViewProfile != null
+                    ? () {
+                        Navigator.of(ctx).pop();
+                        onViewProfile(pet);
+                      }
+                    : null,
               ),
           ],
         ),
@@ -278,14 +353,17 @@ class _PetSwitcherRow extends StatelessWidget {
     required this.pet,
     required this.selected,
     required this.onTap,
+    this.onViewProfile,
   });
 
   final PawPet pet;
   final bool selected;
   final VoidCallback onTap;
+  final VoidCallback? onViewProfile;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return InkWell(
       onTap: onTap,
       borderRadius: AppRadius.mdAll,
@@ -308,6 +386,17 @@ class _PetSwitcherRow extends StatelessWidget {
                 ],
               ),
             ),
+            if (onViewProfile != null) ...[
+              GestureDetector(
+                onTap: onViewProfile,
+                child: Text(
+                  l10n.petViewProfile,
+                  style: AppTextStyles.labelMedium
+                      .copyWith(color: AppColors.secondary),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+            ],
             if (selected)
               const Icon(FluentIcons.checkmark_circle_24_filled,
                   color: AppColors.primary)

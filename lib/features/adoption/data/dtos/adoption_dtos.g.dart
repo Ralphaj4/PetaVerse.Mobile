@@ -48,12 +48,35 @@ Map<String, dynamic> _$AdoptionUserDtoToJson(_AdoptionUserDto instance) =>
       'avatarUrl': instance.avatarUrl,
     };
 
+_AdoptionPageDto _$AdoptionPageDtoFromJson(Map<String, dynamic> json) =>
+    _AdoptionPageDto(
+      id: (json['id'] as num).toInt(),
+      name: json['name'] as String? ?? '',
+      handle: json['handle'] as String? ?? '',
+      avatarUrl: json['avatarUrl'] as String?,
+      isVerified: json['isVerified'] as bool? ?? false,
+    );
+
+Map<String, dynamic> _$AdoptionPageDtoToJson(_AdoptionPageDto instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'handle': instance.handle,
+      'avatarUrl': instance.avatarUrl,
+      'isVerified': instance.isVerified,
+    };
+
 _AdoptionListingDto _$AdoptionListingDtoFromJson(Map<String, dynamic> json) =>
     _AdoptionListingDto(
       id: (json['id'] as num).toInt(),
       statusId: (json['statusId'] as num?)?.toInt(),
       pet: AdoptionPetDto.fromJson(json['pet'] as Map<String, dynamic>),
-      lister: AdoptionUserDto.fromJson(json['lister'] as Map<String, dynamic>),
+      lister: json['lister'] == null
+          ? null
+          : AdoptionUserDto.fromJson(json['lister'] as Map<String, dynamic>),
+      page: json['page'] == null
+          ? null
+          : AdoptionPageDto.fromJson(json['page'] as Map<String, dynamic>),
       description: json['description'] as String?,
       locationLabel: json['locationLabel'] as String?,
       latitude: (json['latitude'] as num?)?.toDouble(),
@@ -76,6 +99,7 @@ Map<String, dynamic> _$AdoptionListingDtoToJson(_AdoptionListingDto instance) =>
       'statusId': instance.statusId,
       'pet': instance.pet,
       'lister': instance.lister,
+      'page': instance.page,
       'description': instance.description,
       'locationLabel': instance.locationLabel,
       'latitude': instance.latitude,

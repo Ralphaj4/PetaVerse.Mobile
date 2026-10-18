@@ -773,7 +773,7 @@ final class ProviderPinCacheProvider
   }
 }
 
-String _$providerPinCacheHash() => r'004fdb62f4b097bdd158b407175c9f7f25f04b76';
+String _$providerPinCacheHash() => r'b261b8f1c713c64c978c510a13f0ff947eec7d9b';
 
 /// Caches provider pins across viewport changes. Since the API returns results
 /// for the current viewport (bbox), panning can cause pins to appear/disappear.

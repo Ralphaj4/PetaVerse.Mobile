@@ -15,7 +15,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CommunityDto {
 
- int get id; String get name; String? get handle; String? get description; String? get avatarUrl; String? get bannerUrl; int get category; PetSummaryDto get lead; int get memberCount; int get postCount;// Nullable so an explicit `null` from anonymous-viewer responses can't crash
+ int get id; String get name; String? get handle; String? get description; String? get avatarUrl; String? get bannerUrl; String? get category;// null for system communities (the 12 predefined species communities).
+ PetSummaryDto? get lead; bool get isSystem; int? get speciesId; int get memberCount; int get postCount;// Nullable so an explicit `null` from anonymous-viewer responses can't crash
 // deserialization; coalesced to false in [toEntity].
  bool? get isMember; bool? get isLead; DateTime? get createdAt;
 /// Create a copy of CommunityDto
@@ -30,16 +31,16 @@ $CommunityDtoCopyWith<CommunityDto> get copyWith => _$CommunityDtoCopyWithImpl<C
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommunityDto&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.handle, handle) || other.handle == handle)&&(identical(other.description, description) || other.description == description)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bannerUrl, bannerUrl) || other.bannerUrl == bannerUrl)&&(identical(other.category, category) || other.category == category)&&(identical(other.lead, lead) || other.lead == lead)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&(identical(other.isMember, isMember) || other.isMember == isMember)&&(identical(other.isLead, isLead) || other.isLead == isLead)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommunityDto&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.handle, handle) || other.handle == handle)&&(identical(other.description, description) || other.description == description)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bannerUrl, bannerUrl) || other.bannerUrl == bannerUrl)&&(identical(other.category, category) || other.category == category)&&(identical(other.lead, lead) || other.lead == lead)&&(identical(other.isSystem, isSystem) || other.isSystem == isSystem)&&(identical(other.speciesId, speciesId) || other.speciesId == speciesId)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&(identical(other.isMember, isMember) || other.isMember == isMember)&&(identical(other.isLead, isLead) || other.isLead == isLead)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,handle,description,avatarUrl,bannerUrl,category,lead,memberCount,postCount,isMember,isLead,createdAt);
+int get hashCode => Object.hash(runtimeType,id,name,handle,description,avatarUrl,bannerUrl,category,lead,isSystem,speciesId,memberCount,postCount,isMember,isLead,createdAt);
 
 @override
 String toString() {
-  return 'CommunityDto(id: $id, name: $name, handle: $handle, description: $description, avatarUrl: $avatarUrl, bannerUrl: $bannerUrl, category: $category, lead: $lead, memberCount: $memberCount, postCount: $postCount, isMember: $isMember, isLead: $isLead, createdAt: $createdAt)';
+  return 'CommunityDto(id: $id, name: $name, handle: $handle, description: $description, avatarUrl: $avatarUrl, bannerUrl: $bannerUrl, category: $category, lead: $lead, isSystem: $isSystem, speciesId: $speciesId, memberCount: $memberCount, postCount: $postCount, isMember: $isMember, isLead: $isLead, createdAt: $createdAt)';
 }
 
 
@@ -50,11 +51,11 @@ abstract mixin class $CommunityDtoCopyWith<$Res>  {
   factory $CommunityDtoCopyWith(CommunityDto value, $Res Function(CommunityDto) _then) = _$CommunityDtoCopyWithImpl;
 @useResult
 $Res call({
- int id, String name, String? handle, String? description, String? avatarUrl, String? bannerUrl, int category, PetSummaryDto lead, int memberCount, int postCount, bool? isMember, bool? isLead, DateTime? createdAt
+ int id, String name, String? handle, String? description, String? avatarUrl, String? bannerUrl, String? category, PetSummaryDto? lead, bool isSystem, int? speciesId, int memberCount, int postCount, bool? isMember, bool? isLead, DateTime? createdAt
 });
 
 
-$PetSummaryDtoCopyWith<$Res> get lead;
+$PetSummaryDtoCopyWith<$Res>? get lead;
 
 }
 /// @nodoc
@@ -67,7 +68,7 @@ class _$CommunityDtoCopyWithImpl<$Res>
 
 /// Create a copy of CommunityDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? handle = freezed,Object? description = freezed,Object? avatarUrl = freezed,Object? bannerUrl = freezed,Object? category = null,Object? lead = null,Object? memberCount = null,Object? postCount = null,Object? isMember = freezed,Object? isLead = freezed,Object? createdAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? handle = freezed,Object? description = freezed,Object? avatarUrl = freezed,Object? bannerUrl = freezed,Object? category = freezed,Object? lead = freezed,Object? isSystem = null,Object? speciesId = freezed,Object? memberCount = null,Object? postCount = null,Object? isMember = freezed,Object? isLead = freezed,Object? createdAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -75,9 +76,11 @@ as String,handle: freezed == handle ? _self.handle : handle // ignore: cast_null
 as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,bannerUrl: freezed == bannerUrl ? _self.bannerUrl : bannerUrl // ignore: cast_nullable_to_non_nullable
-as String?,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
-as int,lead: null == lead ? _self.lead : lead // ignore: cast_nullable_to_non_nullable
-as PetSummaryDto,memberCount: null == memberCount ? _self.memberCount : memberCount // ignore: cast_nullable_to_non_nullable
+as String?,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String?,lead: freezed == lead ? _self.lead : lead // ignore: cast_nullable_to_non_nullable
+as PetSummaryDto?,isSystem: null == isSystem ? _self.isSystem : isSystem // ignore: cast_nullable_to_non_nullable
+as bool,speciesId: freezed == speciesId ? _self.speciesId : speciesId // ignore: cast_nullable_to_non_nullable
+as int?,memberCount: null == memberCount ? _self.memberCount : memberCount // ignore: cast_nullable_to_non_nullable
 as int,postCount: null == postCount ? _self.postCount : postCount // ignore: cast_nullable_to_non_nullable
 as int,isMember: freezed == isMember ? _self.isMember : isMember // ignore: cast_nullable_to_non_nullable
 as bool?,isLead: freezed == isLead ? _self.isLead : isLead // ignore: cast_nullable_to_non_nullable
@@ -89,9 +92,12 @@ as DateTime?,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$PetSummaryDtoCopyWith<$Res> get lead {
-  
-  return $PetSummaryDtoCopyWith<$Res>(_self.lead, (value) {
+$PetSummaryDtoCopyWith<$Res>? get lead {
+    if (_self.lead == null) {
+    return null;
+  }
+
+  return $PetSummaryDtoCopyWith<$Res>(_self.lead!, (value) {
     return _then(_self.copyWith(lead: value));
   });
 }
@@ -176,10 +182,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String? handle,  String? description,  String? avatarUrl,  String? bannerUrl,  int category,  PetSummaryDto lead,  int memberCount,  int postCount,  bool? isMember,  bool? isLead,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String? handle,  String? description,  String? avatarUrl,  String? bannerUrl,  String? category,  PetSummaryDto? lead,  bool isSystem,  int? speciesId,  int memberCount,  int postCount,  bool? isMember,  bool? isLead,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CommunityDto() when $default != null:
-return $default(_that.id,_that.name,_that.handle,_that.description,_that.avatarUrl,_that.bannerUrl,_that.category,_that.lead,_that.memberCount,_that.postCount,_that.isMember,_that.isLead,_that.createdAt);case _:
+return $default(_that.id,_that.name,_that.handle,_that.description,_that.avatarUrl,_that.bannerUrl,_that.category,_that.lead,_that.isSystem,_that.speciesId,_that.memberCount,_that.postCount,_that.isMember,_that.isLead,_that.createdAt);case _:
   return orElse();
 
 }
@@ -197,10 +203,10 @@ return $default(_that.id,_that.name,_that.handle,_that.description,_that.avatarU
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String? handle,  String? description,  String? avatarUrl,  String? bannerUrl,  int category,  PetSummaryDto lead,  int memberCount,  int postCount,  bool? isMember,  bool? isLead,  DateTime? createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String? handle,  String? description,  String? avatarUrl,  String? bannerUrl,  String? category,  PetSummaryDto? lead,  bool isSystem,  int? speciesId,  int memberCount,  int postCount,  bool? isMember,  bool? isLead,  DateTime? createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _CommunityDto():
-return $default(_that.id,_that.name,_that.handle,_that.description,_that.avatarUrl,_that.bannerUrl,_that.category,_that.lead,_that.memberCount,_that.postCount,_that.isMember,_that.isLead,_that.createdAt);case _:
+return $default(_that.id,_that.name,_that.handle,_that.description,_that.avatarUrl,_that.bannerUrl,_that.category,_that.lead,_that.isSystem,_that.speciesId,_that.memberCount,_that.postCount,_that.isMember,_that.isLead,_that.createdAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -217,10 +223,10 @@ return $default(_that.id,_that.name,_that.handle,_that.description,_that.avatarU
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String? handle,  String? description,  String? avatarUrl,  String? bannerUrl,  int category,  PetSummaryDto lead,  int memberCount,  int postCount,  bool? isMember,  bool? isLead,  DateTime? createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String? handle,  String? description,  String? avatarUrl,  String? bannerUrl,  String? category,  PetSummaryDto? lead,  bool isSystem,  int? speciesId,  int memberCount,  int postCount,  bool? isMember,  bool? isLead,  DateTime? createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _CommunityDto() when $default != null:
-return $default(_that.id,_that.name,_that.handle,_that.description,_that.avatarUrl,_that.bannerUrl,_that.category,_that.lead,_that.memberCount,_that.postCount,_that.isMember,_that.isLead,_that.createdAt);case _:
+return $default(_that.id,_that.name,_that.handle,_that.description,_that.avatarUrl,_that.bannerUrl,_that.category,_that.lead,_that.isSystem,_that.speciesId,_that.memberCount,_that.postCount,_that.isMember,_that.isLead,_that.createdAt);case _:
   return null;
 
 }
@@ -232,7 +238,7 @@ return $default(_that.id,_that.name,_that.handle,_that.description,_that.avatarU
 @JsonSerializable()
 
 class _CommunityDto extends CommunityDto {
-  const _CommunityDto({required this.id, this.name = '', this.handle, this.description, this.avatarUrl, this.bannerUrl, this.category = 0, required this.lead, this.memberCount = 0, this.postCount = 0, this.isMember, this.isLead, this.createdAt}): super._();
+  const _CommunityDto({required this.id, this.name = '', this.handle, this.description, this.avatarUrl, this.bannerUrl, this.category, this.lead, this.isSystem = false, this.speciesId, this.memberCount = 0, this.postCount = 0, this.isMember, this.isLead, this.createdAt}): super._();
   factory _CommunityDto.fromJson(Map<String, dynamic> json) => _$CommunityDtoFromJson(json);
 
 @override final  int id;
@@ -241,8 +247,11 @@ class _CommunityDto extends CommunityDto {
 @override final  String? description;
 @override final  String? avatarUrl;
 @override final  String? bannerUrl;
-@override@JsonKey() final  int category;
-@override final  PetSummaryDto lead;
+@override final  String? category;
+// null for system communities (the 12 predefined species communities).
+@override final  PetSummaryDto? lead;
+@override@JsonKey() final  bool isSystem;
+@override final  int? speciesId;
 @override@JsonKey() final  int memberCount;
 @override@JsonKey() final  int postCount;
 // Nullable so an explicit `null` from anonymous-viewer responses can't crash
@@ -264,16 +273,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CommunityDto&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.handle, handle) || other.handle == handle)&&(identical(other.description, description) || other.description == description)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bannerUrl, bannerUrl) || other.bannerUrl == bannerUrl)&&(identical(other.category, category) || other.category == category)&&(identical(other.lead, lead) || other.lead == lead)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&(identical(other.isMember, isMember) || other.isMember == isMember)&&(identical(other.isLead, isLead) || other.isLead == isLead)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CommunityDto&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.handle, handle) || other.handle == handle)&&(identical(other.description, description) || other.description == description)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bannerUrl, bannerUrl) || other.bannerUrl == bannerUrl)&&(identical(other.category, category) || other.category == category)&&(identical(other.lead, lead) || other.lead == lead)&&(identical(other.isSystem, isSystem) || other.isSystem == isSystem)&&(identical(other.speciesId, speciesId) || other.speciesId == speciesId)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&(identical(other.isMember, isMember) || other.isMember == isMember)&&(identical(other.isLead, isLead) || other.isLead == isLead)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,handle,description,avatarUrl,bannerUrl,category,lead,memberCount,postCount,isMember,isLead,createdAt);
+int get hashCode => Object.hash(runtimeType,id,name,handle,description,avatarUrl,bannerUrl,category,lead,isSystem,speciesId,memberCount,postCount,isMember,isLead,createdAt);
 
 @override
 String toString() {
-  return 'CommunityDto(id: $id, name: $name, handle: $handle, description: $description, avatarUrl: $avatarUrl, bannerUrl: $bannerUrl, category: $category, lead: $lead, memberCount: $memberCount, postCount: $postCount, isMember: $isMember, isLead: $isLead, createdAt: $createdAt)';
+  return 'CommunityDto(id: $id, name: $name, handle: $handle, description: $description, avatarUrl: $avatarUrl, bannerUrl: $bannerUrl, category: $category, lead: $lead, isSystem: $isSystem, speciesId: $speciesId, memberCount: $memberCount, postCount: $postCount, isMember: $isMember, isLead: $isLead, createdAt: $createdAt)';
 }
 
 
@@ -284,11 +293,11 @@ abstract mixin class _$CommunityDtoCopyWith<$Res> implements $CommunityDtoCopyWi
   factory _$CommunityDtoCopyWith(_CommunityDto value, $Res Function(_CommunityDto) _then) = __$CommunityDtoCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String name, String? handle, String? description, String? avatarUrl, String? bannerUrl, int category, PetSummaryDto lead, int memberCount, int postCount, bool? isMember, bool? isLead, DateTime? createdAt
+ int id, String name, String? handle, String? description, String? avatarUrl, String? bannerUrl, String? category, PetSummaryDto? lead, bool isSystem, int? speciesId, int memberCount, int postCount, bool? isMember, bool? isLead, DateTime? createdAt
 });
 
 
-@override $PetSummaryDtoCopyWith<$Res> get lead;
+@override $PetSummaryDtoCopyWith<$Res>? get lead;
 
 }
 /// @nodoc
@@ -301,7 +310,7 @@ class __$CommunityDtoCopyWithImpl<$Res>
 
 /// Create a copy of CommunityDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? handle = freezed,Object? description = freezed,Object? avatarUrl = freezed,Object? bannerUrl = freezed,Object? category = null,Object? lead = null,Object? memberCount = null,Object? postCount = null,Object? isMember = freezed,Object? isLead = freezed,Object? createdAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? handle = freezed,Object? description = freezed,Object? avatarUrl = freezed,Object? bannerUrl = freezed,Object? category = freezed,Object? lead = freezed,Object? isSystem = null,Object? speciesId = freezed,Object? memberCount = null,Object? postCount = null,Object? isMember = freezed,Object? isLead = freezed,Object? createdAt = freezed,}) {
   return _then(_CommunityDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -309,9 +318,11 @@ as String,handle: freezed == handle ? _self.handle : handle // ignore: cast_null
 as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,bannerUrl: freezed == bannerUrl ? _self.bannerUrl : bannerUrl // ignore: cast_nullable_to_non_nullable
-as String?,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
-as int,lead: null == lead ? _self.lead : lead // ignore: cast_nullable_to_non_nullable
-as PetSummaryDto,memberCount: null == memberCount ? _self.memberCount : memberCount // ignore: cast_nullable_to_non_nullable
+as String?,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
+as String?,lead: freezed == lead ? _self.lead : lead // ignore: cast_nullable_to_non_nullable
+as PetSummaryDto?,isSystem: null == isSystem ? _self.isSystem : isSystem // ignore: cast_nullable_to_non_nullable
+as bool,speciesId: freezed == speciesId ? _self.speciesId : speciesId // ignore: cast_nullable_to_non_nullable
+as int?,memberCount: null == memberCount ? _self.memberCount : memberCount // ignore: cast_nullable_to_non_nullable
 as int,postCount: null == postCount ? _self.postCount : postCount // ignore: cast_nullable_to_non_nullable
 as int,isMember: freezed == isMember ? _self.isMember : isMember // ignore: cast_nullable_to_non_nullable
 as bool?,isLead: freezed == isLead ? _self.isLead : isLead // ignore: cast_nullable_to_non_nullable
@@ -324,9 +335,12 @@ as DateTime?,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$PetSummaryDtoCopyWith<$Res> get lead {
-  
-  return $PetSummaryDtoCopyWith<$Res>(_self.lead, (value) {
+$PetSummaryDtoCopyWith<$Res>? get lead {
+    if (_self.lead == null) {
+    return null;
+  }
+
+  return $PetSummaryDtoCopyWith<$Res>(_self.lead!, (value) {
     return _then(_self.copyWith(lead: value));
   });
 }

@@ -93,11 +93,74 @@ class PostMedia {
   }
 }
 
+/// A social page (shelter, rescue, vet, brand, etc.) that can author posts.
+/// Exactly one of [Post.author] / [Post.pageAuthor] is non-null.
+class PageAuthor {
+  const PageAuthor({
+    required this.id,
+    required this.name,
+    required this.handle,
+    required this.category,
+    this.avatarUrl,
+    this.isVerified = false,
+    this.followerCount = 0,
+    this.isFollowing = false,
+  });
+
+  final int id;
+  final String name;
+  final String handle;
+  final String? avatarUrl;
+  final PageCategory category;
+  final bool isVerified;
+  final int followerCount;
+  final bool isFollowing;
+
+  PageAuthor copyWith({bool? isFollowing, int? followerCount}) => PageAuthor(
+        id: id,
+        name: name,
+        handle: handle,
+        category: category,
+        avatarUrl: avatarUrl,
+        isVerified: isVerified,
+        followerCount: followerCount ?? this.followerCount,
+        isFollowing: isFollowing ?? this.isFollowing,
+      );
+}
+
+/// Compact adoption listing stub embedded in a page post (`PostResponse.adoptionListing`).
+/// Only present on page posts linked to a listing; null on all regular posts.
+class PostAdoptionListing {
+  const PostAdoptionListing({
+    required this.id,
+    required this.statusId,
+    required this.petName,
+    required this.speciesName,
+    this.photoUrl,
+    this.locationLabel,
+    this.vaccinated = false,
+    this.neutered = false,
+    this.goodWithKids = false,
+  });
+
+  final int id;
+  final int statusId;
+  final String petName;
+  final String speciesName;
+  final String? photoUrl;
+  final String? locationLabel;
+  final bool vaccinated;
+  final bool neutered;
+  final bool goodWithKids;
+
+  /// statusId 16 = Available; any other value means the listing is closed.
+  bool get isAvailable => statusId == 16;
+}
+
 /// A feed post (`PostResponse`).
 class Post {
   const Post({
     required this.id,
-    required this.author,
     required this.media,
     required this.hashtags,
     required this.taggedPets,
@@ -107,6 +170,8 @@ class Post {
     required this.saved,
     required this.isEdited,
     required this.createdAt,
+    this.author,
+    this.pageAuthor,
     this.caption,
     this.locationName,
     this.visibility = PostVisibility.public,
@@ -115,10 +180,16 @@ class Post {
     this.timeAgo,
     this.communityId,
     this.communityName,
+    this.adoptionListing,
   });
 
   final int id;
-  final CommunityPet author;
+
+  /// The pet that authored this post. Null for page posts — check [pageAuthor].
+  final CommunityPet? author;
+
+  /// The page that authored this post. Null for pet posts — check [author].
+  final PageAuthor? pageAuthor;
   final List<PostMedia> media;
   final String? caption;
   final String? locationName;
@@ -148,6 +219,9 @@ class Post {
   /// Denormalized community name for the card badge (server-provided).
   final String? communityName;
 
+  /// Adoption listing stub — only set on page posts linked to a listing.
+  final PostAdoptionListing? adoptionListing;
+
   /// Server-rendered relative time (`"35m"`). Prefer it over computing locally.
   final String? timeAgo;
 
@@ -164,10 +238,12 @@ class Post {
     PostVisibility? visibility,
     List<String>? hashtags,
     List<CommunityPet>? taggedPets,
+    PageAuthor? pageAuthor,
   }) =>
       Post(
         id: id,
         author: author,
+        pageAuthor: pageAuthor ?? this.pageAuthor,
         media: media,
         hashtags: hashtags ?? this.hashtags,
         taggedPets: taggedPets ?? this.taggedPets,
@@ -185,6 +261,7 @@ class Post {
         timeAgo: timeAgo,
         communityId: communityId,
         communityName: communityName,
+        adoptionListing: adoptionListing,
       );
 }
 
@@ -315,22 +392,24 @@ class TrendingHashtag {
 }
 
 /// The kind of hit in a mixed search page (`SearchResultResponse.type`).
-enum SearchResultKind { post, hashtag, pet }
+enum SearchResultKind { post, hashtag, pet, page }
 
 /// One row of a mixed search response (`SearchResultResponse`). Exactly one of
-/// [post] / [hashtag] / [pet] is populated per [kind].
+/// [post] / [hashtag] / [pet] / [page] is populated per [kind].
 class SearchResult {
   const SearchResult({
     required this.kind,
     this.post,
     this.hashtag,
     this.pet,
+    this.page,
   });
 
   final SearchResultKind kind;
   final Post? post;
   final TrendingHashtag? hashtag;
   final CommunityPet? pet;
+  final PageAuthor? page;
 }
 
 // ── Paged wrappers ─────────────────────────────────────────────────────────
@@ -353,13 +432,51 @@ class FeedPage {
   final PageCursor cursor;
 }
 
+/// A page (shelter/rescue/vet/brand) surfaced in the Discover suggested-pages
+/// rail. Subset of the full [PageProfile] — enough for the card.
+class SuggestedPage {
+  const SuggestedPage({
+    required this.id,
+    required this.name,
+    required this.handle,
+    required this.category,
+    this.avatarUrl,
+    this.isVerified = false,
+    this.followerCount = 0,
+    this.isFollowing = false,
+  });
+
+  final int id;
+  final String name;
+  final String handle;
+  final String? avatarUrl;
+  final DiscoverPageCategory category;
+  final bool isVerified;
+  final int followerCount;
+  final bool isFollowing;
+
+  SuggestedPage copyWith({bool? isFollowing, int? followerCount}) =>
+      SuggestedPage(
+        id: id,
+        name: name,
+        handle: handle,
+        category: category,
+        avatarUrl: avatarUrl,
+        isVerified: isVerified,
+        followerCount: followerCount ?? this.followerCount,
+        isFollowing: isFollowing ?? this.isFollowing,
+      );
+}
+
 /// A page of the Discover feed (`DiscoverFeedResponse`) - posts plus the
-/// suggested-pets rail, suggested-communities rail, and lost & found alerts.
+/// suggested-pets rail, suggested-communities rail, suggested-pages rail,
+/// and lost & found alerts.
 class DiscoverPage {
   const DiscoverPage({
     required this.posts,
     required this.suggestedPets,
     required this.suggestedCommunities,
+    required this.suggestedPages,
     required this.alerts,
     required this.cursor,
   });
@@ -367,6 +484,7 @@ class DiscoverPage {
   final List<Post> posts;
   final List<CommunityPet> suggestedPets;
   final List<CommunityGroup> suggestedCommunities;
+  final List<SuggestedPage> suggestedPages;
   final List<LostFoundAlert> alerts;
   final PageCursor cursor;
 }

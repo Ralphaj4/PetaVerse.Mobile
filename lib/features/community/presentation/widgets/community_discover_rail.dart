@@ -228,20 +228,22 @@ class _MemberPile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final others = community.memberCount - 1;
+    final lead = community.lead;
+    final others = community.memberCount - (lead != null ? 1 : 0);
     return Row(
       children: [
-        Container(
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: AppColors.surface, width: 2),
+        if (lead != null)
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: AppColors.surface, width: 2),
+            ),
+            child: AppAvatar(
+              name: lead.name,
+              imageUrl: lead.avatarUrl,
+              radius: 12,
+            ),
           ),
-          child: AppAvatar(
-            name: community.lead.name,
-            imageUrl: community.lead.avatarUrl,
-            radius: 12,
-          ),
-        ),
         if (others > 0)
           Transform.translate(
             offset: const Offset(-8, 0),
