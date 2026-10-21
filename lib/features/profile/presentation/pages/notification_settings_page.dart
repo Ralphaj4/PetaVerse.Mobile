@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
+import '../../../../core/notifications/lost_pet_radius_provider.dart';
 import '../../../../core/notifications/notification_prefs_provider.dart';
 import '../../../../core/notifications/notification_prefs_store.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -154,6 +155,7 @@ class NotificationSettingsPage extends ConsumerWidget {
               subtitle: l10n.notifLostPetNearbyDesc,
               prefKey: NotifPrefKeys.lostPetNearby,
             ),
+            const _LostPetRadiusTile(),
           ],
         ),
       ),
@@ -249,6 +251,119 @@ class _PrefTile extends ConsumerWidget {
                     .toggle(prefKey, enabled: value),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Radius control for the lost-pet alert. Sits under the "Lost pet nearby"
+/// toggle and is disabled (and dimmed) whenever that toggle is off. The slider
+/// updates the label live but only commits (persist + PUT) on drag end to avoid
+/// a write per pixel.
+class _LostPetRadiusTile extends ConsumerStatefulWidget {
+  const _LostPetRadiusTile();
+
+  @override
+  ConsumerState<_LostPetRadiusTile> createState() => _LostPetRadiusTileState();
+}
+
+class _LostPetRadiusTileState extends ConsumerState<_LostPetRadiusTile> {
+  /// Live value while dragging; null when not dragging (show the stored value).
+  double? _dragValue;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final nearbyEnabled = ref.watch(
+      notificationPrefsProvider.select(
+        (async) => async.value?[NotifPrefKeys.lostPetNearby] ?? true,
+      ),
+    );
+    final storedKm = ref.watch(
+      lostPetRadiusProvider
+          .select((async) => async.value ?? kLostPetRadiusDefaultKm),
+    );
+    final km = _dragValue ?? storedKm;
+    final enabled = nearbyEnabled;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+      child: Opacity(
+        opacity: enabled ? 1 : 0.5,
+        child: Material(
+          color: AppColors.surface,
+          borderRadius: AppRadius.mdAll,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.md,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: AppColors.accentCoral.withValues(alpha: 0.12),
+                        borderRadius: AppRadius.smAll,
+                      ),
+                      child: const Icon(
+                        FluentIcons.ruler_24_regular,
+                        size: 20,
+                        color: AppColors.accentCoral,
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(l10n.notifLostPetRadius,
+                              style: AppTextStyles.titleSmall),
+                          const SizedBox(height: 2),
+                          Text(
+                            l10n.notifLostPetRadiusDesc,
+                            style: AppTextStyles.bodySmall
+                                .copyWith(color: AppColors.textSecondary),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.md),
+                    Text(
+                      l10n.notifLostPetRadiusValue(km.round()),
+                      style: AppTextStyles.titleSmall
+                          .copyWith(color: AppColors.primary),
+                    ),
+                  ],
+                ),
+                Slider(
+                  value: km.clamp(kLostPetRadiusMinKm, kLostPetRadiusMaxKm),
+                  min: kLostPetRadiusMinKm,
+                  max: kLostPetRadiusMaxKm,
+                  divisions: (kLostPetRadiusMaxKm - kLostPetRadiusMinKm).round(),
+                  label: l10n.notifLostPetRadiusValue(km.round()),
+                  activeColor: AppColors.primary,
+                  onChanged: enabled
+                      ? (value) => setState(() => _dragValue = value)
+                      : null,
+                  onChangeEnd: enabled
+                      ? (value) {
+                          setState(() => _dragValue = null);
+                          ref
+                              .read(lostPetRadiusProvider.notifier)
+                              .setRadius(value.roundToDouble());
+                        }
+                      : null,
+                ),
+              ],
+            ),
           ),
         ),
       ),

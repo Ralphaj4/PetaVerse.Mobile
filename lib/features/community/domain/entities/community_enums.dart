@@ -6,6 +6,19 @@
 /// depends on Dart's declaration order matching the server's numbering.
 library;
 
+/// Where a post impression was seen (`ImpressionItem.surface`). Integer wire.
+enum ImpressionSurface { discover, following, profile, hashtag, community }
+
+extension ImpressionSurfaceX on ImpressionSurface {
+  int get wire => switch (this) {
+        ImpressionSurface.discover => 0,
+        ImpressionSurface.following => 1,
+        ImpressionSurface.profile => 2,
+        ImpressionSurface.hashtag => 3,
+        ImpressionSurface.community => 4,
+      };
+}
+
 /// Feed ordering (`FeedSort` query param). Integer wire values.
 enum FeedSort { latest, trending, oldest, mostLiked }
 

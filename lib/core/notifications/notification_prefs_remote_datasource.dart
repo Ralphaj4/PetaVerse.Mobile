@@ -22,6 +22,25 @@ class NotificationPrefsRemoteDataSource {
     return _fromJson(json);
   }
 
+  /// Reads just the lost-pet alert radius (km) from the preferences payload.
+  /// Returns null when the server omits it, so the caller can keep its default.
+  Future<double?> fetchRadiusKm() async {
+    final json = await _client.get<Map<String, dynamic>>(
+      ApiEndpoints.notificationPreferences,
+    );
+    return (json['lostPetAlertRadiusKm'] as num?)?.toDouble();
+  }
+
+  /// Partial-update of just the radius. The endpoint leaves omitted fields
+  /// untouched, so this never disturbs the boolean toggles.
+  Future<double?> patchRadiusKm(double km) async {
+    final json = await _client.put<Map<String, dynamic>>(
+      ApiEndpoints.notificationPreferences,
+      data: {'lostPetAlertRadiusKm': km},
+    );
+    return (json['lostPetAlertRadiusKm'] as num?)?.toDouble();
+  }
+
   static Map<String, bool> _fromJson(Map<String, dynamic> json) => {
         NotifPrefKeys.medication:
             (json['medication'] as bool?) ?? true,

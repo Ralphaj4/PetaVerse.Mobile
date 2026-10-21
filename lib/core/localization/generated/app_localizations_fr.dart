@@ -3277,6 +3277,18 @@ class AppLocalizationsFr extends AppLocalizations {
       'Quand un animal perdu est signalé dans un rayon de 10 km';
 
   @override
+  String get notifLostPetRadius => 'Rayon d\'alerte';
+
+  @override
+  String notifLostPetRadiusValue(int km) {
+    return '$km km';
+  }
+
+  @override
+  String get notifLostPetRadiusDesc =>
+      'Jusqu\'à quelle distance un signalement d\'animal perdu peut vous alerter';
+
+  @override
   String get notifSecurityAlerts => 'Alertes de sécurité';
 
   @override
@@ -4340,6 +4352,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get pawhubComment => 'Commenter';
+
+  @override
+  String get pawhubAdoptionInjectionBadge => 'Adoption';
+
+  @override
+  String get pawhubAdoptionInjectionCta => 'Rencontrer cet animal';
 
   @override
   String get communityMembersEmptyTitle => 'Aucun membre pour l\'instant';

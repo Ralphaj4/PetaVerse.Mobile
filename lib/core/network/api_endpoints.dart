@@ -153,6 +153,7 @@ abstract final class ApiEndpoints {
   // Feeds & post CRUD
   static const String communityFeed = '/community/feed';
   static const String communityDiscover = '/community/discover';
+  static const String communityImpressions = '/community/impressions';
   static const String communitySaved = '/community/saved';
   static String communityPet(int petId) => '/community/pets/$petId';
   static String communityPetPosts(int petId) => '/community/pets/$petId/posts';

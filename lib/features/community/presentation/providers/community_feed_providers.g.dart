@@ -100,7 +100,7 @@ final class DiscoverFeedProvider
   DiscoverFeed create() => DiscoverFeed();
 }
 
-String _$discoverFeedHash() => r'a6024b4f8ac391d30408a378ba0526d5e6542a69';
+String _$discoverFeedHash() => r'84e2e2acacfc9b900ec5881483758e2eeeba1ab6';
 
 /// The discover feed - public posts from pets the profile doesn't follow, plus
 /// the suggested-pets rail and lost & found alerts. Accumulates posts across

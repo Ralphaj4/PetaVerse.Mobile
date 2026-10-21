@@ -322,6 +322,12 @@ class _PostCardState extends ConsumerState<PostCard>
                       color: AppColors.textSecondary),
             ),
           ),
+          if (post.shares > 0)
+            Text(
+              '${post.shares}',
+              style: AppTextStyles.labelLarge
+                  .copyWith(color: AppColors.textSecondary),
+            ),
           const Spacer(),
           _ActionIcon(
             onTap: _toggleSave,

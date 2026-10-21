@@ -3245,6 +3245,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'When a lost pet is reported within 10 km of your location';
 
   @override
+  String get notifLostPetRadius => 'Alert radius';
+
+  @override
+  String notifLostPetRadiusValue(int km) {
+    return '$km km';
+  }
+
+  @override
+  String get notifLostPetRadiusDesc =>
+      'How far away a lost-pet report can be to still alert you';
+
+  @override
   String get notifSecurityAlerts => 'Security alerts';
 
   @override
@@ -4292,6 +4304,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pawhubComment => 'Comment';
+
+  @override
+  String get pawhubAdoptionInjectionBadge => 'Adoption';
+
+  @override
+  String get pawhubAdoptionInjectionCta => 'Meet this pet';
 
   @override
   String get communityMembersEmptyTitle => 'No members yet';

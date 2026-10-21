@@ -164,11 +164,24 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Result<void>> changePassword({
     required String oldPassword,
     required String newPassword,
-  }) =>
-      _guardVoid(() => _remote.changePassword(
-            oldPassword: oldPassword,
-            newPassword: newPassword,
-          ));
+  }) async {
+    try {
+      // A password change signs out all of the user's other sessions and
+      // rotates this device's tokens. Persist the fresh pair so this device
+      // keeps a live session instead of being logged out within ~15 minutes.
+      final dto = await _remote.changePassword(
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+      );
+      await _secureStorage.saveTokens(
+        accessToken: dto.accessToken,
+        refreshToken: dto.refreshToken,
+      );
+      return const Result.success(null);
+    } on AppException catch (e) {
+      return Result.failure(_mapFailure(e));
+    }
+  }
 
   @override
   Future<Result<void>> logout() async {

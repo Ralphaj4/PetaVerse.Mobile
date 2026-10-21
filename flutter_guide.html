@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flutter for Beginners · A Visual Guide</title>
+<style>
+  :root {
+    --primary: #fbab4c;
+    --secondary: #01b4c2;
+    --bg: #0f1420;
+    --bg-soft: #161d2e;
+    --card: #1b2438;
+    --card-2: #212c45;
+    --text: #e8edf5;
+    --text-dim: #9aa7bd;
+    --code-bg: #0b0f1a;
+    --border: #2a3550;
+    --green: #4ade80;
+    --red: #f87171;
+    --purple: #a78bfa;
+    --radius-s: 12px;
+    --radius-m: 16px;
+    --radius-l: 24px;
+    --space: 24px;
+    --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(251,171,76,0.12), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(1,180,194,0.12), transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 920px; margin: 0 auto; padding: 0 20px; }
+
+  /* ---------- HERO ---------- */
+  header.hero {
+    text-align: center;
+    padding: 90px 20px 70px;
+    position: relative;
+    z-index: 1;
+  }
+  .logo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(1,180,194,0.12);
+    border: 1px solid rgba(1,180,194,0.3);
+    color: var(--secondary);
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -1.5px;
+    background: linear-gradient(120deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+  }
+  .hero p {
+    color: var(--text-dim);
+    font-size: 1.15rem;
+    max-width: 580px;
+    margin: 0 auto;
+  }
+  .hero .arrow {
+    margin-top: 44px;
+    font-size: 1.6rem;
+    color: var(--primary);
+    animation: bob 2s ease-in-out infinite;
+  }
+  @keyframes bob { 0%,100%{transform:translateY(0);} 50%{transform:translateY(10px);} }
+
+  /* ---------- TOC ---------- */
+  .toc {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-l);
+    padding: 28px 32px;
+    margin: 20px 0 60px;
+  }
+  .toc h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-bottom: 18px;
+  }
+  .toc ol { list-style: none; counter-reset: toc; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 28px; }
+  .toc li { counter-increment: toc; }
+  .toc a {
+    color: var(--text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 10px;
+    border-radius: var(--radius-s);
+    transition: background 0.2s, color 0.2s;
+  }
+  .toc a::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--primary);
+    font-weight: 600;
+  }
+  .toc a:hover { background: var(--card-2); color: var(--secondary); }
+
+  /* ---------- SECTIONS ---------- */
+  section { margin-bottom: 72px; scroll-margin-top: 30px; }
+  .sec-head { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+  .sec-num {
+    flex-shrink: 0;
+    width: 46px; height: 46px;
+    display: grid; place-items: center;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--primary), #f78f2e);
+    color: #1a1205;
+    font-weight: 800;
+    font-size: 1.1rem;
+    box-shadow: 0 8px 24px rgba(251,171,76,0.25);
+  }
+  .sec-head h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  section > p { color: var(--text-dim); margin-bottom: 18px; }
+  section p strong { color: var(--text); font-weight: 600; }
+
+  .lead {
+    font-size: 1.05rem;
+    color: var(--text) !important;
+    border-left: 3px solid var(--secondary);
+    padding-left: 18px;
+  }
+
+  /* ---------- CODE ---------- */
+  .code {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-m);
+    margin: 20px 0;
+    overflow: hidden;
+  }
+  .code-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: #10151f;
+    border-bottom: 1px solid var(--border);
+  }
+  .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .dot.r { background: #ff5f56; } .dot.y { background: #ffbd2e; } .dot.g { background: #27c93f; }
+  .code-top .fname { margin-left: 8px; font-size: 0.78rem; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
+  pre {
+    padding: 18px 20px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.86rem;
+    line-height: 1.65;
+  }
+  code { font-family: 'JetBrains Mono', monospace; }
+  p code, li code {
+    background: rgba(1,180,194,0.12);
+    color: var(--secondary);
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: 0.85em;
+  }
+  /* syntax tokens */
+  .kw { color: #c792ea; }
+  .ty { color: #82aaff; }
+  .st { color: #c3e88d; }
+  .cm { color: #546178; font-style: italic; }
+  .fn { color: #ffcb6b; }
+  .nm { color: #f78c6c; }
+  .pr { color: var(--text-dim); }
+
+  /* ---------- CARDS / CALLOUTS ---------- */
+  .callout {
+    display: flex;
+    gap: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--secondary);
+    border-radius: var(--radius-m);
+    padding: 18px 20px;
+    margin: 20px 0;
+  }
+  .callout.tip { border-left-color: var(--green); }
+  .callout.warn { border-left-color: var(--primary); }
+  .callout .ico { font-size: 1.4rem; flex-shrink: 0; }
+  .callout p { margin: 0; color: var(--text); }
+  .callout strong { color: var(--text); }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .mini {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-m);
+    padding: 20px;
+  }
+  .mini h4 { display:flex; align-items:center; gap:8px; font-size: 1rem; margin-bottom: 8px; }
+  .mini h4 .em { font-size: 1.2rem; }
+  .mini p { color: var(--text-dim); font-size: 0.92rem; margin: 0; }
+
+  /* widget tree diagram */
+  .tree {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-m);
+    padding: 24px 28px;
+    margin: 20px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+    line-height: 2;
+  }
+  .tree .node { color: var(--secondary); }
+  .tree .leaf { color: var(--primary); }
+  .tree .ln { color: var(--border); }
+
+  /* pill row */
+  .pills { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0; }
+  .pill {
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 7px 16px;
+    font-size: 0.85rem;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .pill.on { background: rgba(1,180,194,0.15); border-color: rgba(1,180,194,0.4); color: var(--secondary); }
+
+  /* table */
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  th { color: var(--secondary); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { color: var(--text-dim); }
+  td code { color: var(--primary); }
+  tbody tr:hover { background: var(--card); }
+
+  h3.sub { font-size: 1.2rem; margin: 30px 0 12px; color: var(--text); }
+
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 40px 0; }
+
+  /* riverpod highlight */
+  .riverpod-banner {
+    background: linear-gradient(135deg, rgba(167,139,250,0.14), rgba(1,180,194,0.1));
+    border: 1px solid rgba(167,139,250,0.3);
+    border-radius: var(--radius-l);
+    padding: 4px;
+  }
+  .riverpod-banner .inner { padding: 20px 26px; }
+
+  footer {
+    text-align: center;
+    padding: 50px 20px 70px;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+  footer .heart { color: var(--primary); }
+
+  @media (max-width: 640px) {
+    .toc ol, .grid2 { grid-template-columns: 1fr; }
+    .sec-head h2 { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="logo-badge">🐦 Built with Flutter</div>
+  <h1>Flutter for Beginners</h1>
+  <p>A friendly, visual walkthrough — from your first <code style="background:none;color:inherit;">Scaffold</code> to widgets, state, API calls, and a gentle intro to Riverpod.</p>
+  <div class="arrow">↓</div>
+</header>
+
+<div class="wrap">
+
+  <!-- TOC -->
+  <nav class="toc">
+    <h3>What you'll learn</h3>
+    <ol>
+      <li><a href="#what">What is Flutter?</a></li>
+      <li><a href="#anatomy">Anatomy of an App</a></li>
+      <li><a href="#scaffold">The Scaffold</a></li>
+      <li><a href="#widgets">Widgets: Everything</a></li>
+      <li><a href="#stateless-stateful">Stateless vs Stateful</a></li>
+      <li><a href="#layout">Layout & Styling</a></li>
+      <li><a href="#interaction">User Interaction</a></li>
+      <li><a href="#future">Future & async (API calls)</a></li>
+      <li><a href="#futurebuilder">FutureBuilder</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#riverpod">Bonus: Riverpod</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <section id="what">
+    <div class="sec-head"><div class="sec-num">1</div><h2>What is Flutter?</h2></div>
+    <p class="lead">Flutter is a toolkit from Google for building apps for <strong>iOS, Android, web, and desktop</strong> — all from a single codebase written in a language called <strong>Dart</strong>.</p>
+    <p>Instead of writing one app for iPhone and another for Android, you write it once. Flutter draws every pixel on the screen itself, so your app looks and behaves the same everywhere.</p>
+    <div class="grid2">
+      <div class="mini"><h4><span class="em">🎯</span>One codebase</h4><p>Write once, ship to many platforms.</p></div>
+      <div class="mini"><h4><span class="em">⚡</span>Hot reload</h4><p>Change code and see it instantly without restarting the app.</p></div>
+      <div class="mini"><h4><span class="em">🧱</span>Widget-based</h4><p>Your entire UI is built from small composable pieces called widgets.</p></div>
+      <div class="mini"><h4><span class="em">🎨</span>Pixel control</h4><p>Beautiful, custom designs that look identical on every device.</p></div>
+    </div>
+    <div class="callout tip">
+      <span class="ico">💡</span>
+      <p><strong>The golden rule:</strong> In Flutter, <em>everything is a widget</em> — text, buttons, padding, even the whole app. Remember this and the rest clicks into place.</p>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section id="anatomy">
+    <div class="sec-head"><div class="sec-num">2</div><h2>Anatomy of a Flutter App</h2></div>
+    <p>Every Flutter app starts from a single entry point: the <code>main()</code> function. It calls <code>runApp()</code> and hands it the root widget of your app.</p>
+    <div class="code">
+      <div class="code-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="fname">main.dart</span></div>
+<pre><span class="kw">import</span> <span class="st">'package:flutter/material.dart'</span>;
+
+<span class="kw">void</span> <span class="fn">main</span>() {
+  <span class="cm">// This is where the app begins.</span>
+  <span class="fn">runApp</span>(<span class="kw">const</span> <span class="ty">MyApp</span>());
+}
+
+<span class="kw">class</span> <span class="ty">MyApp</span> <span class="kw">extends</span> <span class="ty">StatelessWidget</span> {
+  <span class="kw">const</span> <span class="ty">MyApp</span>({<span class="kw">super</span>.key});
+
+  <span class="nm">@override</span>
+  <span class="ty">Widget</span> <span class="fn">build</span>(<span class="ty">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="ty">MaterialApp</span>(
+      title: <span class="st">'My First App'</span>,
+      home: <span class="ty">HomePage</span>(),   <span class="cm">// the first screen</span>
+    );
+  }
+}</pre>
+    </div>
+    <p>A few things to notice:</p>
+    <ul style="color:var(--text-dim); padding-left:22px; display:flex; flex-direction:column; gap:8px;">
+      <li><code>MaterialApp</code> wraps your whole app and provides theming, navigation, and more.</li>
+      <li>The <code>build()</code> method <strong>returns the UI</strong>. Flutter calls it to figure out what to draw.</li>
+      <li><code>BuildContext</code> is a handle to <em>where</em> this widget lives in the tree — you'll use it a lot.</li>
+    </ul>
+  </section>
+
+  <!-- 3 -->
+  <section id="scaffold">
+    <div class="sec-head"><div class="sec-num">3</div><h2>The Scaffold</h2></div>
+    <p class="lead">A <strong>Scaffold</strong> gives you the basic visual skeleton of a screen — an app bar at the top, a body in the middle, and optional floating buttons or bottom bars.</p>
+    <p>Think of it as the blank page layout that every typical screen starts from.</p>
+    <div class="code">
+      <div class="code-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="fname">home_page.dart</span></div>
+<pre><span class="kw">class</span> <span class="ty">HomePage</span> <span class="kw">extends</span> <span class="ty">StatelessWidget</span> {
+  <span class="kw">const</span> <span class="ty">HomePage</span>({<span class="kw">super</span>.key});
+
+  <span class="nm">@override</span>
+  <span class="ty">Widget</span> <span class="fn">build</span>(<span class="ty">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="ty">Scaffold</span>(
+      appBar: <span class="ty">AppBar</span>(
+        title: <span class="kw">const</span> <span class="ty">Text</span>(<span class="st">'Home'</span>),
+      ),
+      body: <span class="kw">const</span> <span class="ty">Center</span>(
+        child: <span class="ty">Text</span>(<span class="st">'Hello, Flutter! 👋'</span>),
+      ),
+      floatingActionButton: <span class="ty">FloatingActionButton</span>(
+        onPressed: () {},
+        child: <span class="kw">const</span> <span class="ty">Icon</span>(<span class="ty">Icons</span>.add),
+      ),
+    );
+  }
+}</pre>
+    </div>
+    <div class="grid2">
+      <div class="mini"><h4><span class="em">📌</span>appBar</h4><p>The bar across the top — title, back button, actions.</p></div>
+      <div class="mini"><h4><span class="em">📄</span>body</h4><p>The main content area of your screen.</p></div>
+      <div class="mini"><h4><span class="em">➕</span>floatingActionButton</h4><p>The round button that floats over the content.</p></div>
+      <div class="mini"><h4><span class="em">⬇️</span>bottomNavigationBar</h4><p>Tabs or navigation at the bottom.</p></div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section id="widgets">
+    <div class="sec-head"><div class="sec-num">4</div><h2>Widgets: The Building Blocks</h2></div>
+    <p>Every piece of UI is a widget, and widgets <strong>nest inside each other</strong> to form a <em>widget tree</em>. The tree below is exactly what the Scaffold above produces:</p>
+    <div class="tree">
+<span class="node">Scaffold</span>
+<span class="ln">├─</span> <span class="node">AppBar</span>
+<span class="ln">│   └─</span> <span class="leaf">Text("Home")</span>
+<span class="ln">├─</span> <span class="node">Center</span>
+<span class="ln">│   └─</span> <span class="leaf">Text("Hello, Flutter! 👋")</span>
+<span class="ln">└─</span> <span class="node">FloatingActionButton</span>
+<span class="ln">    └─</span> <span class="leaf">Icon(Icons.add)</span>
+    </div>
+    <p>Widgets come in a few flavors. Here are ones you'll meet constantly:</p>
+    <table>
+      <thead><tr><th>Widget</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>Text</code></td><td>Displays a string of text.</td></tr>
+        <tr><td><code>Image</code></td><td>Shows an image from assets or the network.</td></tr>
+        <tr><td><code>Icon</code></td><td>Renders a small glyph/icon.</td></tr>
+        <tr><td><code>Container</code></td><td>A box you can size, color, pad, and decorate.</td></tr>
+        <tr><td><code>Row</code> / <code>Column</code></td><td>Arrange children horizontally / vertically.</td></tr>
+        <tr><td><code>Padding</code></td><td>Adds space around its child.</td></tr>
+        <tr><td><code>ElevatedButton</code></td><td>A tappable raised button.</td></tr>
+        <tr><td><code>ListView</code></td><td>A scrollable list of children.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 5 -->
+  <section id="stateless-stateful">
+    <div class="sec-head"><div class="sec-num">5</div><h2>Stateless vs Stateful Widgets</h2></div>
+    <p class="lead">This is one of the most important concepts. It's all about <strong>whether a widget can change over time.</strong></p>
+    <div class="grid2">
+      <div class="mini" style="border-left:4px solid var(--secondary);">
+        <h4><span class="em">🗿</span>StatelessWidget</h4>
+        <p>Never changes after it's built. Perfect for static things — a label, an icon, a logo. Give it data and it just draws it.</p>
+      </div>
+      <div class="mini" style="border-left:4px solid var(--primary);">
+        <h4><span class="em">🔄</span>StatefulWidget</h4>
+        <p>Can change and redraw itself. Use it for counters, toggles, forms — anything that reacts to taps or data.</p>
+      </div>
+    </div>
+    <p>A classic counter shows how state works. When you call <code>setState()</code>, Flutter re-runs <code>build()</code> and updates the screen:</p>
+    <div class="code">
+      <div class="code-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="fname">counter.dart</span></div>
+<pre><span class="kw">class</span> <span class="ty">Counter</span> <span class="kw">extends</span> <span class="ty">StatefulWidget</span> {
+  <span class="kw">const</span> <span class="ty">Counter</span>({<span class="kw">super</span>.key});
+  <span class="nm">@override</span>
+  <span class="ty">State</span>&lt;<span class="ty">Counter</span>&gt; <span class="fn">createState</span>() =&gt; <span class="ty">_CounterState</span>();
+}
+
+<span class="kw">class</span> <span class="ty">_CounterState</span> <span class="kw">extends</span> <span class="ty">State</span>&lt;<span class="ty">Counter</span>&gt; {
+  <span class="kw">int</span> _count = <span class="nm">0</span>;   <span class="cm">// this is our "state"</span>
+
+  <span class="kw">void</span> <span class="fn">_increment</span>() {
+    <span class="fn">setState</span>(() {        <span class="cm">// tell Flutter: redraw!</span>
+      _count++;
+    });
+  }
+
+  <span class="nm">@override</span>
+  <span class="ty">Widget</span> <span class="fn">build</span>(<span class="ty">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="ty">Column</span>(
+      children: [
+        <span class="ty">Text</span>(<span class="st">'Count: </span>$_count<span class="st">'</span>),
+        <span class="ty">ElevatedButton</span>(
+          onPressed: _increment,
+          child: <span class="kw">const</span> <span class="ty">Text</span>(<span class="st">'Add'</span>),
+        ),
+      ],
+    );
+  }
+}</pre>
+    </div>
+    <div class="callout warn">
+      <span class="ico">⚠️</span>
+      <p><strong>The key idea:</strong> You never update the screen directly. You update a <em>variable</em> and call <code>setState()</code>. Flutter figures out what changed and redraws efficiently.</p>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section id="layout">
+    <div class="sec-head"><div class="sec-num">6</div><h2>Layout & Styling</h2></div>
+    <p>Layout in Flutter is done by nesting <code>Row</code>, <code>Column</code>, and <code>Container</code> widgets. You control alignment, spacing, and decoration through their properties.</p>
+    <div class="code">
+      <div class="code-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="fname">card.dart</span></div>
+<pre><span class="ty">Container</span>(
+  padding: <span class="kw">const</span> <span class="ty">EdgeInsets</span>.all(<span class="nm">16</span>),
+  decoration: <span class="ty">BoxDecoration</span>(
+    color: <span class="ty">Colors</span>.white,
+    borderRadius: <span class="ty">BorderRadius</span>.circular(<span class="nm">16</span>),
+  ),
+  child: <span class="ty">Row</span>(
+    mainAxisAlignment: <span class="ty">MainAxisAlignment</span>.spaceBetween,
+    children: [
+      <span class="kw">const</span> <span class="ty">Text</span>(<span class="st">'Buddy 🐕'</span>),
+      <span class="kw">const</span> <span class="ty">Icon</span>(<span class="ty">Icons</span>.favorite),
+    ],
+  ),
+)</pre>
+    </div>
+    <div class="grid2">
+      <div class="mini"><h4><span class="em">↔️</span>Row</h4><p>Lays children out left-to-right. <code>mainAxisAlignment</code> = horizontal spacing.</p></div>
+      <div class="mini"><h4><span class="em">↕️</span>Column</h4><p>Lays children top-to-bottom. <code>crossAxisAlignment</code> = horizontal alignment.</p></div>
+      <div class="mini"><h4><span class="em">📦</span>Container</h4><p>Padding, margin, color, rounded corners, shadows — your Swiss-army box.</p></div>
+      <div class="mini"><h4><span class="em">🫸</span>Expanded</h4><p>Makes a child fill the leftover space in a Row or Column.</p></div>
+    </div>
+    <div class="callout tip">
+      <span class="ico">🎁</span>
+      <p><strong>Pro tip:</strong> Wrap any widget in <code>Padding</code> to add breathing room, or <code>SizedBox(height: 12)</code> to add fixed empty space between widgets.</p>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section id="interaction">
+    <div class="sec-head"><div class="sec-num">7</div><h2>Handling User Interaction</h2></div>
+    <p>Most widgets that respond to taps expose an <code>onPressed</code> or <code>onTap</code> callback — a function that runs when the user interacts.</p>
+    <div class="code">
+      <div class="code-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="fname">buttons.dart</span></div>
+<pre><span class="ty">ElevatedButton</span>(
+  onPressed: () {
+    <span class="fn">print</span>(<span class="st">'Button tapped!'</span>);
+  },
+  child: <span class="kw">const</span> <span class="ty">Text</span>(<span class="st">'Tap me'</span>),
+)
+
+<span class="cm">// Wrap ANY widget to make it tappable:</span>
+<span class="ty">GestureDetector</span>(
+  onTap: () =&gt; <span class="fn">print</span>(<span class="st">'The box was tapped'</span>),
+  child: <span class="kw">const</span> <span class="ty">Text</span>(<span class="st">'I am clickable'</span>),
+)</pre>
+    </div>
+    <p>For text input, you use a <code>TextField</code> together with a <code>TextEditingController</code> to read what the user typed.</p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 8 -->
+  <section id="future">
+    <div class="sec-head"><div class="sec-num">8</div><h2>Future & async — Calling an API</h2></div>
+    <p class="lead">Real apps fetch data from the internet. That takes <strong>time</strong>, and we don't want the app to freeze while waiting. Dart handles this with <strong>Futures</strong> and the <code>async</code>/<code>await</code> keywords.</p>
+    <p>A <code>Future&lt;T&gt;</code> is a promise: <em>"I'll give you a value of type T… later."</em> It might succeed with data, or fail with an error.</p>
+    <div class="code">
+      <div class="code-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="fname">api_service.dart</span></div>
+<pre><span class="kw">import</span> <span class="st">'dart:convert'</span>;
+<span class="kw">import</span> <span class="st">'package:http/http.dart'</span> <span class="kw">as</span> http;
+
+<span class="cm">// Returns a Future — the result arrives later.</span>
+<span class="ty">Future</span>&lt;<span class="ty">List</span>&gt; <span class="fn">fetchPets</span>() <span class="kw">async</span> {
+  <span class="kw">final</span> url = <span class="ty">Uri</span>.parse(<span class="st">'https://api.example.com/pets'</span>);
+
+  <span class="cm">// "await" pauses here until the response comes back,</span>
+  <span class="cm">// WITHOUT freezing the rest of the app.</span>
+  <span class="kw">final</span> response = <span class="kw">await</span> http.<span class="fn">get</span>(url);
+
+  <span class="kw">if</span> (response.statusCode == <span class="nm">200</span>) {
+    <span class="cm">// Turn the JSON text into Dart objects.</span>
+    <span class="kw">return</span> jsonDecode(response.body) <span class="kw">as</span> <span class="ty">List</span>;
+  } <span class="kw">else</span> {
+    <span class="kw">throw</span> <span class="ty">Exception</span>(<span class="st">'Failed to load pets'</span>);
+  }
+}</pre>
+    </div>
+    <div class="grid2">
+      <div class="mini"><h4><span class="em">⏳</span>Future&lt;T&gt;</h4><p>A value that will be available at some point in the future.</p></div>
+      <div class="mini"><h4><span class="em">🏷️</span>async</h4><p>Marks a function that does asynchronous work.</p></div>
+      <div class="mini"><h4><span class="em">⏸️</span>await</h4><p>Waits for a Future to finish before moving on — without blocking the UI.</p></div>
+      <div class="mini"><h4><span class="em">🧩</span>jsonDecode</h4><p>Converts a JSON string into Dart maps and lists.</p></div>
+    </div>
+    <div class="callout warn">
+      <span class="ico">🛡️</span>
+      <p><strong>Always handle errors.</strong> Networks fail. Wrap awaits in <code>try / catch</code> so your app shows a friendly message instead of crashing.</p>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section id="futurebuilder">
+    <div class="sec-head"><div class="sec-num">9</div><h2>Showing Async Data: FutureBuilder</h2></div>
+    <p>So how do you put that fetched data on the screen? The <code>FutureBuilder</code> widget listens to a Future and rebuilds the UI for each state: <strong>loading</strong>, <strong>error</strong>, and <strong>data</strong>.</p>
+    <div class="code">
+      <div class="code-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="fname">pets_page.dart</span></div>
+<pre><span class="ty">FutureBuilder</span>&lt;<span class="ty">List</span>&gt;(
+  future: <span class="fn">fetchPets</span>(),
+  builder: (context, snapshot) {
+    <span class="cm">// 1. Still waiting → show a spinner</span>
+    <span class="kw">if</span> (snapshot.connectionState == <span class="ty">ConnectionState</span>.waiting) {
+      <span class="kw">return</span> <span class="kw">const</span> <span class="ty">CircularProgressIndicator</span>();
+    }
+    <span class="cm">// 2. Something went wrong → show the error</span>
+    <span class="kw">if</span> (snapshot.hasError) {
+      <span class="kw">return</span> <span class="ty">Text</span>(<span class="st">'Oops: </span>${snapshot.error}<span class="st">'</span>);
+    }
+    <span class="cm">// 3. Success → use the data</span>
+    <span class="kw">final</span> pets = snapshot.data!;
+    <span class="kw">return</span> <span class="ty">ListView</span>.builder(
+      itemCount: pets.length,
+      itemBuilder: (_, i) =&gt; <span class="ty">ListTile</span>(
+        title: <span class="ty">Text</span>(pets[i][<span class="st">'name'</span>]),
+      ),
+    );
+  },
+)</pre>
+    </div>
+    <div class="callout tip">
+      <span class="ico">✨</span>
+      <p>This three-state pattern — <strong>loading → error → data</strong> — is the heart of every data-driven screen. Master it and you can build almost anything.</p>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section id="navigation">
+    <div class="sec-head"><div class="sec-num">10</div><h2>Navigation Between Screens</h2></div>
+    <p>Apps have many screens. Flutter keeps them in a <em>stack</em> — you <strong>push</strong> a new screen on top and <strong>pop</strong> to go back.</p>
+    <div class="code">
+      <div class="code-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="fname">navigation.dart</span></div>
+<pre><span class="cm">// Go to a new screen</span>
+<span class="ty">Navigator</span>.<span class="fn">push</span>(
+  context,
+  <span class="ty">MaterialPageRoute</span>(builder: (_) =&gt; <span class="kw">const</span> <span class="ty">DetailsPage</span>()),
+);
+
+<span class="cm">// Go back to the previous screen</span>
+<span class="ty">Navigator</span>.<span class="fn">pop</span>(context);</pre>
+    </div>
+    <div class="callout">
+      <span class="ico">📘</span>
+      <p>In bigger apps you'll use a dedicated router package like <code>go_router</code> to manage routes, deep links, and URLs cleanly — but the push/pop mental model stays the same.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 11 RIVERPOD -->
+  <section id="riverpod">
+    <div class="sec-head"><div class="sec-num">11</div><h2>Bonus: What is Riverpod?</h2></div>
+    <div class="riverpod-banner">
+      <div class="inner">
+        <p style="color:var(--text); margin:0;"><strong>The problem:</strong> <code>setState()</code> works for a single widget, but as apps grow you need to <em>share</em> state across many screens — the logged-in user, a shopping cart, fetched pets. Passing data down through dozens of widgets gets painful fast.</p>
+      </div>
+    </div>
+    <p style="margin-top:20px;"><strong>Riverpod</strong> is a state-management library that solves this. It lets you declare a piece of state (or logic) in one place called a <strong>provider</strong>, then read it from <em>anywhere</em> in your app — cleanly, safely, and testably.</p>
+
+    <h3 class="sub">The core pieces</h3>
+    <div class="grid2">
+      <div class="mini"><h4><span class="em">📦</span>Provider</h4><p>A container that holds a value or some logic. Defined once, read anywhere.</p></div>
+      <div class="mini"><h4><span class="em">👀</span>ref.watch</h4><p>Subscribes a widget to a provider — it rebuilds automatically when the value changes.</p></div>
+      <div class="mini"><h4><span class="em">🎛️</span>Notifier</h4><p>Holds state plus methods to change it (like an upgraded, shareable setState).</p></div>
+      <div class="mini"><h4><span class="em">🧪</span>ConsumerWidget</h4><p>A widget that can read providers via a <code>ref</code> handle.</p></div>
+    </div>
+
+    <h3 class="sub">A tiny example</h3>
+    <p>Here's the counter from earlier — but now its state lives in a provider and any widget can access it:</p>
+    <div class="code">
+      <div class="code-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="fname">counter_provider.dart</span></div>
+<pre><span class="cm">// 1. Declare the state in a provider.</span>
+<span class="kw">final</span> counterProvider = <span class="ty">NotifierProvider</span>&lt;<span class="ty">CounterNotifier</span>, <span class="kw">int</span>&gt;(
+  <span class="ty">CounterNotifier</span>.new,
+);
+
+<span class="kw">class</span> <span class="ty">CounterNotifier</span> <span class="kw">extends</span> <span class="ty">Notifier</span>&lt;<span class="kw">int</span>&gt; {
+  <span class="nm">@override</span>
+  <span class="kw">int</span> <span class="fn">build</span>() =&gt; <span class="nm">0</span>;          <span class="cm">// initial value</span>
+
+  <span class="kw">void</span> <span class="fn">increment</span>() =&gt; state++;  <span class="cm">// update = reassign "state"</span>
+}</pre>
+    </div>
+    <div class="code">
+      <div class="code-top"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="fname">counter_view.dart</span></div>
+<pre><span class="kw">class</span> <span class="ty">CounterView</span> <span class="kw">extends</span> <span class="ty">ConsumerWidget</span> {
+  <span class="kw">const</span> <span class="ty">CounterView</span>({<span class="kw">super</span>.key});
+
+  <span class="nm">@override</span>
+  <span class="ty">Widget</span> <span class="fn">build</span>(<span class="ty">BuildContext</span> context, <span class="ty">WidgetRef</span> ref) {
+    <span class="cm">// Watch the provider — rebuilds when it changes.</span>
+    <span class="kw">final</span> count = ref.<span class="fn">watch</span>(counterProvider);
+
+    <span class="kw">return</span> <span class="ty">Column</span>(
+      children: [
+        <span class="ty">Text</span>(<span class="st">'Count: </span>$count<span class="st">'</span>),
+        <span class="ty">ElevatedButton</span>(
+          <span class="cm">// Call a method to change the state.</span>
+          onPressed: () =&gt; ref.<span class="fn">read</span>(counterProvider.notifier).<span class="fn">increment</span>(),
+          child: <span class="kw">const</span> <span class="ty">Text</span>(<span class="st">'Add'</span>),
+        ),
+      ],
+    );
+  }
+}</pre>
+    </div>
+
+    <h3 class="sub">Why people love it</h3>
+    <div class="pills">
+      <span class="pill on">No more setState spaghetti</span>
+      <span class="pill on">Share state anywhere</span>
+      <span class="pill on">Easy to test</span>
+      <span class="pill on">Great for API calls</span>
+      <span class="pill on">Auto-disposes unused state</span>
+      <span class="pill on">Compile-safe</span>
+    </div>
+    <div class="callout tip">
+      <span class="ico">🚀</span>
+      <p><strong>Perfect for APIs:</strong> Riverpod has an <code>AsyncValue</code> type that models <em>loading / data / error</em> for you — the same three states as <code>FutureBuilder</code>, but shareable across your whole app. That's why most modern Flutter apps reach for it.</p>
+    </div>
+  </section>
+
+  <div class="callout" style="border-left-color:var(--purple); background:linear-gradient(135deg, rgba(167,139,250,0.08), transparent);">
+    <span class="ico">🎓</span>
+    <p><strong>You made it!</strong> You now understand the Flutter journey: <em>main → MaterialApp → Scaffold → widgets → state → Futures → FutureBuilder → navigation</em>, plus a taste of Riverpod. The best next step is to build something tiny of your own. Happy coding!</p>
+  </div>
+
+</div>
+
+<footer>
+  Made with <span class="heart">♥</span> for Flutter beginners · Keep building, keep learning 🐦
+</footer>
+
+</body>
+</html>

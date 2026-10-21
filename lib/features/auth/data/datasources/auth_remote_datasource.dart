@@ -140,14 +140,19 @@ class AuthRemoteDataSource {
   }
 
   /// Changes the password of the authenticated user (JWT, no OTP).
-  Future<void> changePassword({
+  ///
+  /// The backend signs out all of the user's other sessions and returns a
+  /// fresh token pair for this device, so the caller must persist the returned
+  /// tokens to stay logged in.
+  Future<AuthTokensDto> changePassword({
     required String oldPassword,
     required String newPassword,
   }) async {
-    await _client.post<Map<String, dynamic>>(
+    final json = await _client.post<Map<String, dynamic>>(
       ApiEndpoints.changePassword,
       data: {'oldPassword': oldPassword, 'newPassword': newPassword},
     );
+    return AuthTokensDto.fromJson(json);
   }
 
   /// Sends a 6-digit email verification code to the current user's email.

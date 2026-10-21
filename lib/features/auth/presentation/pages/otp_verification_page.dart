@@ -22,7 +22,7 @@ import '../widgets/auth_layout.dart';
 import '../widgets/auth_submit_button.dart';
 import '../widgets/otp_input.dart';
 
-const int _otpLength = 4;
+const int _otpLength = 6;
 const int _resendCooldownSeconds = 60;
 
 /// Arguments for the OTP route: the phone to verify and, in Development,

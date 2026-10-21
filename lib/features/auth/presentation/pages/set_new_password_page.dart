@@ -15,7 +15,7 @@ import '../widgets/auth_layout.dart';
 import '../widgets/auth_submit_button.dart';
 import '../widgets/otp_input.dart';
 
-const int _otpLength = 4;
+const int _otpLength = 6;
 
 /// Args passed via router extra to [SetNewPasswordPage].
 ///

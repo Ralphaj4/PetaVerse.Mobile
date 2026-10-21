@@ -3263,6 +3263,18 @@ class AppLocalizationsAr extends AppLocalizations {
       'عند الإبلاغ عن حيوان ضائع في نطاق 10 كم من موقعك';
 
   @override
+  String get notifLostPetRadius => 'نطاق التنبيه';
+
+  @override
+  String notifLostPetRadiusValue(int km) {
+    return '$km كم';
+  }
+
+  @override
+  String get notifLostPetRadiusDesc =>
+      'إلى أي مدى يمكن أن يكون بلاغ الحيوان الضائع ويظل ينبّهك';
+
+  @override
   String get notifSecurityAlerts => 'تنبيهات الأمان';
 
   @override
@@ -4309,6 +4321,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get pawhubComment => 'تعليق';
+
+  @override
+  String get pawhubAdoptionInjectionBadge => 'تبنٍّ';
+
+  @override
+  String get pawhubAdoptionInjectionCta => 'تعرّف على هذا الحيوان';
 
   @override
   String get communityMembersEmptyTitle => 'لا أعضاء بعد';

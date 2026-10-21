@@ -139,6 +139,7 @@ _PostDto _$PostDtoFromJson(Map<String, dynamic> json) => _PostDto(
       const <PetSummaryDto>[],
   likes: (json['likes'] as num?)?.toInt() ?? 0,
   comments: (json['comments'] as num?)?.toInt() ?? 0,
+  shares: (json['shares'] as num?)?.toInt() ?? 0,
   likedByMe: json['likedByMe'] as bool? ?? false,
   saved: json['saved'] as bool? ?? false,
   isEdited: json['isEdited'] as bool? ?? false,
@@ -175,6 +176,7 @@ Map<String, dynamic> _$PostDtoToJson(_PostDto instance) => <String, dynamic>{
   'taggedPets': instance.taggedPets,
   'likes': instance.likes,
   'comments': instance.comments,
+  'shares': instance.shares,
   'likedByMe': instance.likedByMe,
   'saved': instance.saved,
   'isEdited': instance.isEdited,
@@ -368,38 +370,84 @@ Map<String, dynamic> _$SuggestedPageDtoToJson(_SuggestedPageDto instance) =>
       'isFollowing': instance.isFollowing,
     };
 
-_DiscoverResponseDto _$DiscoverResponseDtoFromJson(Map<String, dynamic> json) =>
-    _DiscoverResponseDto(
-      posts:
-          (json['posts'] as List<dynamic>?)
-              ?.map((e) => PostDto.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const <PostDto>[],
-      suggestedPets:
-          (json['suggestedPets'] as List<dynamic>?)
-              ?.map((e) => PetSummaryDto.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const <PetSummaryDto>[],
-      suggestedCommunities:
-          (json['suggestedCommunities'] as List<dynamic>?)
-              ?.map((e) => CommunityDto.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const <CommunityDto>[],
-      suggestedPages:
-          (json['suggestedPages'] as List<dynamic>?)
-              ?.map((e) => SuggestedPageDto.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          const <SuggestedPageDto>[],
-      alerts:
-          (json['alerts'] as List<dynamic>?)
-              ?.map(
-                (e) => LostFoundAlertDto.fromJson(e as Map<String, dynamic>),
-              )
-              .toList() ??
-          const <LostFoundAlertDto>[],
-      hasMore: json['hasMore'] as bool? ?? false,
-      nextCursor: json['nextCursor'] as String?,
-    );
+_AdoptionInjectionCardDto _$AdoptionInjectionCardDtoFromJson(
+  Map<String, dynamic> json,
+) => _AdoptionInjectionCardDto(
+  id: (json['id'] as num).toInt(),
+  statusId: (json['statusId'] as num?)?.toInt(),
+  petName: json['petName'] as String? ?? '',
+  speciesName: json['speciesName'] as String?,
+  photoUrl: json['photoUrl'] as String?,
+  locationLabel: json['locationLabel'] as String?,
+  vaccinated: json['vaccinated'] as bool? ?? false,
+  neutered: json['neutered'] as bool? ?? false,
+  goodWithKids: json['goodWithKids'] as bool? ?? false,
+);
+
+Map<String, dynamic> _$AdoptionInjectionCardDtoToJson(
+  _AdoptionInjectionCardDto instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'statusId': instance.statusId,
+  'petName': instance.petName,
+  'speciesName': instance.speciesName,
+  'photoUrl': instance.photoUrl,
+  'locationLabel': instance.locationLabel,
+  'vaccinated': instance.vaccinated,
+  'neutered': instance.neutered,
+  'goodWithKids': instance.goodWithKids,
+};
+
+_AdoptionInjectionDto _$AdoptionInjectionDtoFromJson(
+  Map<String, dynamic> json,
+) => _AdoptionInjectionDto(
+  afterPosition: (json['afterPosition'] as num?)?.toInt() ?? -1,
+  card: AdoptionInjectionCardDto.fromJson(json['card'] as Map<String, dynamic>),
+);
+
+Map<String, dynamic> _$AdoptionInjectionDtoToJson(
+  _AdoptionInjectionDto instance,
+) => <String, dynamic>{
+  'afterPosition': instance.afterPosition,
+  'card': instance.card,
+};
+
+_DiscoverResponseDto _$DiscoverResponseDtoFromJson(
+  Map<String, dynamic> json,
+) => _DiscoverResponseDto(
+  posts:
+      (json['posts'] as List<dynamic>?)
+          ?.map((e) => PostDto.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const <PostDto>[],
+  suggestedPets:
+      (json['suggestedPets'] as List<dynamic>?)
+          ?.map((e) => PetSummaryDto.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const <PetSummaryDto>[],
+  suggestedCommunities:
+      (json['suggestedCommunities'] as List<dynamic>?)
+          ?.map((e) => CommunityDto.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const <CommunityDto>[],
+  suggestedPages:
+      (json['suggestedPages'] as List<dynamic>?)
+          ?.map((e) => SuggestedPageDto.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const <SuggestedPageDto>[],
+  alerts:
+      (json['alerts'] as List<dynamic>?)
+          ?.map((e) => LostFoundAlertDto.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const <LostFoundAlertDto>[],
+  adoptionInjections:
+      (json['adoptionInjections'] as List<dynamic>?)
+          ?.map((e) => AdoptionInjectionDto.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const <AdoptionInjectionDto>[],
+  hasMore: json['hasMore'] as bool? ?? false,
+  nextCursor: json['nextCursor'] as String?,
+);
 
 Map<String, dynamic> _$DiscoverResponseDtoToJson(
   _DiscoverResponseDto instance,
@@ -409,6 +457,7 @@ Map<String, dynamic> _$DiscoverResponseDtoToJson(
   'suggestedCommunities': instance.suggestedCommunities,
   'suggestedPages': instance.suggestedPages,
   'alerts': instance.alerts,
+  'adoptionInjections': instance.adoptionInjections,
   'hasMore': instance.hasMore,
   'nextCursor': instance.nextCursor,
 };

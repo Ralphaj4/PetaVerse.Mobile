@@ -1420,7 +1420,7 @@ mixin _$PostDto {
  int get id;// Exactly one of author / pageAuthor is non-null per the API contract.
  PetSummaryDto? get author; PageAuthorDto? get pageAuthor; List<PostMediaDto> get media; String? get caption; String? get locationName; String? get visibility; List<String> get hashtags;// Tagged pets now arrive as full pet objects (id/name/avatarUrl/breed),
 // not bare ids.
- List<PetSummaryDto> get taggedPets; int get likes; int get comments; bool get likedByMe; bool get saved; bool get isEdited; PostFeelingDto? get feeling; List<int> get followedByMyPetIds; DateTime? get createdAt; String? get timeAgo; int? get communityId; String? get communityName; PostAdoptionListingDto? get adoptionListing;
+ List<PetSummaryDto> get taggedPets; int get likes; int get comments; int get shares; bool get likedByMe; bool get saved; bool get isEdited; PostFeelingDto? get feeling; List<int> get followedByMyPetIds; DateTime? get createdAt; String? get timeAgo; int? get communityId; String? get communityName; PostAdoptionListingDto? get adoptionListing;
 /// Create a copy of PostDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1433,16 +1433,16 @@ $PostDtoCopyWith<PostDto> get copyWith => _$PostDtoCopyWithImpl<PostDto>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostDto&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&(identical(other.pageAuthor, pageAuthor) || other.pageAuthor == pageAuthor)&&const DeepCollectionEquality().equals(other.media, media)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.locationName, locationName) || other.locationName == locationName)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&const DeepCollectionEquality().equals(other.hashtags, hashtags)&&const DeepCollectionEquality().equals(other.taggedPets, taggedPets)&&(identical(other.likes, likes) || other.likes == likes)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.saved, saved) || other.saved == saved)&&(identical(other.isEdited, isEdited) || other.isEdited == isEdited)&&(identical(other.feeling, feeling) || other.feeling == feeling)&&const DeepCollectionEquality().equals(other.followedByMyPetIds, followedByMyPetIds)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.timeAgo, timeAgo) || other.timeAgo == timeAgo)&&(identical(other.communityId, communityId) || other.communityId == communityId)&&(identical(other.communityName, communityName) || other.communityName == communityName)&&(identical(other.adoptionListing, adoptionListing) || other.adoptionListing == adoptionListing));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostDto&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&(identical(other.pageAuthor, pageAuthor) || other.pageAuthor == pageAuthor)&&const DeepCollectionEquality().equals(other.media, media)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.locationName, locationName) || other.locationName == locationName)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&const DeepCollectionEquality().equals(other.hashtags, hashtags)&&const DeepCollectionEquality().equals(other.taggedPets, taggedPets)&&(identical(other.likes, likes) || other.likes == likes)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.shares, shares) || other.shares == shares)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.saved, saved) || other.saved == saved)&&(identical(other.isEdited, isEdited) || other.isEdited == isEdited)&&(identical(other.feeling, feeling) || other.feeling == feeling)&&const DeepCollectionEquality().equals(other.followedByMyPetIds, followedByMyPetIds)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.timeAgo, timeAgo) || other.timeAgo == timeAgo)&&(identical(other.communityId, communityId) || other.communityId == communityId)&&(identical(other.communityName, communityName) || other.communityName == communityName)&&(identical(other.adoptionListing, adoptionListing) || other.adoptionListing == adoptionListing));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,author,pageAuthor,const DeepCollectionEquality().hash(media),caption,locationName,visibility,const DeepCollectionEquality().hash(hashtags),const DeepCollectionEquality().hash(taggedPets),likes,comments,likedByMe,saved,isEdited,feeling,const DeepCollectionEquality().hash(followedByMyPetIds),createdAt,timeAgo,communityId,communityName,adoptionListing]);
+int get hashCode => Object.hashAll([runtimeType,id,author,pageAuthor,const DeepCollectionEquality().hash(media),caption,locationName,visibility,const DeepCollectionEquality().hash(hashtags),const DeepCollectionEquality().hash(taggedPets),likes,comments,shares,likedByMe,saved,isEdited,feeling,const DeepCollectionEquality().hash(followedByMyPetIds),createdAt,timeAgo,communityId,communityName,adoptionListing]);
 
 @override
 String toString() {
-  return 'PostDto(id: $id, author: $author, pageAuthor: $pageAuthor, media: $media, caption: $caption, locationName: $locationName, visibility: $visibility, hashtags: $hashtags, taggedPets: $taggedPets, likes: $likes, comments: $comments, likedByMe: $likedByMe, saved: $saved, isEdited: $isEdited, feeling: $feeling, followedByMyPetIds: $followedByMyPetIds, createdAt: $createdAt, timeAgo: $timeAgo, communityId: $communityId, communityName: $communityName, adoptionListing: $adoptionListing)';
+  return 'PostDto(id: $id, author: $author, pageAuthor: $pageAuthor, media: $media, caption: $caption, locationName: $locationName, visibility: $visibility, hashtags: $hashtags, taggedPets: $taggedPets, likes: $likes, comments: $comments, shares: $shares, likedByMe: $likedByMe, saved: $saved, isEdited: $isEdited, feeling: $feeling, followedByMyPetIds: $followedByMyPetIds, createdAt: $createdAt, timeAgo: $timeAgo, communityId: $communityId, communityName: $communityName, adoptionListing: $adoptionListing)';
 }
 
 
@@ -1453,7 +1453,7 @@ abstract mixin class $PostDtoCopyWith<$Res>  {
   factory $PostDtoCopyWith(PostDto value, $Res Function(PostDto) _then) = _$PostDtoCopyWithImpl;
 @useResult
 $Res call({
- int id, PetSummaryDto? author, PageAuthorDto? pageAuthor, List<PostMediaDto> media, String? caption, String? locationName, String? visibility, List<String> hashtags, List<PetSummaryDto> taggedPets, int likes, int comments, bool likedByMe, bool saved, bool isEdited, PostFeelingDto? feeling, List<int> followedByMyPetIds, DateTime? createdAt, String? timeAgo, int? communityId, String? communityName, PostAdoptionListingDto? adoptionListing
+ int id, PetSummaryDto? author, PageAuthorDto? pageAuthor, List<PostMediaDto> media, String? caption, String? locationName, String? visibility, List<String> hashtags, List<PetSummaryDto> taggedPets, int likes, int comments, int shares, bool likedByMe, bool saved, bool isEdited, PostFeelingDto? feeling, List<int> followedByMyPetIds, DateTime? createdAt, String? timeAgo, int? communityId, String? communityName, PostAdoptionListingDto? adoptionListing
 });
 
 
@@ -1470,7 +1470,7 @@ class _$PostDtoCopyWithImpl<$Res>
 
 /// Create a copy of PostDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? author = freezed,Object? pageAuthor = freezed,Object? media = null,Object? caption = freezed,Object? locationName = freezed,Object? visibility = freezed,Object? hashtags = null,Object? taggedPets = null,Object? likes = null,Object? comments = null,Object? likedByMe = null,Object? saved = null,Object? isEdited = null,Object? feeling = freezed,Object? followedByMyPetIds = null,Object? createdAt = freezed,Object? timeAgo = freezed,Object? communityId = freezed,Object? communityName = freezed,Object? adoptionListing = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? author = freezed,Object? pageAuthor = freezed,Object? media = null,Object? caption = freezed,Object? locationName = freezed,Object? visibility = freezed,Object? hashtags = null,Object? taggedPets = null,Object? likes = null,Object? comments = null,Object? shares = null,Object? likedByMe = null,Object? saved = null,Object? isEdited = null,Object? feeling = freezed,Object? followedByMyPetIds = null,Object? createdAt = freezed,Object? timeAgo = freezed,Object? communityId = freezed,Object? communityName = freezed,Object? adoptionListing = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,author: freezed == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
@@ -1483,6 +1483,7 @@ as String?,hashtags: null == hashtags ? _self.hashtags : hashtags // ignore: cas
 as List<String>,taggedPets: null == taggedPets ? _self.taggedPets : taggedPets // ignore: cast_nullable_to_non_nullable
 as List<PetSummaryDto>,likes: null == likes ? _self.likes : likes // ignore: cast_nullable_to_non_nullable
 as int,comments: null == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable
+as int,shares: null == shares ? _self.shares : shares // ignore: cast_nullable_to_non_nullable
 as int,likedByMe: null == likedByMe ? _self.likedByMe : likedByMe // ignore: cast_nullable_to_non_nullable
 as bool,saved: null == saved ? _self.saved : saved // ignore: cast_nullable_to_non_nullable
 as bool,isEdited: null == isEdited ? _self.isEdited : isEdited // ignore: cast_nullable_to_non_nullable
@@ -1626,10 +1627,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  PetSummaryDto? author,  PageAuthorDto? pageAuthor,  List<PostMediaDto> media,  String? caption,  String? locationName,  String? visibility,  List<String> hashtags,  List<PetSummaryDto> taggedPets,  int likes,  int comments,  bool likedByMe,  bool saved,  bool isEdited,  PostFeelingDto? feeling,  List<int> followedByMyPetIds,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName,  PostAdoptionListingDto? adoptionListing)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  PetSummaryDto? author,  PageAuthorDto? pageAuthor,  List<PostMediaDto> media,  String? caption,  String? locationName,  String? visibility,  List<String> hashtags,  List<PetSummaryDto> taggedPets,  int likes,  int comments,  int shares,  bool likedByMe,  bool saved,  bool isEdited,  PostFeelingDto? feeling,  List<int> followedByMyPetIds,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName,  PostAdoptionListingDto? adoptionListing)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PostDto() when $default != null:
-return $default(_that.id,_that.author,_that.pageAuthor,_that.media,_that.caption,_that.locationName,_that.visibility,_that.hashtags,_that.taggedPets,_that.likes,_that.comments,_that.likedByMe,_that.saved,_that.isEdited,_that.feeling,_that.followedByMyPetIds,_that.createdAt,_that.timeAgo,_that.communityId,_that.communityName,_that.adoptionListing);case _:
+return $default(_that.id,_that.author,_that.pageAuthor,_that.media,_that.caption,_that.locationName,_that.visibility,_that.hashtags,_that.taggedPets,_that.likes,_that.comments,_that.shares,_that.likedByMe,_that.saved,_that.isEdited,_that.feeling,_that.followedByMyPetIds,_that.createdAt,_that.timeAgo,_that.communityId,_that.communityName,_that.adoptionListing);case _:
   return orElse();
 
 }
@@ -1647,10 +1648,10 @@ return $default(_that.id,_that.author,_that.pageAuthor,_that.media,_that.caption
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  PetSummaryDto? author,  PageAuthorDto? pageAuthor,  List<PostMediaDto> media,  String? caption,  String? locationName,  String? visibility,  List<String> hashtags,  List<PetSummaryDto> taggedPets,  int likes,  int comments,  bool likedByMe,  bool saved,  bool isEdited,  PostFeelingDto? feeling,  List<int> followedByMyPetIds,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName,  PostAdoptionListingDto? adoptionListing)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  PetSummaryDto? author,  PageAuthorDto? pageAuthor,  List<PostMediaDto> media,  String? caption,  String? locationName,  String? visibility,  List<String> hashtags,  List<PetSummaryDto> taggedPets,  int likes,  int comments,  int shares,  bool likedByMe,  bool saved,  bool isEdited,  PostFeelingDto? feeling,  List<int> followedByMyPetIds,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName,  PostAdoptionListingDto? adoptionListing)  $default,) {final _that = this;
 switch (_that) {
 case _PostDto():
-return $default(_that.id,_that.author,_that.pageAuthor,_that.media,_that.caption,_that.locationName,_that.visibility,_that.hashtags,_that.taggedPets,_that.likes,_that.comments,_that.likedByMe,_that.saved,_that.isEdited,_that.feeling,_that.followedByMyPetIds,_that.createdAt,_that.timeAgo,_that.communityId,_that.communityName,_that.adoptionListing);case _:
+return $default(_that.id,_that.author,_that.pageAuthor,_that.media,_that.caption,_that.locationName,_that.visibility,_that.hashtags,_that.taggedPets,_that.likes,_that.comments,_that.shares,_that.likedByMe,_that.saved,_that.isEdited,_that.feeling,_that.followedByMyPetIds,_that.createdAt,_that.timeAgo,_that.communityId,_that.communityName,_that.adoptionListing);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1667,10 +1668,10 @@ return $default(_that.id,_that.author,_that.pageAuthor,_that.media,_that.caption
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  PetSummaryDto? author,  PageAuthorDto? pageAuthor,  List<PostMediaDto> media,  String? caption,  String? locationName,  String? visibility,  List<String> hashtags,  List<PetSummaryDto> taggedPets,  int likes,  int comments,  bool likedByMe,  bool saved,  bool isEdited,  PostFeelingDto? feeling,  List<int> followedByMyPetIds,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName,  PostAdoptionListingDto? adoptionListing)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  PetSummaryDto? author,  PageAuthorDto? pageAuthor,  List<PostMediaDto> media,  String? caption,  String? locationName,  String? visibility,  List<String> hashtags,  List<PetSummaryDto> taggedPets,  int likes,  int comments,  int shares,  bool likedByMe,  bool saved,  bool isEdited,  PostFeelingDto? feeling,  List<int> followedByMyPetIds,  DateTime? createdAt,  String? timeAgo,  int? communityId,  String? communityName,  PostAdoptionListingDto? adoptionListing)?  $default,) {final _that = this;
 switch (_that) {
 case _PostDto() when $default != null:
-return $default(_that.id,_that.author,_that.pageAuthor,_that.media,_that.caption,_that.locationName,_that.visibility,_that.hashtags,_that.taggedPets,_that.likes,_that.comments,_that.likedByMe,_that.saved,_that.isEdited,_that.feeling,_that.followedByMyPetIds,_that.createdAt,_that.timeAgo,_that.communityId,_that.communityName,_that.adoptionListing);case _:
+return $default(_that.id,_that.author,_that.pageAuthor,_that.media,_that.caption,_that.locationName,_that.visibility,_that.hashtags,_that.taggedPets,_that.likes,_that.comments,_that.shares,_that.likedByMe,_that.saved,_that.isEdited,_that.feeling,_that.followedByMyPetIds,_that.createdAt,_that.timeAgo,_that.communityId,_that.communityName,_that.adoptionListing);case _:
   return null;
 
 }
@@ -1682,7 +1683,7 @@ return $default(_that.id,_that.author,_that.pageAuthor,_that.media,_that.caption
 @JsonSerializable()
 
 class _PostDto extends PostDto {
-  const _PostDto({required this.id, this.author, this.pageAuthor, final  List<PostMediaDto> media = const <PostMediaDto>[], this.caption, this.locationName, this.visibility, final  List<String> hashtags = const <String>[], final  List<PetSummaryDto> taggedPets = const <PetSummaryDto>[], this.likes = 0, this.comments = 0, this.likedByMe = false, this.saved = false, this.isEdited = false, this.feeling, final  List<int> followedByMyPetIds = const <int>[], this.createdAt, this.timeAgo, this.communityId, this.communityName, this.adoptionListing}): _media = media,_hashtags = hashtags,_taggedPets = taggedPets,_followedByMyPetIds = followedByMyPetIds,super._();
+  const _PostDto({required this.id, this.author, this.pageAuthor, final  List<PostMediaDto> media = const <PostMediaDto>[], this.caption, this.locationName, this.visibility, final  List<String> hashtags = const <String>[], final  List<PetSummaryDto> taggedPets = const <PetSummaryDto>[], this.likes = 0, this.comments = 0, this.shares = 0, this.likedByMe = false, this.saved = false, this.isEdited = false, this.feeling, final  List<int> followedByMyPetIds = const <int>[], this.createdAt, this.timeAgo, this.communityId, this.communityName, this.adoptionListing}): _media = media,_hashtags = hashtags,_taggedPets = taggedPets,_followedByMyPetIds = followedByMyPetIds,super._();
   factory _PostDto.fromJson(Map<String, dynamic> json) => _$PostDtoFromJson(json);
 
 @override final  int id;
@@ -1719,6 +1720,7 @@ class _PostDto extends PostDto {
 
 @override@JsonKey() final  int likes;
 @override@JsonKey() final  int comments;
+@override@JsonKey() final  int shares;
 @override@JsonKey() final  bool likedByMe;
 @override@JsonKey() final  bool saved;
 @override@JsonKey() final  bool isEdited;
@@ -1749,16 +1751,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostDto&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&(identical(other.pageAuthor, pageAuthor) || other.pageAuthor == pageAuthor)&&const DeepCollectionEquality().equals(other._media, _media)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.locationName, locationName) || other.locationName == locationName)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&const DeepCollectionEquality().equals(other._hashtags, _hashtags)&&const DeepCollectionEquality().equals(other._taggedPets, _taggedPets)&&(identical(other.likes, likes) || other.likes == likes)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.saved, saved) || other.saved == saved)&&(identical(other.isEdited, isEdited) || other.isEdited == isEdited)&&(identical(other.feeling, feeling) || other.feeling == feeling)&&const DeepCollectionEquality().equals(other._followedByMyPetIds, _followedByMyPetIds)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.timeAgo, timeAgo) || other.timeAgo == timeAgo)&&(identical(other.communityId, communityId) || other.communityId == communityId)&&(identical(other.communityName, communityName) || other.communityName == communityName)&&(identical(other.adoptionListing, adoptionListing) || other.adoptionListing == adoptionListing));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostDto&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&(identical(other.pageAuthor, pageAuthor) || other.pageAuthor == pageAuthor)&&const DeepCollectionEquality().equals(other._media, _media)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.locationName, locationName) || other.locationName == locationName)&&(identical(other.visibility, visibility) || other.visibility == visibility)&&const DeepCollectionEquality().equals(other._hashtags, _hashtags)&&const DeepCollectionEquality().equals(other._taggedPets, _taggedPets)&&(identical(other.likes, likes) || other.likes == likes)&&(identical(other.comments, comments) || other.comments == comments)&&(identical(other.shares, shares) || other.shares == shares)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.saved, saved) || other.saved == saved)&&(identical(other.isEdited, isEdited) || other.isEdited == isEdited)&&(identical(other.feeling, feeling) || other.feeling == feeling)&&const DeepCollectionEquality().equals(other._followedByMyPetIds, _followedByMyPetIds)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.timeAgo, timeAgo) || other.timeAgo == timeAgo)&&(identical(other.communityId, communityId) || other.communityId == communityId)&&(identical(other.communityName, communityName) || other.communityName == communityName)&&(identical(other.adoptionListing, adoptionListing) || other.adoptionListing == adoptionListing));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,author,pageAuthor,const DeepCollectionEquality().hash(_media),caption,locationName,visibility,const DeepCollectionEquality().hash(_hashtags),const DeepCollectionEquality().hash(_taggedPets),likes,comments,likedByMe,saved,isEdited,feeling,const DeepCollectionEquality().hash(_followedByMyPetIds),createdAt,timeAgo,communityId,communityName,adoptionListing]);
+int get hashCode => Object.hashAll([runtimeType,id,author,pageAuthor,const DeepCollectionEquality().hash(_media),caption,locationName,visibility,const DeepCollectionEquality().hash(_hashtags),const DeepCollectionEquality().hash(_taggedPets),likes,comments,shares,likedByMe,saved,isEdited,feeling,const DeepCollectionEquality().hash(_followedByMyPetIds),createdAt,timeAgo,communityId,communityName,adoptionListing]);
 
 @override
 String toString() {
-  return 'PostDto(id: $id, author: $author, pageAuthor: $pageAuthor, media: $media, caption: $caption, locationName: $locationName, visibility: $visibility, hashtags: $hashtags, taggedPets: $taggedPets, likes: $likes, comments: $comments, likedByMe: $likedByMe, saved: $saved, isEdited: $isEdited, feeling: $feeling, followedByMyPetIds: $followedByMyPetIds, createdAt: $createdAt, timeAgo: $timeAgo, communityId: $communityId, communityName: $communityName, adoptionListing: $adoptionListing)';
+  return 'PostDto(id: $id, author: $author, pageAuthor: $pageAuthor, media: $media, caption: $caption, locationName: $locationName, visibility: $visibility, hashtags: $hashtags, taggedPets: $taggedPets, likes: $likes, comments: $comments, shares: $shares, likedByMe: $likedByMe, saved: $saved, isEdited: $isEdited, feeling: $feeling, followedByMyPetIds: $followedByMyPetIds, createdAt: $createdAt, timeAgo: $timeAgo, communityId: $communityId, communityName: $communityName, adoptionListing: $adoptionListing)';
 }
 
 
@@ -1769,7 +1771,7 @@ abstract mixin class _$PostDtoCopyWith<$Res> implements $PostDtoCopyWith<$Res> {
   factory _$PostDtoCopyWith(_PostDto value, $Res Function(_PostDto) _then) = __$PostDtoCopyWithImpl;
 @override @useResult
 $Res call({
- int id, PetSummaryDto? author, PageAuthorDto? pageAuthor, List<PostMediaDto> media, String? caption, String? locationName, String? visibility, List<String> hashtags, List<PetSummaryDto> taggedPets, int likes, int comments, bool likedByMe, bool saved, bool isEdited, PostFeelingDto? feeling, List<int> followedByMyPetIds, DateTime? createdAt, String? timeAgo, int? communityId, String? communityName, PostAdoptionListingDto? adoptionListing
+ int id, PetSummaryDto? author, PageAuthorDto? pageAuthor, List<PostMediaDto> media, String? caption, String? locationName, String? visibility, List<String> hashtags, List<PetSummaryDto> taggedPets, int likes, int comments, int shares, bool likedByMe, bool saved, bool isEdited, PostFeelingDto? feeling, List<int> followedByMyPetIds, DateTime? createdAt, String? timeAgo, int? communityId, String? communityName, PostAdoptionListingDto? adoptionListing
 });
 
 
@@ -1786,7 +1788,7 @@ class __$PostDtoCopyWithImpl<$Res>
 
 /// Create a copy of PostDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? author = freezed,Object? pageAuthor = freezed,Object? media = null,Object? caption = freezed,Object? locationName = freezed,Object? visibility = freezed,Object? hashtags = null,Object? taggedPets = null,Object? likes = null,Object? comments = null,Object? likedByMe = null,Object? saved = null,Object? isEdited = null,Object? feeling = freezed,Object? followedByMyPetIds = null,Object? createdAt = freezed,Object? timeAgo = freezed,Object? communityId = freezed,Object? communityName = freezed,Object? adoptionListing = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? author = freezed,Object? pageAuthor = freezed,Object? media = null,Object? caption = freezed,Object? locationName = freezed,Object? visibility = freezed,Object? hashtags = null,Object? taggedPets = null,Object? likes = null,Object? comments = null,Object? shares = null,Object? likedByMe = null,Object? saved = null,Object? isEdited = null,Object? feeling = freezed,Object? followedByMyPetIds = null,Object? createdAt = freezed,Object? timeAgo = freezed,Object? communityId = freezed,Object? communityName = freezed,Object? adoptionListing = freezed,}) {
   return _then(_PostDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,author: freezed == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
@@ -1799,6 +1801,7 @@ as String?,hashtags: null == hashtags ? _self._hashtags : hashtags // ignore: ca
 as List<String>,taggedPets: null == taggedPets ? _self._taggedPets : taggedPets // ignore: cast_nullable_to_non_nullable
 as List<PetSummaryDto>,likes: null == likes ? _self.likes : likes // ignore: cast_nullable_to_non_nullable
 as int,comments: null == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable
+as int,shares: null == shares ? _self.shares : shares // ignore: cast_nullable_to_non_nullable
 as int,likedByMe: null == likedByMe ? _self.likedByMe : likedByMe // ignore: cast_nullable_to_non_nullable
 as bool,saved: null == saved ? _self.saved : saved // ignore: cast_nullable_to_non_nullable
 as bool,isEdited: null == isEdited ? _self.isEdited : isEdited // ignore: cast_nullable_to_non_nullable
@@ -4243,9 +4246,580 @@ as bool,
 
 
 /// @nodoc
+mixin _$AdoptionInjectionCardDto {
+
+ int get id; int? get statusId; String get petName; String? get speciesName; String? get photoUrl; String? get locationLabel; bool get vaccinated; bool get neutered; bool get goodWithKids;
+/// Create a copy of AdoptionInjectionCardDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AdoptionInjectionCardDtoCopyWith<AdoptionInjectionCardDto> get copyWith => _$AdoptionInjectionCardDtoCopyWithImpl<AdoptionInjectionCardDto>(this as AdoptionInjectionCardDto, _$identity);
+
+  /// Serializes this AdoptionInjectionCardDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AdoptionInjectionCardDto&&(identical(other.id, id) || other.id == id)&&(identical(other.statusId, statusId) || other.statusId == statusId)&&(identical(other.petName, petName) || other.petName == petName)&&(identical(other.speciesName, speciesName) || other.speciesName == speciesName)&&(identical(other.photoUrl, photoUrl) || other.photoUrl == photoUrl)&&(identical(other.locationLabel, locationLabel) || other.locationLabel == locationLabel)&&(identical(other.vaccinated, vaccinated) || other.vaccinated == vaccinated)&&(identical(other.neutered, neutered) || other.neutered == neutered)&&(identical(other.goodWithKids, goodWithKids) || other.goodWithKids == goodWithKids));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,statusId,petName,speciesName,photoUrl,locationLabel,vaccinated,neutered,goodWithKids);
+
+@override
+String toString() {
+  return 'AdoptionInjectionCardDto(id: $id, statusId: $statusId, petName: $petName, speciesName: $speciesName, photoUrl: $photoUrl, locationLabel: $locationLabel, vaccinated: $vaccinated, neutered: $neutered, goodWithKids: $goodWithKids)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AdoptionInjectionCardDtoCopyWith<$Res>  {
+  factory $AdoptionInjectionCardDtoCopyWith(AdoptionInjectionCardDto value, $Res Function(AdoptionInjectionCardDto) _then) = _$AdoptionInjectionCardDtoCopyWithImpl;
+@useResult
+$Res call({
+ int id, int? statusId, String petName, String? speciesName, String? photoUrl, String? locationLabel, bool vaccinated, bool neutered, bool goodWithKids
+});
+
+
+
+
+}
+/// @nodoc
+class _$AdoptionInjectionCardDtoCopyWithImpl<$Res>
+    implements $AdoptionInjectionCardDtoCopyWith<$Res> {
+  _$AdoptionInjectionCardDtoCopyWithImpl(this._self, this._then);
+
+  final AdoptionInjectionCardDto _self;
+  final $Res Function(AdoptionInjectionCardDto) _then;
+
+/// Create a copy of AdoptionInjectionCardDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? statusId = freezed,Object? petName = null,Object? speciesName = freezed,Object? photoUrl = freezed,Object? locationLabel = freezed,Object? vaccinated = null,Object? neutered = null,Object? goodWithKids = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,statusId: freezed == statusId ? _self.statusId : statusId // ignore: cast_nullable_to_non_nullable
+as int?,petName: null == petName ? _self.petName : petName // ignore: cast_nullable_to_non_nullable
+as String,speciesName: freezed == speciesName ? _self.speciesName : speciesName // ignore: cast_nullable_to_non_nullable
+as String?,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
+as String?,locationLabel: freezed == locationLabel ? _self.locationLabel : locationLabel // ignore: cast_nullable_to_non_nullable
+as String?,vaccinated: null == vaccinated ? _self.vaccinated : vaccinated // ignore: cast_nullable_to_non_nullable
+as bool,neutered: null == neutered ? _self.neutered : neutered // ignore: cast_nullable_to_non_nullable
+as bool,goodWithKids: null == goodWithKids ? _self.goodWithKids : goodWithKids // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [AdoptionInjectionCardDto].
+extension AdoptionInjectionCardDtoPatterns on AdoptionInjectionCardDto {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AdoptionInjectionCardDto value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _AdoptionInjectionCardDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AdoptionInjectionCardDto value)  $default,){
+final _that = this;
+switch (_that) {
+case _AdoptionInjectionCardDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AdoptionInjectionCardDto value)?  $default,){
+final _that = this;
+switch (_that) {
+case _AdoptionInjectionCardDto() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int? statusId,  String petName,  String? speciesName,  String? photoUrl,  String? locationLabel,  bool vaccinated,  bool neutered,  bool goodWithKids)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _AdoptionInjectionCardDto() when $default != null:
+return $default(_that.id,_that.statusId,_that.petName,_that.speciesName,_that.photoUrl,_that.locationLabel,_that.vaccinated,_that.neutered,_that.goodWithKids);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int? statusId,  String petName,  String? speciesName,  String? photoUrl,  String? locationLabel,  bool vaccinated,  bool neutered,  bool goodWithKids)  $default,) {final _that = this;
+switch (_that) {
+case _AdoptionInjectionCardDto():
+return $default(_that.id,_that.statusId,_that.petName,_that.speciesName,_that.photoUrl,_that.locationLabel,_that.vaccinated,_that.neutered,_that.goodWithKids);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int? statusId,  String petName,  String? speciesName,  String? photoUrl,  String? locationLabel,  bool vaccinated,  bool neutered,  bool goodWithKids)?  $default,) {final _that = this;
+switch (_that) {
+case _AdoptionInjectionCardDto() when $default != null:
+return $default(_that.id,_that.statusId,_that.petName,_that.speciesName,_that.photoUrl,_that.locationLabel,_that.vaccinated,_that.neutered,_that.goodWithKids);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _AdoptionInjectionCardDto extends AdoptionInjectionCardDto {
+  const _AdoptionInjectionCardDto({required this.id, this.statusId, this.petName = '', this.speciesName, this.photoUrl, this.locationLabel, this.vaccinated = false, this.neutered = false, this.goodWithKids = false}): super._();
+  factory _AdoptionInjectionCardDto.fromJson(Map<String, dynamic> json) => _$AdoptionInjectionCardDtoFromJson(json);
+
+@override final  int id;
+@override final  int? statusId;
+@override@JsonKey() final  String petName;
+@override final  String? speciesName;
+@override final  String? photoUrl;
+@override final  String? locationLabel;
+@override@JsonKey() final  bool vaccinated;
+@override@JsonKey() final  bool neutered;
+@override@JsonKey() final  bool goodWithKids;
+
+/// Create a copy of AdoptionInjectionCardDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AdoptionInjectionCardDtoCopyWith<_AdoptionInjectionCardDto> get copyWith => __$AdoptionInjectionCardDtoCopyWithImpl<_AdoptionInjectionCardDto>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$AdoptionInjectionCardDtoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AdoptionInjectionCardDto&&(identical(other.id, id) || other.id == id)&&(identical(other.statusId, statusId) || other.statusId == statusId)&&(identical(other.petName, petName) || other.petName == petName)&&(identical(other.speciesName, speciesName) || other.speciesName == speciesName)&&(identical(other.photoUrl, photoUrl) || other.photoUrl == photoUrl)&&(identical(other.locationLabel, locationLabel) || other.locationLabel == locationLabel)&&(identical(other.vaccinated, vaccinated) || other.vaccinated == vaccinated)&&(identical(other.neutered, neutered) || other.neutered == neutered)&&(identical(other.goodWithKids, goodWithKids) || other.goodWithKids == goodWithKids));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,statusId,petName,speciesName,photoUrl,locationLabel,vaccinated,neutered,goodWithKids);
+
+@override
+String toString() {
+  return 'AdoptionInjectionCardDto(id: $id, statusId: $statusId, petName: $petName, speciesName: $speciesName, photoUrl: $photoUrl, locationLabel: $locationLabel, vaccinated: $vaccinated, neutered: $neutered, goodWithKids: $goodWithKids)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AdoptionInjectionCardDtoCopyWith<$Res> implements $AdoptionInjectionCardDtoCopyWith<$Res> {
+  factory _$AdoptionInjectionCardDtoCopyWith(_AdoptionInjectionCardDto value, $Res Function(_AdoptionInjectionCardDto) _then) = __$AdoptionInjectionCardDtoCopyWithImpl;
+@override @useResult
+$Res call({
+ int id, int? statusId, String petName, String? speciesName, String? photoUrl, String? locationLabel, bool vaccinated, bool neutered, bool goodWithKids
+});
+
+
+
+
+}
+/// @nodoc
+class __$AdoptionInjectionCardDtoCopyWithImpl<$Res>
+    implements _$AdoptionInjectionCardDtoCopyWith<$Res> {
+  __$AdoptionInjectionCardDtoCopyWithImpl(this._self, this._then);
+
+  final _AdoptionInjectionCardDto _self;
+  final $Res Function(_AdoptionInjectionCardDto) _then;
+
+/// Create a copy of AdoptionInjectionCardDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? statusId = freezed,Object? petName = null,Object? speciesName = freezed,Object? photoUrl = freezed,Object? locationLabel = freezed,Object? vaccinated = null,Object? neutered = null,Object? goodWithKids = null,}) {
+  return _then(_AdoptionInjectionCardDto(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,statusId: freezed == statusId ? _self.statusId : statusId // ignore: cast_nullable_to_non_nullable
+as int?,petName: null == petName ? _self.petName : petName // ignore: cast_nullable_to_non_nullable
+as String,speciesName: freezed == speciesName ? _self.speciesName : speciesName // ignore: cast_nullable_to_non_nullable
+as String?,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
+as String?,locationLabel: freezed == locationLabel ? _self.locationLabel : locationLabel // ignore: cast_nullable_to_non_nullable
+as String?,vaccinated: null == vaccinated ? _self.vaccinated : vaccinated // ignore: cast_nullable_to_non_nullable
+as bool,neutered: null == neutered ? _self.neutered : neutered // ignore: cast_nullable_to_non_nullable
+as bool,goodWithKids: null == goodWithKids ? _self.goodWithKids : goodWithKids // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$AdoptionInjectionDto {
+
+ int get afterPosition; AdoptionInjectionCardDto get card;
+/// Create a copy of AdoptionInjectionDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AdoptionInjectionDtoCopyWith<AdoptionInjectionDto> get copyWith => _$AdoptionInjectionDtoCopyWithImpl<AdoptionInjectionDto>(this as AdoptionInjectionDto, _$identity);
+
+  /// Serializes this AdoptionInjectionDto to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AdoptionInjectionDto&&(identical(other.afterPosition, afterPosition) || other.afterPosition == afterPosition)&&(identical(other.card, card) || other.card == card));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,afterPosition,card);
+
+@override
+String toString() {
+  return 'AdoptionInjectionDto(afterPosition: $afterPosition, card: $card)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AdoptionInjectionDtoCopyWith<$Res>  {
+  factory $AdoptionInjectionDtoCopyWith(AdoptionInjectionDto value, $Res Function(AdoptionInjectionDto) _then) = _$AdoptionInjectionDtoCopyWithImpl;
+@useResult
+$Res call({
+ int afterPosition, AdoptionInjectionCardDto card
+});
+
+
+$AdoptionInjectionCardDtoCopyWith<$Res> get card;
+
+}
+/// @nodoc
+class _$AdoptionInjectionDtoCopyWithImpl<$Res>
+    implements $AdoptionInjectionDtoCopyWith<$Res> {
+  _$AdoptionInjectionDtoCopyWithImpl(this._self, this._then);
+
+  final AdoptionInjectionDto _self;
+  final $Res Function(AdoptionInjectionDto) _then;
+
+/// Create a copy of AdoptionInjectionDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? afterPosition = null,Object? card = null,}) {
+  return _then(_self.copyWith(
+afterPosition: null == afterPosition ? _self.afterPosition : afterPosition // ignore: cast_nullable_to_non_nullable
+as int,card: null == card ? _self.card : card // ignore: cast_nullable_to_non_nullable
+as AdoptionInjectionCardDto,
+  ));
+}
+/// Create a copy of AdoptionInjectionDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AdoptionInjectionCardDtoCopyWith<$Res> get card {
+  
+  return $AdoptionInjectionCardDtoCopyWith<$Res>(_self.card, (value) {
+    return _then(_self.copyWith(card: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [AdoptionInjectionDto].
+extension AdoptionInjectionDtoPatterns on AdoptionInjectionDto {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AdoptionInjectionDto value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _AdoptionInjectionDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AdoptionInjectionDto value)  $default,){
+final _that = this;
+switch (_that) {
+case _AdoptionInjectionDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AdoptionInjectionDto value)?  $default,){
+final _that = this;
+switch (_that) {
+case _AdoptionInjectionDto() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int afterPosition,  AdoptionInjectionCardDto card)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _AdoptionInjectionDto() when $default != null:
+return $default(_that.afterPosition,_that.card);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int afterPosition,  AdoptionInjectionCardDto card)  $default,) {final _that = this;
+switch (_that) {
+case _AdoptionInjectionDto():
+return $default(_that.afterPosition,_that.card);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int afterPosition,  AdoptionInjectionCardDto card)?  $default,) {final _that = this;
+switch (_that) {
+case _AdoptionInjectionDto() when $default != null:
+return $default(_that.afterPosition,_that.card);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _AdoptionInjectionDto extends AdoptionInjectionDto {
+  const _AdoptionInjectionDto({this.afterPosition = -1, required this.card}): super._();
+  factory _AdoptionInjectionDto.fromJson(Map<String, dynamic> json) => _$AdoptionInjectionDtoFromJson(json);
+
+@override@JsonKey() final  int afterPosition;
+@override final  AdoptionInjectionCardDto card;
+
+/// Create a copy of AdoptionInjectionDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AdoptionInjectionDtoCopyWith<_AdoptionInjectionDto> get copyWith => __$AdoptionInjectionDtoCopyWithImpl<_AdoptionInjectionDto>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$AdoptionInjectionDtoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AdoptionInjectionDto&&(identical(other.afterPosition, afterPosition) || other.afterPosition == afterPosition)&&(identical(other.card, card) || other.card == card));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,afterPosition,card);
+
+@override
+String toString() {
+  return 'AdoptionInjectionDto(afterPosition: $afterPosition, card: $card)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AdoptionInjectionDtoCopyWith<$Res> implements $AdoptionInjectionDtoCopyWith<$Res> {
+  factory _$AdoptionInjectionDtoCopyWith(_AdoptionInjectionDto value, $Res Function(_AdoptionInjectionDto) _then) = __$AdoptionInjectionDtoCopyWithImpl;
+@override @useResult
+$Res call({
+ int afterPosition, AdoptionInjectionCardDto card
+});
+
+
+@override $AdoptionInjectionCardDtoCopyWith<$Res> get card;
+
+}
+/// @nodoc
+class __$AdoptionInjectionDtoCopyWithImpl<$Res>
+    implements _$AdoptionInjectionDtoCopyWith<$Res> {
+  __$AdoptionInjectionDtoCopyWithImpl(this._self, this._then);
+
+  final _AdoptionInjectionDto _self;
+  final $Res Function(_AdoptionInjectionDto) _then;
+
+/// Create a copy of AdoptionInjectionDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? afterPosition = null,Object? card = null,}) {
+  return _then(_AdoptionInjectionDto(
+afterPosition: null == afterPosition ? _self.afterPosition : afterPosition // ignore: cast_nullable_to_non_nullable
+as int,card: null == card ? _self.card : card // ignore: cast_nullable_to_non_nullable
+as AdoptionInjectionCardDto,
+  ));
+}
+
+/// Create a copy of AdoptionInjectionDto
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$AdoptionInjectionCardDtoCopyWith<$Res> get card {
+  
+  return $AdoptionInjectionCardDtoCopyWith<$Res>(_self.card, (value) {
+    return _then(_self.copyWith(card: value));
+  });
+}
+}
+
+
+/// @nodoc
 mixin _$DiscoverResponseDto {
 
- List<PostDto> get posts; List<PetSummaryDto> get suggestedPets; List<CommunityDto> get suggestedCommunities; List<SuggestedPageDto> get suggestedPages; List<LostFoundAlertDto> get alerts; bool get hasMore; String? get nextCursor;
+ List<PostDto> get posts; List<PetSummaryDto> get suggestedPets; List<CommunityDto> get suggestedCommunities; List<SuggestedPageDto> get suggestedPages; List<LostFoundAlertDto> get alerts; List<AdoptionInjectionDto> get adoptionInjections; bool get hasMore; String? get nextCursor;
 /// Create a copy of DiscoverResponseDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -4258,16 +4832,16 @@ $DiscoverResponseDtoCopyWith<DiscoverResponseDto> get copyWith => _$DiscoverResp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiscoverResponseDto&&const DeepCollectionEquality().equals(other.posts, posts)&&const DeepCollectionEquality().equals(other.suggestedPets, suggestedPets)&&const DeepCollectionEquality().equals(other.suggestedCommunities, suggestedCommunities)&&const DeepCollectionEquality().equals(other.suggestedPages, suggestedPages)&&const DeepCollectionEquality().equals(other.alerts, alerts)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiscoverResponseDto&&const DeepCollectionEquality().equals(other.posts, posts)&&const DeepCollectionEquality().equals(other.suggestedPets, suggestedPets)&&const DeepCollectionEquality().equals(other.suggestedCommunities, suggestedCommunities)&&const DeepCollectionEquality().equals(other.suggestedPages, suggestedPages)&&const DeepCollectionEquality().equals(other.alerts, alerts)&&const DeepCollectionEquality().equals(other.adoptionInjections, adoptionInjections)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(posts),const DeepCollectionEquality().hash(suggestedPets),const DeepCollectionEquality().hash(suggestedCommunities),const DeepCollectionEquality().hash(suggestedPages),const DeepCollectionEquality().hash(alerts),hasMore,nextCursor);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(posts),const DeepCollectionEquality().hash(suggestedPets),const DeepCollectionEquality().hash(suggestedCommunities),const DeepCollectionEquality().hash(suggestedPages),const DeepCollectionEquality().hash(alerts),const DeepCollectionEquality().hash(adoptionInjections),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'DiscoverResponseDto(posts: $posts, suggestedPets: $suggestedPets, suggestedCommunities: $suggestedCommunities, suggestedPages: $suggestedPages, alerts: $alerts, hasMore: $hasMore, nextCursor: $nextCursor)';
+  return 'DiscoverResponseDto(posts: $posts, suggestedPets: $suggestedPets, suggestedCommunities: $suggestedCommunities, suggestedPages: $suggestedPages, alerts: $alerts, adoptionInjections: $adoptionInjections, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -4278,7 +4852,7 @@ abstract mixin class $DiscoverResponseDtoCopyWith<$Res>  {
   factory $DiscoverResponseDtoCopyWith(DiscoverResponseDto value, $Res Function(DiscoverResponseDto) _then) = _$DiscoverResponseDtoCopyWithImpl;
 @useResult
 $Res call({
- List<PostDto> posts, List<PetSummaryDto> suggestedPets, List<CommunityDto> suggestedCommunities, List<SuggestedPageDto> suggestedPages, List<LostFoundAlertDto> alerts, bool hasMore, String? nextCursor
+ List<PostDto> posts, List<PetSummaryDto> suggestedPets, List<CommunityDto> suggestedCommunities, List<SuggestedPageDto> suggestedPages, List<LostFoundAlertDto> alerts, List<AdoptionInjectionDto> adoptionInjections, bool hasMore, String? nextCursor
 });
 
 
@@ -4295,14 +4869,15 @@ class _$DiscoverResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of DiscoverResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? posts = null,Object? suggestedPets = null,Object? suggestedCommunities = null,Object? suggestedPages = null,Object? alerts = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? posts = null,Object? suggestedPets = null,Object? suggestedCommunities = null,Object? suggestedPages = null,Object? alerts = null,Object? adoptionInjections = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_self.copyWith(
 posts: null == posts ? _self.posts : posts // ignore: cast_nullable_to_non_nullable
 as List<PostDto>,suggestedPets: null == suggestedPets ? _self.suggestedPets : suggestedPets // ignore: cast_nullable_to_non_nullable
 as List<PetSummaryDto>,suggestedCommunities: null == suggestedCommunities ? _self.suggestedCommunities : suggestedCommunities // ignore: cast_nullable_to_non_nullable
 as List<CommunityDto>,suggestedPages: null == suggestedPages ? _self.suggestedPages : suggestedPages // ignore: cast_nullable_to_non_nullable
 as List<SuggestedPageDto>,alerts: null == alerts ? _self.alerts : alerts // ignore: cast_nullable_to_non_nullable
-as List<LostFoundAlertDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
+as List<LostFoundAlertDto>,adoptionInjections: null == adoptionInjections ? _self.adoptionInjections : adoptionInjections // ignore: cast_nullable_to_non_nullable
+as List<AdoptionInjectionDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
 as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -4389,10 +4964,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<PostDto> posts,  List<PetSummaryDto> suggestedPets,  List<CommunityDto> suggestedCommunities,  List<SuggestedPageDto> suggestedPages,  List<LostFoundAlertDto> alerts,  bool hasMore,  String? nextCursor)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<PostDto> posts,  List<PetSummaryDto> suggestedPets,  List<CommunityDto> suggestedCommunities,  List<SuggestedPageDto> suggestedPages,  List<LostFoundAlertDto> alerts,  List<AdoptionInjectionDto> adoptionInjections,  bool hasMore,  String? nextCursor)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DiscoverResponseDto() when $default != null:
-return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that.suggestedPages,_that.alerts,_that.hasMore,_that.nextCursor);case _:
+return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that.suggestedPages,_that.alerts,_that.adoptionInjections,_that.hasMore,_that.nextCursor);case _:
   return orElse();
 
 }
@@ -4410,10 +4985,10 @@ return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<PostDto> posts,  List<PetSummaryDto> suggestedPets,  List<CommunityDto> suggestedCommunities,  List<SuggestedPageDto> suggestedPages,  List<LostFoundAlertDto> alerts,  bool hasMore,  String? nextCursor)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<PostDto> posts,  List<PetSummaryDto> suggestedPets,  List<CommunityDto> suggestedCommunities,  List<SuggestedPageDto> suggestedPages,  List<LostFoundAlertDto> alerts,  List<AdoptionInjectionDto> adoptionInjections,  bool hasMore,  String? nextCursor)  $default,) {final _that = this;
 switch (_that) {
 case _DiscoverResponseDto():
-return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that.suggestedPages,_that.alerts,_that.hasMore,_that.nextCursor);case _:
+return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that.suggestedPages,_that.alerts,_that.adoptionInjections,_that.hasMore,_that.nextCursor);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -4430,10 +5005,10 @@ return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<PostDto> posts,  List<PetSummaryDto> suggestedPets,  List<CommunityDto> suggestedCommunities,  List<SuggestedPageDto> suggestedPages,  List<LostFoundAlertDto> alerts,  bool hasMore,  String? nextCursor)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<PostDto> posts,  List<PetSummaryDto> suggestedPets,  List<CommunityDto> suggestedCommunities,  List<SuggestedPageDto> suggestedPages,  List<LostFoundAlertDto> alerts,  List<AdoptionInjectionDto> adoptionInjections,  bool hasMore,  String? nextCursor)?  $default,) {final _that = this;
 switch (_that) {
 case _DiscoverResponseDto() when $default != null:
-return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that.suggestedPages,_that.alerts,_that.hasMore,_that.nextCursor);case _:
+return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that.suggestedPages,_that.alerts,_that.adoptionInjections,_that.hasMore,_that.nextCursor);case _:
   return null;
 
 }
@@ -4445,7 +5020,7 @@ return $default(_that.posts,_that.suggestedPets,_that.suggestedCommunities,_that
 @JsonSerializable()
 
 class _DiscoverResponseDto extends DiscoverResponseDto {
-  const _DiscoverResponseDto({final  List<PostDto> posts = const <PostDto>[], final  List<PetSummaryDto> suggestedPets = const <PetSummaryDto>[], final  List<CommunityDto> suggestedCommunities = const <CommunityDto>[], final  List<SuggestedPageDto> suggestedPages = const <SuggestedPageDto>[], final  List<LostFoundAlertDto> alerts = const <LostFoundAlertDto>[], this.hasMore = false, this.nextCursor}): _posts = posts,_suggestedPets = suggestedPets,_suggestedCommunities = suggestedCommunities,_suggestedPages = suggestedPages,_alerts = alerts,super._();
+  const _DiscoverResponseDto({final  List<PostDto> posts = const <PostDto>[], final  List<PetSummaryDto> suggestedPets = const <PetSummaryDto>[], final  List<CommunityDto> suggestedCommunities = const <CommunityDto>[], final  List<SuggestedPageDto> suggestedPages = const <SuggestedPageDto>[], final  List<LostFoundAlertDto> alerts = const <LostFoundAlertDto>[], final  List<AdoptionInjectionDto> adoptionInjections = const <AdoptionInjectionDto>[], this.hasMore = false, this.nextCursor}): _posts = posts,_suggestedPets = suggestedPets,_suggestedCommunities = suggestedCommunities,_suggestedPages = suggestedPages,_alerts = alerts,_adoptionInjections = adoptionInjections,super._();
   factory _DiscoverResponseDto.fromJson(Map<String, dynamic> json) => _$DiscoverResponseDtoFromJson(json);
 
  final  List<PostDto> _posts;
@@ -4483,6 +5058,13 @@ class _DiscoverResponseDto extends DiscoverResponseDto {
   return EqualUnmodifiableListView(_alerts);
 }
 
+ final  List<AdoptionInjectionDto> _adoptionInjections;
+@override@JsonKey() List<AdoptionInjectionDto> get adoptionInjections {
+  if (_adoptionInjections is EqualUnmodifiableListView) return _adoptionInjections;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_adoptionInjections);
+}
+
 @override@JsonKey() final  bool hasMore;
 @override final  String? nextCursor;
 
@@ -4499,16 +5081,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiscoverResponseDto&&const DeepCollectionEquality().equals(other._posts, _posts)&&const DeepCollectionEquality().equals(other._suggestedPets, _suggestedPets)&&const DeepCollectionEquality().equals(other._suggestedCommunities, _suggestedCommunities)&&const DeepCollectionEquality().equals(other._suggestedPages, _suggestedPages)&&const DeepCollectionEquality().equals(other._alerts, _alerts)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiscoverResponseDto&&const DeepCollectionEquality().equals(other._posts, _posts)&&const DeepCollectionEquality().equals(other._suggestedPets, _suggestedPets)&&const DeepCollectionEquality().equals(other._suggestedCommunities, _suggestedCommunities)&&const DeepCollectionEquality().equals(other._suggestedPages, _suggestedPages)&&const DeepCollectionEquality().equals(other._alerts, _alerts)&&const DeepCollectionEquality().equals(other._adoptionInjections, _adoptionInjections)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_posts),const DeepCollectionEquality().hash(_suggestedPets),const DeepCollectionEquality().hash(_suggestedCommunities),const DeepCollectionEquality().hash(_suggestedPages),const DeepCollectionEquality().hash(_alerts),hasMore,nextCursor);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_posts),const DeepCollectionEquality().hash(_suggestedPets),const DeepCollectionEquality().hash(_suggestedCommunities),const DeepCollectionEquality().hash(_suggestedPages),const DeepCollectionEquality().hash(_alerts),const DeepCollectionEquality().hash(_adoptionInjections),hasMore,nextCursor);
 
 @override
 String toString() {
-  return 'DiscoverResponseDto(posts: $posts, suggestedPets: $suggestedPets, suggestedCommunities: $suggestedCommunities, suggestedPages: $suggestedPages, alerts: $alerts, hasMore: $hasMore, nextCursor: $nextCursor)';
+  return 'DiscoverResponseDto(posts: $posts, suggestedPets: $suggestedPets, suggestedCommunities: $suggestedCommunities, suggestedPages: $suggestedPages, alerts: $alerts, adoptionInjections: $adoptionInjections, hasMore: $hasMore, nextCursor: $nextCursor)';
 }
 
 
@@ -4519,7 +5101,7 @@ abstract mixin class _$DiscoverResponseDtoCopyWith<$Res> implements $DiscoverRes
   factory _$DiscoverResponseDtoCopyWith(_DiscoverResponseDto value, $Res Function(_DiscoverResponseDto) _then) = __$DiscoverResponseDtoCopyWithImpl;
 @override @useResult
 $Res call({
- List<PostDto> posts, List<PetSummaryDto> suggestedPets, List<CommunityDto> suggestedCommunities, List<SuggestedPageDto> suggestedPages, List<LostFoundAlertDto> alerts, bool hasMore, String? nextCursor
+ List<PostDto> posts, List<PetSummaryDto> suggestedPets, List<CommunityDto> suggestedCommunities, List<SuggestedPageDto> suggestedPages, List<LostFoundAlertDto> alerts, List<AdoptionInjectionDto> adoptionInjections, bool hasMore, String? nextCursor
 });
 
 
@@ -4536,14 +5118,15 @@ class __$DiscoverResponseDtoCopyWithImpl<$Res>
 
 /// Create a copy of DiscoverResponseDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? posts = null,Object? suggestedPets = null,Object? suggestedCommunities = null,Object? suggestedPages = null,Object? alerts = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? posts = null,Object? suggestedPets = null,Object? suggestedCommunities = null,Object? suggestedPages = null,Object? alerts = null,Object? adoptionInjections = null,Object? hasMore = null,Object? nextCursor = freezed,}) {
   return _then(_DiscoverResponseDto(
 posts: null == posts ? _self._posts : posts // ignore: cast_nullable_to_non_nullable
 as List<PostDto>,suggestedPets: null == suggestedPets ? _self._suggestedPets : suggestedPets // ignore: cast_nullable_to_non_nullable
 as List<PetSummaryDto>,suggestedCommunities: null == suggestedCommunities ? _self._suggestedCommunities : suggestedCommunities // ignore: cast_nullable_to_non_nullable
 as List<CommunityDto>,suggestedPages: null == suggestedPages ? _self._suggestedPages : suggestedPages // ignore: cast_nullable_to_non_nullable
 as List<SuggestedPageDto>,alerts: null == alerts ? _self._alerts : alerts // ignore: cast_nullable_to_non_nullable
-as List<LostFoundAlertDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
+as List<LostFoundAlertDto>,adoptionInjections: null == adoptionInjections ? _self._adoptionInjections : adoptionInjections // ignore: cast_nullable_to_non_nullable
+as List<AdoptionInjectionDto>,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
 as bool,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
 as String?,
   ));

@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
+import '../../../../core/app/router/app_router.dart';
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -13,14 +15,17 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../domain/entities/community_entities.dart' as domain;
+import '../../domain/entities/community_enums.dart' as domain_enums;
 import '../models/pawhub_models.dart';
 import '../providers/community_actions_providers.dart';
 import '../providers/community_feed_providers.dart';
+import '../providers/community_impressions_provider.dart';
 import '../providers/community_providers.dart';
 import '../providers/community_social_providers.dart';
 import '../../../pages/presentation/pages/page_detail_page.dart';
 import '../../../pages/presentation/providers/page_providers.dart';
 import '../../../pets/presentation/providers/pets_provider.dart';
+import '../widgets/adoption_injection_card.dart';
 import '../widgets/pawhub_comments.dart';
 import '../widgets/pawhub_common.dart';
 import '../widgets/pawhub_feed_widgets.dart';
@@ -577,6 +582,8 @@ void _openProfile(PawPet pet) {
           loadingMore: discover.loadingMore,
           suggestedPets: suggestedPets,
           suggestedPages: suggestedPages,
+          adoptionInjections: discover.adoptionInjections,
+          reportImpressions: true,
         );
       },
     );
@@ -611,11 +618,21 @@ void _openProfile(PawPet pet) {
     required bool loadingMore,
     required List<PawPet> suggestedPets,
     List<PawSuggestedPage> suggestedPages = const [],
+    List<domain.AdoptionInjection> adoptionInjections = const [],
+    bool reportImpressions = false,
     Widget? header,
   }) {
-    final hasHeader = header != null;
-    final hasPetsRail = suggestedPets.isNotEmpty;
-    final hasPagesRail = suggestedPages.isNotEmpty;
+    // Build an explicit list of renderable slots up front, so index math stays
+    // in one place regardless of how many rails / injections are interleaved.
+    final slots = _buildFeedSlots(
+      posts: posts,
+      suggestedPets: suggestedPets,
+      suggestedPages: suggestedPages,
+      adoptionInjections: adoptionInjections,
+      reportImpressions: reportImpressions,
+      header: header,
+    );
+
     return RefreshIndicator(
       onRefresh: _refresh,
       color: AppColors.primary,
@@ -627,40 +644,10 @@ void _openProfile(PawPet pet) {
           AppSpacing.lg,
           AppSpacing.xl * 2,
         ),
-        itemCount: posts.length +
-            (hasHeader ? 1 : 0) +
-            (hasPetsRail ? 1 : 0) +
-            (hasPagesRail ? 1 : 0) +
-            (hasMore ? 1 : 0),
+        itemCount: slots.length + (hasMore ? 1 : 0),
         separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.lg),
-        itemBuilder: (context, rawIndex) {
-          // A header (e.g. the communities rail) occupies slot 0 on Discover.
-          if (hasHeader && rawIndex == 0) return header;
-          final index = hasHeader ? rawIndex - 1 : rawIndex;
-          // Insert suggested-pets rail after the 3rd post.
-          if (index == 3 && hasPetsRail) {
-            return SuggestedPetsRail(
-              pets: suggestedPets,
-              onToggleFollow: _toggleFollow,
-              onOpenProfile: _openProfile,
-            );
-          }
-          // Insert suggested-pages rail after the 6th post (index 7 when pets
-          // rail is present, index 6 otherwise).
-          final pagesSlot = hasPetsRail ? 7 : 6;
-          if (index == pagesSlot && hasPagesRail) {
-            return SuggestedPagesRail(
-              pages: suggestedPages,
-              onToggleFollow: _togglePageFollow,
-              onOpenPage: (id) => openPageDetail(context, id),
-            );
-          }
-          // Adjust postIndex for injected rails.
-          var postIndex = index;
-          if (hasPetsRail && index > 3) postIndex--;
-          if (hasPagesRail && index > pagesSlot) postIndex--;
-
-          if (postIndex >= posts.length) {
+        itemBuilder: (context, index) {
+          if (index >= slots.length) {
             WidgetsBinding.instance.addPostFrameCallback((_) => _loadMore());
             return loadingMore
                 ? const Padding(
@@ -669,18 +656,128 @@ void _openProfile(PawPet pet) {
                   )
                 : const SizedBox.shrink();
           }
+          return slots[index].build(context);
+        },
+      ),
+    );
+  }
 
-          final post = posts[postIndex];
-          return PostCard(
+  /// Flattens posts, suggested rails and adoption injections into an ordered
+  /// slot list. Rails keep their legacy positions (pets after post 3, pages
+  /// after post 6/7); adoption cards are placed after the post index named by
+  /// their `afterPosition` (-1 → before the first post).
+  List<_FeedSlot> _buildFeedSlots({
+    required List<PawPost> posts,
+    required List<PawPet> suggestedPets,
+    required List<PawSuggestedPage> suggestedPages,
+    required List<domain.AdoptionInjection> adoptionInjections,
+    bool reportImpressions = false,
+    Widget? header,
+  }) {
+    final hasPetsRail = suggestedPets.isNotEmpty;
+    final hasPagesRail = suggestedPages.isNotEmpty;
+    final pagesSlot = hasPetsRail ? 7 : 6;
+
+    // Group injections by the post index they anchor to (clamped into range).
+    final injectionsByAnchor = <int, List<domain.AdoptionInjection>>{};
+    for (final inj in adoptionInjections) {
+      injectionsByAnchor.putIfAbsent(inj.afterPosition, () => []).add(inj);
+    }
+
+    _FeedSlot injectionSlot(domain.AdoptionInjection inj) => _FeedSlot(
+          (context) => AdoptionInjectionCardWidget(
+            card: inj.card,
+            onTap: () =>
+                context.push(AppRoutes.adoptionDetailPath(inj.card.id)),
+          ),
+        );
+
+    final slots = <_FeedSlot>[];
+
+    if (header != null) slots.add(_FeedSlot((_) => header));
+
+    // Injections anchored before the first post (afterPosition == -1).
+    for (final inj in injectionsByAnchor[-1] ?? const []) {
+      slots.add(injectionSlot(inj));
+    }
+
+    for (var i = 0; i < posts.length; i++) {
+      final post = posts[i];
+      slots.add(_FeedSlot(
+        (context) {
+          final card = PostCard(
             post: post,
             onOpenComments: () => _openComments(post),
             onOpenOptions: () => _openOptions(post),
             onOpenProfile: _openProfile,
             onOpenPage: (id) => context.push('/community/page/$id'),
-            onShare: () => sharePostToSheet(ref, _toDomainPost(post), context: context),
+            onShare: () =>
+                sharePostToSheet(ref, _toDomainPost(post), context: context),
+          );
+          if (!reportImpressions || post.backendId == 0) return card;
+          // Report the impression once the card is meaningfully on-screen. The
+          // tracker de-dupes, so the repeated callbacks while scrolling are
+          // cheap and only the first crossing counts.
+          return VisibilityDetector(
+            key: Key('impression-${post.backendId}'),
+            onVisibilityChanged: (info) {
+              if (info.visibleFraction >= 0.5) {
+                ref.read(impressionTrackerProvider.notifier).record(
+                      postId: post.backendId,
+                      petId: ref.read(actingPetIdProvider),
+                      surface: domain_enums.ImpressionSurface.discover,
+                    );
+              }
+            },
+            child: card,
           );
         },
-      ),
-    );
+      ));
+
+      // Legacy rails anchored to post indices.
+      if (i == 3 && hasPetsRail) {
+        slots.add(_FeedSlot(
+          (_) => SuggestedPetsRail(
+            pets: suggestedPets,
+            onToggleFollow: _toggleFollow,
+            onOpenProfile: _openProfile,
+          ),
+        ));
+      }
+      if (i == pagesSlot && hasPagesRail) {
+        slots.add(_FeedSlot(
+          (context) => SuggestedPagesRail(
+            pages: suggestedPages,
+            onToggleFollow: _togglePageFollow,
+            onOpenPage: (id) => openPageDetail(context, id),
+          ),
+        ));
+      }
+
+      // Adoption injections anchored after this post.
+      for (final inj in injectionsByAnchor[i] ?? const []) {
+        slots.add(injectionSlot(inj));
+      }
+    }
+
+    // Any injection anchored past the loaded posts falls to the end rather than
+    // being dropped (guards against afterPosition >= posts.length).
+    for (final entry in injectionsByAnchor.entries) {
+      if (entry.key >= posts.length) {
+        for (final inj in entry.value) {
+          slots.add(injectionSlot(inj));
+        }
+      }
+    }
+
+    return slots;
   }
+}
+
+/// A single renderable row in the feed list (post, rail or injection), wrapping
+/// a lazy builder so the ListView only materialises visible rows.
+class _FeedSlot {
+  const _FeedSlot(this.build);
+
+  final Widget Function(BuildContext context) build;
 }

@@ -1496,6 +1496,16 @@
   "@notifLostPetNearby": {},
   "notifLostPetNearbyDesc": "When a lost pet is reported within 10 km of your location",
   "@notifLostPetNearbyDesc": {},
+  "notifLostPetRadius": "Alert radius",
+  "@notifLostPetRadius": {},
+  "notifLostPetRadiusValue": "{km} km",
+  "@notifLostPetRadiusValue": {
+    "placeholders": {
+      "km": { "type": "int" }
+    }
+  },
+  "notifLostPetRadiusDesc": "How far away a lost-pet report can be to still alert you",
+  "@notifLostPetRadiusDesc": {},
   "notifSecurityAlerts": "Security alerts",
   "@notifSecurityAlerts": {},
   "notifSecurityAlertsDesc": "Password changes and new device sign-ins - always enabled",
@@ -1959,6 +1969,8 @@
   "locationResolving": "Finding address…",
   "pawhubLike": "Like",
   "pawhubComment": "Comment",
+  "pawhubAdoptionInjectionBadge": "Adoption",
+  "pawhubAdoptionInjectionCta": "Meet this pet",
   "communityMembersEmptyTitle": "No members yet",
   "communityMembersEmptyMessage": "Be the first to join this community.",
   "pawhubTrendingEmptyTitle": "Nothing trending yet",

@@ -119,6 +119,7 @@ class DiscoverFeed extends _$DiscoverFeed {
       suggestedCommunities: page.suggestedCommunities,
       suggestedPages: page.suggestedPages,
       alerts: page.alerts,
+      adoptionInjections: page.adoptionInjections,
       cursor: page.cursor,
     );
   }
@@ -172,6 +173,7 @@ class DiscoverState {
     required this.suggestedPages,
     required this.alerts,
     required this.cursor,
+    this.adoptionInjections = const [],
     this.loadingMore = false,
   });
 
@@ -180,6 +182,9 @@ class DiscoverState {
   final List<CommunityGroup> suggestedCommunities;
   final List<SuggestedPage> suggestedPages;
   final List<LostFoundAlert> alerts;
+
+  /// Adoption promo cards to interleave into the feed (page-1 only).
+  final List<AdoptionInjection> adoptionInjections;
   final PageCursor cursor;
   final bool loadingMore;
 
@@ -189,6 +194,7 @@ class DiscoverState {
     List<CommunityGroup>? suggestedCommunities,
     List<SuggestedPage>? suggestedPages,
     List<LostFoundAlert>? alerts,
+    List<AdoptionInjection>? adoptionInjections,
     PageCursor? cursor,
     bool? loadingMore,
   }) =>
@@ -198,6 +204,7 @@ class DiscoverState {
         suggestedCommunities: suggestedCommunities ?? this.suggestedCommunities,
         suggestedPages: suggestedPages ?? this.suggestedPages,
         alerts: alerts ?? this.alerts,
+        adoptionInjections: adoptionInjections ?? this.adoptionInjections,
         cursor: cursor ?? this.cursor,
         loadingMore: loadingMore ?? this.loadingMore,
       );

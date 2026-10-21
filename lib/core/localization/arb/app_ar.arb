@@ -1366,6 +1366,16 @@
   "@notifLostPetNearby": {},
   "notifLostPetNearbyDesc": "عند الإبلاغ عن حيوان ضائع في نطاق 10 كم من موقعك",
   "@notifLostPetNearbyDesc": {},
+  "notifLostPetRadius": "نطاق التنبيه",
+  "@notifLostPetRadius": {},
+  "notifLostPetRadiusValue": "{km} كم",
+  "@notifLostPetRadiusValue": {
+    "placeholders": {
+      "km": { "type": "int" }
+    }
+  },
+  "notifLostPetRadiusDesc": "إلى أي مدى يمكن أن يكون بلاغ الحيوان الضائع ويظل ينبّهك",
+  "@notifLostPetRadiusDesc": {},
   "notifSecurityAlerts": "تنبيهات الأمان",
   "@notifSecurityAlerts": {},
   "notifSecurityAlertsDesc": "تغييرات كلمة المرور وتسجيل الدخول من أجهزة جديدة - دائماً مفعّلة",
@@ -1799,6 +1809,8 @@
   "locationResolving": "جارٍ تحديد العنوان…",
   "pawhubLike": "إعجاب",
   "pawhubComment": "تعليق",
+  "pawhubAdoptionInjectionBadge": "تبنٍّ",
+  "pawhubAdoptionInjectionCta": "تعرّف على هذا الحيوان",
   "communityMembersEmptyTitle": "لا أعضاء بعد",
   "communityMembersEmptyMessage": "كن أول من ينضم إلى هذا المجتمع.",
   "pawhubTrendingEmptyTitle": "لا شيء رائج بعد",

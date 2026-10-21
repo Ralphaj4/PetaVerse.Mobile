@@ -222,6 +222,7 @@ class PawPost {
     this.isEdited = false,
     this.backendId = 0,
     this.commentCount = 0,
+    this.shares = 0,
     this.communityId,
     this.communityName,
     this.adoptionListing,
@@ -249,6 +250,7 @@ class PawPost {
         saved: e.saved,
         isEdited: e.isEdited,
         commentCount: e.comments,
+        shares: e.shares,
         communityId: e.communityId,
         communityName: e.communityName,
         adoptionListing: e.adoptionListing,
@@ -295,6 +297,9 @@ class PawPost {
   /// Server-provided comment count (use this for the badge; [comments] is only
   /// populated when the sheet is open).
   final int commentCount;
+
+  /// Server-provided share count for the share-action badge.
+  int shares;
 
   /// Community this post belongs to, or null for a personal post.
   final int? communityId;

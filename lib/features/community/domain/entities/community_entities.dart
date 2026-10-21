@@ -170,6 +170,7 @@ class Post {
     required this.saved,
     required this.isEdited,
     required this.createdAt,
+    this.shares = 0,
     this.author,
     this.pageAuthor,
     this.caption,
@@ -208,6 +209,9 @@ class Post {
   final List<CommunityPet> taggedPets;
   final int likes;
   final int comments;
+
+  /// Number of times this post has been shared (server-maintained counter).
+  final int shares;
   final bool likedByMe;
   final bool saved;
   final bool isEdited;
@@ -231,6 +235,7 @@ class Post {
   Post copyWith({
     int? likes,
     int? comments,
+    int? shares,
     bool? likedByMe,
     bool? saved,
     bool? isEdited,
@@ -249,6 +254,7 @@ class Post {
         taggedPets: taggedPets ?? this.taggedPets,
         likes: likes ?? this.likes,
         comments: comments ?? this.comments,
+        shares: shares ?? this.shares,
         likedByMe: likedByMe ?? this.likedByMe,
         saved: saved ?? this.saved,
         isEdited: isEdited ?? this.isEdited,
@@ -479,6 +485,7 @@ class DiscoverPage {
     required this.suggestedPages,
     required this.alerts,
     required this.cursor,
+    this.adoptionInjections = const [],
   });
 
   final List<Post> posts;
@@ -486,7 +493,47 @@ class DiscoverPage {
   final List<CommunityGroup> suggestedCommunities;
   final List<SuggestedPage> suggestedPages;
   final List<LostFoundAlert> alerts;
+
+  /// Adoption promo cards to interleave between posts. Only populated on page 1
+  /// (no cursor); empty on paginated pages.
+  final List<AdoptionInjection> adoptionInjections;
   final PageCursor cursor;
+}
+
+/// A lightweight adoption promo card interleaved into the Discover feed. Thin
+/// subset of a full adoption listing - enough to render the card. Tapping it
+/// opens the full listing detail by [id].
+class AdoptionInjectionCard {
+  const AdoptionInjectionCard({
+    required this.id,
+    required this.petName,
+    this.statusId,
+    this.speciesName,
+    this.photoUrl,
+    this.locationLabel,
+    this.vaccinated = false,
+    this.neutered = false,
+    this.goodWithKids = false,
+  });
+
+  final int id;
+  final int? statusId;
+  final String petName;
+  final String? speciesName;
+  final String? photoUrl;
+  final String? locationLabel;
+  final bool vaccinated;
+  final bool neutered;
+  final bool goodWithKids;
+}
+
+/// One interleave instruction: render [card] after the 0-based [afterPosition]
+/// post in the first page (`-1` → before the first post).
+class AdoptionInjection {
+  const AdoptionInjection({required this.afterPosition, required this.card});
+
+  final int afterPosition;
+  final AdoptionInjectionCard card;
 }
 
 /// A post with its full comment thread (`PostDetailResponse`).

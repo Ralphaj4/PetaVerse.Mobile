@@ -51,6 +51,23 @@ class CommunityRemoteDataSource {
     return DiscoverResponseDto.fromJson(data);
   }
 
+  /// Fire-and-forget batch of post impressions (`POST /community/impressions`,
+  /// returns 202). [items] is a list of `{postId, surface}` maps; [petId] is the
+  /// acting pet (omit to let the server use the caller's first pet). Best-effort:
+  /// the caller swallows any error - impressions must never surface to the user.
+  Future<void> reportImpressions({
+    int? petId,
+    required List<Map<String, int>> items,
+  }) async {
+    await _client.post<void>(
+      ApiEndpoints.communityImpressions,
+      data: {
+        'petId': ?petId,
+        'items': items,
+      },
+    );
+  }
+
   Future<FeedResponseDto> getSaved({
     int? petId,
     String? cursor,

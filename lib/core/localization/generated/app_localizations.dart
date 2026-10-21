@@ -5710,6 +5710,24 @@ abstract class AppLocalizations {
   /// **'When a lost pet is reported within 10 km of your location'**
   String get notifLostPetNearbyDesc;
 
+  /// No description provided for @notifLostPetRadius.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert radius'**
+  String get notifLostPetRadius;
+
+  /// No description provided for @notifLostPetRadiusValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{km} km'**
+  String notifLostPetRadiusValue(int km);
+
+  /// No description provided for @notifLostPetRadiusDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'How far away a lost-pet report can be to still alert you'**
+  String get notifLostPetRadiusDesc;
+
   /// No description provided for @notifSecurityAlerts.
   ///
   /// In en, this message translates to:
@@ -7545,6 +7563,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Comment'**
   String get pawhubComment;
+
+  /// No description provided for @pawhubAdoptionInjectionBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Adoption'**
+  String get pawhubAdoptionInjectionBadge;
+
+  /// No description provided for @pawhubAdoptionInjectionCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Meet this pet'**
+  String get pawhubAdoptionInjectionCta;
 
   /// No description provided for @communityMembersEmptyTitle.
   ///

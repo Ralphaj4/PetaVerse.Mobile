@@ -178,6 +178,7 @@ abstract class PostDto with _$PostDto {
     @Default(<PetSummaryDto>[]) List<PetSummaryDto> taggedPets,
     @Default(0) int likes,
     @Default(0) int comments,
+    @Default(0) int shares,
     @Default(false) bool likedByMe,
     @Default(false) bool saved,
     @Default(false) bool isEdited,
@@ -206,6 +207,7 @@ abstract class PostDto with _$PostDto {
             .toList(growable: false),
         likes: likes,
         comments: comments,
+        shares: shares,
         likedByMe: likedByMe,
         saved: saved,
         isEdited: isEdited,
@@ -451,6 +453,62 @@ abstract class SuggestedPageDto with _$SuggestedPageDto {
       );
 }
 
+/// Lightweight adoption card embedded in a Discover `adoptionInjections[]`
+/// entry. This is a thin promo shape (not the full `AdoptionListingDto`) - just
+/// enough to render the interleaved card; tapping it opens the full listing by
+/// [id].
+@freezed
+abstract class AdoptionInjectionCardDto with _$AdoptionInjectionCardDto {
+  const factory AdoptionInjectionCardDto({
+    required int id,
+    int? statusId,
+    @Default('') String petName,
+    String? speciesName,
+    String? photoUrl,
+    String? locationLabel,
+    @Default(false) bool vaccinated,
+    @Default(false) bool neutered,
+    @Default(false) bool goodWithKids,
+  }) = _AdoptionInjectionCardDto;
+
+  const AdoptionInjectionCardDto._();
+
+  factory AdoptionInjectionCardDto.fromJson(Map<String, dynamic> json) =>
+      _$AdoptionInjectionCardDtoFromJson(json);
+
+  AdoptionInjectionCard toEntity() => AdoptionInjectionCard(
+        id: id,
+        statusId: statusId,
+        petName: petName,
+        speciesName: speciesName,
+        photoUrl: photoUrl,
+        locationLabel: locationLabel,
+        vaccinated: vaccinated,
+        neutered: neutered,
+        goodWithKids: goodWithKids,
+      );
+}
+
+/// One `adoptionInjections[]` entry: a card plus the 0-based post position it
+/// should be rendered *after* (`-1` → before the first post).
+@freezed
+abstract class AdoptionInjectionDto with _$AdoptionInjectionDto {
+  const factory AdoptionInjectionDto({
+    @Default(-1) int afterPosition,
+    required AdoptionInjectionCardDto card,
+  }) = _AdoptionInjectionDto;
+
+  const AdoptionInjectionDto._();
+
+  factory AdoptionInjectionDto.fromJson(Map<String, dynamic> json) =>
+      _$AdoptionInjectionDtoFromJson(json);
+
+  AdoptionInjection toEntity() => AdoptionInjection(
+        afterPosition: afterPosition,
+        card: card.toEntity(),
+      );
+}
+
 /// `DiscoverFeedResponse`.
 @freezed
 abstract class DiscoverResponseDto with _$DiscoverResponseDto {
@@ -460,6 +518,7 @@ abstract class DiscoverResponseDto with _$DiscoverResponseDto {
     @Default(<CommunityDto>[]) List<CommunityDto> suggestedCommunities,
     @Default(<SuggestedPageDto>[]) List<SuggestedPageDto> suggestedPages,
     @Default(<LostFoundAlertDto>[]) List<LostFoundAlertDto> alerts,
+    @Default(<AdoptionInjectionDto>[]) List<AdoptionInjectionDto> adoptionInjections,
     @Default(false) bool hasMore,
     String? nextCursor,
   }) = _DiscoverResponseDto;
@@ -482,6 +541,8 @@ abstract class DiscoverResponseDto with _$DiscoverResponseDto {
             .map((p) => p.toEntity())
             .toList(growable: false),
         alerts: alerts.map((a) => a.toEntity()).toList(growable: false),
+        adoptionInjections:
+            adoptionInjections.map((a) => a.toEntity()).toList(growable: false),
         cursor: PageCursor(hasMore: hasMore, nextCursor: nextCursor),
       );
 }
