@@ -21,6 +21,11 @@ class VideoCache {
   /// Cap the cache directory; oldest files are evicted past this.
   static const int _maxBytes = 300 * 1024 * 1024; // 300 MB
 
+  /// Evict clips older than this regardless of size. A social feed goes stale
+  /// fast; a week-old clip is almost never re-viewed, so holding it only hoards
+  /// disk. Checked on access (stale files re-download) and during eviction.
+  static const Duration _maxAge = Duration(days: 7);
+
   Directory? _dir;
   // De-dupes concurrent requests for the same url (e.g. player + poster).
   final Map<String, Future<File>> _inFlight = {};
@@ -32,6 +37,9 @@ class VideoCache {
     final dir = Directory(p.join(base.path, 'video_cache'));
     if (!await dir.exists()) await dir.create(recursive: true);
     _dir = dir;
+    // Sweep stale clips once on first use this session, so files aged out
+    // between sessions clear even if no new clip is downloaded to trigger it.
+    unawaited(_evictIfNeeded());
     return dir;
   }
 
@@ -56,11 +64,19 @@ class VideoCache {
     final file = File(p.join(dir.path, _keyFor(url)));
 
     if (await file.exists() && await file.length() > 0) {
-      // Touch so LRU keeps recently-played clips.
+      // Drop stale clips so a week-old file re-downloads instead of serving
+      // indefinitely. Uses last-modified, which we touch on every access below.
+      final age = DateTime.now().difference(await file.lastModified());
+      if (age <= _maxAge) {
+        // Touch so LRU keeps recently-played clips.
+        try {
+          await file.setLastModified(DateTime.now());
+        } catch (_) {}
+        return file;
+      }
       try {
-        await file.setLastModified(DateTime.now());
+        await file.delete();
       } catch (_) {}
-      return file;
     }
 
     // Download to a temp file, then atomically rename in - avoids a half-written
@@ -75,16 +91,24 @@ class VideoCache {
     return file;
   }
 
-  /// LRU-ish eviction: if the dir exceeds [_maxBytes], delete oldest files
-  /// (by last-modified) until under the cap.
+  /// Eviction: first purge anything older than [_maxAge], then, if still over
+  /// [_maxBytes], delete oldest files (by last-modified) until under the cap.
   Future<void> _evictIfNeeded() async {
     try {
       final dir = _dir;
       if (dir == null) return;
+      final now = DateTime.now();
       final files = <File>[];
       var total = 0;
       await for (final e in dir.list()) {
         if (e is File && !e.path.endsWith('.part')) {
+          // Age purge: drop stale clips up front, independent of size.
+          if (now.difference(e.statSync().modified) > _maxAge) {
+            try {
+              await e.delete();
+            } catch (_) {}
+            continue;
+          }
           files.add(e);
           total += await e.length();
         }

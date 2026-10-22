@@ -154,7 +154,9 @@ class _PetVisionPageState extends ConsumerState<PetVisionPage>
   Future<void> _openGallery() async {
     final file = await ImagePicker().pickImage(
       source: ImageSource.gallery,
-      imageQuality: 90,
+      // Full quality; the capture is compressed later when it becomes post
+      // media, so a lossy pre-pass here would just double-encode.
+      imageQuality: 100,
     );
     if (file != null && mounted) setState(() => _capturedImage = file);
   }

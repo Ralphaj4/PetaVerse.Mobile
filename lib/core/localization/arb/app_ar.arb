@@ -391,6 +391,15 @@
   },
   "errorCache": "تعذر تحميل البيانات المحفوظة.",
   "errorUnknown": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.",
+  "mediaTooLarge": "هذا الملف كبير جداً. الحد الأقصى للحجم هو {limit} ميغابايت.",
+  "@mediaTooLarge": {
+    "placeholders": { "limit": { "type": "String" } }
+  },
+  "mediaUnsupportedFormat": "نوع هذا الملف غير مدعوم. يرجى اختيار صورة أو فيديو آخر.",
+  "mediaVideoTooLong": "هذا الفيديو طويل جداً. الحد الأقصى للمدة هو {seconds} ثانية.",
+  "@mediaVideoTooLong": {
+    "placeholders": { "seconds": { "type": "int" } }
+  },
   "errorNotFound": "لم نتمكن من العثور على حساب بهذه المعلومات.",
   "errorPhoneNotRegistered": "لا يوجد حساب مسجّل بهذا الرقم.",
   "captchaTitle": "التحقق الأمني",

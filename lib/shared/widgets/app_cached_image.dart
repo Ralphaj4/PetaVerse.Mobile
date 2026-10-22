@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/services/app_image_cache.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import 'shimmer.dart';
@@ -37,6 +38,7 @@ class AppCachedImage extends StatelessWidget {
     } else if (url.startsWith('http')) {
       image = CachedNetworkImage(
         imageUrl: url,
+        cacheManager: AppImageCacheManager.instance,
         width: width,
         height: height,
         fit: fit,

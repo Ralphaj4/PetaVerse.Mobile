@@ -75,6 +75,8 @@ class CreatePost extends _$CreatePost {
         file: m.file,
         contentType: m.contentType,
         category: MediaCategory.post,
+        isVideo: m.isVideo,
+        durationSeconds: m.durationSeconds,
         petId: authorPetId,
       );
       final asset = result.when(success: (a) => a, failure: (_) => null);

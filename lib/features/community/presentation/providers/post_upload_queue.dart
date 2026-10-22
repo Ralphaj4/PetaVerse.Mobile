@@ -169,6 +169,8 @@ class PostUploadQueue extends Notifier<List<PostUploadJob>> {
         file: m.file,
         contentType: m.contentType,
         category: MediaCategory.post,
+        isVideo: m.isVideo,
+        durationSeconds: m.durationSeconds,
         petId: draft.authorPetId,
         onProgress: (fraction) {
           sentBytes[i] = (fraction * sizes[i]).round();

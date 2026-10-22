@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/errors/failure_l10n.dart';
@@ -18,7 +17,7 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_dropdown_field.dart';
-import '../../../../shared/widgets/photo_source_sheet.dart';
+import '../../../../shared/widgets/media_picker.dart';
 import '../../../pets/presentation/providers/species_provider.dart';
 
 /// The details a shelter/stray listing collects for the animal, plus the
@@ -67,6 +66,7 @@ class ShelterListingFormState extends ConsumerState<ShelterListingForm> {
   int? _speciesId;
 
   File? _photoFile;
+  String _photoContentType = 'image/jpeg';
   String? _photoAssetId;
   bool _uploadingPhoto = false;
 
@@ -98,23 +98,23 @@ class ShelterListingFormState extends ConsumerState<ShelterListingForm> {
   int? _nullIfZero(int? v) => (v == null || v == 0) ? null : v;
 
   Future<void> _pickPhoto() async {
-    final source = await showPhotoSourceSheet(context);
-    if (source == null) return;
-
-    final picked =
-        await ImagePicker().pickImage(source: source, imageQuality: 90);
-    if (picked == null || !mounted) return;
+    final prepared = await pickAndPrepareImage(
+      context,
+      category: MediaCategory.adoptionListingPhoto,
+    );
+    if (prepared == null || !mounted) return;
 
     setState(() {
-      _photoFile = File(picked.path);
+      _photoFile = prepared.file;
+      _photoContentType = prepared.contentType;
       _photoAssetId = null;
       _uploadingPhoto = true;
     });
 
     final service = MediaUploadService(ref.read(mediaDatasourceProvider));
     final result = await service.uploadFile(
-      file: File(picked.path),
-      contentType: 'image/jpeg',
+      file: prepared.file,
+      contentType: _photoContentType,
       category: MediaCategory.adoptionListingPhoto,
       fileName: 'adoption_listing.jpg',
     );

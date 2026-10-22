@@ -11,12 +11,16 @@ import 'package:video_player/video_player.dart';
 
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/extensions/context_extensions.dart';
+import '../../../../core/media/image_compressor.dart';
+import '../../../../core/media/media_validator.dart';
+import '../../../../core/network/dtos/media_dtos.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_cached_image.dart';
+import '../../../../shared/widgets/media_picker.dart';
 import '../../../../shared/widgets/photo_source_sheet.dart';
 import '../../domain/entities/community_enums.dart' show PostFeeling;
 import '../models/pawhub_models.dart';
@@ -118,14 +122,16 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
   Future<void> _pickImage(ImageSource source) async {
     try {
       final file = await _picker.pickImage(source: source);
-      if (file != null && mounted) {
-        setState(() {
-          _media.add(PawMedia(
-            url: file.path,
-            altText: '',
-          ));
-        });
-      }
+      if (file == null || !mounted) return;
+      final prepared = await _prepareImage(File(file.path));
+      if (prepared == null || !mounted) return; // rejected (toast shown)
+      setState(() {
+        _media.add(PawMedia(
+          url: prepared.file.path,
+          contentType: prepared.contentType,
+          altText: '',
+        ));
+      });
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -143,17 +149,42 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
       final picked = <PawMedia>[];
       for (final file in files) {
         final isVideo = _isVideoFile(file);
-        // Videos need a duration (the backend requires it); read it from the
-        // file before we queue the item.
-        final duration = isVideo ? await _readVideoSeconds(file.path) : null;
-        picked.add(PawMedia(
-          url: file.path,
-          isVideo: isVideo,
-          durationSeconds: duration,
-          altText: '',
-        ));
+        if (isVideo) {
+          // Videos need a duration (the backend requires it); read it from the
+          // file before validating against the length cap.
+          final raw = File(file.path);
+          final duration = await _readVideoSeconds(file.path);
+          final validation = MediaValidator.validateVideo(
+            raw,
+            MediaCategory.post,
+            durationSeconds: duration,
+          );
+          if (validation is! MediaValid) {
+            if (mounted) {
+              context.showErrorSnackBar(
+                validation.localizedMessage(context.l10n),
+              );
+            }
+            continue; // skip this file, keep the rest
+          }
+          picked.add(PawMedia(
+            url: file.path,
+            isVideo: true,
+            durationSeconds: duration,
+            contentType: validation.contentType,
+            altText: '',
+          ));
+        } else {
+          final prepared = await _prepareImage(File(file.path));
+          if (prepared == null) continue; // rejected (toast shown)
+          picked.add(PawMedia(
+            url: prepared.file.path,
+            contentType: prepared.contentType,
+            altText: '',
+          ));
+        }
       }
-      if (mounted) setState(() => _media.addAll(picked));
+      if (mounted && picked.isNotEmpty) setState(() => _media.addAll(picked));
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -161,6 +192,27 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
         );
       }
     }
+  }
+
+  /// Validates and compresses a picked image for post media. Returns the
+  /// prepared (compressed, HEIC→JPEG) file + content type, or null after
+  /// showing a localized rejection toast. Mirrors [pickAndPrepareImage] but
+  /// operates on an already-picked file so it works for both the camera path
+  /// and each item of a multi-pick.
+  Future<PreparedImage?> _prepareImage(File original) async {
+    final validation =
+        MediaValidator.validateImage(original, MediaCategory.post);
+    if (validation is! MediaValid) {
+      if (mounted) {
+        context.showErrorSnackBar(validation.localizedMessage(context.l10n));
+      }
+      return null;
+    }
+    final compressed =
+        await ImageCompressor.compress(original, MediaCategory.post);
+    final contentType =
+        MediaValidator.detectImageMime(compressed) ?? 'image/jpeg';
+    return PreparedImage(file: compressed, contentType: contentType);
   }
 
   /// Lets the user pick a cover image (poster) for the video at [index] from
@@ -172,11 +224,14 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
     _pickerActive = true;
     try {
       final file = await _picker.pickImage(source: ImageSource.gallery);
-      if (file != null && mounted) {
-        setState(() {
-          _media[index] = _media[index].copyWith(localCoverPath: file.path);
-        });
-      }
+      if (file == null || !mounted) return;
+      // Validate + compress the poster like any other image (also → JPEG).
+      final prepared = await _prepareImage(File(file.path));
+      if (prepared == null || !mounted) return; // rejected (toast shown)
+      setState(() {
+        _media[index] =
+            _media[index].copyWith(localCoverPath: prepared.file.path);
+      });
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -294,9 +349,13 @@ class _PostComposerPageState extends ConsumerState<PostComposerPage> {
 
     final draftMedia = _media.map((m) {
       final isVideo = m.isVideo;
+      // Use the type detected at pick time; fall back for pre-seeded media
+      // (e.g. a Pet Vision capture) that never went through the picker.
+      final contentType =
+          m.contentType ?? (isVideo ? 'video/mp4' : 'image/jpeg');
       return DraftMedia(
         file: File(m.url),
-        contentType: isVideo ? 'video/mp4' : 'image/jpeg',
+        contentType: contentType,
         altText: m.altText,
         durationSeconds: isVideo ? m.durationSeconds : null,
         // Only videos carry a cover; ignore any stray path on an image.

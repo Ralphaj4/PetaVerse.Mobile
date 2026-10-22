@@ -1,13 +1,10 @@
-﻿import 'dart:io';
-
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../../../core/errors/failure.dart';
@@ -24,7 +21,7 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/location_field.dart';
-import '../../../../shared/widgets/photo_source_sheet.dart';
+import '../../../../shared/widgets/media_picker.dart';
 import '../../../../shared/widgets/shimmer.dart';
 import '../../../../core/app/router/app_router.dart';
 import '../../domain/entities/user.dart';
@@ -137,26 +134,24 @@ class _PersonalInformationPageState
     }
   }
 
-  /// Opens a Camera / Gallery sheet, then uploads the chosen image as the
-  /// user's avatar and refreshes the profile so the new photo appears.
+  /// Picks and prepares an image (validates / compresses / transcodes), then
+  /// uploads it as the user's avatar and refreshes the profile so the new photo
+  /// appears.
   Future<void> _editAvatar() async {
     if (_isUploadingAvatar) return;
 
-    final source = await showPhotoSourceSheet(context);
-    if (source == null) return;
-
-    final picked = await ImagePicker().pickImage(
-      source: source,
-      imageQuality: 90,
+    final prepared = await pickAndPrepareImage(
+      context,
+      category: MediaCategory.userAvatar,
     );
-    if (picked == null || !mounted) return;
+    if (prepared == null || !mounted) return;
 
     setState(() => _isUploadingAvatar = true);
 
     final uploadService = MediaUploadService(ref.read(mediaDatasourceProvider));
     final result = await uploadService.uploadFile(
-      file: File(picked.path),
-      contentType: 'image/jpeg',
+      file: prepared.file,
+      contentType: prepared.contentType,
       category: MediaCategory.userAvatar,
       fileName: 'avatar.jpg',
     );

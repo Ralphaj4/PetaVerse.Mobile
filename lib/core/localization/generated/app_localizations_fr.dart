@@ -959,6 +959,20 @@ class AppLocalizationsFr extends AppLocalizations {
       'Une erreur inattendue est survenue. Veuillez réessayer.';
 
   @override
+  String mediaTooLarge(String limit) {
+    return 'Ce fichier est trop volumineux. La taille maximale est de $limit Mo.';
+  }
+
+  @override
+  String get mediaUnsupportedFormat =>
+      'Ce type de fichier n\'est pas pris en charge. Veuillez choisir une autre photo ou vidéo.';
+
+  @override
+  String mediaVideoTooLong(int seconds) {
+    return 'Cette vidéo est trop longue. La durée maximale est de $seconds s.';
+  }
+
+  @override
   String get errorNotFound =>
       'Nous n\'avons trouvé aucun compte avec ces informations.';
 

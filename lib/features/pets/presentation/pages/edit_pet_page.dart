@@ -1,13 +1,10 @@
-﻿import 'dart:io';
-
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+﻿import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../core/errors/failure_l10n.dart';
@@ -23,7 +20,7 @@ import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/app_dropdown_field.dart';
 import '../../../../shared/widgets/app_snack_bar.dart';
-import '../../../../shared/widgets/photo_source_sheet.dart';
+import '../../../../shared/widgets/media_picker.dart';
 import '../../domain/entities/new_pet.dart';
 import '../../domain/entities/pet.dart';
 import '../../domain/entities/species.dart';
@@ -47,23 +44,22 @@ class _EditPetPageState extends ConsumerState<EditPetPage> {
   int? _speciesId;
   bool _isUploadingAvatar = false;
 
-  /// Opens a Camera / Gallery sheet, uploads the chosen image as this pet's
-  /// avatar (petAvatar category, tied to [widget.petId]), then refreshes the
-  /// pet providers so the new photo shows everywhere.
+  /// Picks and prepares an image (validates / compresses / transcodes), uploads
+  /// it as this pet's avatar (petAvatar category, tied to [widget.petId]), then
+  /// refreshes the pet providers so the new photo shows everywhere.
   Future<void> _editAvatar() async {
-    final source = await showPhotoSourceSheet(context);
-    if (source == null) return;
-
-    final picked =
-        await ImagePicker().pickImage(source: source, imageQuality: 90);
-    if (picked == null || !mounted) return;
+    final prepared = await pickAndPrepareImage(
+      context,
+      category: MediaCategory.petAvatar,
+    );
+    if (prepared == null || !mounted) return;
 
     setState(() => _isUploadingAvatar = true);
 
     final uploadService = MediaUploadService(ref.read(mediaDatasourceProvider));
     final result = await uploadService.uploadFile(
-      file: File(picked.path),
-      contentType: 'image/jpeg',
+      file: prepared.file,
+      contentType: prepared.contentType,
       category: MediaCategory.petAvatar,
       petId: widget.petId,
       fileName: 'pet_avatar.jpg',

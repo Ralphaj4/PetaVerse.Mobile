@@ -1,11 +1,9 @@
 ﻿import 'dart:async';
-import 'dart:io';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/errors/failure.dart';
 import '../../../pets/presentation/providers/species_provider.dart';
@@ -19,7 +17,7 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_avatar.dart';
-import '../../../../shared/widgets/photo_source_sheet.dart';
+import '../../../../shared/widgets/media_picker.dart';
 import '../../../../shared/widgets/app_cached_image.dart';
 import '../../../../shared/widgets/shimmer.dart';
 import '../../../../shared/widgets/app_confirm_dialog.dart';
@@ -338,20 +336,24 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
       ),
     );
     if (choice == null || !mounted) return;
+    final isAvatar = choice == _ImageTarget.avatar;
 
-    final source = await showPhotoSourceSheet(context);
-    if (source == null || !mounted) return;
-    final picked = await ImagePicker().pickImage(source: source);
-    if (picked == null || !mounted) return;
+    // Validates size/format and compresses (HEIC→JPEG); null if cancelled or
+    // rejected (the helper already showed the localized reason).
+    final prepared = await pickAndPrepareImage(
+      context,
+      category:
+          isAvatar ? MediaCategory.communityAvatar : MediaCategory.communityBanner,
+    );
+    if (prepared == null || !mounted) return;
 
     _snack(l10n.communityImagesUpdating);
     final uploader = MediaUploadService(ref.read(mediaDatasourceProvider));
     final result = await uploader.uploadFile(
-      file: File(picked.path),
-      contentType: 'image/jpeg',
-      category: choice == _ImageTarget.avatar
-          ? MediaCategory.communityAvatar
-          : MediaCategory.communityBanner,
+      file: prepared.file,
+      contentType: prepared.contentType,
+      category:
+          isAvatar ? MediaCategory.communityAvatar : MediaCategory.communityBanner,
     );
     final assetId = result.when(success: (a) => a.id, failure: (_) => null);
     if (assetId == null) {
@@ -361,8 +363,8 @@ class _CommunityDetailPageState extends ConsumerState<CommunityDetailPage> {
 
     final updated = await ref.read(communityGroupActionsProvider).update(
           communityId: community.id,
-          avatarAssetId: choice == _ImageTarget.avatar ? assetId : null,
-          bannerAssetId: choice == _ImageTarget.banner ? assetId : null,
+          avatarAssetId: isAvatar ? assetId : null,
+          bannerAssetId: isAvatar ? null : assetId,
         );
     if (mounted) {
       _snack(updated != null

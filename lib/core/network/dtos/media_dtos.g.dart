@@ -12,6 +12,8 @@ _UploadUrlRequest _$UploadUrlRequestFromJson(Map<String, dynamic> json) =>
       contentType: json['contentType'] as String,
       fileName: json['fileName'] as String?,
       petId: (json['petId'] as num?)?.toInt(),
+      sizeBytes: (json['sizeBytes'] as num?)?.toInt(),
+      durationSeconds: (json['durationSeconds'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$UploadUrlRequestToJson(_UploadUrlRequest instance) =>
@@ -20,6 +22,8 @@ Map<String, dynamic> _$UploadUrlRequestToJson(_UploadUrlRequest instance) =>
       'contentType': instance.contentType,
       'fileName': instance.fileName,
       'petId': instance.petId,
+      'sizeBytes': instance.sizeBytes,
+      'durationSeconds': instance.durationSeconds,
     };
 
 _UploadUrlResponse _$UploadUrlResponseFromJson(Map<String, dynamic> json) =>

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../../../core/errors/failure_l10n.dart';
@@ -21,7 +20,7 @@ import '../../../../shared/widgets/app_avatar.dart';
 import '../../../../shared/widgets/app_button.dart';
 import '../../../../shared/widgets/app_dropdown_field.dart';
 import '../../../../shared/widgets/location_field.dart';
-import '../../../../shared/widgets/photo_source_sheet.dart';
+import '../../../../shared/widgets/media_picker.dart';
 import '../../../pets/domain/entities/pet.dart';
 import '../../../pets/presentation/providers/pet_list_provider.dart';
 import '../../../pets/presentation/providers/species_provider.dart';
@@ -56,6 +55,7 @@ class _ReportLostPetPageState extends ConsumerState<ReportLostPetPage> {
   // Found: an optional photo of the found pet. Uploaded on submit as a
   // PetReport MediaAsset, then linked via avatarMediaAssetId.
   File? _photo;
+  String _photoContentType = 'image/jpeg';
   bool _uploadingPhoto = false;
 
   // Set once submit is attempted, so the "photo required" error only shows
@@ -85,12 +85,15 @@ class _ReportLostPetPageState extends ConsumerState<ReportLostPetPage> {
   }
 
   Future<void> _pickPhoto() async {
-    final source = await showPhotoSourceSheet(context);
-    if (source == null) return;
-    final picked =
-        await ImagePicker().pickImage(source: source, imageQuality: 90);
-    if (picked != null && mounted) {
-      setState(() => _photo = File(picked.path));
+    final prepared = await pickAndPrepareImage(
+      context,
+      category: MediaCategory.petReport,
+    );
+    if (prepared != null && mounted) {
+      setState(() {
+        _photo = prepared.file;
+        _photoContentType = prepared.contentType;
+      });
     }
   }
 
@@ -153,7 +156,7 @@ class _ReportLostPetPageState extends ConsumerState<ReportLostPetPage> {
           MediaUploadService(ref.read(mediaDatasourceProvider));
       final upload = await uploadService.uploadFile(
         file: _photo!,
-        contentType: 'image/jpeg',
+        contentType: _photoContentType,
         category: MediaCategory.petReport,
         fileName: 'pet_report.jpg',
       );

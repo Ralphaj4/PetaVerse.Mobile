@@ -949,6 +949,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String get errorUnknown => 'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.';
 
   @override
+  String mediaTooLarge(String limit) {
+    return 'هذا الملف كبير جداً. الحد الأقصى للحجم هو $limit ميغابايت.';
+  }
+
+  @override
+  String get mediaUnsupportedFormat =>
+      'نوع هذا الملف غير مدعوم. يرجى اختيار صورة أو فيديو آخر.';
+
+  @override
+  String mediaVideoTooLong(int seconds) {
+    return 'هذا الفيديو طويل جداً. الحد الأقصى للمدة هو $seconds ثانية.';
+  }
+
+  @override
   String get errorNotFound => 'لم نتمكن من العثور على حساب بهذه المعلومات.';
 
   @override

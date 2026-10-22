@@ -8,7 +8,6 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/extensions/context_extensions.dart';
 import '../../../../core/localization/generated/app_localizations.dart';
@@ -20,7 +19,7 @@ import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../shared/widgets/app_dropdown_field.dart';
-import '../../../../shared/widgets/photo_source_sheet.dart';
+import '../../../../shared/widgets/media_picker.dart';
 import '../../domain/entities/community_group_enums.dart';
 import '../providers/community_group_actions_providers.dart';
 import '../providers/community_group_providers.dart';
@@ -42,11 +41,12 @@ class CreateCommunityPage extends ConsumerStatefulWidget {
 
 class _CreateCommunityPageState extends ConsumerState<CreateCommunityPage> {
   final _formKey = GlobalKey<FormBuilderState>();
-  final _picker = ImagePicker();
   bool _submitting = false;
 
   File? _avatarFile;
+  String? _avatarContentType;
   File? _bannerFile;
+  String? _bannerContentType;
 
   // ── Handle availability ─────────────────────────────────────────────────────
   final _handleController = TextEditingController();
@@ -121,30 +121,37 @@ class _CreateCommunityPageState extends ConsumerState<CreateCommunityPage> {
       };
 
   Future<void> _pickImage({required bool isBanner}) async {
-    try {
-      final source = await showPhotoSourceSheet(context);
-      if (source == null || !mounted) return;
-      final picked = await _picker.pickImage(source: source);
-      if (picked == null || !mounted) return;
-      setState(() {
-        if (isBanner) {
-          _bannerFile = File(picked.path);
-        } else {
-          _avatarFile = File(picked.path);
-        }
-      });
-    } catch (_) {
-      if (mounted) _snack(context.l10n.communityCreateFailed);
-    }
+    // Validates size/format and compresses (HEIC→JPEG); null if cancelled or
+    // rejected (the helper already showed the localized reason).
+    final prepared = await pickAndPrepareImage(
+      context,
+      category: isBanner
+          ? MediaCategory.communityBanner
+          : MediaCategory.communityAvatar,
+    );
+    if (prepared == null || !mounted) return;
+    setState(() {
+      if (isBanner) {
+        _bannerFile = prepared.file;
+        _bannerContentType = prepared.contentType;
+      } else {
+        _avatarFile = prepared.file;
+        _avatarContentType = prepared.contentType;
+      }
+    });
   }
 
   /// Uploads [file] via the presign/confirm flow, returning the confirmed asset
   /// id, or null (with a snackbar) on failure.
-  Future<String?> _uploadImage(File file, MediaCategory category) async {
+  Future<String?> _uploadImage(
+    File file,
+    String? contentType,
+    MediaCategory category,
+  ) async {
     final uploader = MediaUploadService(ref.read(mediaDatasourceProvider));
     final result = await uploader.uploadFile(
       file: file,
-      contentType: 'image/jpeg',
+      contentType: contentType,
       category: category,
     );
     return result.when(success: (asset) => asset.id, failure: (_) => null);
@@ -176,13 +183,13 @@ class _CreateCommunityPageState extends ConsumerState<CreateCommunityPage> {
     String? avatarAssetId;
     String? bannerAssetId;
     if (_avatarFile != null) {
-      avatarAssetId =
-          await _uploadImage(_avatarFile!, MediaCategory.communityAvatar);
+      avatarAssetId = await _uploadImage(
+          _avatarFile!, _avatarContentType, MediaCategory.communityAvatar);
       if (avatarAssetId == null) return _fail(l10n);
     }
     if (_bannerFile != null) {
-      bannerAssetId =
-          await _uploadImage(_bannerFile!, MediaCategory.communityBanner);
+      bannerAssetId = await _uploadImage(
+          _bannerFile!, _bannerContentType, MediaCategory.communityBanner);
       if (bannerAssetId == null) return _fail(l10n);
     }
 

@@ -948,6 +948,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorUnknown => 'An unexpected error occurred. Please try again.';
 
   @override
+  String mediaTooLarge(String limit) {
+    return 'This file is too large. Maximum size is $limit MB.';
+  }
+
+  @override
+  String get mediaUnsupportedFormat =>
+      'This file type isn\'t supported. Please choose a different photo or video.';
+
+  @override
+  String mediaVideoTooLong(int seconds) {
+    return 'This video is too long. Maximum length is ${seconds}s.';
+  }
+
+  @override
   String get errorNotFound =>
       'We couldn\'t find an account with that information.';
 

@@ -391,6 +391,15 @@
   },
   "errorCache": "Impossible de charger les données enregistrées.",
   "errorUnknown": "Une erreur inattendue est survenue. Veuillez réessayer.",
+  "mediaTooLarge": "Ce fichier est trop volumineux. La taille maximale est de {limit} Mo.",
+  "@mediaTooLarge": {
+    "placeholders": { "limit": { "type": "String" } }
+  },
+  "mediaUnsupportedFormat": "Ce type de fichier n'est pas pris en charge. Veuillez choisir une autre photo ou vidéo.",
+  "mediaVideoTooLong": "Cette vidéo est trop longue. La durée maximale est de {seconds} s.",
+  "@mediaVideoTooLong": {
+    "placeholders": { "seconds": { "type": "int" } }
+  },
   "errorNotFound": "Nous n'avons trouvé aucun compte avec ces informations.",
   "errorPhoneNotRegistered": "Aucun compte n'est enregistré avec ce numéro de mobile.",
   "captchaTitle": "Vérification de sécurité",

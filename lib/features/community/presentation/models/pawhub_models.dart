@@ -123,6 +123,7 @@ class PawMedia {
     this.altText = '',
     this.thumbnailUrl,
     this.localCoverPath,
+    this.contentType,
   });
 
   factory PawMedia.fromEntity(domain.PostMedia e) => PawMedia(
@@ -150,7 +151,11 @@ class PawMedia {
   /// uploaded as the thumbnail asset on publish. Null when none chosen.
   final String? localCoverPath;
 
-  PawMedia copyWith({String? localCoverPath}) => PawMedia(
+  /// Composer-only: the real content type of the local [url] file, detected at
+  /// pick time (e.g. `image/jpeg`, `video/quicktime`). Null for server media.
+  final String? contentType;
+
+  PawMedia copyWith({String? localCoverPath, String? contentType}) => PawMedia(
         url: url,
         isVideo: isVideo,
         durationLabel: durationLabel,
@@ -158,6 +163,7 @@ class PawMedia {
         altText: altText,
         thumbnailUrl: thumbnailUrl,
         localCoverPath: localCoverPath ?? this.localCoverPath,
+        contentType: contentType ?? this.contentType,
       );
 }
 

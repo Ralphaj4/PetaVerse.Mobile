@@ -1768,6 +1768,24 @@ abstract class AppLocalizations {
   /// **'An unexpected error occurred. Please try again.'**
   String get errorUnknown;
 
+  /// No description provided for @mediaTooLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'This file is too large. Maximum size is {limit} MB.'**
+  String mediaTooLarge(String limit);
+
+  /// No description provided for @mediaUnsupportedFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'This file type isn\'t supported. Please choose a different photo or video.'**
+  String get mediaUnsupportedFormat;
+
+  /// No description provided for @mediaVideoTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'This video is too long. Maximum length is {seconds}s.'**
+  String mediaVideoTooLong(int seconds);
+
   /// No description provided for @errorNotFound.
   ///
   /// In en, this message translates to:

@@ -37,6 +37,14 @@ abstract class UploadUrlRequest with _$UploadUrlRequest {
     // Required by the backend for petAvatar/petDocument categories; the pet
     // must already exist and be owned by the caller.
     int? petId,
+    // Declared size of the file about to be uploaded. The backend uses this to
+    // reject oversized uploads before issuing a signed URL, and to sign the PUT
+    // with a Content-Length condition (closing the presigned-URL bypass). Sent
+    // forward-compatibly: a backend that ignores unknown fields is unaffected.
+    int? sizeBytes,
+    // Video duration in whole seconds (null for images). Lets the backend reject
+    // over-length videos at URL-issue time rather than only at post-creation.
+    int? durationSeconds,
   }) = _UploadUrlRequest;
 
   factory UploadUrlRequest.fromJson(Map<String, dynamic> json) =>

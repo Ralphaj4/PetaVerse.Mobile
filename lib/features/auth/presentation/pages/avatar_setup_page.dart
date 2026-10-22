@@ -4,7 +4,6 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/app/router/app_router.dart';
 import '../../../../core/network/dtos/media_dtos.dart';
@@ -14,7 +13,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_radius.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../../shared/widgets/photo_source_sheet.dart';
+import '../../../../shared/widgets/media_picker.dart';
 
 class AvatarSetupPage extends ConsumerStatefulWidget {
   const AvatarSetupPage({super.key});
@@ -25,21 +24,19 @@ class AvatarSetupPage extends ConsumerStatefulWidget {
 
 class _AvatarSetupPageState extends ConsumerState<AvatarSetupPage> {
   File? _avatarFile;
+  String _avatarContentType = 'image/jpeg';
   bool _isUploading = false;
 
   Future<void> _showAvatarPicker() async {
-    final source = await showPhotoSourceSheet(context);
-    if (source == null || !mounted) return;
-    await _pickFromSource(source);
-  }
-
-  Future<void> _pickFromSource(ImageSource source) async {
-    final image = await ImagePicker().pickImage(
-      source: source,
-      imageQuality: 90,
+    final prepared = await pickAndPrepareImage(
+      context,
+      category: MediaCategory.userAvatar,
     );
-    if (image != null && mounted) {
-      setState(() => _avatarFile = File(image.path));
+    if (prepared != null && mounted) {
+      setState(() {
+        _avatarFile = prepared.file;
+        _avatarContentType = prepared.contentType;
+      });
     }
   }
 
@@ -52,7 +49,7 @@ class _AvatarSetupPageState extends ConsumerState<AvatarSetupPage> {
       );
       await uploadService.uploadFile(
         file: _avatarFile!,
-        contentType: 'image/jpeg',
+        contentType: _avatarContentType,
         category: MediaCategory.userAvatar,
         fileName: 'avatar.jpg',
       );
