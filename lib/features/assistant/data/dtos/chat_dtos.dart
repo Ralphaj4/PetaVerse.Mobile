@@ -121,6 +121,20 @@ class ChatBlockDto {
 
 // ── Message DTO ──────────────────────────────────────────────────────────────
 
+/// Parses a wire `role` that may be an int (streaming: 0 = user, 1 = assistant)
+/// or a string (session-history GET: "User" / "Assistant"). Defaults to user.
+ChatMessageRole _parseRole(dynamic role) {
+  if (role is int) {
+    return role == 1 ? ChatMessageRole.assistant : ChatMessageRole.user;
+  }
+  if (role is String) {
+    return role.toLowerCase() == 'assistant'
+        ? ChatMessageRole.assistant
+        : ChatMessageRole.user;
+  }
+  return ChatMessageRole.user;
+}
+
 class ChatMessageDto {
   const ChatMessageDto({
     required this.id,
@@ -139,10 +153,10 @@ class ChatMessageDto {
 
     return ChatMessageDto(
       id: json['id'] as int,
-      // role: 0 = user, 1 = assistant (int from backend)
-      role: (json['role'] as int?) == 1
-          ? ChatMessageRole.assistant
-          : ChatMessageRole.user,
+      // role comes as an int from the streaming path (0 = user, 1 = assistant)
+      // but as a string ("User" / "Assistant") from the session-history GET.
+      // Accept both shapes so loading a saved session doesn't blow up.
+      role: _parseRole(json['role']),
       textContent: json['textContent'] as String? ?? '',
       blocks: blocksRaw
           ?.map((e) => ChatBlockDto.fromJson(e as Map<String, dynamic>))

@@ -1,4 +1,6 @@
-﻿import 'package:dio/dio.dart';
+﻿import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../constants/app_constants.dart';
@@ -99,9 +101,16 @@ class ApiClient {
 
     final stream = response.data!.stream;
     final buffer = StringBuffer();
+    // Decode the byte stream as continuous UTF-8. A per-chunk
+    // String.fromCharCodes() mangles any multi-byte char (all Arabic) and
+    // corrupts sequences split across chunk boundaries; a streaming decoder
+    // holds the trailing partial code unit until the next chunk completes it.
+    final decoder = const Utf8Decoder(allowMalformed: true).startChunkedConversion(
+      _SinkCallback((decoded) => buffer.write(decoded)),
+    );
 
     await for (final chunk in stream) {
-      buffer.write(String.fromCharCodes(chunk));
+      decoder.add(chunk);
       final raw = buffer.toString();
       // SSE frames are separated by blank lines (\n\n).
       final frames = raw.split('\n\n');
@@ -114,7 +123,9 @@ class ApiClient {
         if (trimmed.isNotEmpty) yield trimmed;
       }
     }
-    // Flush any remaining content (stream closed without trailing \n\n).
+    // Close the decoder so any held trailing bytes are flushed, then emit the
+    // remaining content (stream closed without a trailing \n\n).
+    decoder.close();
     final remaining = buffer.toString().trim();
     if (remaining.isNotEmpty) yield remaining;
   }
@@ -214,6 +225,21 @@ class ApiClient {
     if (errors is! Map<String, dynamic>) return const {};
     return errors.map((key, value) => MapEntry(key, value.toString()));
   }
+}
+
+/// Adapts a plain callback into a [Sink] so a chunked converter (e.g. the
+/// streaming UTF-8 decoder in [ApiClient.postSse]) can push decoded output
+/// without allocating a full StreamController.
+class _SinkCallback implements Sink<String> {
+  _SinkCallback(this._onData);
+
+  final void Function(String data) _onData;
+
+  @override
+  void add(String data) => _onData(data);
+
+  @override
+  void close() {}
 }
 
 /// App-wide auth event bus. The [ApiClient]'s interceptor emits on it when a
