@@ -52,6 +52,8 @@ class FeedingTime {
 }
 
 /// Feeding amount unit. Wire values: 0 = Grams, 1 = Cups, 2 = Cans.
+/// The backend may send the unit either as the numeric code or as the enum
+/// name (e.g. `"Cups"`), so [fromWire] accepts both.
 enum FeedUnit {
   grams(0),
   cups(1),
@@ -61,9 +63,21 @@ enum FeedUnit {
 
   final int wire;
 
-  static FeedUnit fromWire(int? value) {
-    for (final u in values) {
-      if (u.wire == value) return u;
+  /// Resolves a unit from either its numeric code or its name. Accepts an
+  /// `int`, a numeric/name `String`, or null; falls back to [FeedUnit.grams].
+  static FeedUnit fromWire(Object? value) {
+    if (value is num) {
+      final code = value.toInt();
+      for (final u in values) {
+        if (u.wire == code) return u;
+      }
+    } else if (value is String) {
+      final asInt = int.tryParse(value);
+      if (asInt != null) return fromWire(asInt);
+      final name = value.trim().toLowerCase();
+      for (final u in values) {
+        if (u.name == name) return u;
+      }
     }
     return FeedUnit.grams;
   }

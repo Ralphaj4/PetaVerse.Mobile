@@ -3393,7 +3393,10 @@ as List<FeedingTimeDto>,
 /// @nodoc
 mixin _$FeedingTimeDto {
 
- int? get id; String get timeOfDay; double? get quantity; int get unit;
+ int? get id; String get timeOfDay; double? get quantity;// Raw wire value: the backend sends either a numeric code or the enum name
+// (e.g. `"Cups"`). Kept as a dynamic JSON value and resolved by
+// [FeedUnit.fromWire] so a string unit doesn't fail deserialization.
+ Object? get unit;
 /// Create a copy of FeedingTimeDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -3406,12 +3409,12 @@ $FeedingTimeDtoCopyWith<FeedingTimeDto> get copyWith => _$FeedingTimeDtoCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedingTimeDto&&(identical(other.id, id) || other.id == id)&&(identical(other.timeOfDay, timeOfDay) || other.timeOfDay == timeOfDay)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unit, unit) || other.unit == unit));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedingTimeDto&&(identical(other.id, id) || other.id == id)&&(identical(other.timeOfDay, timeOfDay) || other.timeOfDay == timeOfDay)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&const DeepCollectionEquality().equals(other.unit, unit));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,timeOfDay,quantity,unit);
+int get hashCode => Object.hash(runtimeType,id,timeOfDay,quantity,const DeepCollectionEquality().hash(unit));
 
 @override
 String toString() {
@@ -3426,7 +3429,7 @@ abstract mixin class $FeedingTimeDtoCopyWith<$Res>  {
   factory $FeedingTimeDtoCopyWith(FeedingTimeDto value, $Res Function(FeedingTimeDto) _then) = _$FeedingTimeDtoCopyWithImpl;
 @useResult
 $Res call({
- int? id, String timeOfDay, double? quantity, int unit
+ int? id, String timeOfDay, double? quantity, Object? unit
 });
 
 
@@ -3443,13 +3446,12 @@ class _$FeedingTimeDtoCopyWithImpl<$Res>
 
 /// Create a copy of FeedingTimeDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? timeOfDay = null,Object? quantity = freezed,Object? unit = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? timeOfDay = null,Object? quantity = freezed,Object? unit = freezed,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,timeOfDay: null == timeOfDay ? _self.timeOfDay : timeOfDay // ignore: cast_nullable_to_non_nullable
 as String,quantity: freezed == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
-as double?,unit: null == unit ? _self.unit : unit // ignore: cast_nullable_to_non_nullable
-as int,
+as double?,unit: freezed == unit ? _self.unit : unit ,
   ));
 }
 
@@ -3534,7 +3536,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String timeOfDay,  double? quantity,  int unit)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? id,  String timeOfDay,  double? quantity,  Object? unit)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FeedingTimeDto() when $default != null:
 return $default(_that.id,_that.timeOfDay,_that.quantity,_that.unit);case _:
@@ -3555,7 +3557,7 @@ return $default(_that.id,_that.timeOfDay,_that.quantity,_that.unit);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String timeOfDay,  double? quantity,  int unit)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? id,  String timeOfDay,  double? quantity,  Object? unit)  $default,) {final _that = this;
 switch (_that) {
 case _FeedingTimeDto():
 return $default(_that.id,_that.timeOfDay,_that.quantity,_that.unit);case _:
@@ -3575,7 +3577,7 @@ return $default(_that.id,_that.timeOfDay,_that.quantity,_that.unit);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String timeOfDay,  double? quantity,  int unit)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? id,  String timeOfDay,  double? quantity,  Object? unit)?  $default,) {final _that = this;
 switch (_that) {
 case _FeedingTimeDto() when $default != null:
 return $default(_that.id,_that.timeOfDay,_that.quantity,_that.unit);case _:
@@ -3596,7 +3598,10 @@ class _FeedingTimeDto extends FeedingTimeDto {
 @override final  int? id;
 @override@JsonKey() final  String timeOfDay;
 @override final  double? quantity;
-@override@JsonKey() final  int unit;
+// Raw wire value: the backend sends either a numeric code or the enum name
+// (e.g. `"Cups"`). Kept as a dynamic JSON value and resolved by
+// [FeedUnit.fromWire] so a string unit doesn't fail deserialization.
+@override@JsonKey() final  Object? unit;
 
 /// Create a copy of FeedingTimeDto
 /// with the given fields replaced by the non-null parameter values.
@@ -3611,12 +3616,12 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedingTimeDto&&(identical(other.id, id) || other.id == id)&&(identical(other.timeOfDay, timeOfDay) || other.timeOfDay == timeOfDay)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.unit, unit) || other.unit == unit));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedingTimeDto&&(identical(other.id, id) || other.id == id)&&(identical(other.timeOfDay, timeOfDay) || other.timeOfDay == timeOfDay)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&const DeepCollectionEquality().equals(other.unit, unit));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,timeOfDay,quantity,unit);
+int get hashCode => Object.hash(runtimeType,id,timeOfDay,quantity,const DeepCollectionEquality().hash(unit));
 
 @override
 String toString() {
@@ -3631,7 +3636,7 @@ abstract mixin class _$FeedingTimeDtoCopyWith<$Res> implements $FeedingTimeDtoCo
   factory _$FeedingTimeDtoCopyWith(_FeedingTimeDto value, $Res Function(_FeedingTimeDto) _then) = __$FeedingTimeDtoCopyWithImpl;
 @override @useResult
 $Res call({
- int? id, String timeOfDay, double? quantity, int unit
+ int? id, String timeOfDay, double? quantity, Object? unit
 });
 
 
@@ -3648,13 +3653,12 @@ class __$FeedingTimeDtoCopyWithImpl<$Res>
 
 /// Create a copy of FeedingTimeDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? timeOfDay = null,Object? quantity = freezed,Object? unit = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? timeOfDay = null,Object? quantity = freezed,Object? unit = freezed,}) {
   return _then(_FeedingTimeDto(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,timeOfDay: null == timeOfDay ? _self.timeOfDay : timeOfDay // ignore: cast_nullable_to_non_nullable
 as String,quantity: freezed == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
-as double?,unit: null == unit ? _self.unit : unit // ignore: cast_nullable_to_non_nullable
-as int,
+as double?,unit: freezed == unit ? _self.unit : unit ,
   ));
 }
 

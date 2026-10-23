@@ -279,7 +279,7 @@ _FeedingTimeDto _$FeedingTimeDtoFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num?)?.toInt(),
       timeOfDay: json['timeOfDay'] as String? ?? '00:00:00',
       quantity: (json['quantity'] as num?)?.toDouble(),
-      unit: (json['unit'] as num?)?.toInt() ?? 0,
+      unit: json['unit'] ?? 0,
     );
 
 Map<String, dynamic> _$FeedingTimeDtoToJson(_FeedingTimeDto instance) =>

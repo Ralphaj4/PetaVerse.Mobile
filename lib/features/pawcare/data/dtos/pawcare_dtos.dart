@@ -348,7 +348,10 @@ abstract class FeedingTimeDto with _$FeedingTimeDto {
     int? id,
     @Default('00:00:00') String timeOfDay,
     double? quantity,
-    @Default(0) int unit,
+    // Raw wire value: the backend sends either a numeric code or the enum name
+    // (e.g. `"Cups"`). Kept as a dynamic JSON value and resolved by
+    // [FeedUnit.fromWire] so a string unit doesn't fail deserialization.
+    @Default(0) Object? unit,
   }) = _FeedingTimeDto;
 
   const FeedingTimeDto._();
