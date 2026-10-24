@@ -186,7 +186,9 @@ class AppConfig {
 const _kBox = 'app_config';
 const _kConfigKey = 'config';
 const _kCachedAtKey = 'cached_at';
-const _kCacheTtl = Duration(minutes: 10);
+const _kCacheTtl = Duration(hours: 24);
+const _kMaxRetries = 3;
+const _kRetryDelay = Duration(seconds: 2);
 
 class AppConfigDatasource {
   const AppConfigDatasource(this._client, this._hive);
@@ -194,24 +196,37 @@ class AppConfigDatasource {
   final ApiClient _client;
   final HiveService _hive;
 
-  /// Fetches live config from the server.
+  /// Fetches live config from the server, retrying up to [_kMaxRetries] times
+  /// on network errors (handles the brief window after radio wake-up).
   ///
   /// On success: persists to Hive (overwrites any prior cache).
   /// On failure: falls back to the cached value if it exists and is < 24 h old.
   /// If both fail: returns a [Failure].
   Future<Result<AppConfig>> getConfig() async {
-    try {
-      final data = await _client.get<Map<String, dynamic>>(
-        ApiEndpoints.appConfig,
-      );
-      final config = AppConfig.fromJson(data);
-      await _persist(config);
-      return Result.success(config);
-    } on AppException catch (e) {
-      return _fallbackOrFailure(_map(e));
-    } catch (e) {
-      return _fallbackOrFailure(NetworkFailure(message: e.toString()));
+    Failure? lastFailure;
+
+    for (var attempt = 0; attempt < _kMaxRetries; attempt++) {
+      if (attempt > 0) {
+        await Future<void>.delayed(_kRetryDelay);
+      }
+      try {
+        final data = await _client.get<Map<String, dynamic>>(
+          ApiEndpoints.appConfig,
+        );
+        final config = AppConfig.fromJson(data);
+        await _persist(config);
+        return Result.success(config);
+      } on AppException catch (e) {
+        final failure = _map(e);
+        // Only retry network failures; auth/server errors won't recover on retry.
+        if (failure is! NetworkFailure) return _fallbackOrFailure(failure);
+        lastFailure = failure;
+      } catch (e) {
+        lastFailure = NetworkFailure(message: e.toString());
+      }
     }
+
+    return _fallbackOrFailure(lastFailure!);
   }
 
   Future<void> _persist(AppConfig config) async {
